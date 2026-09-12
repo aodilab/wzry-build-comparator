@@ -78,3 +78,17 @@ Honor of Kings/
 ## 📖 研发守则
 
 详细的架构分层约束、受控 Patch 补丁机制及 AI 协同认知阈值规范，请参阅 [AGENTS.md](AGENTS.md)。
+
+---
+
+<a id="sponsor"></a>
+## ☕ 支持与赞助 (Sponsor)
+
+如果本项目对你的游戏理解、NotebookLM 探索或数值研究有所帮助，欢迎请作者喝杯冰可乐 🥤！  
+你的支持是持续维护国服最新赛季数据、优化算法流水线的最大动力。
+
+<div align="center">
+  <img src="assets/sponsor_wechat.jpg" width="220" style="border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.15);" alt="微信赞助收款码">
+  <p style="font-size: 13px; color: #666; margin-top: 8px;"><strong>微信扫码支持（开发者：孙奥迪）</strong></p>
+</div>
+
