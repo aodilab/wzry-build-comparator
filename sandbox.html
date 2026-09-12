@@ -498,33 +498,34 @@ header {
 .item-scroll-area {
   flex: 1;
   overflow-y: auto;
-  padding: 4px 16px 16px 16px;
+  padding: 4px 16px 20px 16px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
-  gap: 12px;
+  gap: 14px;
   align-content: start;
 }
 
+/* 苹果官网风格统一规范卡片 (Apple Official Store Uniform Cards - 所有框大小完全一致) */
 .item-card {
   background: var(--apple-card);
   border: 1px solid var(--apple-border);
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 12px 14px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   box-shadow: var(--card-shadow);
-  height: auto;
-  min-height: 120px;
+  height: 146px;
   box-sizing: border-box;
 }
 
 .item-card:hover {
   background: var(--apple-card-hover);
   border-color: var(--apple-border-hover);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: var(--card-shadow-hover);
 }
 
@@ -547,7 +548,7 @@ header {
   object-fit: cover;
   background: #111;
   flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .item-meta {
@@ -556,12 +557,13 @@ header {
 }
 
 .item-name {
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 600;
   color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  letter-spacing: -0.01em;
 }
 
 .item-price-pill {
@@ -578,10 +580,10 @@ header {
 }
 
 .item-body {
-  margin-top: 8px;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
+  margin-top: 4px;
 }
 
 .item-stat-line {
@@ -593,14 +595,29 @@ header {
   text-overflow: ellipsis;
 }
 
-.item-more-badge {
-  font-size: 10px;
-  color: var(--color-blue);
-  margin-top: 2px;
+.item-stat-primary {
+  color: var(--text-primary);
   font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 3px;
+}
+
+/* 苹果官网风格被动/类别胶囊徽标 (Apple Subtle Pill) */
+.item-passive-pill {
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--color-amber);
+  background: var(--color-amber-bg);
+  border-radius: 6px;
+  padding: 3px 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 4px;
+  display: block;
+}
+
+.item-passive-pill.pill-subtle {
+  color: var(--text-tertiary);
+  background: var(--apple-subcard);
 }
 
 .item-equipped-badge {
@@ -618,126 +635,6 @@ header {
 
 .item-card.equipped .item-equipped-badge {
   display: block;
-}
-
-/* ==========================================================================
-   苹果原生悬浮放大详情卡片 (Apple HIG Popover)
-   ========================================================================== */
-.apple-popover {
-  position: fixed;
-  z-index: 9999;
-  width: 310px;
-  background: var(--apple-panel);
-  border: 1px solid var(--apple-border-hover);
-  border-radius: 18px;
-  padding: 16px;
-  backdrop-filter: blur(30px) saturate(200%);
-  -webkit-backdrop-filter: blur(30px) saturate(200%);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.1);
-  pointer-events: none;
-  opacity: 0;
-  transform: scale(0.94) translateY(6px);
-  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.apple-popover.visible {
-  opacity: 1;
-  transform: scale(1) translateY(0);
-}
-
-.popover-header {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.popover-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  border: 1.5px solid var(--apple-border);
-  object-fit: cover;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-.popover-meta {
-  flex: 1;
-  min-width: 0;
-}
-
-.popover-name {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: -0.01em;
-}
-
-.popover-tags {
-  display: flex;
-  gap: 6px;
-  margin-top: 4px;
-  align-items: center;
-}
-
-.popover-badge-gold {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--color-amber);
-  background: var(--color-amber-bg);
-  padding: 2px 7px;
-  border-radius: 6px;
-}
-
-.popover-badge-cat {
-  font-size: 11px;
-  color: var(--text-secondary);
-  background: var(--apple-subcard);
-  padding: 2px 7px;
-  border-radius: 6px;
-}
-
-.popover-stats-list {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.popover-stat-item {
-  font-size: 12px;
-  color: var(--text-primary);
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.popover-stat-bullet {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--color-blue);
-  flex-shrink: 0;
-}
-
-.popover-passive-box {
-  background: var(--color-amber-bg);
-  border: 1px solid rgba(217, 119, 6, 0.2);
-  border-radius: 10px;
-  padding: 8px 10px;
-  font-size: 11.5px;
-  color: var(--color-amber);
-  line-height: 1.45;
-}
-
-.popover-recipe-box {
-  background: var(--apple-subcard);
-  border-radius: 8px;
-  padding: 6px 10px;
-  font-size: 11px;
-  color: var(--text-secondary);
 }
 
 /* ==========================================================================
@@ -1134,9 +1031,6 @@ header {
 
 </main>
 
-<!-- 苹果原生悬浮放大详情浮窗 (Apple Popover) -->
-<div id="appleItemPopover" class="apple-popover"></div>
-
 <script>
 // === 静态内嵌数据 ===
 const HEROES_DATA = [{"ename": "105", "cname": "廉颇", "title": "正义爆轰", "role": "坦克", "lane": "对抗路/游走", "base_stats": {"cname": "廉颇", "hp": [3553, 8560], "atk": [163, 355], "pdef": [132, 504], "mdef": [50, 169], "speed": 380, "aspeed": "+1.0%"}}, {"ename": "106", "cname": "小乔", "title": "恋之微风", "role": "法师", "lane": "中路", "base_stats": {"cname": "小乔", "hp": [3088, 5916], "atk": [153, 263], "pdef": [95, 309], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "107", "cname": "赵云", "title": "苍天翔龙", "role": "战士/刺客", "lane": "对抗路", "base_stats": {"cname": "赵云", "hp": [3267, 6732], "atk": [173, 381], "pdef": [89, 385], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "108", "cname": "墨子", "title": "和平守望", "role": "法师/战士", "lane": "中路", "base_stats": {"cname": "墨子", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "109", "cname": "妲己", "title": "魅力之狐", "role": "法师", "lane": "中路", "base_stats": {"cname": "妲己", "hp": [3229, 6165], "atk": [170, 293], "pdef": [86, 320], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "110", "cname": "嬴政", "title": "王者独尊", "role": "法师", "lane": "中路", "base_stats": {"cname": "嬴政", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "111", "cname": "孙尚香", "title": "千金重弩", "role": "射手", "lane": "发育路", "base_stats": {"cname": "孙尚香", "hp": [3014, 6014], "atk": [172, 385], "pdef": [89, 346], "mdef": [50, 169], "speed": 360, "aspeed": "+3.0%"}}, {"ename": "112", "cname": "鲁班七号", "title": "机关造物", "role": "射手", "lane": "发育路", "base_stats": {"cname": "鲁班七号", "hp": [3401, 5989], "atk": [174, 380], "pdef": [88, 323], "mdef": [50, 169], "speed": 360, "aspeed": "+3.0%"}}, {"ename": "113", "cname": "庄周", "title": "逍遥梦幻", "role": "辅助/坦克", "lane": "游走", "base_stats": {"cname": "庄周", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "114", "cname": "刘禅", "title": "暴走机关", "role": "辅助/坦克", "lane": "游走", "base_stats": {"cname": "刘禅", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "115", "cname": "高渐离", "title": "叛逆吟游", "role": "法师", "lane": "中路", "base_stats": {"cname": "高渐离", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "116", "cname": "阿轲", "title": "信念之刃", "role": "刺客", "lane": "打野", "base_stats": {"cname": "阿轲", "hp": [3269, 6771], "atk": [177, 427], "pdef": [89, 349], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "117", "cname": "钟无艳", "title": "野蛮之锤", "role": "战士/坦克", "lane": "对抗路", "base_stats": {"cname": "钟无艳", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "118", "cname": "孙膑", "title": "逆流之时", "role": "辅助/法师", "lane": "游走", "base_stats": {"cname": "孙膑", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "119", "cname": "扁鹊", "title": "善恶怪医", "role": "法师/战士", "lane": "中路", "base_stats": {"cname": "扁鹊", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "167", "cname": "孙悟空", "title": "齐天大圣", "role": "刺客", "lane": "打野", "base_stats": {"cname": "孙悟空", "hp": [3293, 6585], "atk": [167, 379], "pdef": [98, 385], "mdef": [50, 169], "speed": 390, "aspeed": "+1.0%"}}, {"ename": "549", "cname": "心魔六耳", "title": "孙悟空命格", "role": "刺客/战士", "lane": "打野", "base_stats": {"cname": "心魔六耳", "hp": [3100, 6600], "atk": [175, 410], "pdef": [95, 370], "mdef": [50, 169], "speed": 390, "aspeed": "+2.0%"}}, {"ename": "120", "cname": "白起", "title": "最终兵器", "role": "坦克", "lane": "对抗路/游走", "base_stats": {"cname": "白起", "hp": [3450, 8100], "atk": [160, 340], "pdef": [130, 480], "mdef": [50, 169], "speed": 380, "aspeed": "+1.0%"}}, {"ename": "121", "cname": "芈月", "title": "永恒之月", "role": "法师/战士", "lane": "中路", "base_stats": {"cname": "芈月", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "123", "cname": "吕布", "title": "无双之魔", "role": "战士/坦克", "lane": "对抗路", "base_stats": {"cname": "吕布", "hp": [3344, 7344], "atk": [181, 393], "pdef": [93, 390], "mdef": [50, 169], "speed": 380, "aspeed": "+1.0%"}}, {"ename": "124", "cname": "周瑜", "title": "铁血都督", "role": "法师/战士", "lane": "中路", "base_stats": {"cname": "周瑜", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "126", "cname": "夏侯惇", "title": "不羁之风", "role": "坦克/战士", "lane": "对抗路/游走", "base_stats": {"cname": "夏侯惇", "hp": [3450, 8100], "atk": [160, 340], "pdef": [130, 480], "mdef": [50, 169], "speed": 380, "aspeed": "+1.0%"}}, {"ename": "127", "cname": "甄姬", "title": "洛神降临", "role": "法师", "lane": "中路", "base_stats": {"cname": "甄姬", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "128", "cname": "曹操", "title": "鲜血枭雄", "role": "战士", "lane": "对抗路", "base_stats": {"cname": "曹操", "hp": [3467, 7473], "atk": [174, 382], "pdef": [104, 394], "mdef": [50, 169], "speed": 380, "aspeed": "+1.0%"}}, {"ename": "129", "cname": "典韦", "title": "狂战士", "role": "战士", "lane": "对抗路", "base_stats": {"cname": "典韦", "hp": [3434, 7577], "atk": [168, 375], "pdef": [101, 415], "mdef": [50, 169], "speed": 390, "aspeed": "+2.0%"}}, {"ename": "130", "cname": "宫本武藏", "title": "剑圣", "role": "战士/刺客", "lane": "对抗路", "base_stats": {"cname": "宫本武藏", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "131", "cname": "李白", "title": "青莲剑仙", "role": "刺客", "lane": "打野", "base_stats": {"cname": "李白", "hp": [2968, 5483], "atk": [169, 380], "pdef": [98, 350], "mdef": [50, 169], "speed": 390, "aspeed": "+3.0%"}}, {"ename": "132", "cname": "马可波罗", "title": "远游之枪", "role": "射手", "lane": "发育路", "base_stats": {"cname": "马可波罗", "hp": [3041, 5596], "atk": [175, 362], "pdef": [91, 344], "mdef": [50, 169], "speed": 370, "aspeed": "+3.0%"}}, {"ename": "133", "cname": "狄仁杰", "title": "断案大师", "role": "射手", "lane": "发育路", "base_stats": {"cname": "狄仁杰", "hp": [3242, 5710], "atk": [169, 364], "pdef": [95, 338], "mdef": [50, 169], "speed": 360, "aspeed": "+2.0%"}}, {"ename": "134", "cname": "达摩", "title": "拳僧", "role": "战士/坦克", "lane": "对抗路", "base_stats": {"cname": "达摩", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "135", "cname": "项羽", "title": "霸王", "role": "坦克/战士", "lane": "对抗路/游走", "base_stats": {"cname": "项羽", "hp": [3450, 8100], "atk": [160, 340], "pdef": [130, 480], "mdef": [50, 169], "speed": 380, "aspeed": "+1.0%"}}, {"ename": "136", "cname": "武则天", "title": "女帝", "role": "法师", "lane": "中路", "base_stats": {"cname": "武则天", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "139", "cname": "老夫子", "title": "万古长明", "role": "战士", "lane": "对抗路", "base_stats": {"cname": "老夫子", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "140", "cname": "关羽", "title": "一骑当千", "role": "战士/坦克", "lane": "对抗路", "base_stats": {"cname": "关羽", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "141", "cname": "貂蝉", "title": "绝世舞姬", "role": "法师", "lane": "中路", "base_stats": {"cname": "貂蝉", "hp": [3060, 5986], "atk": [167, 287], "pdef": [87, 332], "mdef": [50, 169], "speed": 350, "aspeed": "+1.0%"}}, {"ename": "142", "cname": "安琪拉", "title": "暗夜萝莉", "role": "法师", "lane": "中路", "base_stats": {"cname": "安琪拉", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "144", "cname": "程咬金", "title": "热烈之斧", "role": "坦克", "lane": "对抗路/游走", "base_stats": {"cname": "程咬金", "hp": [3450, 8100], "atk": [160, 340], "pdef": [130, 480], "mdef": [50, 169], "speed": 380, "aspeed": "+1.0%"}}, {"ename": "146", "cname": "露娜", "title": "月光之女", "role": "刺客/法师", "lane": "打野", "base_stats": {"cname": "露娜", "hp": [3100, 6600], "atk": [175, 410], "pdef": [95, 370], "mdef": [50, 169], "speed": 390, "aspeed": "+2.0%"}}, {"ename": "148", "cname": "姜子牙", "title": "封神者", "role": "法师", "lane": "中路", "base_stats": {"cname": "姜子牙", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "149", "cname": "刘邦", "title": "双面君主", "role": "坦克/法师", "lane": "对抗路/游走", "base_stats": {"cname": "刘邦", "hp": [3450, 8100], "atk": [160, 340], "pdef": [130, 480], "mdef": [50, 169], "speed": 380, "aspeed": "+1.0%"}}, {"ename": "150", "cname": "韩信", "title": "国士无双", "role": "刺客", "lane": "打野", "base_stats": {"cname": "韩信", "hp": [2988, 5655], "atk": [172, 382], "pdef": [92, 329], "mdef": [50, 169], "speed": 390, "aspeed": "+3.0%"}}, {"ename": "152", "cname": "王昭君", "title": "冰雪之华", "role": "法师", "lane": "中路", "base_stats": {"cname": "王昭君", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "153", "cname": "兰陵王", "title": "暗影刀锋", "role": "刺客", "lane": "打野", "base_stats": {"cname": "兰陵王", "hp": [3100, 6600], "atk": [175, 410], "pdef": [95, 370], "mdef": [50, 169], "speed": 390, "aspeed": "+2.0%"}}, {"ename": "154", "cname": "花木兰", "title": "传说之刃", "role": "战士", "lane": "对抗路", "base_stats": {"cname": "花木兰", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "156", "cname": "张良", "title": "言灵之书", "role": "法师", "lane": "中路", "base_stats": {"cname": "张良", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "157", "cname": "不知火舞", "title": "明媚烈焰", "role": "刺客/法师", "lane": "打野", "base_stats": {"cname": "不知火舞", "hp": [3125, 6014], "atk": [160, 285], "pdef": [89, 330], "mdef": [50, 169], "speed": 390, "aspeed": "+1.0%"}}, {"ename": "162", "cname": "娜可露露", "title": "鹰之守护", "role": "刺客", "lane": "打野", "base_stats": {"cname": "娜可露露", "hp": [3100, 6600], "atk": [175, 410], "pdef": [95, 370], "mdef": [50, 169], "speed": 390, "aspeed": "+2.0%"}}, {"ename": "163", "cname": "橘右京", "title": "神梦一刀", "role": "刺客/战士", "lane": "打野", "base_stats": {"cname": "橘右京", "hp": [3100, 6600], "atk": [175, 410], "pdef": [95, 370], "mdef": [50, 169], "speed": 390, "aspeed": "+2.0%"}}, {"ename": "166", "cname": "亚瑟", "title": "圣骑之力", "role": "战士/坦克", "lane": "对抗路", "base_stats": {"cname": "亚瑟", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "168", "cname": "牛魔", "title": "精英酋长", "role": "辅助/坦克", "lane": "游走", "base_stats": {"cname": "牛魔", "hp": [3537, 8611], "atk": [156, 303], "pdef": [136, 520], "mdef": [50, 169], "speed": 380, "aspeed": "+1.0%"}}, {"ename": "169", "cname": "后羿", "title": "半神之弓", "role": "射手", "lane": "发育路", "base_stats": {"cname": "后羿", "hp": [3182, 5986], "atk": [175, 375], "pdef": [86, 336], "mdef": [50, 169], "speed": 360, "aspeed": "+3.0%"}}, {"ename": "170", "cname": "刘备", "title": "仁德义枪", "role": "战士", "lane": "对抗路", "base_stats": {"cname": "刘备", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "171", "cname": "张飞", "title": "禁血狂兽", "role": "坦克/辅助", "lane": "对抗路/游走", "base_stats": {"cname": "张飞", "hp": [3450, 8100], "atk": [160, 340], "pdef": [130, 480], "mdef": [50, 169], "speed": 380, "aspeed": "+1.0%"}}, {"ename": "173", "cname": "李元芳", "title": "王都密探", "role": "射手", "lane": "发育路", "base_stats": {"cname": "李元芳", "hp": [3007, 5725], "atk": [171, 371], "pdef": [87, 340], "mdef": [50, 169], "speed": 370, "aspeed": "+2.0%"}}, {"ename": "174", "cname": "虞姬", "title": "森之风灵", "role": "射手", "lane": "发育路", "base_stats": {"cname": "虞姬", "hp": [3010, 6000], "atk": [165, 390], "pdef": [85, 335], "mdef": [50, 169], "speed": 360, "aspeed": "+3.0%"}}, {"ename": "175", "cname": "钟馗", "title": "虚灵城判", "role": "辅助/坦克", "lane": "游走", "base_stats": {"cname": "钟馗", "hp": [3426, 8025], "atk": [162, 312], "pdef": [105, 412], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "178", "cname": "杨戬", "title": "根源之目", "role": "战士", "lane": "对抗路", "base_stats": {"cname": "杨戬", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "183", "cname": "雅典娜", "title": "圣域余晖", "role": "战士/刺客", "lane": "对抗路", "base_stats": {"cname": "雅典娜", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "184", "cname": "蔡文姬", "title": "天籁弦音", "role": "辅助/法师", "lane": "游走", "base_stats": {"cname": "蔡文姬", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "186", "cname": "太乙真人", "title": "炼金大师", "role": "辅助/坦克", "lane": "游走", "base_stats": {"cname": "太乙真人", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "180", "cname": "哪吒", "title": "桀骜炎枪", "role": "战士/坦克", "lane": "对抗路", "base_stats": {"cname": "哪吒", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "190", "cname": "诸葛亮", "title": "绝代智谋", "role": "法师", "lane": "中路", "base_stats": {"cname": "诸葛亮", "hp": [3135, 6140], "atk": [156, 287], "pdef": [87, 332], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "192", "cname": "黄忠", "title": "燃魂重炮", "role": "射手", "lane": "发育路", "base_stats": {"cname": "黄忠", "hp": [3010, 6000], "atk": [165, 390], "pdef": [85, 335], "mdef": [50, 169], "speed": 360, "aspeed": "+3.0%"}}, {"ename": "191", "cname": "大乔", "title": "沧海之曜", "role": "辅助/法师", "lane": "游走", "base_stats": {"cname": "大乔", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "187", "cname": "东皇太一", "title": "噬灭日蚀", "role": "辅助/法师", "lane": "游走", "base_stats": {"cname": "东皇太一", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "182", "cname": "干将莫邪", "title": "淬命双剑", "role": "法师", "lane": "中路", "base_stats": {"cname": "干将莫邪", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "189", "cname": "鬼谷子", "title": "万物有灵", "role": "辅助/法师", "lane": "游走", "base_stats": {"cname": "鬼谷子", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "193", "cname": "铠", "title": "破灭刃锋", "role": "战士/坦克", "lane": "对抗路", "base_stats": {"cname": "铠", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "196", "cname": "百里守约", "title": "静谧之眼", "role": "射手/刺客", "lane": "发育路", "base_stats": {"cname": "百里守约", "hp": [3019, 5611], "atk": [188, 411], "pdef": [94, 329], "mdef": [50, 169], "speed": 360, "aspeed": "+3.0%"}}, {"ename": "195", "cname": "百里玄策", "title": "嚣狂之镰", "role": "刺客", "lane": "打野", "base_stats": {"cname": "百里玄策", "hp": [3100, 6600], "atk": [175, 410], "pdef": [95, 370], "mdef": [50, 169], "speed": 390, "aspeed": "+2.0%"}}, {"ename": "194", "cname": "苏烈", "title": "不屈铁壁", "role": "辅助/坦克", "lane": "游走", "base_stats": {"cname": "苏烈", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "198", "cname": "梦奇", "title": "入梦之灵", "role": "坦克/法师", "lane": "对抗路/游走", "base_stats": {"cname": "梦奇", "hp": [3450, 8100], "atk": [160, 340], "pdef": [130, 480], "mdef": [50, 169], "speed": 380, "aspeed": "+1.0%"}}, {"ename": "179", "cname": "女娲", "title": "至高创世", "role": "法师", "lane": "中路", "base_stats": {"cname": "女娲", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "501", "cname": "明世隐", "title": "灵魂劫卜", "role": "辅助", "lane": "游走", "base_stats": {"cname": "明世隐", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "199", "cname": "公孙离", "title": "幻舞玲珑", "role": "射手", "lane": "发育路", "base_stats": {"cname": "公孙离", "hp": [3096, 5669], "atk": [173, 358], "pdef": [89, 335], "mdef": [50, 169], "speed": 370, "aspeed": "+3.0%"}}, {"ename": "176", "cname": "杨玉环", "title": "霓裳风华", "role": "法师", "lane": "中路", "base_stats": {"cname": "杨玉环", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "502", "cname": "裴擒虎", "title": "六合虎拳", "role": "刺客", "lane": "打野", "base_stats": {"cname": "瑶", "hp": [3201, 6880], "atk": [148, 290], "pdef": [98, 380], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "197", "cname": "弈星", "title": "天元之弈", "role": "法师", "lane": "中路", "base_stats": {"cname": "弈星", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "503", "cname": "狂铁", "title": "战车意志", "role": "战士/坦克", "lane": "对抗路", "base_stats": {"cname": "狂铁", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "504", "cname": "米莱狄", "title": "筑城者", "role": "法师", "lane": "中路", "base_stats": {"cname": "米莱狄", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "125", "cname": "元歌", "title": "无间傀儡", "role": "刺客", "lane": "打野", "base_stats": {"cname": "元歌", "hp": [3100, 6600], "atk": [175, 410], "pdef": [95, 370], "mdef": [50, 169], "speed": 390, "aspeed": "+2.0%"}}, {"ename": "510", "cname": "孙策", "title": "光明之海", "role": "坦克/战士", "lane": "对抗路/游走", "base_stats": {"cname": "孙策", "hp": [3450, 8100], "atk": [160, 340], "pdef": [130, 480], "mdef": [50, 169], "speed": 380, "aspeed": "+1.0%"}}, {"ename": "137", "cname": "司马懿", "title": "寂灭之心", "role": "刺客/法师", "lane": "打野", "base_stats": {"cname": "司马懿", "hp": [3100, 6600], "atk": [175, 410], "pdef": [95, 370], "mdef": [50, 169], "speed": 390, "aspeed": "+2.0%"}}, {"ename": "509", "cname": "盾山", "title": "无尽之盾", "role": "辅助/坦克", "lane": "游走", "base_stats": {"cname": "盾山", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "508", "cname": "伽罗", "title": "破魔之箭", "role": "射手", "lane": "发育路", "base_stats": {"cname": "伽罗", "hp": [3173, 6044], "atk": [170, 363], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "312", "cname": "沈梦溪", "title": "爆弹怪猫", "role": "法师", "lane": "中路", "base_stats": {"cname": "沈梦溪", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "507", "cname": "李信", "title": "谋世之战", "role": "战士", "lane": "对抗路", "base_stats": {"cname": "李信", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "513", "cname": "上官婉儿", "title": "惊鸿之笔", "role": "法师", "lane": "中路", "base_stats": {"cname": "曜", "hp": [3225, 7035], "atk": [176, 386], "pdef": [102, 396], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "515", "cname": "嫦娥", "title": "寒月公主", "role": "法师/战士", "lane": "中路", "base_stats": {"cname": "嫦娥", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "511", "cname": "猪八戒", "title": "无忧猛士", "role": "坦克", "lane": "对抗路/游走", "base_stats": {"cname": "猪八戒", "hp": [3450, 8100], "atk": [160, 340], "pdef": [130, 480], "mdef": [50, 169], "speed": 380, "aspeed": "+1.0%"}}, {"ename": "529", "cname": "盘古", "title": "破晓之神", "role": "战士", "lane": "对抗路", "base_stats": {"cname": "盘古", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "505", "cname": "瑶", "title": "鹿灵守心", "role": "辅助/法师", "lane": "游走", "base_stats": {"cname": "瑶", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "506", "cname": "云中君", "title": "流云之翼", "role": "刺客", "lane": "打野", "base_stats": {"cname": "云中君", "hp": [3100, 6600], "atk": [175, 410], "pdef": [95, 370], "mdef": [50, 169], "speed": 390, "aspeed": "+2.0%"}}, {"ename": "522", "cname": "曜", "title": "星辰之子", "role": "战士/刺客", "lane": "对抗路", "base_stats": {"cname": "曜", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "518", "cname": "马超", "title": "冷晖之枪", "role": "战士", "lane": "对抗路", "base_stats": {"cname": "马超", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "523", "cname": "西施", "title": "幻纱之灵", "role": "法师", "lane": "中路", "base_stats": {"cname": "西施", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "525", "cname": "鲁班大师", "title": "神匠", "role": "辅助/坦克", "lane": "游走", "base_stats": {"cname": "鲁班大师", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "524", "cname": "蒙犽", "title": "烈炮小子", "role": "射手", "lane": "发育路", "base_stats": {"cname": "蒙犽", "hp": [3010, 6000], "atk": [165, 390], "pdef": [85, 335], "mdef": [50, 169], "speed": 360, "aspeed": "+3.0%"}}, {"ename": "531", "cname": "镜", "title": "破镜之刃", "role": "刺客", "lane": "打野", "base_stats": {"cname": "镜", "hp": [3146, 6241], "atk": [177, 391], "pdef": [95, 365], "mdef": [50, 169], "speed": 390, "aspeed": "+1.0%"}}, {"ename": "527", "cname": "蒙恬", "title": "秩序统将", "role": "坦克", "lane": "对抗路/游走", "base_stats": {"cname": "蒙恬", "hp": [3450, 8100], "atk": [160, 340], "pdef": [130, 480], "mdef": [50, 169], "speed": 380, "aspeed": "+1.0%"}}, {"ename": "533", "cname": "阿古朵", "title": "山林之子", "role": "射手", "lane": "发育路", "base_stats": {"cname": "阿古朵", "hp": [3010, 6000], "atk": [165, 390], "pdef": [85, 335], "mdef": [50, 169], "speed": 360, "aspeed": "+3.0%"}}, {"ename": "536", "cname": "夏洛特", "title": "玫瑰剑士", "role": "战士", "lane": "对抗路", "base_stats": {"cname": "夏洛特", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "528", "cname": "澜", "title": "鲨之猎刃", "role": "刺客/战士", "lane": "打野", "base_stats": {"cname": "澜", "hp": [3113, 6632], "atk": [171, 375], "pdef": [93, 372], "mdef": [50, 169], "speed": 390, "aspeed": "+1.0%"}}, {"ename": "537", "cname": "司空震", "title": "雷霆之王", "role": "战士/法师", "lane": "对抗路", "base_stats": {"cname": "司空震", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "155", "cname": "艾琳", "title": "精灵之舞", "role": "射手", "lane": "发育路", "base_stats": {"cname": "艾琳", "hp": [3010, 6000], "atk": [165, 390], "pdef": [85, 335], "mdef": [50, 169], "speed": 360, "aspeed": "+3.0%"}}, {"ename": "538", "cname": "云缨", "title": "燎原之心", "role": "战士/刺客", "lane": "对抗路", "base_stats": {"cname": "云缨", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "540", "cname": "金蝉", "title": "渡世行者", "role": "法师", "lane": "中路", "base_stats": {"cname": "金蝉", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "542", "cname": "暃", "title": "玉城之子", "role": "刺客", "lane": "打野", "base_stats": {"cname": "暃", "hp": [3100, 6600], "atk": [175, 410], "pdef": [95, 370], "mdef": [50, 169], "speed": 390, "aspeed": "+2.0%"}}, {"ename": "534", "cname": "桑启", "title": "萤火之旅", "role": "辅助/法师", "lane": "游走", "base_stats": {"cname": "桑启", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "548", "cname": "戈娅", "title": "沙海飞舟", "role": "射手", "lane": "发育路", "base_stats": {"cname": "亚连", "hp": [3320, 7350], "atk": [175, 380], "pdef": [106, 412], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "521", "cname": "海月", "title": "永夜之心", "role": "法师", "lane": "中路", "base_stats": {"cname": "海月", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "544", "cname": "赵怀真", "title": "自在之心", "role": "战士", "lane": "对抗路", "base_stats": {"cname": "赵怀真", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "545", "cname": "莱西奥", "title": "火鹰船长", "role": "射手", "lane": "发育路", "base_stats": {"cname": "莱西奥", "hp": [3010, 6000], "atk": [165, 390], "pdef": [85, 335], "mdef": [50, 169], "speed": 360, "aspeed": "+3.0%"}}, {"ename": "564", "cname": "姬小满", "title": "武道奇才", "role": "战士", "lane": "对抗路", "base_stats": {"cname": "姬小满", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "514", "cname": "亚连", "title": "追忆之刃", "role": "战士/坦克", "lane": "对抗路", "base_stats": {"cname": "亚连", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "159", "cname": "朵莉亚", "title": "人鱼之歌", "role": "辅助/法师", "lane": "游走", "base_stats": {"cname": "朵莉亚", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "563", "cname": "海诺", "title": "命运之引", "role": "战士/法师", "lane": "对抗路", "base_stats": {"cname": "海诺", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "519", "cname": "敖隐", "title": "凌霄真龙", "role": "射手", "lane": "发育路", "base_stats": {"cname": "敖隐", "hp": [3010, 6000], "atk": [165, 390], "pdef": [85, 335], "mdef": [50, 169], "speed": 360, "aspeed": "+3.0%"}}, {"ename": "517", "cname": "大司命", "title": "肃归之戈", "role": "战士", "lane": "对抗路", "base_stats": {"cname": "大司命", "hp": [3320, 7420], "atk": [172, 388], "pdef": [108, 420], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "582", "cname": "元流之子(法师)", "title": "万妙之心", "role": "法师", "lane": "中路", "base_stats": {"cname": "元流之子(法师)", "hp": [3050, 6200], "atk": [155, 305], "pdef": [88, 340], "mdef": [50, 169], "speed": 360, "aspeed": "+1.0%"}}, {"ename": "581", "cname": "元流之子(坦克)", "title": "止戈之道", "role": "坦克", "lane": "对抗路/游走", "base_stats": {"cname": "元流之子(坦克)", "hp": [3450, 8100], "atk": [160, 340], "pdef": [130, 480], "mdef": [50, 169], "speed": 380, "aspeed": "+1.0%"}}, {"ename": "577", "cname": "少司缘", "title": "聆愿之祝", "role": "辅助", "lane": "游走", "base_stats": {"cname": "少司缘", "hp": [3210, 7150], "atk": [155, 310], "pdef": [115, 415], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "558", "cname": "影", "title": "黯羽东君", "role": "战士", "lane": "对抗路", "base_stats": {"cname": "影", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "177", "cname": "苍", "title": "苍狼末裔", "role": "射手", "lane": "发育路", "base_stats": {"cname": "苍", "hp": [3010, 6000], "atk": [165, 390], "pdef": [85, 335], "mdef": [50, 169], "speed": 360, "aspeed": "+3.0%"}}, {"ename": "550", "cname": "空空儿", "title": "笑面诡手", "role": "辅助", "lane": "游走", "base_stats": {"cname": "空空儿", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "584", "cname": "元流之子(射手)", "title": "沉舟之志", "role": "射手", "lane": "发育路", "base_stats": {"cname": "元流之子(射手)", "hp": [3010, 6000], "atk": [165, 390], "pdef": [85, 335], "mdef": [50, 169], "speed": 360, "aspeed": "+3.0%"}}, {"ename": "151", "cname": "孙权", "title": "定旌之谋", "role": "射手", "lane": "发育路", "base_stats": {"cname": "孙权", "hp": [3010, 6000], "atk": [165, 390], "pdef": [85, 335], "mdef": [50, 169], "speed": 360, "aspeed": "+3.0%"}}, {"ename": "172", "cname": "蚩奼", "title": "五兵之主", "role": "战士", "lane": "对抗路", "base_stats": {"cname": "蚩奼", "hp": [3250, 7300], "atk": [170, 385], "pdef": [105, 410], "mdef": [50, 169], "speed": 380, "aspeed": "+2.0%"}}, {"ename": "585", "cname": "元流之子(辅助)", "title": "守望之诺", "role": "辅助", "lane": "游走", "base_stats": {"cname": "元流之子(辅助)", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "188", "cname": "大禹", "title": "鼎镇山河", "role": "辅助/坦克", "lane": "游走", "base_stats": {"cname": "大禹", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "583", "cname": "元流之子(刺客)", "title": "守望之诺", "role": "辅助", "lane": "游走", "base_stats": {"cname": "元流之子(刺客)", "hp": [3300, 7500], "atk": [150, 320], "pdef": [110, 430], "mdef": [50, 169], "speed": 370, "aspeed": "+1.0%"}}, {"ename": "547", "cname": "卢雅那", "title": "蛇焰使者", "role": "射手", "lane": "发育路", "base_stats": {"cname": "卢雅那", "hp": [3010, 6000], "atk": [165, 390], "pdef": [85, 335], "mdef": [50, 169], "speed": 360, "aspeed": "+3.0%"}}];
@@ -1251,17 +1145,20 @@ function renderItems() {
     const card = document.createElement('div');
     card.className = `item-card ${inSlot ? 'equipped' : ''}`;
     card.onclick = () => addItem(it);
+    // 标准静默原生浮层提示（不遮挡卡片）
+    card.title = `${it.item_name} (${it.total_price || 0} G)
+${it.des1 || ''}
+${it.des2 || ''}`;
 
-    // 绑定苹果原生悬浮放大卡片交互
-    card.onmouseenter = (e) => showPopover(it, e);
-    card.onmousemove = (e) => movePopover(e);
-    card.onmouseleave = () => hidePopover();
-
-    // 格式化卡片内展示的 2 行基础属性（绝不截断任何字）
+    // 格式化卡片内展示（所有的框大小完全一致，统一三段式苹果官网规范排版）
     const lines = (it.des1_lines && it.des1_lines.length > 0) ? it.des1_lines : (it.des1 ? it.des1.split(' ') : ['基础属性']);
-    const statLinesHtml = lines.slice(0, 2).map(l => `<div class="item-stat-line">${l}</div>`).join('');
-    const hasMore = lines.length > 2 || (it.des2 && it.des2.trim().length > 0);
-    const moreTag = hasMore ? `<div class="item-more-badge">⚡ 悬停放大查看完整被动</div>` : '';
+    const line1 = lines[0] || '基础属性';
+    const line2 = lines.slice(1).join(' · ') || (it.category || '基础件');
+
+    const passiveClean = (it.des2 || '').replace(/唯一被动[：:-]/g, '').trim();
+    const passivePillHtml = passiveClean 
+      ? `<div class="item-passive-pill" title="${it.des2}">⚡ ${passiveClean}</div>` 
+      : `<div class="item-passive-pill pill-subtle">${it.category || '基础装备'}</div>`;
 
     card.innerHTML = `
       <span class="item-equipped-badge">已装配</span>
@@ -1273,73 +1170,13 @@ function renderItems() {
         </div>
       </div>
       <div class="item-body">
-        ${statLinesHtml}
-        ${moreTag}
+        <div class="item-stat-line item-stat-primary">${line1}</div>
+        <div class="item-stat-line">${line2}</div>
       </div>
+      ${passivePillHtml}
     `;
     container.appendChild(card);
   });
-}
-
-// 苹果原生悬浮放大详情浮窗逻辑
-function showPopover(it, e) {
-  const pop = document.getElementById('appleItemPopover');
-  if (!pop) return;
-
-  const recipes = RECIPES_MAP[it.item_name] || [];
-  const recipeHtml = recipes.length > 0 ? `<div class="popover-recipe-box">🔨 合成小件：${recipes.join(' + ')}</div>` : '';
-  
-  const rawLines = (it.des1_lines && it.des1_lines.length > 0) ? it.des1_lines : [it.des1 || '基础属性'];
-  const statsHtml = rawLines.map(line => 
-    `<div class="popover-stat-item"><span class="popover-stat-bullet"></span><span>${line}</span></div>`
-  ).join('');
-
-  const passiveHtml = (it.des2 && it.des2.trim()) ? 
-    `<div class="popover-passive-box">⚡ ${it.des2}</div>` : '';
-
-  pop.innerHTML = `
-    <div class="popover-header">
-      <img class="popover-icon" src="https://game.gtimg.cn/images/yxzj/img201606/itemimg/${it.item_id}.jpg" onerror="this.style.display='none'">
-      <div class="popover-meta">
-        <div class="popover-name">${it.item_name}</div>
-        <div class="popover-tags">
-          <span class="popover-badge-gold">${it.total_price || 0} G</span>
-          <span class="popover-badge-cat">${it.category || '装备'}</span>
-        </div>
-      </div>
-    </div>
-    <div class="popover-stats-list">${statsHtml}</div>
-    ${passiveHtml}
-    ${recipeHtml}
-  `;
-
-  movePopover(e);
-  pop.classList.add('visible');
-}
-
-function movePopover(e) {
-  const pop = document.getElementById('appleItemPopover');
-  if (!pop) return;
-  const popW = 320;
-  const popH = pop.offsetHeight || 220;
-  let x = e.clientX + 16;
-  let y = e.clientY - 20;
-
-  if (x + popW > window.innerWidth - 12) {
-    x = e.clientX - popW - 16;
-  }
-  if (y + popH > window.innerHeight - 12) {
-    y = window.innerHeight - popH - 12;
-  }
-  if (y < 12) y = 12;
-
-  pop.style.left = `${x}px`;
-  pop.style.top = `${y}px`;
-}
-
-function hidePopover() {
-  const pop = document.getElementById('appleItemPopover');
-  if (pop) pop.classList.remove('visible');
 }
 
 function renderSlots() {
