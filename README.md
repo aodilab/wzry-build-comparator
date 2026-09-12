@@ -4,6 +4,8 @@
 
 从王者荣耀官方接口实时采集、清洗并拓扑关联全量英雄、装备合成路径、铭文搭配及最新赛季战场运营机制，生成高保真、零幻觉的 Markdown 知识库。
 
+> 🌐 **在线配装沙盒（免安装，浏览器直开）**：[https://13253374290.github.io/wzry-knowledge-base/](https://13253374290.github.io/wzry-knowledge-base/)
+
 ---
 
 ## 🚀 快速上手
