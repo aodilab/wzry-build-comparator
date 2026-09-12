@@ -1,10 +1,12 @@
 # 王者荣耀全维度结构化知识库 (Honor of Kings Knowledge Base Pipeline)
 
-本项目是专为 **Google Gemini NotebookLM** 及大模型 RAG（检索增强生成）设计的**王者荣耀结构化知识库工程**。
+本项目是专为 **Kimi、DeepSeek、豆包、腾讯元宝** 以及 **Google Gemini NotebookLM** 等大模型 RAG（检索增强生成）设计的**王者荣耀全维度结构化知识库工程**。
 
 从王者荣耀官方接口实时采集、清洗并拓扑关联全量英雄、装备合成路径、铭文搭配及最新赛季战场运营机制，生成高保真、零幻觉的 Markdown 知识库。
 
-> 🌐 **在线配装沙盒（免安装，浏览器直开）**：[https://13253374290.github.io/wzry-knowledge-base/](https://13253374290.github.io/wzry-knowledge-base/)
+> 📱 **官方配套微信小程序【王者出装箱】**：微信搜索「**王者出装箱**」即可在手机端随时畅享六神装沙盒演练与 Lv15 满级属性实时演算！  
+> 🌐 **Web 在线配装沙盒（免安装，浏览器直开）**：[https://13253374290.github.io/wzry-knowledge-base/](https://13253374290.github.io/wzry-knowledge-base/)
+
 
 ---
 

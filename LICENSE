@@ -1,21 +1,13 @@
-MIT License
+MIT License & Creative Commons Non-Commercial (CC-BY-NC 4.0)
 
 Copyright (c) 2025-2026 13253374290
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+1. 【代码部分 Code License】：
+遵循 MIT 开源许可协议。任何人均可自由学习、修改和运行相关构建流水线源码。
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+2. 【数据与交付物部分 Dataset License (CC-BY-NC 4.0)】：
+本项目 `output/` 目录下生成的所有结构化 Markdown 知识库与数据资产，采用「署名-非商业性使用 4.0 国际许可协议 (CC BY-NC 4.0)」保护：
+- 允许个人研究、学术交流与免费非商业体验；
+- 严禁任何个人、机构或二道贩子未经作者明确书面授权，将本项目知识库内容转录、打包并上架至闲鱼、淘宝、拼多多等电商平台进行商业倒卖与付费牟利。
+- 一经发现侵权，作者将依法向各大电商平台知识产权保护中心（如阿里知产、闲鱼维权平台）提交原创权属证明并追究法律责任。
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
