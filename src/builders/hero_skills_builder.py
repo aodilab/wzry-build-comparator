@@ -11,7 +11,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from config.settings import OUTPUT_DIR, DOC_HERO_SKILLS_NAME, ROLE_MAP
-from config.patches import DASIMING_HERO_PATCH
+from config.patches import DASIMING_HERO_PATCH, YANGJIAN_HERO_PATCH
 from config.hero_base_stats import get_hero_base_stats
 from src.core.http import fetch_html
 from src.core.cleaner import clean_plain_text
@@ -72,6 +72,9 @@ def fetch_single_hero_skills(hero):
             
         if cname == "大司命" and not skills_list:
             skills_list = DASIMING_HERO_PATCH["skills"]
+        elif cname == "杨戬":
+            # 官方 178.shtml 页面长期未同步法天象地重做，受控补齐法天象地变身机制与最新数值
+            skills_list = YANGJIAN_HERO_PATCH["skills"]
 
         base_stats = get_hero_base_stats(ename, cname, role_str)
 
