@@ -89,6 +89,6 @@ Honor of Kings/
 
 <div align="center">
   <img src="assets/sponsor_wechat.jpg" width="220" style="border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.15);" alt="微信赞助收款码">
-  <p style="font-size: 13px; color: #666; margin-top: 8px;"><strong>微信扫码支持（开发者：孙奥迪）</strong></p>
+  <p style="font-size: 13px; color: #666; margin-top: 8px;"><strong>微信扫码支持（开发者：Aodi）</strong></p>
 </div>
 
