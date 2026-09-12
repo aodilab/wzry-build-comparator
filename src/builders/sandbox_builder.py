@@ -84,7 +84,12 @@ def build_sandbox_html(output_file=None):
     with open(target, "w", encoding="utf-8") as f:
         f.write(html_content)
 
-    print(f"【成功】王者荣耀六神装配装沙盒单文件已生成：'{target}'（可直接双击用浏览器打开）")
+    # 同步输出一份到 index.html，供 GitHub Pages 直接在线托管
+    index_target = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "index.html")
+    with open(index_target, "w", encoding="utf-8") as f:
+        f.write(html_content)
+
+    print(f"【成功】王者荣耀六神装配装沙盒单文件已生成：'{target}' 与 '{index_target}'（支持本地离线与 GitHub Pages 在线部署）")
     return target
 
 if __name__ == "__main__":
