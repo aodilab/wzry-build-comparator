@@ -523,7 +523,9 @@ header {
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   box-shadow: var(--card-shadow);
-  min-height: 98px;
+  height: auto;
+  min-height: 120px;
+  box-sizing: border-box;
 }
 
 .item-card:hover {
@@ -583,15 +585,17 @@ header {
 }
 
 .item-desc {
-  font-size: 11px;
+  font-size: 11.5px;
   color: var(--text-secondary);
   margin-top: 8px;
-  line-height: 1.45;
+  line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
 }
 
 .item-equipped-badge {
@@ -711,16 +715,16 @@ header {
 .health-metrics-scroll {
   flex: 1;
   overflow-y: auto;
-  padding: 14px 16px;
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .metric-section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .metric-section-title {
@@ -738,7 +742,7 @@ header {
   background: var(--apple-card);
   border: 1px solid var(--apple-border);
   border-radius: 12px;
-  padding: 10px 14px;
+  padding: 8px 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1118,6 +1122,7 @@ function renderItems() {
     const inSlot = currentSlots.some(s => s.item_name === it.item_name);
     const card = document.createElement('div');
     card.className = `item-card ${inSlot ? 'equipped' : ''}`;
+    card.title = `${it.item_name} (${it.total_price || 0} G)\n${it.des1 || '基础装备'}`;
     card.onclick = () => addItem(it);
     card.innerHTML = `
       <span class="item-equipped-badge">已装配</span>
