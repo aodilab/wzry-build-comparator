@@ -584,18 +584,30 @@ header {
   margin-top: 3px;
 }
 
-.item-desc {
+.item-body {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.item-stat-line {
   font-size: 11.5px;
   color: var(--text-secondary);
-  margin-top: 8px;
-  line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
+  line-height: 1.4;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  word-break: break-all;
+}
+
+.item-more-badge {
+  font-size: 10px;
+  color: var(--color-blue);
+  margin-top: 2px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 3px;
 }
 
 .item-equipped-badge {
@@ -613,6 +625,126 @@ header {
 
 .item-card.equipped .item-equipped-badge {
   display: block;
+}
+
+/* ==========================================================================
+   苹果原生悬浮放大详情卡片 (Apple HIG Popover)
+   ========================================================================== */
+.apple-popover {
+  position: fixed;
+  z-index: 9999;
+  width: 310px;
+  background: var(--apple-panel);
+  border: 1px solid var(--apple-border-hover);
+  border-radius: 18px;
+  padding: 16px;
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.94) translateY(6px);
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.apple-popover.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.popover-header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.popover-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  border: 1.5px solid var(--apple-border);
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.popover-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.popover-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.popover-tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+  align-items: center;
+}
+
+.popover-badge-gold {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-amber);
+  background: var(--color-amber-bg);
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+.popover-badge-cat {
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: var(--apple-subcard);
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+.popover-stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.popover-stat-item {
+  font-size: 12px;
+  color: var(--text-primary);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.popover-stat-bullet {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-blue);
+  flex-shrink: 0;
+}
+
+.popover-passive-box {
+  background: var(--color-amber-bg);
+  border: 1px solid rgba(217, 119, 6, 0.2);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 11.5px;
+  color: var(--color-amber);
+  line-height: 1.45;
+}
+
+.popover-recipe-box {
+  background: var(--apple-subcard);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: var(--text-secondary);
 }
 
 /* ==========================================================================
@@ -1009,6 +1141,9 @@ header {
 
 </main>
 
+<!-- 苹果原生悬浮放大详情浮窗 (Apple Popover) -->
+<div id="appleItemPopover" class="apple-popover"></div>
+
 <script>
 // === 静态内嵌数据 ===
 const HEROES_DATA = __HEROES_DATA_PLACEHOLDER__;
@@ -1122,8 +1257,19 @@ function renderItems() {
     const inSlot = currentSlots.some(s => s.item_name === it.item_name);
     const card = document.createElement('div');
     card.className = `item-card ${inSlot ? 'equipped' : ''}`;
-    card.title = `${it.item_name} (${it.total_price || 0} G)\n${it.des1 || '基础装备'}`;
     card.onclick = () => addItem(it);
+
+    // 绑定苹果原生悬浮放大卡片交互
+    card.onmouseenter = (e) => showPopover(it, e);
+    card.onmousemove = (e) => movePopover(e);
+    card.onmouseleave = () => hidePopover();
+
+    // 格式化卡片内展示的 2 行基础属性（绝不截断任何字）
+    const lines = (it.des1_lines && it.des1_lines.length > 0) ? it.des1_lines : (it.des1 ? it.des1.split(' ') : ['基础属性']);
+    const statLinesHtml = lines.slice(0, 2).map(l => `<div class="item-stat-line">${l}</div>`).join('');
+    const hasMore = lines.length > 2 || (it.des2 && it.des2.trim().length > 0);
+    const moreTag = hasMore ? `<div class="item-more-badge">⚡ 悬停放大查看完整被动</div>` : '';
+
     card.innerHTML = `
       <span class="item-equipped-badge">已装配</span>
       <div class="item-top">
@@ -1133,10 +1279,74 @@ function renderItems() {
           <div class="item-price-pill">${it.total_price || 0} G</div>
         </div>
       </div>
-      <div class="item-desc">${it.des1 || '基础装备'}</div>
+      <div class="item-body">
+        ${statLinesHtml}
+        ${moreTag}
+      </div>
     `;
     container.appendChild(card);
   });
+}
+
+// 苹果原生悬浮放大详情浮窗逻辑
+function showPopover(it, e) {
+  const pop = document.getElementById('appleItemPopover');
+  if (!pop) return;
+
+  const recipes = RECIPES_MAP[it.item_name] || [];
+  const recipeHtml = recipes.length > 0 ? `<div class="popover-recipe-box">🔨 合成小件：${recipes.join(' + ')}</div>` : '';
+  
+  const rawLines = (it.des1_lines && it.des1_lines.length > 0) ? it.des1_lines : [it.des1 || '基础属性'];
+  const statsHtml = rawLines.map(line => 
+    `<div class="popover-stat-item"><span class="popover-stat-bullet"></span><span>${line}</span></div>`
+  ).join('');
+
+  const passiveHtml = (it.des2 && it.des2.trim()) ? 
+    `<div class="popover-passive-box">⚡ ${it.des2}</div>` : '';
+
+  pop.innerHTML = `
+    <div class="popover-header">
+      <img class="popover-icon" src="https://game.gtimg.cn/images/yxzj/img201606/itemimg/${it.item_id}.jpg" onerror="this.style.display='none'">
+      <div class="popover-meta">
+        <div class="popover-name">${it.item_name}</div>
+        <div class="popover-tags">
+          <span class="popover-badge-gold">${it.total_price || 0} G</span>
+          <span class="popover-badge-cat">${it.category || '装备'}</span>
+        </div>
+      </div>
+    </div>
+    <div class="popover-stats-list">${statsHtml}</div>
+    ${passiveHtml}
+    ${recipeHtml}
+  `;
+
+  movePopover(e);
+  pop.classList.add('visible');
+}
+
+function movePopover(e) {
+  const pop = document.getElementById('appleItemPopover');
+  if (!pop) return;
+  const popW = 320;
+  const popH = pop.offsetHeight || 220;
+  let x = e.clientX + 16;
+  let y = e.clientY - 20;
+
+  if (x + popW > window.innerWidth - 12) {
+    x = e.clientX - popW - 16;
+  }
+  if (y + popH > window.innerHeight - 12) {
+    y = window.innerHeight - popH - 12;
+  }
+  if (y < 12) y = 12;
+
+  pop.style.left = `${x}px`;
+  pop.style.top = `${y}px`;
+}
+
+function hidePopover() {
+  const pop = document.getElementById('appleItemPopover');
+  if (pop) pop.classList.remove('visible');
 }
 
 function renderSlots() {

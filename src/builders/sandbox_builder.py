@@ -37,13 +37,22 @@ def build_sandbox_html(output_file=None):
         elif t == 5: cat = "打野装备"
         elif t == 7: cat = "游走装备"
 
+        # 提取结构化属性行与唯一被动
+        raw_des1 = it.get("des1", "") or ""
+        raw_des2 = it.get("des2", "") or ""
+        des1_lines = [re.sub(r'</?[^>]+>', '', line).strip() for line in re.split(r'<br\s*/?>|</?p>', raw_des1) if re.sub(r'</?[^>]+>', '', line).strip()]
+        des2_lines = [re.sub(r'</?[^>]+>', '', line).strip() for line in re.split(r'<br\s*/?>|</?p>', raw_des2) if re.sub(r'</?[^>]+>', '', line).strip()]
+
         clean_name = stats.get("name", it.get("item_name"))
         processed_items.append({
             "item_id": it.get("item_id"),
             "item_name": clean_name,
             "category": cat,
             "total_price": it.get("total_price", 0),
-            "des1": re.sub(r'</?[^>]+>', ' ', it.get("des1", "")).strip(),
+            "des1": " ".join(des1_lines),
+            "des2": " ".join(des2_lines),
+            "des1_lines": des1_lines,
+            "des2_lines": des2_lines,
             "stats": stats
         })
 
