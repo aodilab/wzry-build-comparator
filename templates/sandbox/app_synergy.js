@@ -167,49 +167,60 @@ function renderSynergyContent() {
     `;
   });
 
+  const effNames = effItems.map(it => it.item_name);
+  const hasYellowShield = effNames.some(n => ['怒龙剑盾', '熔炼之心'].includes(n));
+  const hasPhoenix = effNames.includes('不死鸟之眼');
+  const hasBaZhe = effNames.includes('霸者重装');
+  const hasBaoLie = effNames.includes('暴烈之甲');
+  const hasBloodRage = effNames.some(n => ['血魔之怒', '侵掠·怒魂'].includes(n));
+  const hasRedLotus = effNames.some(n => ['红莲斗篷', '巨人之握'].includes(n));
+  const hasIceHeart = effNames.includes('极寒风暴');
+
   // 3. 动态装备被动联动实战深度剖析 (Apple HIG 矢量图标规范)
   const synergyItems = [];
-
-  // A. 强击被动
-  if (hasSpellblade) {
-    synergyItems.push({
-      icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>',
-      title: '强击被动 · 连招强化与减速留人',
-      item: spellbladeItem,
-      desc: `核心装备【${spellbladeItem}】的【强击】被动与【${currentHero.cname}】的技能机制天然契合！在释放任意技能后 5 秒内，下一次普攻将附带额外强击爆发伤害，并附带强力减速。实战建议在释放技能后务必穿插一次强化普攻，实现伤害最大化与无缝黏人！`
-    });
-  }
-
-  // B. 穿透破甲
-  if (totalPhysPierce > 50) {
-    synergyItems.push({
-      icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>',
-      title: '物理穿透乘区 · 无视抗性破甲爆发',
-      item: `总物理穿透 ${Math.round(totalPhysPierce)} 点`,
-      desc: `当前出装与铭文合计提供 ${Math.round(totalPhysPierce)} 点固定物理穿透！对局中敌方射手与法师在满级时的基础物理护甲仅为 350 点左右，此套穿透可直接削减敌方大半护甲，使【${currentHero.cname}】的技能物理伤害无限逼近真实伤害，斩杀脆皮犹如切菜！`
-    });
-  } else if (totalMagicPierce > 50) {
-    synergyItems.push({
-      icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.26 12 2"></polygon></svg>',
-      title: '法术穿透乘区 · 全额贯穿魔法抗性',
-      item: `总法术穿透 ${Math.round(totalMagicPierce)} 点`,
-      desc: `当前配置拥有 ${Math.round(totalMagicPierce)} 点高额法穿，让敌方魔抗形同虚设，全面激发英雄全套技能与法球的最高 AP 爆发！`
-    });
-  }
-
-  // C. 纯净苍穹免伤
-  if (hasDamageReduce) {
-    synergyItems.push({
-      icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>',
-      title: '纯净苍穹 · 40%高额免伤与受控解控',
-      item: '纯净苍穹',
-      desc: `纯净苍穹【驱散】主动技能可在受到控制状态下释放，获得 40% 极高免伤并减速周围敌人，同时首个技能命中敌人对其造成残废减速与自身伤害降低 20%。进场打团或被集火时开启，可硬抗敌方一整套爆发伤害完成逆风反打！`
-    });
-  }
-
-  // D. 不死鸟残血回血放大
   const hasSkillHeal = skills.some(s => (s.tags || []).includes('技能回血'));
-  if (hasHealBoost) {
+
+  // A. 【三重永动质变：怒龙剑盾 (黄盾) × 不死鸟之眼 × 英雄技能机制】
+  if (hasYellowShield && hasPhoenix) {
+    if (currentHero.cname === '杨戬') {
+      synergyItems.push({
+        icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>',
+        title: '三重永动狂潮 · 黄盾血量重击 × 不死鸟血统 × 大招激光吸血',
+        item: '怒龙剑盾 + 不死鸟之眼',
+        desc: `【杨戬】最核心实战质变出装！黄盾(+1100生命)+不死鸟(+1200生命)构筑万血大血包：①【平A真伤+重击混伤】：杨戬2技能命中后获得5秒真伤平A，黄盾使每次平A额外附带最大生命百分比物理重击并回复生命，双重混伤攻防兼备，更彻底解决杨戬缺乏AOE清野清兵缓慢的发育硬伤；②【医学奇迹双重回血】：不死鸟【血统】在血量低于50%时提供高达30%~60%全源治疗翻倍！残血开出3技能大招三道激光（基础转化50%伤害为生命），配合黄盾普攻回血，瞬间从濒死血线爆拉至满血；③【控血必中眩晕】：完美契合2技能“自身血量百分比低于目标必定范围眩晕”机制，可故意控残血进场打出群体眩晕，反手大招+黄盾平A瞬间满血反杀！`
+      });
+    } else if (hasSkillHeal) {
+      synergyItems.push({
+        icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>',
+        title: '双向续航永动机 · 黄盾生命回血 × 不死鸟残血治疗翻倍',
+        item: '怒龙剑盾 + 不死鸟之眼',
+        desc: `【怒龙剑盾】提供巨量生命值使每次普攻附带生命百分比回复，与【不死鸟之眼】的【血统】被动（血量低于50%受治疗翻倍30%~60%）和【${currentHero.cname}】的技能回血形成三重复合增益！残血时普攻回血与技能回血双重爆发，血条越残回血越猛，极具残血反打与团战拉扯统治力！`
+      });
+    } else {
+      synergyItems.push({
+        icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>',
+        title: '重装攻防永动 · 黄盾生命重击 × 不死鸟法抗屏障',
+        item: '怒龙剑盾 + 不死鸟之眼',
+        desc: `双防与生命值全维度拉升，黄盾提供平A最大生命物理重击与续航，不死鸟构筑高额法术屏障并放大残血回复，形成攻守兼备的肉装作战矩阵。`
+      });
+    }
+  } else if (hasYellowShield) {
+    if (currentHero.cname === '杨戬') {
+      synergyItems.push({
+        icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.26 12 2"></polygon></svg>',
+        title: '怒龙剑盾 (黄盾) · 真实伤害与重击双重普攻质变',
+        item: '怒龙剑盾',
+        desc: `杨戬 2技能【虚妄破灭】命中后获得 5秒真实伤害普攻，与黄盾【神力/重击】形成双重混伤！每次普攻附加最大生命百分比物理重击并回复生命，真伤刀刀穿透护甲，重击大幅提高清线与刷野效率，彻底扫清杨戬对线被压线、清线慢的发育痛点！`
+      });
+    } else {
+      synergyItems.push({
+        icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.26 12 2"></polygon></svg>',
+        title: '怒龙剑盾 (黄盾) · 普攻生命重击与快速发育',
+        item: '怒龙剑盾',
+        desc: `【重击】被动让【${currentHero.cname}】的普攻附带最大生命值百分比物理伤害，对兵线与野怪清剿效率质变提升，并在近身肉搏中提供持续普攻回复。`
+      });
+    }
+  } else if (hasPhoenix) {
     if (hasSkillHeal) {
       synergyItems.push({
         icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>',
@@ -227,7 +238,94 @@ function renderSynergyContent() {
     }
   }
 
-  // E. 冷却周转联动
+  // B. 暴烈之甲
+  if (hasBaoLie) {
+    synergyItems.push({
+      icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>',
+      title: '暴烈之甲 · 挨打叠层最高 10%全增伤与移速',
+      item: '暴烈之甲',
+      desc: `受到伤害时叠加【无畏】印记（最高 5层增加 10%伤害与 10%移速）。在近战肉搏与抗集火中轻松叠满，不仅使【${currentHero.cname}】的真实伤害与技能爆发直接提升 10%，更通过 10% 额外移速大幅强化残血拉扯与追击黏人！`
+    });
+  }
+
+  // C. 强击被动
+  if (hasSpellblade) {
+    synergyItems.push({
+      icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>',
+      title: '强击被动 · 连招强化与减速留人',
+      item: spellbladeItem,
+      desc: `核心装备【${spellbladeItem}】的【强击】被动与【${currentHero.cname}】的技能机制天然契合！在释放任意技能后 5 秒内，下一次普攻将附带额外强击爆发伤害，并附带强力减速。实战建议在释放技能后务必穿插一次强化普攻，实现伤害最大化与无缝黏人！`
+    });
+  }
+
+  // D. 穿透破甲
+  if (totalPhysPierce > 50) {
+    synergyItems.push({
+      icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>',
+      title: '物理穿透乘区 · 无视抗性破甲爆发',
+      item: `总物理穿透 ${Math.round(totalPhysPierce)} 点`,
+      desc: `当前出装与铭文合计提供 ${Math.round(totalPhysPierce)} 点固定物理穿透！对局中敌方射手与法师在满级时的基础物理护甲仅为 350 点左右，此套穿透可直接削减敌方大半护甲，使【${currentHero.cname}】的技能物理伤害无限逼近真实伤害，斩杀脆皮犹如切菜！`
+    });
+  } else if (totalMagicPierce > 50) {
+    synergyItems.push({
+      icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.26 12 2"></polygon></svg>',
+      title: '法术穿透乘区 · 全额贯穿魔法抗性',
+      item: `总法术穿透 ${Math.round(totalMagicPierce)} 点`,
+      desc: `当前配置拥有 ${Math.round(totalMagicPierce)} 点高额法穿，让敌方魔抗形同虚设，全面激发英雄全套技能与法球的最高 AP 爆发！`
+    });
+  }
+
+  // E. 纯净苍穹免伤
+  if (hasDamageReduce) {
+    synergyItems.push({
+      icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>',
+      title: '纯净苍穹 · 40%高额免伤与受控解控',
+      item: '纯净苍穹',
+      desc: `纯净苍穹【驱散】主动技能可在受到控制状态下释放，获得 40% 极高免伤并减速周围敌人，同时首个技能命中敌人对其造成残废减速与自身伤害降低 20%。进场打团或被集火时开启，可硬抗敌方一整套爆发伤害完成逆风反打！`
+    });
+  }
+
+  // F. 血魔之怒 / 侵掠·怒魂
+  if (hasBloodRage) {
+    synergyItems.push({
+      icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>',
+      title: '血魔之怒 · 40%最大生命绝境护盾与血怒加成',
+      item: '血魔之怒',
+      desc: `生命低于 50% 时普攻附带最大生命物理伤害翻倍；主动释放消耗 30%当前生命换取高达 40%最大生命的巨额护盾。配合不死鸟与技能回血：开出血魔护盾抵挡第一波致命爆发，在护盾掩护下安心反打并借助回血机制将血量吸满！`
+    });
+  }
+
+  // G. 红莲斗篷 / 巨人之握
+  if (hasRedLotus) {
+    synergyItems.push({
+      icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>',
+      title: '红莲斗篷/肉刀 · 范围灼烧与 35%重伤压制',
+      item: '红莲斗篷 / 巨人之握',
+      desc: `贴身肉搏时每秒对周围敌人造成基于最大生命值的范围法术伤害，并附带 35% 减疗重伤效果。既强化持续近战输出，又精准克制敌方回血续航英雄！`
+    });
+  }
+
+  // H. 霸者重装
+  if (hasBaZhe) {
+    synergyItems.push({
+      icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>',
+      title: '霸者重装 · +2000生命血池支撑与永动机脱战回血',
+      item: '霸者重装',
+      desc: `提供全局最高额度的 +2000 最大生命与双抗，脱战后每秒百分比回血彻底告别回城，使【${currentHero.cname}】成为无限赖线压制野区的战场永动机。`
+    });
+  }
+
+  // I. 极寒风暴
+  if (hasIceHeart) {
+    synergyItems.push({
+      icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>',
+      title: '极寒风暴 (冰心) · 20%高冷缩与范围降攻速减速',
+      item: '极寒风暴',
+      desc: `直接提供 +20% 冷却缩减拉满技能周转，受到单次伤害超 10% 触发范围寒冰冲击，降低敌方 30% 攻速与 30% 移速，强力克制后排射手与刺客贴身普攻！`
+    });
+  }
+
+  // J. 冷却周转联动
   if (cappedCdr >= 30) {
     synergyItems.push({
       icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>',
@@ -237,7 +335,7 @@ function renderSynergyContent() {
     });
   }
 
-  // F. 普攻法球
+  // K. 普攻法球
   if (hasOnHit) {
     synergyItems.push({
       icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>',
@@ -274,7 +372,8 @@ function renderSynergyContent() {
   });
 
   // 4. 契合度评分与连招打法
-  const score = Math.min(85 + effItems.length * 2 + (hasSpellblade ? 3 : 0) + (hasDamageReduce ? 2 : 0) + (cappedCdr >= 30 ? 2 : 0), 99);
+  const isSustainGod = (currentHero.cname === '杨戬' || hasSkillHeal) && hasYellowShield && hasPhoenix;
+  const score = Math.min(88 + effItems.length * 2 + (isSustainGod ? 5 : 0) + (hasSpellblade ? 2 : 0) + (hasDamageReduce ? 2 : 0) + (cappedCdr >= 30 ? 2 : 0), 99);
   
   // 连招生成逻辑
   let comboSteps = [];
@@ -282,14 +381,34 @@ function renderSynergyContent() {
   const hasCc = skills.some(s => (s.tags || []).includes('硬控'));
 
   if (currentHero.cname === '杨戬') {
-    comboSteps = [
-      '1技能哮天犬远程预判标记目标 (施加斩杀印记)',
-      '1技能二段飞狗突进接近敌人',
-      '2技能近身真实伤害横扫，造成 0.75s 范围眩晕',
-      hasSpellblade ? '立刻穿插普攻打出【强击】100%减速与高额物理伤害' : '立刻接普攻打出真实伤害',
-      '3技能大招三道激光扫射压低血线并回复自身生命',
-      '刷新或二段 1技能进行残血百分比斩杀收割'
-    ];
+    if (hasYellowShield && hasPhoenix) {
+      comboSteps = [
+        '1技能哮天犬远程预判标记目标 (施加已损生命 16% 斩杀印记)',
+        '1技能二段飞狗突进接近敌人身旁',
+        '故意控半血/残血释放 2技能横扫，必定触发 0.75s 范围眩晕并激活 5秒真实伤害普攻',
+        '贴脸连续平A打出【黄盾·重击】最大生命百分比物理伤害与真实伤害双重混伤，并触发普攻回血',
+        '在血线压低至 50% 以下时开启 3技能大招三道激光，触发【不死鸟之眼·血统】30%~60% 巨量治疗翻倍，瞬间把血条吸满',
+        '刷新或二段 1技能对残血目标造成致命百分比斩杀收割！'
+      ];
+    } else if (hasYellowShield) {
+      comboSteps = [
+        '1技能哮天犬远程预判标记目标 (施加斩杀印记)',
+        '1技能二段飞狗突进接近敌人',
+        '2技能近身真实伤害横扫，造成 0.75s 范围眩晕',
+        '贴脸打出【黄盾·重击】最大生命额外物理伤害与真实伤害，并触发平A回血',
+        '3技能大招三道激光压低敌方血线并回复自身生命',
+        '刷新或二段 1技能残血斩杀收割'
+      ];
+    } else {
+      comboSteps = [
+        '1技能哮天犬远程预判标记目标 (施加斩杀印记)',
+        '1技能二段飞狗突进接近敌人',
+        '2技能近身真实伤害横扫，造成 0.75s 范围眩晕',
+        hasSpellblade ? '立刻穿插普攻打出【强击】100%减速与高额物理伤害' : '立刻接普攻打出真实伤害',
+        '3技能大招三道激光扫射压低血线并回复自身生命',
+        '刷新或二段 1技能进行残血百分比斩杀收割'
+      ];
+    }
   } else if (currentHero.cname === '赵云') {
     comboSteps = [
       '3技能大招跃空雷霆击飞目标，造成感电标记',
@@ -318,7 +437,7 @@ function renderSynergyContent() {
     comboSteps = [
       hasDash ? '1技能或突进技能接近目标起手' : '远程技能探草与消耗压低血线',
       hasCc ? '释放核心控制技能控制敌人，限制走位' : '释放输出技能打出第一波爆发',
-      hasSpellblade ? '技能间隙穿插普通攻击，无缝触发【强击】伤害' : '走位穿插普攻补充伤害',
+      hasYellowShield ? '穿插普通攻击打出【黄盾·重击】最大生命百分比伤害与续航' : (hasSpellblade ? '技能间隙穿插普通攻击，无缝触发【强击】伤害' : '走位穿插普攻补充伤害'),
       '根据战场局势开启免伤/位移技能拉扯规避致命伤害',
       '释放大招锁定敌方核心进行集火或收割'
     ];
@@ -334,6 +453,11 @@ function renderSynergyContent() {
     `;
   });
 
+  const sustainBarPct = isSustainGod ? 100 : (hasPhoenix && (hasSkillHeal || currentHero.cname === '杨戬') ? 96 : (hasYellowShield ? 88 : 80));
+  const defenseBarPct = (hasYellowShield && hasPhoenix) ? 96 : (hasDamageReduce || hasBloodRage ? 94 : 88);
+  const burstBarPct = (totalPhysPierce > 50 || hasSpellblade) ? 95 : 88;
+  const kitingBarPct = (hasYellowShield || hasSpellblade || hasBaoLie) ? 92 : 85;
+
   const bottomGridHtml = `
     <div class="synergy-bottom-grid">
       <div class="synergy-rating-card">
@@ -344,14 +468,14 @@ function renderSynergyContent() {
         <div class="synergy-score-circle">
           <span class="synergy-score-big">${score}</span>
           <div>
-            <div style="font-size: 14px; font-weight: 700; color: var(--color-green);">S+ 卓越级战术协同</div>
+            <div style="font-size: 14px; font-weight: 700; color: var(--color-green);">${score >= 95 ? 'S+ 卓越级战术协同' : 'S 强力战术协同'}</div>
             <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">被动特效与技能动作链契合度极高</div>
           </div>
         </div>
         <div class="synergy-radar-bars">
           <div class="synergy-radar-row">
             <span>爆发斩杀 (Burst)</span>
-            <div class="synergy-radar-track"><div class="synergy-radar-fill" style="width: 92%;"></div></div>
+            <div class="synergy-radar-track"><div class="synergy-radar-fill" style="width: ${burstBarPct}%;"></div></div>
           </div>
           <div class="synergy-radar-row">
             <span>技能周转 (CDR)</span>
@@ -359,15 +483,15 @@ function renderSynergyContent() {
           </div>
           <div class="synergy-radar-row">
             <span>持续拉扯 (Kiting)</span>
-            <div class="synergy-radar-track"><div class="synergy-radar-fill" style="width: 85%;"></div></div>
+            <div class="synergy-radar-track"><div class="synergy-radar-fill" style="width: ${kitingBarPct}%;"></div></div>
           </div>
           <div class="synergy-radar-row">
             <span>生存容错 (Defense)</span>
-            <div class="synergy-radar-track"><div class="synergy-radar-fill" style="width: 88%;"></div></div>
+            <div class="synergy-radar-track"><div class="synergy-radar-fill" style="width: ${defenseBarPct}%;"></div></div>
           </div>
           <div class="synergy-radar-row">
             <span>续航反打 (Sustain)</span>
-            <div class="synergy-radar-track"><div class="synergy-radar-fill" style="width: 90%;"></div></div>
+            <div class="synergy-radar-track"><div class="synergy-radar-fill" style="width: ${sustainBarPct}%;"></div></div>
           </div>
         </div>
       </div>
