@@ -3184,9 +3184,173 @@ function renderSynergyContent() {
     `;
   });
 
-  // 4. 契合度评分与连招打法
+  // 4. 多维度真实契合度评分与动态雷达系统 (拒绝全99分假数值，彻底还原物理实战契合度)
+  const heroRole = currentHero.role || '';
+  const isPhysicalHero = ['战士', '刺客', '射手'].some(r => heroRole.includes(r)) && !['司空震', '芈月'].includes(currentHero.cname);
+  const isMagicHero = heroRole.includes('法师') && !['司空震', '嬴政'].includes(currentHero.cname);
+  const isTankOrSupport = heroRole.includes('坦克') || heroRole.includes('辅助');
+
+  let totalAd = 0, totalAp = 0, totalBonusHp = 0, totalPdef = 0, totalMdef = 0;
+  let totalLifesteal = 0, totalSpellLifesteal = 0, totalCrit = 0, totalPercentSpeed = 0;
+  let tier3Count = 0, tier2Count = 0, tier1Count = 0;
+  let bootsCount = 0;
+
+  effItems.forEach(it => {
+    const st = it.stats || {};
+    totalAd += st.atk || 0;
+    totalAp += st.ap || 0;
+    totalBonusHp += st.hp || 0;
+    totalPdef += st.pdef || 0;
+    totalMdef += st.mdef || 0;
+    totalLifesteal += st.p_lifesteal || 0;
+    totalSpellLifesteal += st.m_lifesteal || 0;
+    totalCrit += st.crit || 0;
+    totalPercentSpeed += st.percent_speed || 0;
+    if (typeof BOOTS_MAP !== 'undefined' && BOOTS_MAP[it.item_name]) bootsCount++;
+
+    const price = it.total_price || 0;
+    if (price >= 1800) tier3Count++;
+    else if (price >= 700) tier2Count++;
+    else tier1Count++;
+  });
+
+  // 检测物法错位、重复大件与唯一被动冲突
+  let wastedApCount = 0;
+  let wastedAdCount = 0;
+  if (isPhysicalHero) {
+    wastedApCount = effItems.filter(it => (it.category === '法术') || (it.stats && it.stats.ap >= 80)).length;
+  }
+  if (isMagicHero) {
+    wastedAdCount = effItems.filter(it => (it.category === '攻击') && ((it.stats && it.stats.atk >= 80) || (it.stats && it.stats.crit >= 15))).length;
+  }
+
+  // 重复装备统计
+  const slotItemNames = currentSlots.map(s => s.item_name);
+  const nameCounts = {};
+  slotItemNames.forEach(n => nameCounts[n] = (nameCounts[n] || 0) + 1);
+  let duplicateItemCount = 0;
+  for (let n in nameCounts) {
+    if (nameCounts[n] > 1) duplicateItemCount += (nameCounts[n] - 1);
+  }
+
+  // 强击唯一被动冲突 (宗师/冰痕/巫术/光辉同时出只能触发一个强击)
+  const spellbladeCount = effItems.filter(it => ['宗师之力', '冰痕之握', '巫术法杖', '光辉之剑'].includes(it.item_name)).length;
+  const hasSpellbladeConflict = spellbladeCount > 1;
+
+  // A. 品阶与成型度分 (0 ~ 30分)
+  const tierScore = (tier3Count * 5) + (tier2Count * 2.5) + (tier1Count * 1);
+  const emptySlotPenalty = Math.max(0, 6 - currentSlots.length) * 4;
+
+  // B. 英雄专属机制与被动高光联动分 (0 ~ 30分)
+  let synergyBonus = 0;
   const isSustainGod = (currentHero.cname === '杨戬' || hasSkillHeal) && hasYellowShield && hasPhoenix;
-  const score = Math.min(88 + effItems.length * 2 + (isSustainGod ? 5 : 0) + (hasSpellblade ? 2 : 0) + (hasDamageReduce ? 2 : 0) + (cappedCdr >= 30 ? 2 : 0), 99);
+
+  if (currentHero.cname === '杨戬') {
+    if (hasYellowShield) synergyBonus += 8;
+    if (hasPhoenix) synergyBonus += 8;
+    if (hasBaoLie) synergyBonus += 4;
+    if (hasDamageReduce) synergyBonus += 4;
+    if (hasSpellblade) synergyBonus += 4;
+    if (totalPhysPierce >= 150) synergyBonus += 4;
+  } else if (currentHero.cname === '赵云') {
+    if (hasSpellblade) synergyBonus += 8;
+    if (totalPhysPierce >= 150) synergyBonus += 8;
+    if (hasDamageReduce) synergyBonus += 5;
+    if (effNames.includes('破军')) synergyBonus += 5;
+  } else if (currentHero.cname === '孙尚香') {
+    if (effNames.includes('宗师之力')) synergyBonus += 8;
+    if (effNames.includes('无尽战刃')) synergyBonus += 8;
+    if (effNames.includes('破晓')) synergyBonus += 8;
+    if (totalCrit >= 40) synergyBonus += 5;
+  } else if (currentHero.cname === '诸葛亮') {
+    if (effNames.includes('博学者之怒')) synergyBonus += 8;
+    if (effNames.includes('噬神之书')) synergyBonus += 8;
+    if (effNames.includes('辉月')) synergyBonus += 6;
+    if (totalMagicPierce >= 150) synergyBonus += 6;
+  } else {
+    if (hasYellowShield && (hasSkillHeal || totalBonusHp >= 2500)) synergyBonus += 7;
+    if (hasPhoenix && (hasSkillHeal || totalLifesteal > 0)) synergyBonus += 7;
+    if (hasSpellblade) synergyBonus += 5;
+    if (hasDamageReduce || hasBloodRage) synergyBonus += 5;
+    if (totalPhysPierce >= 150 || totalMagicPierce >= 150) synergyBonus += 5;
+  }
+  if (cappedCdr >= 30) synergyBonus += 4;
+  synergyBonus = Math.min(30, synergyBonus);
+
+  // C. 攻防维度健康分 (0 ~ 15分)
+  let balanceScore = 10;
+  if (isPhysicalHero) {
+    if (heroRole.includes('战士')) {
+      if (totalBonusHp >= 2000 && (totalAd >= 100 || hasYellowShield)) balanceScore = 15;
+      else if (totalBonusHp === 0 && totalPdef === 0) balanceScore = 5;
+    } else {
+      if (totalAd >= 220 || totalCrit >= 40 || totalPhysPierce >= 150) balanceScore = 15;
+    }
+  } else if (isMagicHero) {
+    if (totalAp >= 450) balanceScore = 15;
+  } else if (isTankOrSupport) {
+    if (totalBonusHp >= 2500 && (totalPdef + totalMdef >= 500)) balanceScore = 15;
+  }
+
+  // D. 惩罚扣分与诊断原因
+  let penalties = 0;
+  const penaltyReasons = [];
+  if (wastedApCount > 0) {
+    penalties += wastedApCount * 15;
+    penaltyReasons.push(`物法错位：物理英雄出了 ${wastedApCount} 件法术装备，法强无法转化有效输出`);
+  }
+  if (wastedAdCount > 0) {
+    penalties += wastedAdCount * 15;
+    penaltyReasons.push(`物法错位：法术英雄出了 ${wastedAdCount} 件物理武器，攻击暴击收益严重浪费`);
+  }
+  if (bootsCount > 1) {
+    penalties += (bootsCount - 1) * 15;
+    penaltyReasons.push(`重复出鞋：装备了 ${bootsCount} 双鞋子，唯一移速被动无法叠加`);
+  }
+  if (duplicateItemCount > 0) {
+    penalties += duplicateItemCount * 12;
+    penaltyReasons.push(`大件重复：装配了 ${duplicateItemCount} 件同名大件，唯一被动全部被浪费`);
+  }
+  if (hasSpellbladeConflict) {
+    penalties += 8;
+    penaltyReasons.push('强击冲突：宗师/冰痕/巫术的【强击】被动互斥，同时生效受限');
+  }
+  if (tier1Count >= 4) {
+    penalties += 12;
+    penaltyReasons.push('散件过多：装备栏主要由初级散件构成，缺少关键成装被动');
+  }
+
+  // 计算综合得分 (最低 25，最高 99)
+  let rawScore = 25 + tierScore + synergyBonus + balanceScore - emptySlotPenalty - penalties;
+  const score = Math.max(25, Math.min(99, Math.round(rawScore)));
+
+  // 动态等级徽章与评语
+  let rankBadge = '', rankColor = '', rankSub = '';
+  if (score >= 95) {
+    rankBadge = 'S+ 卓越级战术协同';
+    rankColor = '#34c759';
+    rankSub = '被动特效与英雄动作链高度共鸣，攻防周转达到版本天花板最优解';
+  } else if (score >= 90) {
+    rankBadge = 'S 顶尖级战术协同';
+    rankColor = '#34c759';
+    rankSub = '核心神装完备，被动技能联动强劲，战术威力与实战容错兼备';
+  } else if (score >= 80) {
+    rankBadge = 'A 优良级实战搭配';
+    rankColor = '#0071e3';
+    rankSub = '基础战力扎实，攻防维度完好，个别装备仍有针对性优化空间';
+  } else if (score >= 70) {
+    rankBadge = 'B 常规级可用配装';
+    rankColor = '#ff9500';
+    rankSub = penaltyReasons[0] || '具备基本作战能力，但被动联动较单薄，攻防分布略显失衡';
+  } else if (score >= 60) {
+    rankBadge = 'C 偏离主轴 / 散件较多';
+    rankColor = '#ff5e00';
+    rankSub = penaltyReasons[0] || '初级散件偏多或缺少核心质变大件，实战无法充分激发英雄潜力';
+  } else {
+    rankBadge = 'D 严重冲突 / 属性倒挂';
+    rankColor = '#ff3b30';
+    rankSub = penaltyReasons.join(' ； ') || '存在严重属性浪费或装备冲突，实战作战效能极低';
+  }
   
   // 连招生成逻辑
   let comboSteps = [];
@@ -3266,10 +3430,28 @@ function renderSynergyContent() {
     `;
   });
 
-  const sustainBarPct = isSustainGod ? 100 : (hasPhoenix && (hasSkillHeal || currentHero.cname === '杨戬') ? 96 : (hasYellowShield ? 88 : 80));
-  const defenseBarPct = (hasYellowShield && hasPhoenix) ? 96 : (hasDamageReduce || hasBloodRage ? 94 : 88);
-  const burstBarPct = (totalPhysPierce > 50 || hasSpellblade) ? 95 : 88;
-  const kitingBarPct = (hasYellowShield || hasSpellblade || hasBaoLie) ? 92 : 85;
+  // 五维雷达真实物理映射
+  let burstBarPct = 10;
+  if (isPhysicalHero) {
+    burstBarPct = Math.min(100, Math.round((totalAd / 520) * 45 + (totalPhysPierce / 260) * 30 + (totalCrit / 70) * 15 + (hasSpellblade ? 10 : 0)));
+  } else if (isMagicHero) {
+    burstBarPct = Math.min(100, Math.round((totalAp / 1300) * 60 + (totalMagicPierce / 260) * 30 + (effNames.includes('博学者之怒') ? 10 : 0)));
+  } else {
+    burstBarPct = Math.min(100, Math.round((totalAd / 300) * 40 + (hasYellowShield ? 30 : 0) + (totalPhysPierce / 150) * 30));
+  }
+  burstBarPct = Math.max(10, Math.min(100, burstBarPct));
+
+  const cdrBarPct = Math.max(8, Math.min(100, Math.round((cappedCdr / 40) * 100)));
+
+  let kitingBarPct = Math.min(100, Math.round((bootsCount > 0 ? 30 : 8) + (totalPercentSpeed / 15) * 30 + ((hasSpellblade || hasIceHeart || hasBaoLie) ? 25 : 0) + (hasDash ? 15 : 0)));
+  kitingBarPct = Math.max(10, Math.min(100, kitingBarPct));
+
+  let defenseBarPct = Math.min(100, Math.round((totalBonusHp / 4200) * 40 + ((totalPdef + totalMdef) / 900) * 35 + ((hasDamageReduce || hasBloodRage || effNames.includes('魔女斗篷') || effNames.includes('不祥征兆')) ? 25 : 0)));
+  defenseBarPct = Math.max(10, Math.min(100, defenseBarPct));
+
+  let sustainBarPct = Math.min(100, Math.round((totalLifesteal / 25) * 40 + (totalSpellLifesteal / 25) * 40 + (hasPhoenix ? 30 : 0) + (hasYellowShield ? 20 : 0) + (hasBaZhe ? 20 : 0) + (hasSkillHeal ? 20 : 0)));
+  if (isSustainGod) sustainBarPct = 100;
+  sustainBarPct = Math.max(10, Math.min(100, sustainBarPct));
 
   const bottomGridHtml = `
     <div class="synergy-bottom-grid">
@@ -3279,10 +3461,10 @@ function renderSynergyContent() {
           出装战术协同度评估
         </div>
         <div class="synergy-score-circle">
-          <span class="synergy-score-big">${score}</span>
+          <span class="synergy-score-big" style="color: ${rankColor};">${score}</span>
           <div>
-            <div style="font-size: 14px; font-weight: 700; color: var(--color-green);">${score >= 95 ? 'S+ 卓越级战术协同' : 'S 强力战术协同'}</div>
-            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">被动特效与技能动作链契合度极高</div>
+            <div style="font-size: 14px; font-weight: 700; color: ${rankColor};">${rankBadge}</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">${rankSub}</div>
           </div>
         </div>
         <div class="synergy-radar-bars">
@@ -3292,7 +3474,7 @@ function renderSynergyContent() {
           </div>
           <div class="synergy-radar-row">
             <span>技能周转 (CDR)</span>
-            <div class="synergy-radar-track"><div class="synergy-radar-fill" style="width: ${Math.min(cappedCdr * 2.4, 100)}%;"></div></div>
+            <div class="synergy-radar-track"><div class="synergy-radar-fill" style="width: ${cdrBarPct}%;"></div></div>
           </div>
           <div class="synergy-radar-row">
             <span>持续拉扯 (Kiting)</span>
