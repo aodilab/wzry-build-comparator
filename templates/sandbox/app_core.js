@@ -163,7 +163,7 @@ function renderItems() {
     card.innerHTML = `
       <span class="item-equipped-badge">已装配</span>
       <div class="item-top">
-        <img class="item-icon" alt="${it.item_name}" src="https://game.gtimg.cn/images/yxzj/img201606/itemimg/${it.item_id}.jpg" onerror="this.style.display='none'">
+        <img class="item-icon" alt="${it.item_name}" src="https://game.gtimg.cn/images/yxzj/img201606/itemimgo/${it.item_id}.png" onerror="this.src='https://game.gtimg.cn/images/yxzj/img201606/itemimg/${it.item_id}.jpg'">
         <div class="item-meta">
           <div class="item-name">${it.item_name}</div>
           <div class="item-price-pill">${it.total_price || 0} G</div>
@@ -192,7 +192,7 @@ function renderSlots() {
       slot.title = `点击卸下: ${item.item_name}`;
       slot.onclick = () => removeSlot(i);
       slot.innerHTML = `
-        <img alt="${item.item_name}" src="https://game.gtimg.cn/images/yxzj/img201606/itemimg/${item.item_id}.jpg">
+        <img alt="${item.item_name}" src="https://game.gtimg.cn/images/yxzj/img201606/itemimgo/${item.item_id}.png" onerror="this.src='https://game.gtimg.cn/images/yxzj/img201606/itemimg/${item.item_id}.jpg'">
         <span class="slot-remove-badge">×</span>
       `;
     } else {

@@ -80,7 +80,7 @@ function renderSynergyContent() {
   let itemThumbsHtml = '';
   for (let i = 0; i < 6; i++) {
     if (currentSlots[i]) {
-      itemThumbsHtml += `<img class="synergy-item-thumb" src="https://game.gtimg.cn/images/yxzj/img201606/itemimg/${currentSlots[i].item_id}.jpg" alt="${currentSlots[i].item_name}" title="${currentSlots[i].item_name}">`;
+      itemThumbsHtml += `<img class="synergy-item-thumb" src="https://game.gtimg.cn/images/yxzj/img201606/itemimgo/${currentSlots[i].item_id}.png" onerror="this.src='https://game.gtimg.cn/images/yxzj/img201606/itemimg/${currentSlots[i].item_id}.jpg'" alt="${currentSlots[i].item_name}" title="${currentSlots[i].item_name}">`;
     } else {
       itemThumbsHtml += `<div class="synergy-empty-thumb">+</div>`;
     }

@@ -51,12 +51,12 @@ def parse_single_item_stats(item_raw):
         stats["flat_speed"] = BOOTS_SPEED_MAP[name]
         
     for line in lines:
-        m = re.search(r'\+(\d+)\s*(?:物理攻击|物理)', line)
-        if m and "防御" not in line: stats["atk"] += int(m.group(1))
+        m = re.search(r'\+(\d+)\s*(?:物理攻击|物攻|物理)', line)
+        if m and "防御" not in line and "吸血" not in line and "穿透" not in line: stats["atk"] += int(m.group(1))
         m = re.search(r'\+(\d+)\s*法术攻击', line)
         if m: stats["ap"] += int(m.group(1))
-        m = re.search(r'\+(\d+)\s*(?:物理防御|物理)', line)
-        if m and "攻击" not in line: stats["pdef"] += int(m.group(1))
+        m = re.search(r'\+(\d+)\s*(?:物理防御|物防)', line)
+        if m: stats["pdef"] += int(m.group(1))
         m = re.search(r'\+(\d+)\s*法术防御', line)
         if m: stats["mdef"] += int(m.group(1))
         m = re.search(r'\+(\d+)\s*(?:最大生命|最大生命值|生命值|生命)', line)

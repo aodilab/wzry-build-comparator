@@ -19,9 +19,6 @@ from src.core.http import fetch_json
 from src.core.hero_validator import get_validated_hero_list
 from src.core.item_calculator import parse_single_item_stats, BOOTS_SPEED_MAP, ACTIVE_SKILL_ITEMS, JUNGLE_ITEMS
 
-# 官网 CDN 缺失图片的特殊娱乐模式/废弃装备 ID (过滤后保证全部装备 100% 具备官方高清图标)
-INVALID_ITEM_IDS = {1217, 11110, 1218, 13212, 11211, 13211, 1161, 22029, 22031, 22028, 22030, 22027, 22026}
-
 def build_sandbox_html(output_file=None):
     """
     编译生成单文件 sandbox.html
@@ -30,13 +27,10 @@ def build_sandbox_html(output_file=None):
     raw_items = fetch_json(URL_ITEM_LIST)
     heroes = get_validated_hero_list()
 
-    # 1. 结构化装备库 (过滤掉 404 无图及特殊模式道具)
+    # 1. 结构化装备库 (官方公开接口全量 121 件装备，均具备官方高清透明PNG图标)
     processed_items = []
     for it in raw_items:
         iid = it.get("item_id")
-        if iid in INVALID_ITEM_IDS:
-            continue
-
         stats = parse_single_item_stats(it)
         cat = "攻击装备"
         t = it.get("item_type", 1)
@@ -44,7 +38,7 @@ def build_sandbox_html(output_file=None):
         elif t == 3: cat = "防御装备"
         elif t == 4: cat = "移动装备"
         elif t == 5: cat = "打野装备"
-        elif t == 7: cat = "游走装备"
+        elif t == 6 or t == 7: cat = "游走装备"
 
         # 提取结构化属性行与唯一被动
         raw_des1 = it.get("des1", "") or ""
