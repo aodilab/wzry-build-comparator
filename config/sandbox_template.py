@@ -21,9 +21,11 @@ def get_sandbox_html_template() -> str:
     html_body = _load('index.html')
     app_core_js = _load('app_core.js')
     app_arcana_js = _load('app_arcana.js')
+    synergy_evaluator_js = _load('synergy_evaluator.js')
+    synergy_combos_js = _load('synergy_combos.js')
     app_synergy_js = _load('app_synergy.js')
 
-    combined_js = f"{app_core_js}\n\n{app_arcana_js}\n\n{app_synergy_js}"
+    combined_js = f"{app_core_js}\n\n{app_arcana_js}\n\n{synergy_evaluator_js}\n\n{synergy_combos_js}\n\n{app_synergy_js}"
 
     return f"""<!DOCTYPE html>
 <html lang="zh-CN" data-theme="light">
