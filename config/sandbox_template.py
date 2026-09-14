@@ -2470,13 +2470,29 @@ function renderSynergyContent() {
   // 2. 英雄技能机制与动态冷却折算卡片
   let skillsCardsHtml = '';
   skills.forEach((sk, idx) => {
-    let cdDisplay = sk.cd;
-    if (sk.cd_sec > 0) {
+    let cdDisplay = '';
+    if (sk.type === '被动') {
+      if (sk.cd_sec > 0) {
+        cdDisplay = `<span style="color:var(--text-secondary); font-size:11.5px;">🛡️ 内置被动CD: <strong>${sk.cd_sec}s</strong> <span style="color:var(--text-tertiary); font-size:10.5px;">(不受装备冷缩影响)</span></span>`;
+      } else {
+        cdDisplay = `<span style="color:var(--text-tertiary); font-size:11.5px;">无冷却 / 被动触发</span>`;
+      }
+    } else if (sk.cd_sec > 0) {
       const reduced = Math.round(sk.cd_sec * (1 - cdrRatio) * 10) / 10;
       const diff = Math.round((sk.cd_sec - reduced) * 10) / 10;
-      cdDisplay = `⚡ 实战CD: <span class="synergy-cd-highlight">${reduced}s</span> <span style="color:var(--text-tertiary); font-size:11px;">(基准 ${sk.cd_sec}s ｜ 缩短 ${diff}s)</span>`;
+      let extraGrowth = '';
+      if (sk.lv1_cd && sk.lv1_cd > sk.cd_sec) {
+        const lv1Reduced = Math.round(sk.lv1_cd * (1 - cdrRatio) * 10) / 10;
+        extraGrowth = `<div style="font-size:10.5px; color:var(--text-tertiary); margin-top:2px;">技能成长: ${sk.cd} (Lv1实战: ${lv1Reduced}s)</div>`;
+      }
+      cdDisplay = `
+        <div style="text-align: right;">
+          <div>⚡ 实战CD: <span class="synergy-cd-highlight">${reduced}s</span> <span style="color:var(--text-tertiary); font-size:11px;">(基准 ${sk.cd_sec}s ｜ 缩短 ${diff}s)</span></div>
+          ${extraGrowth}
+        </div>
+      `;
     } else {
-      cdDisplay = `<span style="color:var(--text-tertiary);">${sk.cd}</span>`;
+      cdDisplay = `<span style="color:var(--text-tertiary); font-size:11.5px;">${sk.cd || '无冷却'}</span>`;
     }
 
     const tagsHtml = (sk.tags || []).map(t => `<span class="synergy-tag">${t}</span>`).join('');
@@ -2490,7 +2506,7 @@ function renderSynergyContent() {
           <div class="synergy-skill-tags">${tagsHtml}</div>
         </div>
         <div class="synergy-cd-bar">
-          <span>冷却时间折算</span>
+          <span style="font-weight: 600; color: var(--text-secondary); white-space: nowrap;">冷却时间折算</span>
           <span>${cdDisplay}</span>
         </div>
         <div class="synergy-skill-desc">${sk.desc}</div>
