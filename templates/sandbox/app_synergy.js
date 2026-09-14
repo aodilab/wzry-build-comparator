@@ -8,7 +8,7 @@ function openSynergyModal() {
   const modal = document.getElementById('synergyModalOverlay') || document.getElementById('synergyModal');
   if (!modal) return;
   modal.classList.add('active');
-  document.body.style.overflow = 'hidden';
+  if (document.body) document.body.style.overflow = 'hidden';
   
   // 渲染内容
   renderSynergyContent();
@@ -20,7 +20,7 @@ function closeSynergyModal(e) {
   }
   const modal = document.getElementById('synergyModalOverlay') || document.getElementById('synergyModal');
   if (modal) modal.classList.remove('active');
-  document.body.style.overflow = '';
+  if (document.body) document.body.style.overflow = '';
 }
 
 function renderSynergyContent() {
