@@ -20,16 +20,35 @@ BOOTS_SPEED_MAP = {
     "冷静之靴": 60, "秘法之靴": 60, "急速战靴": 60, "急速之靴": 60, "疾步之靴": 60
 }
 
-# 别名映射与老旧ID规范化
-ITEM_ALIAS_MAP = {
+# 别名双向映射表与老旧ID规范化
+RAW_TO_COMMON_MAP = {
     "强者破军": "破军", "仁者破晓": "破晓", "贤者天书": "贤者之书",
     "急速之靴": "急速战靴", "1722": "极影·星泉", "1747": "极影·星泉"
 }
+COMMON_TO_RAW_MAP = {
+    "破军": "强者破军", "破晓": "仁者破晓", "贤者之书": "贤者天书",
+    "急速之靴": "急速战靴", "极影·星泉": "1747"
+}
+ITEM_ALIAS_MAP = {**RAW_TO_COMMON_MAP, **COMMON_TO_RAW_MAP}
 
 def clean_item_name(name):
     if not name: return ""
     n = name.strip()
-    return ITEM_ALIAS_MAP.get(n, n)
+    return RAW_TO_COMMON_MAP.get(n, n)
+
+def get_raw_item_object(name, equip_map_raw):
+    """鲁棒获取装备原生字典，支持官方原生名与常用别名双向穿透"""
+    if not name or not equip_map_raw:
+        return None
+    if name in equip_map_raw:
+        return equip_map_raw[name]
+    raw_key = COMMON_TO_RAW_MAP.get(name)
+    if raw_key and raw_key in equip_map_raw:
+        return equip_map_raw[raw_key]
+    common_key = RAW_TO_COMMON_MAP.get(name)
+    if common_key and common_key in equip_map_raw:
+        return equip_map_raw[common_key]
+    return None
 
 def parse_single_item_stats(item_raw):
     """全量提取单件装备的属性词缀与被动"""
@@ -149,7 +168,7 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
     total_gold = 0
     boots_counted = False
     for name in effective_six:
-        item_raw = equip_map_raw.get(name) or equip_map_raw.get(ITEM_ALIAS_MAP.get(name, ""))
+        item_raw = get_raw_item_object(name, equip_map_raw)
         if item_raw:
             total_gold += item_raw.get("total_price", 0)
         st = parse_single_item_stats(item_raw)

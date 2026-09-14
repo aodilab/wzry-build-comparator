@@ -36,10 +36,17 @@ function renderSynergyContent() {
   if (name) name.innerText = hero.cname;
   if (role) role.innerText = `${hero.lane || ''} · ${hero.role || ''}`;
 
-  // 汇总当前装备
+  // 汇总当前装备 (支持官方名与常用别名双向自适应容错)
+  const aliasMap = {
+    '强者破军': '破军', '仁者破晓': '破晓', '贤者天书': '贤者之书', '急速之靴': '急速战靴',
+    '破军': '强者破军', '破晓': '仁者破晓', '贤者之书': '贤者天书', '急速战靴': '急速之靴'
+  };
   const effItems = [];
   slots.forEach(s => {
-    const it = ITEMS_DATA.find(i => i.item_name === s.item_name);
+    const targetName = s.item_name || s;
+    const it = ITEMS_DATA.find(i => i.item_name === targetName) || 
+               ITEMS_DATA.find(i => i.item_name === aliasMap[targetName]) ||
+               (s.stats ? s : null);
     if (it) effItems.push(it);
   });
 
