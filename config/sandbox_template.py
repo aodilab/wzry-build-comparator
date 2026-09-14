@@ -1319,6 +1319,455 @@ header {
   font-weight: bold;
 }
 
+
+/* ==========================================================================
+   二级页面：技能×出装战术联动分析 (Skill-Item Synergy Analysis Modal)
+   ========================================================================== */
+
+.synergy-header-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 11px;
+  border-radius: 980px;
+  background: linear-gradient(135deg, rgba(0, 113, 227, 0.1), rgba(175, 82, 222, 0.1));
+  border: 1px solid rgba(0, 113, 227, 0.3);
+  color: var(--color-blue);
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+.synergy-header-btn:hover {
+  background: var(--color-blue);
+  color: #fff;
+  border-color: var(--color-blue);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+}
+
+.synergy-entry-btn {
+  margin: 0 16px 12px 16px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, rgba(0, 113, 227, 0.08), rgba(175, 82, 222, 0.08));
+  border: 1px solid rgba(0, 113, 227, 0.25);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.08);
+  outline: none;
+}
+
+.synergy-entry-btn:hover {
+  background: linear-gradient(135deg, rgba(0, 113, 227, 0.15), rgba(175, 82, 222, 0.15));
+  border-color: var(--color-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 113, 227, 0.18);
+}
+
+.synergy-entry-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.synergy-entry-icon {
+  font-size: 15px;
+  color: var(--color-blue);
+}
+
+.synergy-entry-txt {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.synergy-entry-sub {
+  font-size: 10.5px;
+  color: var(--text-secondary);
+  margin-left: 4px;
+}
+
+.synergy-entry-arrow {
+  font-size: 14px;
+  color: var(--color-blue);
+  font-weight: bold;
+}
+
+/* 二级页面 Modal 遮罩与大卡片 */
+.synergy-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.synergy-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.synergy-modal-card {
+  width: 1040px;
+  max-width: 95vw;
+  height: 90vh;
+  background: var(--apple-panel);
+  border: 1px solid var(--apple-panel-border);
+  border-radius: 24px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.96);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.synergy-modal-overlay.active .synergy-modal-card {
+  transform: scale(1);
+}
+
+.synergy-modal-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--apple-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--header-bg);
+}
+
+.synergy-header-hero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.synergy-hero-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 2px solid var(--color-blue);
+  box-shadow: 0 4px 10px rgba(0, 113, 227, 0.2);
+}
+
+.synergy-hero-cname {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.synergy-hero-sub {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.synergy-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.synergy-modal-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px 30px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* 顶部出装与铭文概览横幅 */
+.synergy-banner {
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.synergy-items-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.synergy-item-thumb {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--apple-border);
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.synergy-empty-thumb {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px dashed var(--apple-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  font-size: 12px;
+}
+
+/* 模块标题与卡片网格 */
+.synergy-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+/* 技能与实战 CD 卡片网格 */
+.synergy-skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.synergy-skill-card {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.synergy-skill-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.synergy-skill-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.synergy-skill-badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--apple-subcard);
+  color: var(--color-blue);
+}
+
+.synergy-skill-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.synergy-skill-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.synergy-tag {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--color-amber-bg);
+  color: var(--color-amber);
+  font-weight: 600;
+}
+
+.synergy-cd-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--apple-subcard);
+  font-size: 11.5px;
+}
+
+.synergy-cd-highlight {
+  color: var(--color-green);
+  font-weight: 700;
+}
+
+.synergy-skill-desc {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* 装备被动实战联动深度剖析列表 */
+.synergy-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.synergy-link-card {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.synergy-link-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  background: var(--color-blue-bg);
+  color: var(--color-blue);
+}
+
+.synergy-link-content {
+  flex: 1;
+}
+
+.synergy-link-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.synergy-link-sub {
+  font-size: 11px;
+  color: var(--color-blue);
+  font-weight: 600;
+}
+
+.synergy-link-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin-top: 4px;
+}
+
+/* 契合度评分与连招打法双列 */
+.synergy-bottom-grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 16px;
+}
+
+.synergy-rating-card, .synergy-combo-card {
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--card-shadow);
+}
+
+.synergy-score-circle {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.synergy-score-big {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--color-blue);
+  letter-spacing: -0.02em;
+}
+
+.synergy-radar-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.synergy-radar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+}
+
+.synergy-radar-track {
+  width: 150px;
+  height: 6px;
+  border-radius: 980px;
+  background: var(--apple-subcard);
+  overflow: hidden;
+}
+
+.synergy-radar-fill {
+  height: 100%;
+  border-radius: 980px;
+  background: linear-gradient(90deg, var(--color-blue), var(--color-green));
+}
+
+.synergy-combo-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--apple-subcard);
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.combo-step-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-blue);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-blue);
 }
@@ -1437,7 +1886,12 @@ header {
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
         生效装备与面板
       </div>
-      <span class="panel-badge" id="slotCount">已选 0 / 6 件</span>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span class="panel-badge" id="slotCount">已选 0 / 6 件</span>
+        <button class="synergy-header-btn" onclick="openSynergyModal()" title="深度分析当前出装与英雄技能机制联动效果">
+          ⚡ 联动分析 ›
+        </button>
+      </div>
     </div>
 
     <!-- 灵动槽位 Dock -->
@@ -1466,6 +1920,36 @@ header {
   </section>
 
 </main>
+
+<!-- 二级页面：技能×出装深度联动分析模态框 (Synergy Modal) -->
+<div class="synergy-modal-overlay" id="synergyModalOverlay" onclick="closeSynergyModal(event)">
+  <div class="synergy-modal-card" onclick="event.stopPropagation()">
+    <div class="synergy-modal-header">
+      <div class="synergy-header-hero">
+        <img class="synergy-hero-avatar" id="synergyHeroAvatar" src="" alt="Hero">
+        <div>
+          <div class="synergy-hero-cname">
+            <span id="synergyHeroName">-</span>
+            <span class="brand-badge" id="synergyHeroRole" style="background: var(--color-blue-bg); color: var(--color-blue);">-</span>
+          </div>
+          <div class="synergy-hero-sub" id="synergyHeroSub">全套神装与技能机制乘区深度分析报告</div>
+        </div>
+      </div>
+      <div class="synergy-header-actions">
+        <button class="apple-btn apple-btn-secondary" onclick="copySynergyReport()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          复制分析报告
+        </button>
+        <button class="arcana-modal-close" onclick="closeSynergyModal()" title="关闭">✕</button>
+      </div>
+    </div>
+
+    <div class="synergy-modal-scroll" id="synergyModalScroll">
+      <!-- 动态填充四大核心板块 -->
+    </div>
+  </div>
+</div>
+
 
 <!-- 铭文复合配置面板 (Apple HIG Sheet Modal) -->
 <div class="arcana-modal-overlay" id="arcanaModalOverlay" onclick="closeArcanaModal(event)">
@@ -1499,6 +1983,7 @@ header {
 const HEROES_DATA = __HEROES_DATA_PLACEHOLDER__;
 const ITEMS_DATA = __ITEMS_DATA_PLACEHOLDER__;
 const ARCANA_DATA = __ARCANA_DATA_PLACEHOLDER__;
+const HERO_SKILLS_DATA = __HERO_SKILLS_DATA_PLACEHOLDER__;
 const RECIPES_MAP = __RECIPES_MAP_PLACEHOLDER__;
 const BOOTS_MAP = __BOOTS_MAP_PLACEHOLDER__;
 const ACTIVE_ITEMS = __ACTIVE_ITEMS_PLACEHOLDER__;
@@ -1869,6 +2354,397 @@ function resetToHeroDefaultArcana() {
   renderArcanaBar();
   renderArcanaModal();
   recalculate();
+}
+
+
+// === 二级页面：技能×出装战术联动分析引擎 ===
+function openSynergyModal() {
+  const overlay = document.getElementById('synergyModalOverlay');
+  if (!overlay) return;
+  overlay.classList.add('active');
+
+  // 1. 填充头部英雄基本信息
+  document.getElementById('synergyHeroAvatar').src = `https://game.gtimg.cn/images/yxzj/img201606/heroimg/${currentHero.ename}/${currentHero.ename}.jpg`;
+  document.getElementById('synergyHeroName').innerText = currentHero.cname;
+  document.getElementById('synergyHeroRole').innerText = `${currentHero.lane} ｜ ${currentHero.role}`;
+  document.getElementById('synergyHeroSub').innerText = `${currentHero.title || '英雄'} · 六神装被动效果与技能机制联动实战报告`;
+
+  renderSynergyContent();
+}
+
+function closeSynergyModal(e) {
+  if (e && e.target !== e.currentTarget) return;
+  const overlay = document.getElementById('synergyModalOverlay');
+  if (overlay) overlay.classList.remove('active');
+}
+
+function renderSynergyContent() {
+  const container = document.getElementById('synergyModalScroll');
+  if (!container) return;
+
+  const skills = HERO_SKILLS_DATA[currentHero.cname] || [];
+  const effItems = [];
+  // 获取当前生效装备（排除吞噬件）
+  for (let i = 0; i < currentSlots.length; i++) {
+    const curr = currentSlots[i].item_name;
+    let isConsumed = false;
+    for (let j = i + 1; j < currentSlots.length; j++) {
+      const later = currentSlots[j].item_name;
+      const recipes = RECIPES_MAP[later] || [];
+      if (recipes.includes(curr)) { isConsumed = true; break; }
+    }
+    if (!isConsumed) effItems.push(currentSlots[i]);
+  }
+
+  // 计算冷却缩减与属性
+  let totalCdr = 0;
+  let totalPhysPierce = 0;
+  let totalMagicPierce = 0;
+  let hasSpellblade = false;
+  let spellbladeItem = '';
+  let hasHealBoost = false;
+  let hasDamageReduce = false;
+  let hasOnHit = false;
+
+  effItems.forEach(it => {
+    const st = it.stats || {};
+    totalCdr += st.cdr || 0;
+    totalPhysPierce += st.p_pierce_flat || 0;
+    totalMagicPierce += st.m_pierce_flat || 0;
+    if (['宗师之力', '冰痕之握', '巫术法杖', '光辉之剑'].includes(it.item_name)) {
+      hasSpellblade = true;
+      spellbladeItem = it.item_name;
+    }
+    if (it.item_name === '不死鸟之眼') hasHealBoost = true;
+    if (it.item_name === '纯净苍穹') hasDamageReduce = true;
+    if (['末世', '闪电匕首', '金色圣剑', '寒霜袭侵'].includes(it.item_name)) hasOnHit = true;
+  });
+
+  // 加上铭文冷缩与穿透
+  ['red', 'green', 'blue'].forEach(col => {
+    const map = currentArcana[col] || {};
+    for (const [name, count] of Object.entries(map)) {
+      if (count > 0 && ARCANA_DATA[name] && ARCANA_DATA[name].stats_1) {
+        const s = ARCANA_DATA[name].stats_1;
+        totalCdr += (s.cd_reduction_pct || 0) * count;
+        totalPhysPierce += (s.phys_pierce || 0) * count;
+        totalMagicPierce += (s.magic_pierce || 0) * count;
+      }
+    }
+  });
+
+  const cappedCdr = Math.min(Math.round(totalCdr * 10) / 10, 40);
+  const cdrRatio = cappedCdr / 100;
+
+  // 1. 横幅：当前出装与铭文展示
+  let itemThumbsHtml = '';
+  for (let i = 0; i < 6; i++) {
+    if (currentSlots[i]) {
+      itemThumbsHtml += `<img class="synergy-item-thumb" src="https://game.gtimg.cn/images/yxzj/img201606/itemimg/${currentSlots[i].item_id}.jpg" alt="${currentSlots[i].item_name}" title="${currentSlots[i].item_name}">`;
+    } else {
+      itemThumbsHtml += `<div class="synergy-empty-thumb">+</div>`;
+    }
+  }
+
+  const arcDescParts = [];
+  ['red', 'green', 'blue'].forEach(col => {
+    const map = currentArcana[col] || {};
+    const sub = Object.entries(map).filter(([_, c]) => c > 0).map(([n, c]) => `${c}${n}`).join('+');
+    if (sub) arcDescParts.push(sub);
+  });
+  const arcDescStr = arcDescParts.join(' · ') || '未配置铭文';
+
+  const bannerHtml = `
+    <div class="synergy-banner">
+      <div class="synergy-items-strip">
+        <span style="font-size: 12px; font-weight: 700; color: var(--text-secondary);">已配装备：</span>
+        ${itemThumbsHtml}
+      </div>
+      <div style="font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px;">
+        <span>🔖 <strong>铭文组合</strong>：${arcDescStr}</span>
+        <span style="background: var(--color-blue-bg); color: var(--color-blue); font-weight: 700; padding: 2px 8px; border-radius: 6px;">实战冷缩: ${cappedCdr}%</span>
+      </div>
+    </div>
+  `;
+
+  // 2. 英雄技能机制与动态冷却折算卡片
+  let skillsCardsHtml = '';
+  skills.forEach((sk, idx) => {
+    let cdDisplay = sk.cd;
+    if (sk.cd_sec > 0) {
+      const reduced = Math.round(sk.cd_sec * (1 - cdrRatio) * 10) / 10;
+      const diff = Math.round((sk.cd_sec - reduced) * 10) / 10;
+      cdDisplay = `⚡ 实战CD: <span class="synergy-cd-highlight">${reduced}s</span> <span style="color:var(--text-tertiary); font-size:11px;">(基准 ${sk.cd_sec}s ｜ 缩短 ${diff}s)</span>`;
+    } else {
+      cdDisplay = `<span style="color:var(--text-tertiary);">${sk.cd}</span>`;
+    }
+
+    const tagsHtml = (sk.tags || []).map(t => `<span class="synergy-tag">${t}</span>`).join('');
+    skillsCardsHtml += `
+      <div class="synergy-skill-card">
+        <div class="synergy-skill-top">
+          <div class="synergy-skill-name-row">
+            <span class="synergy-skill-badge">${sk.type}</span>
+            <span class="synergy-skill-name">${sk.name}</span>
+          </div>
+          <div class="synergy-skill-tags">${tagsHtml}</div>
+        </div>
+        <div class="synergy-cd-bar">
+          <span>冷却时间折算</span>
+          <span>${cdDisplay}</span>
+        </div>
+        <div class="synergy-skill-desc">${sk.desc}</div>
+      </div>
+    `;
+  });
+
+  // 3. 动态装备被动联动实战深度剖析
+  const synergyItems = [];
+
+  // A. 强击被动
+  if (hasSpellblade) {
+    synergyItems.push({
+      icon: '⚡',
+      title: `【强击被动】连招普攻爆发与减速留人`,
+      item: spellbladeItem,
+      desc: `核心装备【${spellbladeItem}】的【强击】被动与【${currentHero.cname}】的技能机制天然契合！在释放任意技能后 5 秒内，下一次普攻将附带额外强击爆发伤害，并附带强力减速。实战建议在释放技能后务必穿插一次强化普攻，实现伤害最大化与无缝黏人！`
+    });
+  }
+
+  // B. 穿透破甲
+  if (totalPhysPierce > 50) {
+    synergyItems.push({
+      icon: '🎯',
+      title: `【高额物穿乘区】破甲无视敌方抗性`,
+      item: `总物理穿透 ${Math.round(totalPhysPierce)} 点`,
+      desc: `当前出装与铭文合计提供 ${Math.round(totalPhysPierce)} 点固定物理穿透！对局中敌方射手与法师在满级时的基础物理护甲仅为 350 点左右，此套穿透可直接削减敌方大半护甲，使【${currentHero.cname}】的技能物理伤害无限逼近真实伤害，斩杀脆皮犹如切菜！`
+    });
+  } else if (totalMagicPierce > 50) {
+    synergyItems.push({
+      icon: '🔮',
+      title: `【法术穿透乘区】法球与技能全额贯穿`,
+      item: `总法术穿透 ${Math.round(totalMagicPierce)} 点`,
+      desc: `当前配置拥有 ${Math.round(totalMagicPierce)} 点高额法穿，让敌方魔抗形同虚设，全面激发英雄全套技能与法球的最高 AP 爆发！`
+    });
+  }
+
+  // C. 纯净苍穹免伤
+  if (hasDamageReduce) {
+    synergyItems.push({
+      icon: '🛡️',
+      title: `【纯净苍穹·驱散】40%免伤与受控解控进场`,
+      item: '纯净苍穹',
+      desc: `纯净苍穹【驱散】主动技能可在受到控制状态下释放，获得 40% 极高免伤并减速周围敌人，同时首个技能命中敌人对其造成残废减速与自身伤害降低 20%。进场打团或被集火时开启，可硬抗敌方一整套爆发伤害完成逆风反打！`
+    });
+  }
+
+  // D. 不死鸟残血回血放大
+  const hasSkillHeal = skills.some(s => (s.tags || []).includes('技能回血'));
+  if (hasHealBoost) {
+    if (hasSkillHeal) {
+      synergyItems.push({
+        icon: '❤️',
+        title: `【不死鸟之眼·血统】残血治疗量翻倍反杀`,
+        item: '不死鸟之眼',
+        desc: `【${currentHero.cname}】自身拥有回血机制，与不死鸟之眼的唯一被动【血统】形成质变联动！血量每损失 10%，受到的所有治疗效果额外增加 6%。在血量低于 50% 时治疗量提升高达 30%~60%，残血开出技能回血可瞬间拉满血线，创造医学奇迹与极限残血反杀！`
+      });
+    } else {
+      synergyItems.push({
+        icon: '❤️',
+        title: `【不死鸟之眼】法抗与回血增益`,
+        item: '不死鸟之眼',
+        desc: `提供高额法术防御与最大生命值，配合铭文或吸血装，在残血时获得高额受治疗提升，增强对法师的抗击打与赖线能力。`
+      });
+    }
+  }
+
+  // E. 冷却周转联动
+  if (cappedCdr >= 30) {
+    synergyItems.push({
+      icon: '⏱️',
+      title: `【极限制动周转】高达 ${cappedCdr}% 冷缩加速连招循环`,
+      item: `实战冷缩 ${cappedCdr}%`,
+      desc: `当前配装使技能冷却缩减达到 ${cappedCdr}%（接近 40% 极限制动上限）！核心主动技能真空期由原来的数秒大幅缩短至眨眼之间，小技能几乎可以不断穿插释放，团战周转效率与拉扯容错提升至极限！`
+    });
+  }
+
+  // F. 普攻法球
+  if (hasOnHit) {
+    synergyItems.push({
+      icon: '⚔️',
+      title: `【普攻多段法球】触发伤害乘区`,
+      item: '法球装备组',
+      desc: `配合英雄高攻速与普攻穿插动作，高频次触发附带的百分比当前生命伤害或额外魔法伤害，前排坦克血量也能快速蒸发！`
+    });
+  }
+
+  // 若装备被动较少，做保底呈现
+  if (synergyItems.length === 0) {
+    synergyItems.push({
+      icon: '⚔️',
+      title: `【基础属性强化】平稳支撑英雄作战`,
+      item: '基础属性套装',
+      desc: `当前所选装备稳步提升基础攻击、生命与防御数值，建议补充暗影战斧、冰痕之握、纯净苍穹或无尽战刃等核心成装，激发全量被动联动特效！`
+    });
+  }
+
+  let synergyLinksHtml = '';
+  synergyItems.forEach(item => {
+    synergyLinksHtml += `
+      <div class="synergy-link-card">
+        <div class="synergy-link-icon-box">${item.icon}</div>
+        <div class="synergy-link-content">
+          <div class="synergy-link-title">
+            <span>${item.title}</span>
+            <span class="synergy-link-sub">${item.item}</span>
+          </div>
+          <div class="synergy-link-desc">${item.desc}</div>
+        </div>
+      </div>
+    `;
+  });
+
+  // 4. 契合度评分与连招打法
+  const score = Math.min(85 + effItems.length * 2 + (hasSpellblade ? 3 : 0) + (hasDamageReduce ? 2 : 0) + (cappedCdr >= 30 ? 2 : 0), 99);
+  
+  // 连招生成逻辑
+  let comboSteps = [];
+  const hasDash = skills.some(s => (s.tags || []).includes('位移突进'));
+  const hasCc = skills.some(s => (s.tags || []).includes('硬控'));
+
+  if (currentHero.cname === '杨戬') {
+    comboSteps = [
+      '1技能哮天犬远程预判标记目标 (施加斩杀印记)',
+      '1技能二段飞狗突进接近敌人',
+      '2技能近身真实伤害横扫，造成 0.75s 范围眩晕',
+      hasSpellblade ? '立刻穿插普攻打出【强击】100%减速与高额物理伤害' : '立刻接普攻打出真实伤害',
+      '3技能大招三道激光扫射压低血线并回复自身生命',
+      '刷新或二段 1技能进行残血百分比斩杀收割'
+    ];
+  } else if (currentHero.cname === '赵云') {
+    comboSteps = [
+      '3技能大招跃空雷霆击飞目标，造成感电标记',
+      '2技能连续刺出龙枪打出多段感电附加伤害并回血',
+      '1技能向前冲锋减速追击',
+      hasSpellblade ? '冲锋后接强化普攻打出【强击】爆发' : '接平A补足伤害',
+      '被动低血量高额免伤支撑反打'
+    ];
+  } else if (currentHero.cname === '孙尚香') {
+    comboSteps = [
+      '1技能翻滚存枪并寻找安全输出身位',
+      '2技能投掷红莲爆弹减速并破甲 25%',
+      '打出 1技能强化远距离重炮普攻',
+      hasSpellblade ? '触发【宗师强击】+20%移速拉扯拉开距离' : '接普通攻击持续走A',
+      '3技能远程轰击收割残血逃生敌人'
+    ];
+  } else if (currentHero.cname === '诸葛亮') {
+    comboSteps = [
+      '1技能贴脸贴身打出三颗法球叠加印记',
+      '2技能时空穿梭突进踩中敌人叠加二层印记并减速',
+      '触发被动五颗谋略法球环绕自动轰击',
+      hasSpellblade ? '穿插【巫术法杖】强化普攻压低血线' : '保持走位风筝',
+      '3技能元气弹锁定残血目标，完成击杀并刷新被动法球'
+    ];
+  } else {
+    comboSteps = [
+      hasDash ? '1技能或突进技能接近目标起手' : '远程技能探草与消耗压低血线',
+      hasCc ? '释放核心控制技能控制敌人，限制走位' : '释放输出技能打出第一波爆发',
+      hasSpellblade ? '技能间隙穿插普通攻击，无缝触发【强击】伤害' : '走位穿插普攻补充伤害',
+      '根据战场局势开启免伤/位移技能拉扯规避致命伤害',
+      '释放大招锁定敌方核心进行集火或收割'
+    ];
+  }
+
+  let comboHtml = '';
+  comboSteps.forEach((step, idx) => {
+    comboHtml += `
+      <div class="synergy-combo-step">
+        <span class="combo-step-num">${idx + 1}</span>
+        <span>${step}</span>
+      </div>
+    `;
+  });
+
+  const bottomGridHtml = `
+    <div class="synergy-bottom-grid">
+      <div class="synergy-rating-card">
+        <div class="synergy-section-title">
+          <span>📊</span> 出装与英雄战术契合度评估
+        </div>
+        <div class="synergy-score-circle">
+          <span class="synergy-score-big">${score}</span>
+          <div>
+            <div style="font-size: 14px; font-weight: 700; color: var(--color-green);">S+ 卓越级战术协同</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">被动特效与技能动作链契合度极高</div>
+          </div>
+        </div>
+        <div class="synergy-radar-bars">
+          <div class="synergy-radar-row">
+            <span>爆发斩杀 (Burst)</span>
+            <div class="synergy-radar-track"><div class="synergy-radar-fill" style="width: 92%;"></div></div>
+          </div>
+          <div class="synergy-radar-row">
+            <span>技能周转 (CDR)</span>
+            <div class="synergy-radar-track"><div class="synergy-radar-fill" style="width: ${Math.min(cappedCdr * 2.4, 100)}%;"></div></div>
+          </div>
+          <div class="synergy-radar-row">
+            <span>持续拉扯 (Kiting)</span>
+            <div class="synergy-radar-track"><div class="synergy-radar-fill" style="width: 85%;"></div></div>
+          </div>
+          <div class="synergy-radar-row">
+            <span>生存容错 (Defense)</span>
+            <div class="synergy-radar-track"><div class="synergy-radar-fill" style="width: 88%;"></div></div>
+          </div>
+          <div class="synergy-radar-row">
+            <span>续航反打 (Sustain)</span>
+            <div class="synergy-radar-track"><div class="synergy-radar-fill" style="width: 90%;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="synergy-combo-card">
+        <div class="synergy-section-title">
+          <span>🎯</span> 实战黄金连招与团战打法思路
+        </div>
+        <div>
+          ${comboHtml}
+        </div>
+      </div>
+    </div>
+  `;
+
+  // 拼接全量内容
+  container.innerHTML = `
+    ${bannerHtml}
+    <div>
+      <div class="synergy-section-title">
+        <span>📖</span> 英雄技能机制与当前出装冷却时间换算 (Dynamic CDR)
+      </div>
+      <div class="synergy-skills-grid">
+        ${skillsCardsHtml}
+      </div>
+    </div>
+    <div>
+      <div class="synergy-section-title">
+        <span>⚡</span> 装备唯一被动与英雄机制深度联动剖析
+      </div>
+      <div class="synergy-links-list">
+        ${synergyLinksHtml}
+      </div>
+    </div>
+    ${bottomGridHtml}
+  `;
+}
+
+function copySynergyReport() {
+  const heroName = currentHero.cname;
+  const eff = currentSlots.map(s => s.item_name).join(' + ') || '无装备';
+  const text = `### 【王者出装箱】英雄技能×出装联动战术分析报告\n- 英雄：${heroName} (${currentHero.lane} / ${currentHero.role})\n- 六神装：${eff}\n- 总造价：${document.getElementById('totalGold').innerText}\n- 战术亮点：技能冷却时间全面缩短，被动特效形成控制与爆发连招链闭环，实战表现极其强劲！\n- 报告来源：王者出装箱沙盒系统`;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast("已成功复制联动战术分析报告至剪贴板！");
+  }).catch(() => {
+    prompt("请手动复制战术报告：", text);
+  });
 }
 
 function renderItems() {
