@@ -1,0 +1,298 @@
+/* ==============================================================================
+   王者出装箱 ｜ 局内六神装配装沙盒 - 战术协同分析模态框样式 (synergy.css)
+   遵循 Apple HIG 设计准则，现代毛玻璃卡片、微动效与五维雷达图容器
+   ============================================================================== */
+
+/* 综合契合度评分卡片 */
+.synergy-score-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-radius: 18px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--card-shadow);
+  margin-bottom: 24px;
+  gap: 20px;
+}
+
+.synergy-score-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+}
+
+.synergy-score-circle {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border: 4px solid var(--color-green);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--apple-subcard);
+}
+
+.synergy-score-num {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.synergy-score-label {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.synergy-score-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.synergy-score-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 980px;
+  font-size: 12px;
+  font-weight: 700;
+  width: fit-content;
+}
+
+.synergy-score-sub {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.synergy-penalty-box {
+  margin-top: 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(255, 59, 48, 0.08);
+  border: 1px solid rgba(255, 59, 48, 0.2);
+}
+
+.synergy-penalty-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ff3b30;
+  margin-bottom: 4px;
+}
+
+.synergy-penalty-item {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.synergy-radar-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.synergy-radar-legend {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+/* 模块标题与卡片网格 */
+.synergy-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+/* 装备被动实战联动深度剖析列表 */
+.synergy-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.synergy-link-card {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.synergy-link-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  background: var(--color-blue-bg);
+  color: var(--color-blue);
+}
+
+.synergy-link-content {
+  flex: 1;
+}
+
+.synergy-link-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.synergy-link-sub {
+  font-size: 11px;
+  color: var(--color-blue);
+  font-weight: 600;
+}
+
+.synergy-link-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin-top: 4px;
+}
+
+/* 技能与实战 CD 卡片网格 */
+.synergy-skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.synergy-skill-card {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.synergy-skill-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.synergy-skill-name-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.synergy-type-badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+  color: #fff;
+}
+
+.synergy-skill-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.synergy-skill-cd {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-weight: 600;
+}
+
+.synergy-skill-desc {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.synergy-tags-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.synergy-tag {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+/* 实战核心连招步骤卡片 */
+.synergy-combo-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.synergy-combo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--card-shadow);
+}
+
+.synergy-combo-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-blue);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.synergy-combo-text {
+  font-size: 12px;
+  color: var(--text-primary);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .synergy-score-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .synergy-skills-grid {
+    grid-template-columns: 1fr;
+  }
+}

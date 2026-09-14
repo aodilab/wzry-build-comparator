@@ -29,6 +29,18 @@ from .variants import (
     CANG_HERO_PATCH,
 )
 
+from .hero_builds_patch import HERO_BUILDS_PATCHES
+from .hero_arcana_patch import HERO_ARCANA_PATCHES
+from .hero_relations_patch import HERO_RELATIONS_PATCHES
+
+# 补齐大司命已有补丁到统一字典
+if "大司命" not in HERO_BUILDS_PATCHES:
+    HERO_BUILDS_PATCHES["大司命"] = DASIMING_HERO_PATCH.get("equips", [])
+if "大司命" not in HERO_ARCANA_PATCHES:
+    HERO_ARCANA_PATCHES["大司命"] = DASIMING_ARCANA_PATCH
+if "大司命" not in HERO_RELATIONS_PATCHES:
+    HERO_RELATIONS_PATCHES["大司命"] = DASIMING_HERO_PATCH.get("relations", {})
+
 # 全局受控重做技能补丁统一注册字典
 REWORKED_HERO_SKILLS_PATCHES = {
     "赵云": ZHAOYUN_HERO_PATCH,
@@ -46,3 +58,4 @@ REWORKED_HERO_SKILLS_PATCHES = {
     "元流之子(坦克)": YUANLIU_TANK_HERO_PATCH,
     "元流之子(法师)": YUANLIU_MAGE_HERO_PATCH,
 }
+

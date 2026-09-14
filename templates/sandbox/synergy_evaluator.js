@@ -4,6 +4,12 @@
 // ==============================================================================
 
 function calculateSynergyScore(currentHero, effItems, currentSlots, skills, cappedCdr) {
+  currentHero = currentHero || {};
+  effItems = effItems || [];
+  currentSlots = currentSlots || [];
+  skills = skills || [];
+  cappedCdr = cappedCdr || 0;
+
   const heroRole = currentHero.role || '';
   const isPhysicalHero = ['战士', '刺客', '射手'].some(r => heroRole.includes(r)) && !['司空震', '芈月'].includes(currentHero.cname);
   const isMagicHero = heroRole.includes('法师') && !['司空震', '嬴政'].includes(currentHero.cname);
@@ -88,24 +94,31 @@ function calculateSynergyScore(currentHero, effItems, currentSlots, skills, capp
     if (totalPhysPierce >= 150) synergyBonus += 7;
     if (hasPhoenix) synergyBonus += 6; // 飞龙在天溢出治疗转永久护盾质变
     if (hasDamageReduce || hasBloodRage) synergyBonus += 5;
-    if (effNames.includes('破军')) synergyBonus += 5;
+    if (effNames.includes('破军') || effNames.includes('强者破军')) synergyBonus += 5;
   } else if (currentHero.cname === '哪吒') {
     if (hasBloodRage) synergyBonus += 8; // 血魔之怒与火莲圣体盾厚上加厚
     if (hasBaoLie) synergyBonus += 7;
     if (hasDamageReduce) synergyBonus += 5;
     if (effNames.includes('红莲斗篷') || effNames.includes('暗影战斧')) synergyBonus += 6;
     if (totalBonusHp >= 2000) synergyBonus += 4;
-  } else if (currentHero.cname === '孙尚香') {
+  } else if (currentHero.cname === '孙尚香' || currentHero.cname === '敖隐' || currentHero.cname === '苍') {
     if (effNames.includes('宗师之力')) synergyBonus += 8;
     if (effNames.includes('无尽战刃')) synergyBonus += 8;
-    if (effNames.includes('破晓')) synergyBonus += 8;
+    if (effNames.includes('破晓') || effNames.includes('仁者破晓')) synergyBonus += 8;
+    if (effNames.includes('暴烈之甲') || effNames.includes('影刃')) synergyBonus += 5;
     if (totalCrit >= 40) synergyBonus += 5;
+  } else if (currentHero.cname === '影') {
+    if (effNames.includes('暗影战斧')) synergyBonus += 8;
+    if (effNames.includes('宗师之力')) synergyBonus += 8;
+    if (effNames.includes('无尽战刃') || effNames.includes('纯净苍穹')) synergyBonus += 8;
+    if (hasBaoLie) synergyBonus += 5;
   } else if (currentHero.cname === '诸葛亮') {
-    if (effNames.includes('博学者之怒')) synergyBonus += 8;
+    if (effNames.includes('博学者之怒') || effNames.includes('贤者之书') || effNames.includes('贤者天书')) synergyBonus += 8;
     if (effNames.includes('噬神之书')) synergyBonus += 8;
     if (effNames.includes('辉月')) synergyBonus += 6;
     if (totalMagicPierce >= 150) synergyBonus += 6;
   } else {
+
     if (hasYellowShield && (hasSkillHeal || totalBonusHp >= 2500)) synergyBonus += 7;
     if (hasPhoenix && (hasSkillHeal || totalLifesteal > 0)) synergyBonus += 7;
     if (hasSpellblade) synergyBonus += 5;

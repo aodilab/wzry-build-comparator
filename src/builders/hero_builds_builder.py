@@ -13,7 +13,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from config.settings import OUTPUT_DIR, DOC_HERO_BUILDS_NAME, URL_ITEM_LIST, ROLE_MAP, LANE_MAP
-from config.patches import DASIMING_HERO_PATCH
+from config.patches import HERO_BUILDS_PATCHES
 from config.hero_base_stats import get_hero_base_stats
 from src.core.http import fetch_json, fetch_html
 from src.core.cleaner import clean_plain_text
@@ -71,9 +71,9 @@ def fetch_single_hero_builds(hero, equip_id_map, equip_name_map):
                     "calc": calc_res
                 })
                         
-        if cname == "大司命" and not equip_recommendations:
+        if not equip_recommendations and cname in HERO_BUILDS_PATCHES:
             # 补丁处理
-            for idx, eq in enumerate(DASIMING_HERO_PATCH["equips"]):
+            for idx, eq in enumerate(HERO_BUILDS_PATCHES[cname]):
                 calc_res = calculate_build_stats(eq["items"], equip_name_map, hero_base)
                 equip_recommendations.append({
                     "title": eq["title"],
@@ -92,9 +92,9 @@ def fetch_single_hero_builds(hero, equip_id_map, equip_name_map):
             "success": True
         }
     except Exception as e:
-        if cname == "大司命":
+        if cname in HERO_BUILDS_PATCHES:
             equip_recs = []
-            for eq in DASIMING_HERO_PATCH["equips"]:
+            for eq in HERO_BUILDS_PATCHES[cname]:
                 calc_res = calculate_build_stats(eq["items"], equip_name_map, hero_base)
                 equip_recs.append({
                     "title": eq["title"],
@@ -107,11 +107,12 @@ def fetch_single_hero_builds(hero, equip_id_map, equip_name_map):
                 "cname": cname,
                 "title": title,
                 "role": role_str,
-                "lane": "打野",
+                "lane": lane,
                 "equips": equip_recs,
                 "success": True
             }
         return {"ename": ename, "cname": cname, "success": False, "error": str(e)}
+
 
 def build_hero_builds(output_file=None, max_workers=10):
     """构建五大分路定位与实战出装思路数据库"""
