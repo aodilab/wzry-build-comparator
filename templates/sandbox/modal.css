@@ -1,0 +1,812 @@
+/* 铭文复合页 Modal 弹层 */
+.arcana-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.arcana-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.arcana-modal-card {
+  width: 900px;
+  max-width: 94vw;
+  max-height: 88vh;
+  background: var(--apple-panel);
+  border: 1px solid var(--apple-panel-border);
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.96);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.arcana-modal-overlay.active .arcana-modal-card {
+  transform: scale(1);
+}
+
+.arcana-modal-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--apple-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arcana-modal-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.arcana-modal-subtitle {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 3px;
+}
+
+.arcana-modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.arcana-modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--apple-subcard);
+  border: 1px solid var(--apple-border);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.arcana-modal-close:hover {
+  background: rgba(120, 120, 128, 0.2);
+  color: var(--text-primary);
+  border-color: var(--apple-border-hover);
+  transform: scale(1.05);
+}
+
+.arcana-col-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.red-dot { background: #e53935; }
+.green-dot { background: #43a047; }
+.blue-dot { background: #1e88e5; }
+
+.arcana-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px 28px 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.arcana-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.arcana-col-header {
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.arcana-col-red { color: #e53935; }
+.arcana-col-green { color: #43a047; }
+.arcana-col-blue { color: #1e88e5; }
+
+.arcana-active-card {
+  padding: 12px;
+  border-radius: 16px;
+  background: var(--apple-card);
+  border: 1.5px solid;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: var(--card-shadow);
+}
+
+.arcana-active-red { border-color: rgba(229, 57, 53, 0.35); background: linear-gradient(135deg, rgba(229, 57, 53, 0.04), transparent); }
+.arcana-active-green { border-color: rgba(67, 160, 71, 0.35); background: linear-gradient(135deg, rgba(67, 160, 71, 0.04), transparent); }
+.arcana-active-blue { border-color: rgba(30, 136, 229, 0.35); background: linear-gradient(135deg, rgba(30, 136, 229, 0.04), transparent); }
+
+.arcana-active-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arcana-active-count-tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+.count-tag-full { background: var(--color-green-bg); color: var(--color-green); }
+.count-tag-partial { background: var(--color-amber-bg); color: var(--color-amber); }
+
+.arcana-clear-btn {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.arcana-clear-btn:hover {
+  background: var(--apple-subcard);
+  color: var(--color-red);
+}
+
+.arcana-active-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.arcana-active-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: var(--apple-subcard);
+  gap: 8px;
+}
+
+.arcana-item-mini-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.arcana-active-img-sm {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.arcana-item-name-bold {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* 数量调节器 Stepper */
+.arcana-stepper {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.stepper-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid var(--apple-border);
+  background: var(--apple-card);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s;
+}
+
+.stepper-btn:hover:not(:disabled) {
+  background: var(--color-blue-bg);
+  border-color: var(--color-blue);
+  color: var(--color-blue);
+}
+
+.stepper-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.stepper-val {
+  min-width: 22px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.arcana-active-stats-box {
+  font-size: 11px;
+  color: var(--text-secondary);
+  padding-top: 6px;
+  border-top: 1px dashed var(--apple-border);
+  line-height: 1.4;
+}
+
+/* 备选铭文项中的快捷选满按钮 */
+.arcana-full-btn {
+  font-size: 10.5px;
+  padding: 3px 7px;
+  border-radius: 6px;
+  border: 1px solid var(--apple-border);
+  background: var(--apple-subcard);
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.arcana-full-btn:hover {
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+  color: #fff;
+}
+
+.arcana-options-title {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  margin-top: 4px;
+}
+
+.arcana-options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.arcana-option-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.arcana-option-item:hover {
+  background: var(--apple-card-hover);
+  border-color: var(--color-blue);
+  transform: translateX(2px);
+}
+
+.arcana-option-item.selected {
+  border-color: var(--color-blue);
+  background: var(--color-blue-bg);
+  box-shadow: 0 0 0 1px var(--color-blue);
+}
+
+.arcana-option-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.arcana-option-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.arcana-option-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.arcana-option-desc {
+  font-size: 10.5px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.arcana-option-check {
+  color: var(--color-blue);
+  font-size: 14px;
+  font-weight: bold;
+}
+
+
+/* ==========================================================================
+   二级页面：技能×出装战术联动分析 (Skill-Item Synergy Analysis Modal)
+   ========================================================================== */
+
+.synergy-header-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 11px;
+  border-radius: 980px;
+  background: linear-gradient(135deg, rgba(0, 113, 227, 0.1), rgba(175, 82, 222, 0.1));
+  border: 1px solid rgba(0, 113, 227, 0.3);
+  color: var(--color-blue);
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+.synergy-header-btn:hover {
+  background: var(--color-blue);
+  color: #fff;
+  border-color: var(--color-blue);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+}
+
+.synergy-entry-btn {
+  margin: 0 16px 12px 16px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, rgba(0, 113, 227, 0.08), rgba(175, 82, 222, 0.08));
+  border: 1px solid rgba(0, 113, 227, 0.25);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.08);
+  outline: none;
+}
+
+.synergy-entry-btn:hover {
+  background: linear-gradient(135deg, rgba(0, 113, 227, 0.15), rgba(175, 82, 222, 0.15));
+  border-color: var(--color-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 113, 227, 0.18);
+}
+
+.synergy-entry-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.synergy-entry-icon {
+  font-size: 15px;
+  color: var(--color-blue);
+}
+
+.synergy-entry-txt {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.synergy-entry-sub {
+  font-size: 10.5px;
+  color: var(--text-secondary);
+  margin-left: 4px;
+}
+
+.synergy-entry-arrow {
+  font-size: 14px;
+  color: var(--color-blue);
+  font-weight: bold;
+}
+
+/* 二级页面 Modal 遮罩与大卡片 */
+.synergy-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.synergy-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.synergy-modal-card {
+  width: 1040px;
+  max-width: 95vw;
+  height: 90vh;
+  background: var(--apple-panel);
+  border: 1px solid var(--apple-panel-border);
+  border-radius: 24px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.96);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.synergy-modal-overlay.active .synergy-modal-card {
+  transform: scale(1);
+}
+
+.synergy-modal-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--apple-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--header-bg);
+}
+
+.synergy-header-hero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.synergy-hero-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 2px solid var(--color-blue);
+  box-shadow: 0 4px 10px rgba(0, 113, 227, 0.2);
+}
+
+.synergy-hero-cname {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.synergy-hero-sub {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.synergy-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.synergy-modal-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px 30px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* 顶部出装与铭文概览横幅 */
+.synergy-banner {
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.synergy-items-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.synergy-item-thumb {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--apple-border);
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.synergy-empty-thumb {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px dashed var(--apple-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  font-size: 12px;
+}
+
+/* 模块标题与卡片网格 */
+.synergy-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+/* 技能与实战 CD 卡片网格 */
+.synergy-skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.synergy-skill-card {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.synergy-skill-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.synergy-skill-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.synergy-skill-badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--apple-subcard);
+  color: var(--color-blue);
+}
+
+.synergy-skill-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.synergy-skill-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.synergy-tag {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--color-amber-bg);
+  color: var(--color-amber);
+  font-weight: 600;
+}
+
+.synergy-cd-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--apple-subcard);
+  font-size: 11.5px;
+}
+
+.synergy-cd-highlight {
+  color: var(--color-green);
+  font-weight: 700;
+}
+
+.synergy-skill-desc {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* 装备被动实战联动深度剖析列表 */
+.synergy-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.synergy-link-card {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.synergy-link-icon-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--apple-subcard);
+  color: var(--color-blue);
+  border: 1px solid var(--apple-border);
+}
+
+.synergy-link-content {
+  flex: 1;
+}
+
+.synergy-link-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.synergy-link-sub {
+  font-size: 11px;
+  color: var(--color-blue);
+  font-weight: 600;
+}
+
+.synergy-link-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin-top: 4px;
+}
+
+/* 契合度评分与连招打法双列 */
+.synergy-bottom-grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 16px;
+}
+
+.synergy-rating-card, .synergy-combo-card {
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--card-shadow);
+}
+
+.synergy-score-circle {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.synergy-score-big {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--color-blue);
+  letter-spacing: -0.02em;
+}
+
+.synergy-radar-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.synergy-radar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+}
+
+.synergy-radar-track {
+  width: 150px;
+  height: 6px;
+  border-radius: 980px;
+  background: var(--apple-subcard);
+  overflow: hidden;
+}
+
+.synergy-radar-fill {
+  height: 100%;
+  border-radius: 980px;
+  background: linear-gradient(90deg, var(--color-blue), var(--color-green));
+}
+
+.synergy-combo-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--apple-subcard);
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.combo-step-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-blue);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-blue);
+}

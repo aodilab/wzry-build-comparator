@@ -44,4 +44,5 @@ scratch/
 # 商业私有化资产（严禁上传到公开 GitHub，防止小程序被直接盗版抄袭）
 miniprogram/
 src/builders/miniprogram_builder.py
+templates/miniprogram/
 
