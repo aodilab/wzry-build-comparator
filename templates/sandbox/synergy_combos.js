@@ -4,7 +4,10 @@
 // ==============================================================================
 
 function generateComboSteps(currentHero, skills, synergyContext) {
-  const { hasYellowShield, hasPhoenix, hasSpellblade } = synergyContext || {};
+  currentHero = currentHero || {};
+  skills = skills || [];
+  synergyContext = synergyContext || {};
+  const { hasYellowShield, hasPhoenix, hasSpellblade } = synergyContext;
   let comboSteps = [];
   const hasDash = skills.some(s => (s.tags || []).includes('位移突进'));
   const hasCc = skills.some(s => (s.tags || []).includes('硬控'));

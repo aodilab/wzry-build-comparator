@@ -12,10 +12,11 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from config.settings import OUTPUT_DIR, DOC_HERO_RELATIONS_NAME, ROLE_MAP
-from config.patches import DASIMING_HERO_PATCH
+from config.patches import HERO_RELATIONS_PATCHES
 from src.core.http import fetch_html
 from src.core.cleaner import clean_plain_text
 from src.core.hero_validator import get_validated_hero_list
+
 
 def format_desc(target_cname, raw_desc):
     """格式化关系描述，将英雄名字加粗"""
@@ -87,8 +88,8 @@ def fetch_single_hero_relations(hero, hero_map):
                         formatted_rel = format_desc(target_cname, raw_desc)
                         relations[rel_type].append(formatted_rel)
                         
-        if cname == "大司命" and not relations["最佳搭档"]:
-            relations = DASIMING_HERO_PATCH["relations"]
+        if not relations["最佳搭档"] and cname in HERO_RELATIONS_PATCHES:
+            relations = HERO_RELATIONS_PATCHES[cname]
 
         return {
             "ename": ename,
@@ -99,16 +100,17 @@ def fetch_single_hero_relations(hero, hero_map):
             "success": True
         }
     except Exception as e:
-        if cname == "大司命":
+        if cname in HERO_RELATIONS_PATCHES:
             return {
                 "ename": ename,
                 "cname": cname,
                 "title": title,
                 "role": role_str,
-                "relations": DASIMING_HERO_PATCH["relations"],
+                "relations": HERO_RELATIONS_PATCHES[cname],
                 "success": True
             }
         return {"ename": ename, "cname": cname, "success": False, "error": str(e)}
+
 
 def build_hero_relations(output_file=None, max_workers=10):
     """构建英雄战术克制与阵容搭档拓扑数据库"""

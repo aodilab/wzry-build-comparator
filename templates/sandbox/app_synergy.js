@@ -28,14 +28,6 @@ function renderSynergyContent() {
   const skills = HERO_SKILLS_DATA[hero.cname] || [];
   const slots = (typeof currentSlots !== 'undefined' && currentSlots) ? currentSlots : [];
   
-  // 同步模态框顶部英雄概览
-  const avatar = document.getElementById('synergyHeroAvatar');
-  const name = document.getElementById('synergyHeroName');
-  const role = document.getElementById('synergyHeroRole');
-  if (avatar) avatar.src = `https://game.gtimg.cn/images/yxzj/img201606/heroimg/${hero.ename}/${hero.ename}.jpg`;
-  if (name) name.innerText = hero.cname;
-  if (role) role.innerText = `${hero.lane || ''} · ${hero.role || ''}`;
-
   // 汇总当前装备 (支持官方名与常用别名双向自适应容错)
   const aliasMap = {
     '强者破军': '破军', '仁者破晓': '破晓', '贤者天书': '贤者之书', '急速之靴': '急速战靴',
@@ -50,10 +42,22 @@ function renderSynergyContent() {
     if (it) effItems.push(it);
   });
 
+  // 同步模态框顶部英雄概览
+  const avatar = document.getElementById('synergyHeroAvatar');
+  const name = document.getElementById('synergyHeroName');
+  const role = document.getElementById('synergyHeroRole');
+  const sub = document.getElementById('synergyHeroSub');
+  if (avatar) avatar.src = `https://game.gtimg.cn/images/yxzj/img201606/heroimg/${hero.ename}/${hero.ename}.jpg`;
+  if (name) name.innerText = hero.cname;
+  if (role) role.innerText = `${hero.lane || ''} · ${hero.role || ''}`;
+  if (sub) sub.innerText = `装备栏: ${effItems.length} / 6 件已装配 ｜ 技能机制与被动乘区深度诊断`;
+
+
   // 1. 技能卡片列表 HTML 组装
   let skillsCardsHtml = '';
   skills.forEach((sk, idx) => {
-    const isPassive = sk.type.includes('被动');
+    const skType = sk.type || (idx === 0 || (sk.name && sk.name.includes('被动')) ? '被动技能' : `主动技能 ${idx}`);
+    const isPassive = skType.includes('被动') || (sk.name && sk.name.includes('被动'));
     const badgeColor = isPassive ? '#ff9500' : '#0071e3';
     
     // 阶梯冷却展示
@@ -81,16 +85,17 @@ function renderSynergyContent() {
       <div class="synergy-skill-card">
         <div class="synergy-skill-header">
           <div class="synergy-skill-name-wrap">
-            <span class="synergy-type-badge" style="background:${badgeColor}">${sk.type}</span>
-            <span class="synergy-skill-name">${sk.name}</span>
+            <span class="synergy-type-badge" style="background:${badgeColor}">${skType}</span>
+            <span class="synergy-skill-name">${sk.name || `技能 ${idx + 1}`}</span>
           </div>
           <div class="synergy-skill-cd">CD: ${cdDisplay}</div>
         </div>
-        <div class="synergy-skill-desc">${sk.desc}</div>
+        <div class="synergy-skill-desc">${sk.desc || '暂无描述'}</div>
         ${tagsHtml ? `<div class="synergy-tags-row">${tagsHtml}</div>` : ''}
       </div>
     `;
   });
+
 
   // 2. 装备专属机制联动卡片 (怒龙剑盾、不死鸟、暴烈、强击等)
   const effNames = effItems.map(it => it.item_name);
@@ -229,26 +234,9 @@ function renderSynergyContent() {
 
   bodyEl.innerHTML = `
     <div class="synergy-container">
-      <div class="synergy-hero-banner">
-        <img class="synergy-hero-avatar" src="https://game.gtimg.cn/images/yxzj/img201606/heroimg/${hero.ename}/${hero.ename}.jpg" alt="${hero.cname}">
-        <div class="synergy-hero-info">
-          <div class="synergy-hero-title">${hero.cname} · ${hero.title || ''}</div>
-          <div class="synergy-hero-meta">
-            <span>定位: ${hero.role || ''}</span>
-            <span>推荐分路: ${hero.lane || ''}</span>
-            <span>装备栏: ${effItems.length} / 6 件已装配</span>
-          </div>
-        </div>
-        <div class="synergy-header-actions">
-          <button class="synergy-export-btn" onclick="copySynergyReport()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-            复制战术报告
-          </button>
-        </div>
-      </div>
-
       <!-- 配装综合契合度总览 -->
       <div class="synergy-score-card">
+
         <div class="synergy-score-left">
           <div class="synergy-score-circle" style="border-color:${rankColor};box-shadow: 0 4px 20px ${rankColor}33;">
             <div class="synergy-score-num" style="color:${rankColor};">${score}</div>

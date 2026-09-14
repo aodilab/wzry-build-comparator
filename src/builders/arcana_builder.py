@@ -11,7 +11,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from config.settings import URL_MING_LIST, URL_HERO_LIST, ROLE_MAP, COLOR_MAP, OUTPUT_DIR, DOC_ARCANA_NAME
-from config.patches import DASIMING_ARCANA_PATCH
+from config.patches import HERO_ARCANA_PATCHES
 from src.core.http import fetch_json, fetch_html
 from src.core.cleaner import clean_html, calculate_ten_times_stats
 from src.core.hero_validator import get_validated_hero_list
@@ -52,8 +52,10 @@ def fetch_hero_mingwen_rec(hero, ming_dict):
             if mid in ming_dict:
                 recom_mings.append(ming_dict[mid])
                 
-        if cname == "大司命" and not recom_mings:
-            return DASIMING_ARCANA_PATCH
+        if not recom_mings and cname in HERO_ARCANA_PATCHES:
+            patch_data = HERO_ARCANA_PATCHES[cname].copy()
+            patch_data["success"] = True
+            return patch_data
 
         return {
             "cname": cname,
@@ -64,13 +66,16 @@ def fetch_hero_mingwen_rec(hero, ming_dict):
             "success": True
         }
     except Exception as e:
-        if cname == "大司命":
-            return DASIMING_ARCANA_PATCH
+        if cname in HERO_ARCANA_PATCHES:
+            patch_data = HERO_ARCANA_PATCHES[cname].copy()
+            patch_data["success"] = True
+            return patch_data
         return {
             "cname": cname,
             "success": False,
             "error": str(e)
         }
+
 
 def build_arcana(output_file=None, max_workers=10):
     """

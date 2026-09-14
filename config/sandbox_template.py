@@ -18,6 +18,7 @@ def get_sandbox_html_template() -> str:
     """按单一职责原则组合拼装完整的单文件 HTML 运行模板"""
     base_css = _load('base.css')
     modal_css = _load('modal.css')
+    synergy_css = _load('synergy.css')
     html_body = _load('index.html')
     app_core_js = _load('app_core.js')
     app_stats_js = _load('app_stats.js')
@@ -38,8 +39,10 @@ def get_sandbox_html_template() -> str:
 <style>
 {base_css}
 {modal_css}
+{synergy_css}
 </style>
 </head>
+
 <body>
 {html_body}
 <script>
