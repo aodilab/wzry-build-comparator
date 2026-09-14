@@ -14,6 +14,7 @@ from config.item_recipes import COMPONENTS_MAP
 from config.hero_base_stats import get_hero_base_stats
 from config.hero_arcana_data import ARCANA_LEVEL_5_DICT, HERO_RECOMMENDED_ARCANA
 from config.hero_skills_data import HERO_SKILLS_DATA
+from config.patches import REWORKED_HERO_SKILLS_PATCHES
 from config.sandbox_template import SANDBOX_HTML_TEMPLATE
 from src.core.http import fetch_json
 from src.core.hero_validator import get_validated_hero_list
@@ -85,10 +86,15 @@ def build_sandbox_html(output_file=None):
             "recommended_arcana": rec_arcana
         })
 
-    # 3. 渲染单文件 HTML
+    # 3. 渲染单文件 HTML (贯彻单一数据源 SSOT，优先合并权威受控技能补丁)
+    unified_skills_data = dict(HERO_SKILLS_DATA)
+    for hero_name, patch in REWORKED_HERO_SKILLS_PATCHES.items():
+        if "skills" in patch:
+            unified_skills_data[hero_name] = patch["skills"]
+
     html_content = SANDBOX_HTML_TEMPLATE
     html_content = html_content.replace("__HEROES_DATA_PLACEHOLDER__", json.dumps(processed_heroes, ensure_ascii=False))
-    html_content = html_content.replace("__HERO_SKILLS_DATA_PLACEHOLDER__", json.dumps(HERO_SKILLS_DATA, ensure_ascii=False))
+    html_content = html_content.replace("__HERO_SKILLS_DATA_PLACEHOLDER__", json.dumps(unified_skills_data, ensure_ascii=False))
     html_content = html_content.replace("__ITEMS_DATA_PLACEHOLDER__", json.dumps(processed_items, ensure_ascii=False))
     html_content = html_content.replace("__ARCANA_DATA_PLACEHOLDER__", json.dumps(ARCANA_LEVEL_5_DICT, ensure_ascii=False))
     html_content = html_content.replace("__RECIPES_MAP_PLACEHOLDER__", json.dumps(COMPONENTS_MAP, ensure_ascii=False))
