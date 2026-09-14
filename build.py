@@ -26,9 +26,16 @@ from src.builders.arcana_builder import build_arcana
 from src.builders.rules_builder import build_rules
 from src.builders.sandbox_builder import build_sandbox_html
 
+try:
+    from src.builders.miniprogram_builder import generate_miniprogram_project
+    HAS_MINIPROGRAM = True
+except ImportError:
+    HAS_MINIPROGRAM = False
+    generate_miniprogram_project = None
+
 def main():
     parser = argparse.ArgumentParser(description="王者荣耀 6 大战术对局知识库构建流水线 (Gemini NotebookLM 专属)")
-    parser.add_argument("--all", action="store_true", help="一键全量构建所有 6 大对局知识库与配装沙盒网页")
+    parser.add_argument("--all", action="store_true", help="一键全量构建所有 6 大对局知识库、配装沙盒网页与微信原生小程序")
     parser.add_argument("--skills", action="store_true", help="构建[01]全英雄技能数值与等级成长库")
     parser.add_argument("--relations", action="store_true", help="构建[02]英雄战术克制与阵容搭档拓扑")
     parser.add_argument("--builds", action="store_true", help="构建[03]五大分路定位与实战出装思路")
@@ -36,16 +43,18 @@ def main():
     parser.add_argument("--arcana", action="store_true", help="构建[05]全铭文图鉴与英雄搭配方案")
     parser.add_argument("--rules", action="store_true", help="构建[06]峡谷战场机制与宏观运营规则")
     parser.add_argument("--sandbox", action="store_true", help="生成独立可视化配装沙盒网页 (sandbox.html)")
+    parser.add_argument("--miniprogram", action="store_true", help="生成微信原生小程序完整工程 (miniprogram/)")
     parser.add_argument("--output-dir", default=OUTPUT_DIR, help="自定义生成 Markdown 的输出目录")
     parser.add_argument("--workers", type=int, default=10, help="并发网络请求线程数 (默认10)")
 
     args = parser.parse_args()
 
     # 如果没有任何构建参数，默认打印帮助并退出
-    if not (args.all or args.skills or args.relations or args.builds or args.item or args.arcana or args.rules or args.sandbox):
+    if not (args.all or args.skills or args.relations or args.builds or args.item or args.arcana or args.rules or args.sandbox or args.miniprogram):
         parser.print_help()
         print("\n常用快捷命令：")
-        print("  python build.py --all            # 一键全量构建 6 大对局知识库与配装沙盒网页")
+        print("  python build.py --all            # 一键全量构建知识库、沙盒网页与微信原生小程序")
+        print("  python build.py --miniprogram    # 生成微信原生小程序完整工程 (miniprogram/)")
         print("  python build.py --sandbox        # 生成本地可视化配装沙盒网页 (sandbox.html)")
         print("  python build.py --skills         # 仅更新技能数值与等级成长")
         print("  python build.py --relations      # 仅更新战术克制与搭档")
@@ -107,7 +116,17 @@ def main():
         build_sandbox_html()
         print()
 
-    print("=== 全部指定构建任务顺利完成！6 大知识库已就绪，可直接拖入 NotebookLM ===")
+    # 8. 微信原生小程序完整工程
+    if args.all or args.miniprogram:
+        if HAS_MINIPROGRAM and generate_miniprogram_project:
+            print("[原生小程序] 开始生成王者配装箱原生小程序工程 (miniprogram/)...")
+            generate_miniprogram_project()
+            print()
+        elif args.miniprogram:
+            print("[提示] 当前环境未检测到私有化小程序构建器 (src/builders/miniprogram_builder.py)，已跳过。")
+            print()
+
+    print("=== 全部指定构建任务顺利完成！知识库、沙盒与小程序已就绪 ===")
 
 if __name__ == "__main__":
     main()
