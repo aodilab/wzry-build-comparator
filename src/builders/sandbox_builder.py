@@ -12,10 +12,14 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 from config.settings import URL_ITEM_LIST, ROLE_MAP, LANE_MAP
 from config.item_recipes import COMPONENTS_MAP
 from config.hero_base_stats import get_hero_base_stats
+from config.hero_arcana_data import ARCANA_LEVEL_5_DICT, HERO_RECOMMENDED_ARCANA
 from config.sandbox_template import SANDBOX_HTML_TEMPLATE
 from src.core.http import fetch_json
 from src.core.hero_validator import get_validated_hero_list
 from src.core.item_calculator import parse_single_item_stats, BOOTS_SPEED_MAP, ACTIVE_SKILL_ITEMS, JUNGLE_ITEMS
+
+# 官网 CDN 缺失图片的特殊娱乐模式/废弃装备 ID (过滤后保证全部装备 100% 具备官方高清图标)
+INVALID_ITEM_IDS = {1217, 11110, 1218, 13212, 11211, 13211, 1161, 22029, 22031, 22028, 22030, 22027, 22026}
 
 def build_sandbox_html(output_file=None):
     """
@@ -25,9 +29,13 @@ def build_sandbox_html(output_file=None):
     raw_items = fetch_json(URL_ITEM_LIST)
     heroes = get_validated_hero_list()
 
-    # 1. 结构化装备库
+    # 1. 结构化装备库 (过滤掉 404 无图及特殊模式道具)
     processed_items = []
     for it in raw_items:
+        iid = it.get("item_id")
+        if iid in INVALID_ITEM_IDS:
+            continue
+
         stats = parse_single_item_stats(it)
         cat = "攻击装备"
         t = it.get("item_type", 1)
@@ -45,7 +53,7 @@ def build_sandbox_html(output_file=None):
 
         clean_name = stats.get("name", it.get("item_name"))
         processed_items.append({
-            "item_id": it.get("item_id"),
+            "item_id": iid,
             "item_name": clean_name,
             "category": cat,
             "total_price": it.get("total_price", 0),
@@ -56,7 +64,7 @@ def build_sandbox_html(output_file=None):
             "stats": stats
         })
 
-    # 2. 结构化英雄库
+    # 2. 结构化英雄库并注入官方推荐铭文套组
     processed_heroes = []
     for h in heroes:
         ename = str(h.get("ename"))
@@ -70,6 +78,7 @@ def build_sandbox_html(output_file=None):
         role_str = "/".join(roles) if roles else "战士"
         lane = LANE_MAP.get(roles[0] if roles else "战士", "对抗路")
         base = get_hero_base_stats(ename, cname, role_str)
+        rec_arcana = HERO_RECOMMENDED_ARCANA.get(cname, {"red": "异变", "green": "鹰眼", "blue": "隐匿"})
 
         processed_heroes.append({
             "ename": ename,
@@ -77,13 +86,15 @@ def build_sandbox_html(output_file=None):
             "title": title,
             "role": role_str,
             "lane": lane,
-            "base_stats": base
+            "base_stats": base,
+            "recommended_arcana": rec_arcana
         })
 
     # 3. 渲染单文件 HTML
     html_content = SANDBOX_HTML_TEMPLATE
     html_content = html_content.replace("__HEROES_DATA_PLACEHOLDER__", json.dumps(processed_heroes, ensure_ascii=False))
     html_content = html_content.replace("__ITEMS_DATA_PLACEHOLDER__", json.dumps(processed_items, ensure_ascii=False))
+    html_content = html_content.replace("__ARCANA_DATA_PLACEHOLDER__", json.dumps(ARCANA_LEVEL_5_DICT, ensure_ascii=False))
     html_content = html_content.replace("__RECIPES_MAP_PLACEHOLDER__", json.dumps(COMPONENTS_MAP, ensure_ascii=False))
     html_content = html_content.replace("__BOOTS_MAP_PLACEHOLDER__", json.dumps(BOOTS_SPEED_MAP, ensure_ascii=False))
     html_content = html_content.replace("__ACTIVE_ITEMS_PLACEHOLDER__", json.dumps(ACTIVE_SKILL_ITEMS, ensure_ascii=False))
@@ -98,7 +109,7 @@ def build_sandbox_html(output_file=None):
     with open(index_target, "w", encoding="utf-8") as f:
         f.write(html_content)
 
-    print(f"【成功】王者荣耀六神装配装沙盒单文件已生成：'{target}' 与 '{index_target}'（支持本地离线与 GitHub Pages 在线部署）")
+    print(f"【成功】王者荣耀六神装配装沙盒单文件已生成：'{target}' 与 '{index_target}'（包含 30 颗全量五级铭文库与全英雄推荐铭文）")
     return target
 
 if __name__ == "__main__":

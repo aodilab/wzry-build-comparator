@@ -10,8 +10,8 @@ SANDBOX_HTML_TEMPLATE = """<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚔️</text></svg>">
-<title>王者荣耀局内六神装配装沙盒 ｜ Apple HIG Edition</title>
+<link rel="icon" href="assets/app_icon.png">
+<title>王者出装箱 ｜ 局内六神装配装沙盒</title>
 <style>
 /* ==========================================================================
    Apple Human Interface Guidelines (HIG) Design System
@@ -142,37 +142,24 @@ header {
   gap: 12px;
 }
 
-.brand-icon {
-  width: 40px;
-  height: 40px;
+.brand-app-icon {
+  width: 42px;
+  height: 42px;
   border-radius: 12px;
-  background: linear-gradient(135deg, var(--color-blue), #004fb0);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+  object-fit: cover;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--apple-border);
+  flex-shrink: 0;
 }
 
 .brand-titles h1 {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.015em;
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.brand-badge {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 980px;
-  background: var(--color-blue-bg);
-  color: var(--color-blue);
-  letter-spacing: 0.02em;
 }
 
 .brand-titles p {
@@ -903,6 +890,435 @@ header {
   border-radius: 980px;
 }
 
+
+/* ==========================================================================
+   英雄专属铭文指示条 (Hero Arcana Bar) 与复合模态框 (Arcana Modal)
+   ========================================================================== */
+.hero-arcana-bar {
+  margin: 0 16px 12px 16px;
+  padding: 10px 14px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hero-arcana-bar:hover {
+  background: var(--apple-card-hover);
+  border-color: var(--color-blue);
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.arcana-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arcana-bar-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.arcana-edit-link {
+  font-size: 11px;
+  color: var(--color-blue);
+  font-weight: 500;
+}
+
+.arcana-chips {
+  display: flex;
+  gap: 6px;
+}
+
+.arcana-chip {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 8px;
+  background: var(--apple-subcard);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  transition: all 0.2s;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.arcana-chip-img {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.arcana-chip-red { background: rgba(255, 59, 48, 0.08); color: #d32f2f; border-color: rgba(255, 59, 48, 0.2); }
+.arcana-chip-green { background: rgba(52, 199, 89, 0.08); color: #2e7d32; border-color: rgba(52, 199, 89, 0.2); }
+.arcana-chip-blue { background: rgba(0, 113, 227, 0.08); color: #0277bd; border-color: rgba(0, 113, 227, 0.2); }
+
+/* 铭文复合页 Modal 弹层 */
+.arcana-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.arcana-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.arcana-modal-card {
+  width: 900px;
+  max-width: 94vw;
+  max-height: 88vh;
+  background: var(--apple-panel);
+  border: 1px solid var(--apple-panel-border);
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.96);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.arcana-modal-overlay.active .arcana-modal-card {
+  transform: scale(1);
+}
+
+.arcana-modal-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--apple-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arcana-modal-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.arcana-modal-subtitle {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 3px;
+}
+
+.arcana-modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.arcana-modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--apple-subcard);
+  border: 1px solid var(--apple-border);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.arcana-modal-close:hover {
+  background: var(--color-red-bg);
+  color: var(--color-red);
+  border-color: var(--color-red);
+}
+
+.arcana-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px 28px 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.arcana-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.arcana-col-header {
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.arcana-col-red { color: #e53935; }
+.arcana-col-green { color: #43a047; }
+.arcana-col-blue { color: #1e88e5; }
+
+.arcana-active-card {
+  padding: 12px;
+  border-radius: 16px;
+  background: var(--apple-card);
+  border: 1.5px solid;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: var(--card-shadow);
+}
+
+.arcana-active-red { border-color: rgba(229, 57, 53, 0.35); background: linear-gradient(135deg, rgba(229, 57, 53, 0.04), transparent); }
+.arcana-active-green { border-color: rgba(67, 160, 71, 0.35); background: linear-gradient(135deg, rgba(67, 160, 71, 0.04), transparent); }
+.arcana-active-blue { border-color: rgba(30, 136, 229, 0.35); background: linear-gradient(135deg, rgba(30, 136, 229, 0.04), transparent); }
+
+.arcana-active-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arcana-active-count-tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+.count-tag-full { background: var(--color-green-bg); color: var(--color-green); }
+.count-tag-partial { background: var(--color-amber-bg); color: var(--color-amber); }
+
+.arcana-clear-btn {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.arcana-clear-btn:hover {
+  background: var(--apple-subcard);
+  color: var(--color-red);
+}
+
+.arcana-active-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.arcana-active-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: var(--apple-subcard);
+  gap: 8px;
+}
+
+.arcana-item-mini-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.arcana-active-img-sm {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.arcana-item-name-bold {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* 数量调节器 Stepper */
+.arcana-stepper {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.stepper-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid var(--apple-border);
+  background: var(--apple-card);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s;
+}
+
+.stepper-btn:hover:not(:disabled) {
+  background: var(--color-blue-bg);
+  border-color: var(--color-blue);
+  color: var(--color-blue);
+}
+
+.stepper-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.stepper-val {
+  min-width: 22px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.arcana-active-stats-box {
+  font-size: 11px;
+  color: var(--text-secondary);
+  padding-top: 6px;
+  border-top: 1px dashed var(--apple-border);
+  line-height: 1.4;
+}
+
+/* 备选铭文项中的快捷选满按钮 */
+.arcana-full-btn {
+  font-size: 10.5px;
+  padding: 3px 7px;
+  border-radius: 6px;
+  border: 1px solid var(--apple-border);
+  background: var(--apple-subcard);
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.arcana-full-btn:hover {
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+  color: #fff;
+}
+
+.arcana-options-title {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  margin-top: 4px;
+}
+
+.arcana-options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.arcana-option-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.arcana-option-item:hover {
+  background: var(--apple-card-hover);
+  border-color: var(--color-blue);
+  transform: translateX(2px);
+}
+
+.arcana-option-item.selected {
+  border-color: var(--color-blue);
+  background: var(--color-blue-bg);
+  box-shadow: 0 0 0 1px var(--color-blue);
+}
+
+.arcana-option-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.arcana-option-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.arcana-option-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.arcana-option-desc {
+  font-size: 10.5px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.arcana-option-check {
+  color: var(--color-blue);
+  font-size: 14px;
+  font-weight: bold;
+}
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-blue);
 }
@@ -913,10 +1329,10 @@ header {
 <!-- 苹果风格顶部导航 -->
 <header>
   <div class="brand-wrapper">
-    <div class="brand-icon">⚔️</div>
+    <img class="brand-app-icon" src="assets/app_icon.png" alt="王者出装箱" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚔️</text></svg>'">
     <div class="brand-titles">
-      <h1>王者荣耀六神装配装沙盒 <span class="brand-badge">Apple HIG Edition</span></h1>
-      <p>动态数值演算 ｜ 小件吞噬规则 ｜ 双向属性转化 ｜ 装备互斥诊断</p>
+      <h1>王者出装箱</h1>
+      <p>局内六神装配装沙盒 ｜ 30颗全量铭文自由搭配 ｜ 属性实时演算</p>
     </div>
   </div>
   <div class="header-actions">
@@ -949,6 +1365,19 @@ header {
         <div class="spotlight-title" id="spotTitle">当前选中</div>
         <div class="spotlight-name" id="spotName">-</div>
         <div class="spotlight-lane-tag" id="spotLane">-</div>
+      </div>
+    </div>
+
+    <!-- 30 颗满配铭文状态快捷栏 (点击唤起复合配置面板) -->
+    <div class="hero-arcana-bar" onclick="openArcanaModal()" title="点击自定义调整铭文搭配">
+      <div class="arcana-bar-header">
+        <span class="arcana-bar-label">
+          <span>🔖</span> 30颗满配铭文方案
+        </span>
+        <span class="arcana-edit-link">调整铭文 ›</span>
+      </div>
+      <div class="arcana-chips" id="arcanaChipsBar">
+        <!-- 动态显示红绿蓝三色铭文胶囊 -->
       </div>
     </div>
 
@@ -1038,10 +1467,38 @@ header {
 
 </main>
 
+<!-- 铭文复合配置面板 (Apple HIG Sheet Modal) -->
+<div class="arcana-modal-overlay" id="arcanaModalOverlay" onclick="closeArcanaModal(event)">
+  <div class="arcana-modal-card" onclick="event.stopPropagation()">
+    <div class="arcana-modal-header">
+      <div>
+        <div class="arcana-modal-title">
+          <span>🔖</span> 30 颗满配五级铭文配置
+        </div>
+        <div class="arcana-modal-subtitle" id="arcanaModalSub">
+          当前英雄专属推荐，属性已自动实时累加至 15 级最终面板
+        </div>
+      </div>
+      <div class="arcana-modal-actions">
+        <button class="apple-btn apple-btn-secondary" onclick="resetToHeroDefaultArcana()" title="重置为当前英雄的官方推荐铭文">
+          ↺ 恢复官方推荐
+        </button>
+        <button class="arcana-modal-close" onclick="closeArcanaModal()" title="关闭">✕</button>
+      </div>
+    </div>
+
+    <!-- 三栏红绿蓝配置区 -->
+    <div class="arcana-modal-body" id="arcanaModalBody">
+      <!-- 动态渲染红色/绿色/蓝色铭文槽位与选择列表 -->
+    </div>
+  </div>
+</div>
+
 <script>
 // === 静态内嵌数据 ===
 const HEROES_DATA = __HEROES_DATA_PLACEHOLDER__;
 const ITEMS_DATA = __ITEMS_DATA_PLACEHOLDER__;
+const ARCANA_DATA = __ARCANA_DATA_PLACEHOLDER__;
 const RECIPES_MAP = __RECIPES_MAP_PLACEHOLDER__;
 const BOOTS_MAP = __BOOTS_MAP_PLACEHOLDER__;
 const ACTIVE_ITEMS = __ACTIVE_ITEMS_PLACEHOLDER__;
@@ -1052,6 +1509,8 @@ let currentHero = HEROES_DATA[0] || {};
 let currentSlots = [];
 let currentHeroFilter = "全部";
 let currentItemFilter = "全部";
+// 铭文状态：每种颜色支持混搭，记录各铭文具体颗数，如 { red: { '异变': 9, '纷争': 1 }, green: { '鹰眼': 10 }, blue: { '狩猎': 7, '夺萃': 3 } }
+let currentArcana = { red: { "异变": 10 }, green: { "鹰眼": 10 }, blue: { "隐匿": 10 } };
 
 window.onload = () => {
   // 读取用户本地保存的主题偏好（默认浅色）
@@ -1059,7 +1518,9 @@ window.onload = () => {
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeBtnIcon(savedTheme);
 
+  initHeroArcana(currentHero);
   updateSpotlight();
+  renderArcanaBar();
   renderHeroes();
   renderItems();
   renderSlots();
@@ -1127,10 +1588,286 @@ function renderHeroes() {
   });
 }
 
+function initHeroArcana(hero) {
+  if (hero && hero.recommended_arcana) {
+    const rec = hero.recommended_arcana;
+    currentArcana = {
+      red: { [rec.red]: 10 },
+      green: { [rec.green]: 10 },
+      blue: { [rec.blue]: 10 }
+    };
+  } else {
+    currentArcana = {
+      red: { "异变": 10 },
+      green: { "鹰眼": 10 },
+      blue: { "隐匿": 10 }
+    };
+  }
+}
+
 function selectHero(hero) {
   currentHero = hero;
+  initHeroArcana(hero);
   updateSpotlight();
+  renderArcanaBar();
   renderHeroes();
+  recalculate();
+}
+
+
+// === 铭文管理与复合模态框系统 (支持自由混搭任意颗数) ===
+function getColorTotalCount(colorKey) {
+  const map = currentArcana[colorKey] || {};
+  return Object.values(map).reduce((sum, val) => sum + val, 0);
+}
+
+function renderArcanaBar() {
+  const container = document.getElementById('arcanaChipsBar');
+  if (!container) return;
+  container.innerHTML = '';
+
+  const colors = [
+    { key: 'red', name: '红', cls: 'arcana-chip-red' },
+    { key: 'green', name: '绿', cls: 'arcana-chip-green' },
+    { key: 'blue', name: '蓝', cls: 'arcana-chip-blue' }
+  ];
+
+  colors.forEach(c => {
+    const map = currentArcana[c.key] || {};
+    const entries = Object.entries(map).filter(([_, cnt]) => cnt > 0);
+    const totalCount = getColorTotalCount(c.key);
+    const chip = document.createElement('div');
+    chip.className = `arcana-chip ${c.cls}`;
+
+    if (entries.length === 0) {
+      chip.innerHTML = `<span>${c.name}: 未配置</span>`;
+    } else {
+      // 找到颗数最多的铭文用来展示图标
+      entries.sort((a, b) => b[1] - a[1]);
+      const mainArc = ARCANA_DATA[entries[0][0]] || {};
+      const label = entries.map(([name, count]) => `${count}${name}`).join(' · ');
+      chip.title = `${c.name}色铭文 (${totalCount}/10颗): ` + entries.map(([name, count]) => `${name} ×${count}`).join(' ｜ ');
+      chip.innerHTML = `
+        <img class="arcana-chip-img" src="${mainArc.icon || ''}" onerror="this.style.display='none'">
+        <span>${label}</span>
+      `;
+    }
+    container.appendChild(chip);
+  });
+}
+
+function openArcanaModal() {
+  const overlay = document.getElementById('arcanaModalOverlay');
+  if (!overlay) return;
+  overlay.classList.add('active');
+  document.getElementById('arcanaModalSub').innerText = `【${currentHero.cname || ''}】铭文方案，支持自由增减颗数混搭，修改后立即实时重新演算面板`;
+  renderArcanaModal();
+}
+
+function closeArcanaModal(e) {
+  if (e && e.target !== e.currentTarget) return;
+  const overlay = document.getElementById('arcanaModalOverlay');
+  if (overlay) overlay.classList.remove('active');
+}
+
+function renderArcanaModal() {
+  const body = document.getElementById('arcanaModalBody');
+  if (!body) return;
+  body.innerHTML = '';
+
+  const sections = [
+    { key: 'red', title: '红色铭文 (上限10颗)', colClass: 'arcana-col-red', activeClass: 'arcana-active-red' },
+    { key: 'green', title: '绿色铭文 (上限10颗)', colClass: 'arcana-col-green', activeClass: 'arcana-active-green' },
+    { key: 'blue', title: '蓝色铭文 (上限10颗)', colClass: 'arcana-col-blue', activeClass: 'arcana-active-blue' }
+  ];
+
+  sections.forEach(sec => {
+    const col = document.createElement('div');
+    col.className = 'arcana-col';
+
+    const map = currentArcana[sec.key] || {};
+    const totalCount = getColorTotalCount(sec.key);
+    const countTagClass = totalCount === 10 ? 'count-tag-full' : 'count-tag-partial';
+
+    // 1. 计算当前颜色下已选铭文的汇总属性
+    let colTotals = { atk:0, ap:0, pdef:0, mdef:0, hp:0, crit:0, crit_effect:0, aspeed:0, cdr:0, percent_speed:0, p_lifesteal:0, m_lifesteal:0, p_pierce:0, m_pierce:0, hp_regen:0 };
+    for (const [name, count] of Object.entries(map)) {
+      if (count > 0 && ARCANA_DATA[name] && ARCANA_DATA[name].stats_1) {
+        const s = ARCANA_DATA[name].stats_1;
+        colTotals.atk += (s.phys_atk || 0) * count;
+        colTotals.ap += (s.magic_atk || 0) * count;
+        colTotals.pdef += (s.phys_def || 0) * count;
+        colTotals.mdef += (s.magic_def || 0) * count;
+        colTotals.hp += (s.max_hp || 0) * count;
+        colTotals.crit += (s.crit_rate_pct || 0) * count;
+        colTotals.crit_effect += (s.crit_effect_pct || 0) * count;
+        colTotals.aspeed += (s.atk_speed_pct || 0) * count;
+        colTotals.cdr += (s.cd_reduction_pct || 0) * count;
+        colTotals.percent_speed += (s.move_speed_pct || 0) * count;
+        colTotals.p_lifesteal += (s.phys_vamp_pct || 0) * count;
+        colTotals.m_lifesteal += (s.magic_vamp_pct || 0) * count;
+        colTotals.p_pierce += (s.phys_pierce || 0) * count;
+        colTotals.m_pierce += (s.magic_pierce || 0) * count;
+        colTotals.hp_regen += (s.hp_regen || 0) * count;
+      }
+    }
+
+    const statSummaryLines = [];
+    if (colTotals.atk) statSummaryLines.push(`物攻 +${Math.round(colTotals.atk*10)/10}`);
+    if (colTotals.ap) statSummaryLines.push(`法攻 +${Math.round(colTotals.ap*10)/10}`);
+    if (colTotals.max_hp || colTotals.hp) statSummaryLines.push(`生命 +${Math.round(colTotals.hp*10)/10}`);
+    if (colTotals.pdef) statSummaryLines.push(`物防 +${Math.round(colTotals.pdef*10)/10}`);
+    if (colTotals.mdef) statSummaryLines.push(`魔防 +${Math.round(colTotals.mdef*10)/10}`);
+    if (colTotals.p_pierce) statSummaryLines.push(`物穿 +${Math.round(colTotals.p_pierce*10)/10}`);
+    if (colTotals.m_pierce) statSummaryLines.push(`法穿 +${Math.round(colTotals.m_pierce*10)/10}`);
+    if (colTotals.aspeed) statSummaryLines.push(`攻速 +${Math.round(colTotals.aspeed*10)/10}%`);
+    if (colTotals.percent_speed) statSummaryLines.push(`移速 +${Math.round(colTotals.percent_speed*10)/10}%`);
+    if (colTotals.crit) statSummaryLines.push(`暴击率 +${Math.round(colTotals.crit*10)/10}%`);
+    if (colTotals.crit_effect) statSummaryLines.push(`暴效 +${Math.round(colTotals.crit_effect*10)/10}%`);
+    if (colTotals.cdr) statSummaryLines.push(`冷缩 +${Math.round(colTotals.cdr*10)/10}%`);
+    if (colTotals.p_lifesteal) statSummaryLines.push(`物吸 +${Math.round(colTotals.p_lifesteal*10)/10}%`);
+    if (colTotals.m_lifesteal) statSummaryLines.push(`法吸 +${Math.round(colTotals.m_lifesteal*10)/10}%`);
+    if (colTotals.hp_regen) statSummaryLines.push(`回血 +${Math.round(colTotals.hp_regen*10)/10}`);
+
+    const statSummaryStr = statSummaryLines.join(' ｜ ') || '暂无已生效属性';
+
+    // 2. 生成已选组合条目 HTML
+    const activeEntries = Object.entries(map).filter(([_, cnt]) => cnt > 0);
+    let activeRowsHtml = '';
+    if (activeEntries.length === 0) {
+      activeRowsHtml = `<div style="font-size: 11px; color: var(--text-tertiary); text-align: center; padding: 10px 0;">当前槽位为空，请从下方选择添加（最多10颗）</div>`;
+    } else {
+      activeEntries.forEach(([name, cnt]) => {
+        const arcData = ARCANA_DATA[name] || {};
+        activeRowsHtml += `
+          <div class="arcana-active-item-row">
+            <div class="arcana-item-mini-info">
+              <img class="arcana-active-img-sm" src="${arcData.icon}" alt="${name}">
+              <div>
+                <span class="arcana-item-name-bold">${name}</span>
+                <span style="font-size: 10px; color: var(--text-tertiary); margin-left: 4px;">(${arcData.raw_des})</span>
+              </div>
+            </div>
+            <div class="arcana-stepper">
+              <button class="stepper-btn" onclick="modifyArcanaCount('${sec.key}', '${name}', -1)">-</button>
+              <span class="stepper-val">${cnt}</span>
+              <button class="stepper-btn" onclick="modifyArcanaCount('${sec.key}', '${name}', 1)" ${totalCount >= 10 ? 'disabled' : ''}>+</button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // 3. 筛选出属于当前颜色的全部 10 款五级铭文
+    const colorArcanas = Object.values(ARCANA_DATA).filter(a => a.color_type === sec.key);
+    let optionsHtml = '';
+    colorArcanas.forEach(opt => {
+      const currentCount = map[opt.name] || 0;
+      const isSelected = currentCount > 0;
+      optionsHtml += `
+        <div class="arcana-option-item ${isSelected ? 'selected' : ''}">
+          <img class="arcana-option-img" src="${opt.icon}" alt="${opt.name}">
+          <div class="arcana-option-meta">
+            <div class="arcana-option-name">${opt.name}</div>
+            <div class="arcana-option-desc">${opt.raw_des}</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <button class="arcana-full-btn" onclick="setArcanaFull('${sec.key}', '${opt.name}')" title="将该铭文直接设为 10 颗满配">满配10</button>
+            <div class="arcana-stepper">
+              <button class="stepper-btn" onclick="modifyArcanaCount('${sec.key}', '${opt.name}', -1)" ${currentCount <= 0 ? 'disabled' : ''}>-</button>
+              <span class="stepper-val" style="${currentCount > 0 ? 'color: var(--color-blue);' : 'color: var(--text-tertiary);'}">${currentCount}</span>
+              <button class="stepper-btn" onclick="modifyArcanaCount('${sec.key}', '${opt.name}', 1)" ${totalCount >= 10 ? 'disabled' : ''}>+</button>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    col.innerHTML = `
+      <div class="arcana-col-header ${sec.colClass}">
+        <span>●</span> ${sec.title}
+      </div>
+      <div class="arcana-active-card ${sec.activeClass}">
+        <div class="arcana-active-header">
+          <span class="arcana-active-count-tag ${countTagClass}">已配 ${totalCount} / 10 颗</span>
+          <button class="arcana-clear-btn" onclick="clearArcanaSlot('${sec.key}')" title="清空该颜色铭文">清空</button>
+        </div>
+        <div class="arcana-active-list">
+          ${activeRowsHtml}
+        </div>
+        <div class="arcana-active-stats-box">
+          <strong>槽位加成</strong>：${statSummaryStr}
+        </div>
+      </div>
+      <div class="arcana-options-title">五级铭文库（可自由加减混搭）：</div>
+      <div class="arcana-options-grid">
+        ${optionsHtml}
+      </div>
+    `;
+    body.appendChild(col);
+  });
+}
+
+function showToast(msg) {
+  let toast = document.getElementById('sandboxToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'sandboxToast';
+    toast.style.cssText = "position:fixed; bottom:40px; left:50%; transform:translateX(-50%); background:rgba(30,30,32,0.88); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); color:#fff; padding:10px 22px; border-radius:980px; font-size:13px; font-weight:500; box-shadow:0 10px 30px rgba(0,0,0,0.25); z-index:99999; pointer-events:none; transition:all 0.3s cubic-bezier(0.16,1,0.3,1); opacity:0;";
+    document.body.appendChild(toast);
+  }
+  toast.innerText = msg;
+  toast.style.opacity = '1';
+  toast.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(-50%) translateY(10px)';
+  }, 2200);
+}
+
+function modifyArcanaCount(colorKey, arcanaName, delta) {
+  if (!currentArcana[colorKey]) currentArcana[colorKey] = {};
+  const curr = currentArcana[colorKey][arcanaName] || 0;
+  const total = getColorTotalCount(colorKey);
+
+  if (delta > 0) {
+    if (total >= 10) {
+      showToast("当前槽位已满 10 颗！请先点击 [-] 减少其他铭文，再增加。");
+      return;
+    }
+    currentArcana[colorKey][arcanaName] = curr + 1;
+  } else if (delta < 0) {
+    if (curr > 1) {
+      currentArcana[colorKey][arcanaName] = curr - 1;
+    } else {
+      delete currentArcana[colorKey][arcanaName];
+    }
+  }
+
+  renderArcanaBar();
+  renderArcanaModal();
+  recalculate();
+}
+
+function setArcanaFull(colorKey, arcanaName) {
+  currentArcana[colorKey] = { [arcanaName]: 10 };
+  renderArcanaBar();
+  renderArcanaModal();
+  recalculate();
+}
+
+function clearArcanaSlot(colorKey) {
+  currentArcana[colorKey] = {};
+  renderArcanaBar();
+  renderArcanaModal();
+  recalculate();
+}
+
+function resetToHeroDefaultArcana() {
+  initHeroArcana(currentHero);
+  renderArcanaBar();
+  renderArcanaModal();
   recalculate();
 }
 
@@ -1258,6 +1995,36 @@ function recalculate() {
   let totals = { atk:0, ap:0, pdef:0, mdef:0, hp:0, mp:0, crit:0, aspeed:0, cdr:0, percent_speed:0, flat_speed:0, p_lifesteal:0, m_lifesteal:0, p_pierce_flat:0, p_pierce_percent:0, m_pierce_flat:0, m_pierce_percent:0, has_hat:false };
   let bootsCounted = false;
 
+  // 铭文加成汇总（支持自由混搭任意颗数，如 9 异变 + 1 纷争）
+  let arcanaTotals = { atk:0, ap:0, pdef:0, mdef:0, hp:0, crit:0, crit_effect:0, aspeed:0, cdr:0, percent_speed:0, p_lifesteal:0, m_lifesteal:0, p_pierce_flat:0, m_pierce_flat:0, hp_regen:0 };
+  ['red', 'green', 'blue'].forEach(col => {
+    const map = currentArcana[col] || {};
+    for (const [name, count] of Object.entries(map)) {
+      if (count > 0 && ARCANA_DATA[name] && ARCANA_DATA[name].stats_1) {
+        const s = ARCANA_DATA[name].stats_1;
+        arcanaTotals.atk += (s.phys_atk || 0) * count;
+        arcanaTotals.ap += (s.magic_atk || 0) * count;
+        arcanaTotals.pdef += (s.phys_def || 0) * count;
+        arcanaTotals.mdef += (s.magic_def || 0) * count;
+        arcanaTotals.hp += (s.max_hp || 0) * count;
+        arcanaTotals.crit += (s.crit_rate_pct || 0) * count;
+        arcanaTotals.crit_effect += (s.crit_effect_pct || 0) * count;
+        arcanaTotals.aspeed += (s.atk_speed_pct || 0) * count;
+        arcanaTotals.cdr += (s.cd_reduction_pct || 0) * count;
+        arcanaTotals.percent_speed += (s.move_speed_pct || 0) * count;
+        arcanaTotals.p_lifesteal += (s.phys_vamp_pct || 0) * count;
+        arcanaTotals.m_lifesteal += (s.magic_vamp_pct || 0) * count;
+        arcanaTotals.p_pierce_flat += (s.phys_pierce || 0) * count;
+        arcanaTotals.m_pierce_flat += (s.magic_pierce || 0) * count;
+        arcanaTotals.hp_regen += (s.hp_regen || 0) * count;
+      }
+    }
+  });
+  // 消除浮点数精度累加误差
+  for (let k in arcanaTotals) {
+    arcanaTotals[k] = Math.round(arcanaTotals[k] * 10) / 10;
+  }
+
   currentSlots.forEach(it => totalGold += (it.total_price || 0));
 
   effectiveItems.forEach(it => {
@@ -1286,8 +2053,10 @@ function recalculate() {
     }
   });
 
-  const finalAp = totals.has_hat ? Math.floor(totals.ap * 1.3) : totals.ap;
-  const cappedCdr = Math.min(Math.floor(totals.cdr), 40);
+  const rawAp = totals.ap + arcanaTotals.ap;
+  const finalAp = totals.has_hat ? Math.floor(rawAp * 1.3) : rawAp;
+  const totalCdr = totals.cdr + arcanaTotals.cdr;
+  const cappedCdr = Math.min(Math.floor(totalCdr), 40);
 
   // 英雄 15 级基础属性
   const b = currentHero.base_stats || { hp:[3200,7000], atk:[170,380], pdef:[100,400], mdef:[50,169], speed:370, aspeed:"+2.0%" };
@@ -1299,7 +2068,7 @@ function recalculate() {
   const growthMatch = (b.aspeed || '+1.0%').match(/([\\d\\.]+)%/);
   const growthVal = growthMatch ? parseFloat(growthMatch[1]) : 1.0;
   const heroSelfAspeed = Math.floor(growthVal * 14);
-  const totalAspeed = heroSelfAspeed + Math.floor(totals.aspeed);
+  const totalAspeed = heroSelfAspeed + Math.floor(totals.aspeed) + Math.floor(arcanaTotals.aspeed);
 
   // 二次转化加成
   let extraPdef = 0;
@@ -1309,27 +2078,34 @@ function recalculate() {
   if (effectiveItems.some(i => i.item_name === '时之预言')) {
     const propVal = Math.min(Math.floor(finalAp * 0.1), 250);
     extraPdef += propVal; extraMdef += propVal;
-    extraPdefNote = `(含时之预言+${propVal}) `;
-    extraMdefNote = `(含时之预言+${propVal}) `;
+    extraPdefNote = `(时之预言+${propVal}) `;
   }
   if (effectiveItems.some(i => i.item_name === '破魔刀')) {
-    const pmVal = Math.min(Math.floor((bAtk + totals.atk) * 0.5), 250);
+    const pmVal = Math.min(Math.floor((bAtk + totals.atk + arcanaTotals.atk) * 0.5), 250);
     extraMdef += pmVal;
-    extraMdefNote = `(含破魔刀+${pmVal}) `;
+    extraMdefNote = `(破魔刀+${pmVal}) `;
   }
 
-  const totPdef = bPdef + totals.pdef + extraPdef;
-  const totMdef = bMdef + totals.mdef + extraMdef;
+  const finalHp = bHp + totals.hp + arcanaTotals.hp;
+  const totPdef = bPdef + totals.pdef + arcanaTotals.pdef + extraPdef;
+  const totMdef = bMdef + totals.mdef + arcanaTotals.mdef + extraMdef;
   const pReduction = (totPdef / (totPdef + 602) * 100).toFixed(1);
   const mReduction = (totMdef / (totMdef + 602) * 100).toFixed(1);
 
-  const pspeedStr = totals.percent_speed > 0 ? totals.percent_speed.toFixed(1).replace(/\\.0$/, '') : '0';
-  const calcSpeed = Math.floor((bSpeed + totals.flat_speed) * (1 + totals.percent_speed / 100));
+  const totalSpeedPct = totals.percent_speed + arcanaTotals.percent_speed;
+  const pspeedStr = totalSpeedPct > 0 ? totalSpeedPct.toFixed(1).replace(/\\.0$/, '') : '0';
+  const calcSpeed = Math.floor((bSpeed + totals.flat_speed) * (1 + totalSpeedPct / 100));
+
+  const totalCrit = Math.round((totals.crit + arcanaTotals.crit) * 10) / 10;
+  const totalPhysPierce = Math.round((totals.p_pierce_flat + arcanaTotals.p_pierce_flat) * 10) / 10;
+  const totalMagicPierce = Math.round((totals.m_pierce_flat + arcanaTotals.m_pierce_flat) * 10) / 10;
+  const totalPhysVamp = Math.round((totals.p_lifesteal + arcanaTotals.p_lifesteal) * 10) / 10;
+  const totalMagicVamp = Math.round((totals.m_lifesteal + arcanaTotals.m_lifesteal) * 10) / 10;
 
   // 渲染总金币
   document.getElementById('totalGold').innerText = `${totalGold.toLocaleString()} G`;
   
-  // 渲染 Apple Health 风格属性面板
+  // 渲染 Apple Health 风格属性面板 (基础 + 装备 + 铭文 复合精准呈现)
   const statsBox = document.getElementById('statsContainer');
   statsBox.innerHTML = `
     <!-- 生存健康面板 -->
@@ -1341,16 +2117,16 @@ function recalculate() {
       <div class="metric-card">
         <div class="metric-label-group">
           <span class="metric-name">最终最大生命值</span>
-          <span class="metric-sub">${bHp} 基础 + ${totals.hp} 装备</span>
+          <span class="metric-sub">${bHp}基 + ${totals.hp}装 + ${arcanaTotals.hp}铭</span>
         </div>
         <div class="metric-value-group">
-          <span class="metric-val">${(bHp + totals.hp).toLocaleString()}</span>
+          <span class="metric-val">${finalHp.toLocaleString()}</span>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-label-group">
           <span class="metric-name">物理防御 (物抗)</span>
-          <span class="metric-sub">${extraPdefNote}免伤率 ${pReduction}%</span>
+          <span class="metric-sub">${extraPdefNote}${bPdef}基 + ${totals.pdef}装 + ${arcanaTotals.pdef}铭 ｜ 免伤率 ${pReduction}%</span>
         </div>
         <div class="metric-value-group">
           <span class="metric-val">${totPdef}</span>
@@ -1360,7 +2136,7 @@ function recalculate() {
       <div class="metric-card">
         <div class="metric-label-group">
           <span class="metric-name">法术防御 (魔抗)</span>
-          <span class="metric-sub">${extraMdefNote}免伤率 ${mReduction}%</span>
+          <span class="metric-sub">${extraMdefNote}${bMdef}基 + ${totals.mdef}装 + ${arcanaTotals.mdef}铭 ｜ 免伤率 ${mReduction}%</span>
         </div>
         <div class="metric-value-group">
           <span class="metric-val">${totMdef}</span>
@@ -1378,16 +2154,16 @@ function recalculate() {
       <div class="metric-card">
         <div class="metric-label-group">
           <span class="metric-name">最终物理攻击</span>
-          <span class="metric-sub">${bAtk} 基础 + ${totals.atk} 装备</span>
+          <span class="metric-sub">${bAtk}基 + ${totals.atk}装 + ${arcanaTotals.atk}铭</span>
         </div>
         <div class="metric-value-group">
-          <span class="metric-val">${bAtk + totals.atk}</span>
+          <span class="metric-val">${bAtk + totals.atk + arcanaTotals.atk}</span>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-label-group">
           <span class="metric-name">最终法术攻击</span>
-          <span class="metric-sub">${totals.has_hat ? '含博学者之怒+30%加成' : '法术装备总和'}</span>
+          <span class="metric-sub">${totals.has_hat ? '含帽子+30% ｜ ' : ''}${totals.ap}装 + ${arcanaTotals.ap}铭</span>
         </div>
         <div class="metric-value-group">
           <span class="metric-val" style="color: ${finalAp > 0 ? 'var(--color-purple)' : 'inherit'};">${finalAp}</span>
@@ -1396,10 +2172,10 @@ function recalculate() {
       <div class="metric-card">
         <div class="metric-label-group">
           <span class="metric-name">暴击率 / 攻速总计</span>
-          <span class="metric-sub">成长+${heroSelfAspeed}% ｜ 装备+${Math.floor(totals.aspeed)}%</span>
+          <span class="metric-sub">暴击(装${Math.floor(totals.crit)}+铭${Math.floor(arcanaTotals.crit)}) ｜ 攻速(成${heroSelfAspeed}+装${Math.floor(totals.aspeed)}+铭${Math.floor(arcanaTotals.aspeed)})</span>
         </div>
         <div class="metric-value-group">
-          <span class="metric-val">${Math.floor(totals.crit)}% ｜ ${totalAspeed}%</span>
+          <span class="metric-val">${totalCrit}% ｜ ${totalAspeed}%</span>
         </div>
       </div>
     </div>
@@ -1422,7 +2198,7 @@ function recalculate() {
       <div class="metric-card">
         <div class="metric-label-group">
           <span class="metric-name">冷却缩减</span>
-          <span class="metric-sub">${totals.cdr >= 40 ? '⚡ 达到 40% 极限制动' : `还差 ${40 - cappedCdr}% 达到满冷缩`}</span>
+          <span class="metric-sub">装+${Math.floor(totals.cdr)}% ｜ 铭+${Math.floor(arcanaTotals.cdr)}%${cappedCdr >= 40 ? ' (满冷缩)' : ''}</span>
         </div>
         <div class="metric-value-group">
           <span class="metric-val">${cappedCdr}%</span>
@@ -1432,7 +2208,7 @@ function recalculate() {
       <div class="metric-card">
         <div class="metric-label-group">
           <span class="metric-name">双穿透 (固定/百分比)</span>
-          <span class="metric-sub">物穿 ${totals.p_pierce_flat}点(${totals.p_pierce_percent}%) ｜ 魔穿 ${totals.m_pierce_flat}点(${totals.m_pierce_percent}%)</span>
+          <span class="metric-sub">物穿 ${totalPhysPierce}点(${totals.p_pierce_percent}%) ｜ 魔穿 ${totalMagicPierce}点(${totals.m_pierce_percent}%)</span>
         </div>
         <div class="metric-value-group">
           <span class="metric-highlight">双抗穿透生效</span>
@@ -1441,10 +2217,10 @@ function recalculate() {
       <div class="metric-card">
         <div class="metric-label-group">
           <span class="metric-name">续航吸血</span>
-          <span class="metric-sub">物理吸血 ${totals.p_lifesteal}% ｜ 法术吸血 ${totals.m_lifesteal}%</span>
+          <span class="metric-sub">物吸 ${totalPhysVamp}% (含铭+${arcanaTotals.p_lifesteal}%) ｜ 法吸 ${totalMagicVamp}% (含铭+${arcanaTotals.m_lifesteal}%)</span>
         </div>
         <div class="metric-value-group">
-          <span class="metric-val">${totals.p_lifesteal || totals.m_lifesteal ? `${totals.p_lifesteal}% / ${totals.m_lifesteal}%` : '0%'}</span>
+          <span class="metric-val">${totalPhysVamp || totalMagicVamp ? `${totalPhysVamp}% / ${totalMagicVamp}%` : '0%'}</span>
         </div>
       </div>
     </div>
@@ -1504,7 +2280,14 @@ function exportMarkdown() {
     return;
   }
   const eff = currentSlots.map(s => s.item_name).join(' + ');
-  const text = `### 自定义出装方案：${currentHero.cname}\\n- 英雄定位：${currentHero.lane} / ${currentHero.role}\\n- 装备配置：${eff}\\n- 总金币造价：${document.getElementById('totalGold').innerText}\\n- 导出来源：王者荣耀沙盒模拟器 (Apple HIG Edition)`;
+  const arcParts = [];
+  ['red', 'green', 'blue'].forEach(col => {
+    const map = currentArcana[col] || {};
+    const sub = Object.entries(map).filter(([_, c]) => c > 0).map(([n, c]) => `${c}${n}`).join('+');
+    if (sub) arcParts.push(sub);
+  });
+  const arcStr = arcParts.join(' ｜ ') || '无铭文';
+  const text = `### 自定义配装方案：${currentHero.cname}\\n- 英雄定位：${currentHero.lane} / ${currentHero.role}\\n- 铭文搭配：${arcStr}\\n- 装备配置：${eff}\\n- 总金币造价：${document.getElementById('totalGold').innerText}\\n- 导出来源：王者出装箱 ｜ 局内六神装配装沙盒`;
   navigator.clipboard.writeText(text).then(() => {
     alert("已将配装方案复制到剪贴板！可直接粘贴至 NotebookLM。");
   }).catch(() => {
