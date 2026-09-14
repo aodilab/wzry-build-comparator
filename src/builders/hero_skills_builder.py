@@ -11,7 +11,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from config.settings import OUTPUT_DIR, DOC_HERO_SKILLS_NAME, ROLE_MAP
-from config.patches import DASIMING_HERO_PATCH, YANGJIAN_HERO_PATCH
+from config.patches import REWORKED_HERO_SKILLS_PATCHES
 from config.hero_base_stats import get_hero_base_stats
 from src.core.http import fetch_html
 from src.core.cleaner import clean_plain_text
@@ -70,11 +70,9 @@ def fetch_single_hero_skills(hero):
                 "tips": tips
             })
             
-        if cname == "大司命" and not skills_list:
-            skills_list = DASIMING_HERO_PATCH["skills"]
-        elif cname == "杨戬":
-            # 官方 178.shtml 页面长期未同步法天象地重做，受控补齐法天象地变身机制与最新数值
-            skills_list = YANGJIAN_HERO_PATCH["skills"]
+        # 官方旧页面未同步重做机制英雄，优先注入权威受控补丁
+        if cname in REWORKED_HERO_SKILLS_PATCHES:
+            skills_list = REWORKED_HERO_SKILLS_PATCHES[cname]["skills"]
 
         base_stats = get_hero_base_stats(ename, cname, role_str)
 
@@ -88,7 +86,7 @@ def fetch_single_hero_skills(hero):
             "success": True
         }
     except Exception as e:
-        if cname == "大司命":
+        if cname in REWORKED_HERO_SKILLS_PATCHES:
             base_stats = get_hero_base_stats(ename, cname, role_str)
             return {
                 "ename": ename,
@@ -96,7 +94,7 @@ def fetch_single_hero_skills(hero):
                 "title": title,
                 "role": role_str,
                 "base_stats": base_stats,
-                "skills": DASIMING_HERO_PATCH["skills"],
+                "skills": REWORKED_HERO_SKILLS_PATCHES[cname]["skills"],
                 "success": True
             }
         return {"ename": ename, "cname": cname, "success": False, "error": str(e)}

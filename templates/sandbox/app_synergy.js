@@ -221,7 +221,14 @@ function renderSynergyContent() {
       });
     }
   } else if (hasPhoenix) {
-    if (hasSkillHeal) {
+    if (currentHero.cname === '赵云') {
+      synergyItems.push({
+        icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>',
+        title: '不死鸟之眼 · 残血超高回血 × 溢出治疗转永久护盾质变',
+        item: '不死鸟之眼',
+        desc: `赵云被动【龙鸣】在【飞龙在天】(≤40%血量)档位拥有 20%免伤与极限回血；搭配不死鸟之眼【血统】被动，残血时2技能刺击受治疗量提升高达 30%~60%！更为关键的是：赵云溢出当前档位的回血会转化为永久护盾，总量充满一个档位时护盾立刻转化为真实生命，真正达成医学奇迹与残血不死战神！`
+      });
+    } else if (hasSkillHeal) {
       synergyItems.push({
         icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>',
         title: '不死鸟之眼 · 残血治疗翻倍与极限反杀',
@@ -440,10 +447,17 @@ function renderSynergyContent() {
     if (hasSpellblade) synergyBonus += 4;
     if (totalPhysPierce >= 150) synergyBonus += 4;
   } else if (currentHero.cname === '赵云') {
-    if (hasSpellblade) synergyBonus += 8;
-    if (totalPhysPierce >= 150) synergyBonus += 8;
-    if (hasDamageReduce) synergyBonus += 5;
+    if (hasSpellblade) synergyBonus += 7;
+    if (totalPhysPierce >= 150) synergyBonus += 7;
+    if (hasPhoenix) synergyBonus += 6; // 强化飞龙在天溢出治疗转永久护盾
+    if (hasDamageReduce || hasBloodRage) synergyBonus += 5; // 配合低血量免伤
     if (effNames.includes('破军')) synergyBonus += 5;
+  } else if (currentHero.cname === '哪吒') {
+    if (hasBloodRage) synergyBonus += 8; // 血魔之怒与火莲圣体盾厚上加厚
+    if (hasBaoLie) synergyBonus += 7;
+    if (hasDamageReduce) synergyBonus += 5;
+    if (effNames.includes('红莲斗篷') || effNames.includes('暗影战斧')) synergyBonus += 6;
+    if (totalBonusHp >= 2000) synergyBonus += 4;
   } else if (currentHero.cname === '孙尚香') {
     if (effNames.includes('宗师之力')) synergyBonus += 8;
     if (effNames.includes('无尽战刃')) synergyBonus += 8;
@@ -575,11 +589,19 @@ function renderSynergyContent() {
     }
   } else if (currentHero.cname === '赵云') {
     comboSteps = [
-      '3技能大招跃空雷霆击飞目标，造成感电标记',
-      '2技能连续刺出龙枪打出多段感电附加伤害并回血',
-      '1技能向前冲锋减速追击',
-      hasSpellblade ? '冲锋后接强化普攻打出【强击】爆发' : '接平A补足伤害',
-      '被动低血量高额免伤支撑反打'
+      '3技能大招跃空雷霆击飞目标，施加感电标记与斩杀判定',
+      '2技能连续刺出龙枪打出多段感电附伤与高额回血，溢出回复转化为永久护盾',
+      '1技能向前冲锋减速追击（见龙/飞龙档位下冲锋位移极限提升）',
+      hasSpellblade ? '冲锋后接强化普攻打出【强击】爆发并附带感电真伤' : '接平A补足伤害',
+      '【飞龙在天】20%极限免伤与档位护盾转化支撑绝地反打收割'
+    ];
+  } else if (currentHero.cname === '哪吒') {
+    comboSteps = [
+      '3技能全图锁定敌方核心极速俯冲，落地击退激发火莲之华',
+      '1技能横扫周围目标施加真伤火种，叠满风火轮移速并刷出火莲圣体护盾',
+      '2技能两段翻滚穿梭束缚敌人，持续触发火莲之印免伤并刷新护盾',
+      hasSpellblade ? '翻滚间隙穿插强化普攻打出伤害' : '持续走A肉搏站撸',
+      '火莲圣体真伤护盾源源不断，持续黏住敌方C位完成单杀'
     ];
   } else if (currentHero.cname === '孙尚香') {
     comboSteps = [
