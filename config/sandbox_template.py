@@ -41,6 +41,8 @@ def get_sandbox_html_template() -> str:
 {modal_css}
 {synergy_css}
 </style>
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({{id:"3RHV2P1v28aZF1yy",ck:"3RHV2P1v28aZF1yy",autoTrack:true}})</script>
 </head>
 
 <body>
