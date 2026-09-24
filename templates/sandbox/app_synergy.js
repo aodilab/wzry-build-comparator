@@ -3,7 +3,7 @@
 // 专注：多套官方经典出装对标切换、全维数值Diff对比、核心机制差异(PROS/CONS)与实战连招
 // ==============================================================================
 
-let currentBenchmarkPresetId = 'preset_1';
+let currentBenchmarkPresetId = 'official_1';
 
 function switchBenchmarkPreset(presetId) {
   currentBenchmarkPresetId = presetId;
@@ -102,14 +102,14 @@ function renderSynergyContent() {
         <span>对标官方基准出装</span>
         <span class="benchmark-hint">点击可切换对比方案</span>
       </div>
-      <div class="benchmark-presets-grid">
+      <div class="benchmark-presets-grid" style="grid-template-columns: repeat(${Math.max(1, officialPresets.length)}, 1fr);">
         ${officialPresets.map(p => `
           <div class="benchmark-preset-card ${p.id === activePreset.id ? 'active' : ''}" onclick="switchBenchmarkPreset('${p.id}')">
             <div class="benchmark-preset-top">
               <span class="benchmark-preset-tag">${p.tag}</span>
               ${p.id === activePreset.id ? '<span style="font-size:10px;color:#0071e3;font-weight:700;">对标中</span>' : ''}
             </div>
-            <div class="benchmark-preset-name">${p.title.split('·')[1] || p.title}</div>
+            <div class="benchmark-preset-name">${p.title}</div>
             <div class="benchmark-preset-desc">${p.desc}</div>
           </div>
         `).join('')}
