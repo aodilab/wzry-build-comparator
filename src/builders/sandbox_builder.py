@@ -14,6 +14,7 @@ from config.item_recipes import COMPONENTS_MAP
 from config.hero_base_stats import get_hero_base_stats
 from config.hero_arcana_data import ARCANA_LEVEL_5_DICT, HERO_RECOMMENDED_ARCANA
 from config.hero_skills_data import HERO_SKILLS_DATA
+from config.hero_official_builds import OFFICIAL_HERO_BUILDS
 from config.patches import REWORKED_HERO_SKILLS_PATCHES
 from config.sandbox_template import SANDBOX_HTML_TEMPLATE
 from src.core.http import fetch_json
@@ -101,6 +102,7 @@ def build_sandbox_html(output_file=None):
     html_content = html_content.replace("__BOOTS_MAP_PLACEHOLDER__", json.dumps(BOOTS_SPEED_MAP, ensure_ascii=False))
     html_content = html_content.replace("__ACTIVE_ITEMS_PLACEHOLDER__", json.dumps(ACTIVE_SKILL_ITEMS, ensure_ascii=False))
     html_content = html_content.replace("__JUNGLE_ITEMS_PLACEHOLDER__", json.dumps(JUNGLE_ITEMS, ensure_ascii=False))
+    html_content = html_content.replace("__OFFICIAL_HERO_BUILDS_PLACEHOLDER__", json.dumps(OFFICIAL_HERO_BUILDS, ensure_ascii=False))
 
     target = output_file or os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "sandbox.html")
     with open(target, "w", encoding="utf-8") as f:

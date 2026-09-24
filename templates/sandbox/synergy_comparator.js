@@ -4,75 +4,73 @@
 // 进行全维属性差值 (Diff) 与核心机制技能 (苍穹免伤/破晓穿透/泣血续航等) 对比剖析
 // ==============================================================================
 
-// === 1. 官方 3 套经典基准出装生成器 ===
+// === 1. 官方基准出装生成器 (100% 遵照官方原始命名与方案数量) ===
 function getHeroOfficialPresets(hero) {
   if (!hero) return [];
   const cname = hero.cname || '';
-  const role = hero.role || '';
-  const lane = hero.lane || '';
-  const r = role + lane;
-
-  let p1Names = [], p2Names = [], p3Names = [];
-  let p1Title = '方案一 · 官方热门标配', p2Title = '方案二 · 极致高爆输出', p3Title = '方案三 · 半肉稳健容错';
-  let p1Tag = '经典主流', p2Tag = '极限爆发', p3Tag = '半肉抗压';
-
-  if (cname === '孙尚香') {
-    p1Names = ['急速战靴', '宗师之力', '无尽战刃', '泣血之刃', '破晓', '暴烈之甲'];
-    p2Names = ['急速战靴', '影刃', '无尽战刃', '破晓', '宗师之力', '破军'];
-    p3Names = ['急速战靴', '末世', '无尽战刃', '破晓', '纯净苍穹', '魔女斗篷'];
-  } else if (cname === '杨戬') {
-    p1Names = ['抵抗之靴', '暗影战斧', '暴烈之甲', '纯净苍穹', '宗师之力', '永夜守护'];
-    p2Names = ['抵抗之靴', '暗影战斧', '破军', '纯净苍穹', '宗师之力', '名刀·司命'];
-    p3Names = ['抵抗之靴', '暗影战斧', '暴烈之甲', '纯净苍穹', '极寒风暴', '不死鸟之眼'];
-  } else if (cname === '安琪拉') {
-    p1Names = ['冷静之靴', '回响之杖', '博学者之怒', '虚无法杖', '辉月', '贤者之书'];
-    p2Names = ['秘法之靴', '回响之杖', '博学者之怒', '日暮之流', '贤者之书', '虚无法杖'];
-    p3Names = ['冷静之靴', '痛苦面具', '凝冰之息', '博学者之怒', '虚无法杖', '辉月'];
-  } else if (cname === '廉颇') {
-    p1Names = ['影忍之足', '红莲斗篷', '不死鸟之眼', '霸者重装', '不祥征兆', '魔女斗篷'];
-    p2Names = ['抵抗之靴', '暗影战斧', '红莲斗篷', '暴烈之甲', '破军', '霸者重装'];
-    p3Names = ['抵抗之靴', '极影·救赎', '红莲斗篷', '不祥征兆', '魔女斗篷', '霸者重装'];
-  } else if (cname === '李白') {
-    p1Names = ['贪婪之噬', '急速战靴', '泣血之刃', '暗影战斧', '宗师之力', '破军'];
-    p2Names = ['贪婪之噬', '急速战靴', '暗影战斧', '无尽战刃', '宗师之力', '破军'];
-    p3Names = ['贪婪之噬', '抵抗之靴', '暗影战斧', '泣血之刃', '纯净苍穹', '名刀·司命'];
-  } else if (r.includes('射手') || r.includes('发育路')) {
-    p1Names = ['急速战靴', '影刃', '无尽战刃', '泣血之刃', '破晓', '暴烈之甲'];
-    p2Names = ['急速战靴', '无尽战刃', '影刃', '破晓', '破军', '逐日之弓'];
-    p3Names = ['急速战靴', '末世', '无尽战刃', '破晓', '纯净苍穹', '不祥征兆'];
-  } else if (r.includes('法师') || r.includes('中路')) {
-    p1Names = ['冷静之靴', '回响之杖', '博学者之怒', '虚无法杖', '辉月', '贤者之书'];
-    p2Names = ['秘法之靴', '回响之杖', '博学者之怒', '虚无法杖', '贤者之书', '破茧之衣'];
-    p3Names = ['冷静之靴', '痛苦面具', '凝冰之息', '博学者之怒', '虚无法杖', '辉月'];
-  } else if (r.includes('刺客') || (r.includes('打野') && !r.includes('坦克'))) {
-    p1Names = ['贪婪之噬', '抵抗之靴', '暗影战斧', '宗师之力', '无尽战刃', '破军'];
-    p2Names = ['贪婪之噬', '急速战靴', '暗影战斧', '无尽战刃', '破军', '碎星锤'];
-    p3Names = ['巨人之握', '抵抗之靴', '暗影战斧', '纯净苍穹', '暴烈之甲', '名刀·司命'];
-  } else if (r.includes('坦克') || (r.includes('肉') && r.includes('游走'))) {
-    p1Names = ['极影·救赎', '抵抗之靴', '红莲斗篷', '霸者重装', '魔女斗篷', '不祥征兆'];
-    p2Names = ['抵抗之靴', '红莲斗篷', '暴烈之甲', '暗影战斧', '不祥征兆', '永夜守护'];
-    p3Names = ['近卫·救赎', '影忍之足', '极寒风暴', '霸者重装', '魔女斗篷', '不祥征兆'];
-  } else {
-    // 战士/对抗路
-    p1Names = ['抵抗之靴', '暗影战斧', '暴烈之甲', '宗师之力', '纯净苍穹', '永夜守护'];
-    p2Names = ['抵抗之靴', '暗影战斧', '宗师之力', '破军', '无尽战刃', '名刀·司命'];
-    p3Names = ['抵抗之靴', '暗影战斧', '红莲斗篷', '极寒风暴', '纯净苍穹', '不死鸟之眼'];
-  }
-
   const aliasMap = { '强者破军': '破军', '仁者破晓': '破晓', '贤者天书': '贤者之书', '急速之靴': '急速战靴' };
+
   function resolveItems(names) {
     const list = [];
-    names.forEach(name => {
+    (names || []).forEach(name => {
       const it = (typeof ITEMS_DATA !== 'undefined' ? ITEMS_DATA : []).find(i => i.item_name === name || i.item_name === aliasMap[name]);
       if (it && list.length < 6) list.push(it);
     });
     return list;
   }
 
+  // 1. 优先读取官方真实出装数据库 (SSOT)
+  if (typeof OFFICIAL_HERO_BUILDS !== 'undefined' && OFFICIAL_HERO_BUILDS[cname]) {
+    const rawList = OFFICIAL_HERO_BUILDS[cname];
+    return rawList.map((p, idx) => ({
+      id: p.id || `official_${idx + 1}`,
+      title: p.name || `推荐出装${idx + 1}`, // 100% 官方原始名字
+      tag: `官方方案${idx + 1}`,
+      desc: p.desc || '王者官方推荐经典对局思路。',
+      itemNames: p.item_names || [],
+      items: resolveItems(p.item_names || [])
+    }));
+  }
+
+  // 2. 兜底 fallback (遵循官方命名规范：推荐出装一、推荐出装二)
+  const role = hero.role || '';
+  const lane = hero.lane || '';
+  const r = role + lane;
+
+  let p1Names = [], p2Names = [];
+  let p1Desc = '官方综合胜率最高的经典主流配装思路。';
+  let p2Desc = '强化实战特定维度的官方备选方案。';
+
+  if (r.includes('射手') || r.includes('发育路')) {
+    p1Names = ['急速战靴', '影刃', '无尽战刃', '泣血之刃', '破晓', '暴烈之甲'];
+    p2Names = ['急速战靴', '末世', '无尽战刃', '破晓', '纯净苍穹', '魔女斗篷'];
+    p1Desc = '利用无尽破晓的高额暴击与穿透打出持续高爆发输出。';
+    p2Desc = '末世苍穹强化残血对拼与防刺客强切自保容错。';
+  } else if (r.includes('法师') || r.includes('中路')) {
+    p1Names = ['冷静之靴', '回响之杖', '博学者之怒', '虚无法杖', '辉月', '贤者之书'];
+    p2Names = ['秘法之靴', '回响之杖', '博学者之怒', '日暮之流', '贤者之书', '虚无法杖'];
+    p1Desc = '博学者之怒与法穿配合辉月金身，兼顾极致法强与保命。';
+    p2Desc = '极限高法强法穿，远距离消耗瞬秒敌方后排脆皮。';
+  } else if (r.includes('刺客') || (r.includes('打野') && !r.includes('坦克'))) {
+    p1Names = ['贪婪之噬', '急速战靴', '泣血之刃', '暗影战斧', '宗师之力', '破军'];
+    p2Names = ['贪婪之噬', '抵抗之靴', '暗影战斧', '纯净苍穹', '名刀·司命', '破军'];
+    p1Desc = '黑切破军物穿拉满，专注野区经济滚雪球瞬秒后排。';
+    p2Desc = '苍穹名刀双重保命，提升进场开团与残血收割容错率。';
+  } else if (r.includes('坦克') || (r.includes('肉') && r.includes('游走'))) {
+    p1Names = ['极影·救赎', '抵抗之靴', '红莲斗篷', '霸者重装', '魔女斗篷', '不祥征兆'];
+    p2Names = ['抵抗之靴', '红莲斗篷', '暴烈之甲', '暗影战斧', '不祥征兆', '永夜守护'];
+    p1Desc = '高额血量双抗构筑前排钢铁壁垒，吃满敌方集火。';
+    p2Desc = '半肉战坦兼备一定物穿输出与灼烧消耗。';
+  } else {
+    p1Names = ['抵抗之靴', '暗影战斧', '暴烈之甲', '宗师之力', '纯净苍穹', '永夜守护'];
+    p2Names = ['抵抗之靴', '暗影战斧', '红莲斗篷', '极寒风暴', '纯净苍穹', '不死鸟之眼'];
+    p1Desc = '黑切苍穹半肉双抗攻守兼顾，切入后排威胁极大。';
+    p2Desc = '强化对线抗压与技能冷却回转，多轮拉扯反打。';
+  }
+
   return [
-    { id: 'preset_1', title: p1Title, tag: p1Tag, desc: '官方大数据排位综合胜率最高的经典主流配装', itemNames: p1Names, items: resolveItems(p1Names) },
-    { id: 'preset_2', title: p2Title, tag: p2Tag, desc: '国服高分段强化伤害秒杀与切入的极限输出流', itemNames: p2Names, items: resolveItems(p2Names) },
-    { id: 'preset_3', title: p3Title, tag: p3Tag, desc: '针对多爆发高消耗对局强化的半肉稳健容错装', itemNames: p3Names, items: resolveItems(p3Names) }
+    { id: 'official_1', title: '推荐出装一', tag: '官方方案1', desc: p1Desc, itemNames: p1Names, items: resolveItems(p1Names) },
+    { id: 'official_2', title: '推荐出装二', tag: '官方方案2', desc: p2Desc, itemNames: p2Names, items: resolveItems(p2Names) }
   ];
 }
 
