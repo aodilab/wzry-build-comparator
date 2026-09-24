@@ -2,7 +2,7 @@
 <html lang="zh-CN" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <link rel="icon" href="assets/app_icon.png">
 <title>王者出装箱 ｜ S45赛季六神装推演沙盒</title>
 <style>
@@ -2095,7 +2095,6 @@ header {
    完全对照微信小程序真机 6 张实机截图与 templates/miniprogram/index.wxss
    控制在 ≤350 行，满足 AGENTS.md 规范
    ========================================================================== */
-/* 1. PC 宽屏默认基础操作与状态辅助 */
 .hero-change-btn {
   font-size: 12px; color: var(--color-blue); padding: 5px 12px; border-radius: 99px;
   background: var(--color-blue-bg); font-weight: 600; border: none; cursor: pointer; white-space: nowrap;
@@ -2121,8 +2120,10 @@ header {
 .synergy-jump-txt { font-size: 11px; color: var(--text-tertiary); }
 .synergy-score-pill { font-size: 11px; font-weight: 700; color: #ffffff; background: var(--color-blue); padding: 2px 8px; border-radius: 99px; }
 .synergy-brief-summary { font-size: 12px; color: var(--text-secondary); line-height: 1.45; }
-.synergy-brief-highlights { display: flex; flex-wrap: wrap; gap: 6px; }
-.synergy-highlight-badge { font-size: 11px; padding: 2px 7px; border-radius: 6px; background: rgba(52, 199, 89, 0.1); color: #2e7d32; font-weight: 500; border: 1px solid rgba(52, 199, 89, 0.2); }
+.synergy-brief-highlights { display: flex; flex-direction: column; gap: 5px; margin-top: 2px; }
+.synergy-highlight-row { display: flex; align-items: center; gap: 7px; }
+.synergy-highlight-badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: rgba(0, 113, 227, 0.08); color: #0071e3; font-weight: 600; white-space: nowrap; flex-shrink: 0; line-height: 1.2; }
+.synergy-highlight-desc { font-size: 11px; color: #636366; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.3; }
 .synergy-brief-footer { font-size: 11px; color: var(--color-blue); font-weight: 500; }
 .stats-panel-header { padding: 10px 16px 4px 16px; }
 .panel-subtitle { font-size: 11px; color: var(--text-tertiary); font-weight: normal; margin-left: 6px; }
@@ -2146,28 +2147,48 @@ header {
   flex: 1; overflow-y: auto; padding: 12px 16px 20px 16px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
 }
 @keyframes appleModalSlideUp { from { opacity: 0; transform: translateY(30px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
-/* 属性颜色高亮字典 */
-.highlight-ad { color: #f59e0b !important; }
-.highlight-ap { color: #8b5cf6 !important; }
-.highlight-hp { color: #10b981 !important; }
-.highlight-arm { color: #0284c7 !important; }
-.highlight-marm { color: #f59e0b !important; }
-.highlight-cdr { color: #0284c7 !important; }
-.highlight-crit { color: #ef4444 !important; }
-.highlight-spd { color: #10b981 !important; }
-/* ==========================================================================
-   2. 移动端微信小程序 100% 像素级真机复刻 (@media max-width: 768px)
-   ========================================================================== */
+html, body {
+  width: 100% !important;
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+  position: relative !important;
+  overscroll-behavior-x: none !important;
+  touch-action: pan-y !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+*, *::before, *::after {
+  box-sizing: border-box !important;
+}
+.stat-val {
+  color: #1d1d1f !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  font-family: -apple-system, "SF Pro Rounded", "PingFang SC", sans-serif !important;
+}
+.stat-plus {
+  color: #16a34a !important;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+  margin-left: 3px !important;
+}
 @media (max-width: 768px) {
-  body {
+  html, body {
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
     background-color: #f5f5f7 !important;
     padding: 12px !important;
     padding-bottom: calc(48px + env(safe-area-inset-bottom)) !important;
     height: auto !important; min-height: 100vh !important;
-    overflow-y: auto !important; overflow-x: hidden !important;
+    overscroll-behavior-x: none !important;
+    touch-action: pan-y !important;
   }
   header {
-    margin: -12px -12px 12px -12px !important; padding: 10px 16px !important;
+    margin: -12px -12px 12px -12px !important;
+    width: calc(100% + 24px) !important;
+    max-width: calc(100% + 24px) !important;
+    box-sizing: border-box !important;
+    padding: 10px 16px !important;
     background: #f5f5f7 !important; border: none !important; box-shadow: none !important;
     position: sticky; top: 0; z-index: 100; display: flex !important;
     align-items: center !important; justify-content: center !important; position: relative !important;
@@ -2177,13 +2198,11 @@ header {
   .brand-titles h1 { font-size: 17px !important; font-weight: 700 !important; color: #1d1d1f !important; text-align: center !important; letter-spacing: -0.2px !important; }
   .brand-titles p { display: none !important; }
   .header-actions { display: none !important; }
-  /* 微信右侧胶囊模拟 (图 1 真实质感) */
   header::after {
     content: "••• ⦿"; position: absolute; right: 14px; font-size: 13px; font-weight: 800;
     color: #1d1d1f; border: 1px solid rgba(0,0,0,0.12); padding: 2px 10px; border-radius: 999px;
     background: rgba(255,255,255,0.7); backdrop-filter: blur(8px); letter-spacing: 2px;
   }
-  /* 核心五大卡片单列自然流 */
   .sandbox-grid { display: flex; flex-direction: column; height: auto; gap: 12px; }
   .hero-section-panel { order: 1; }
   .slots-stats-section-panel { order: 2; display: flex; flex-direction: column; gap: 12px; background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; }
@@ -2280,7 +2299,6 @@ header {
     background: rgba(255, 59, 48, 0.9) !important; font-size: 11px !important; line-height: 16px !important;
     align-items: center; justify-content: center; color: #fff;
   }
-  /* 总造价栏 */
   .mobile-gold-bar {
     display: flex !important; justify-content: space-between !important; align-items: center !important;
     margin-top: 10px !important; padding-top: 10px !important; border-top: 1px solid rgba(0,0,0,0.05) !important;
@@ -2413,7 +2431,6 @@ header {
     overflow-y: auto !important;
     padding: 10px 14px 20px 14px !important;
   }
-  /* 铭文抽屉 (图 5 原生样式) */
   .arcana-mobile-header-sub { font-size: 11px !important; color: #8e8e93 !important; margin: 4px 0 6px 0 !important; }
   .arcana-presets-bar { display: flex !important; gap: 6px !important; overflow-x: auto !important; white-space: nowrap !important; margin-bottom: 10px !important; scrollbar-width: none !important; width: 100% !important; min-height: 28px !important; }
   .arcana-presets-bar::-webkit-scrollbar { display: none; }
@@ -2438,7 +2455,6 @@ header {
   .arcana-pick-des { font-size: 10px !important; color: #8e8e93 !important; line-height: 1.3 !important; }
   .modal-footer-box { position: sticky !important; bottom: 0 !important; background: #fff !important; padding: 10px 0 !important; margin-top: 10px !important; }
   .arcana-confirm-btn { width: 100% !important; height: 42px !important; border-radius: 999px !important; background: #0071e3 !important; color: #fff !important; font-size: 14px !important; font-weight: 600 !important; border: none !important; cursor: pointer !important; }
-  /* 战术机制深度推演抽屉 (图 6 原生样式) */
   .synergy-header-hero img { display: none !important; }
   .synergy-header-actions .apple-btn { display: none !important; }
   .synergy-mobile-container { display: flex !important; flex-direction: column !important; gap: 12px !important; padding: 10px 14px 40px 14px !important; }
@@ -2469,7 +2485,6 @@ header {
   .synergy-tag { font-size: 10px !important; padding: 2px 6px !important; border-radius: 4px !important; font-weight: 600 !important; }
 }
 @keyframes appleBottomSheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
 </style>
 <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
 <script>if(window.LA)LA.init({id:"3RHV2P1v28aZF1yy",ck:"3RHV2P1v28aZF1yy",autoTrack:true})</script>
@@ -3215,16 +3230,16 @@ function recalculate() {
     if (window.innerWidth <= 768) {
       statsBox.innerHTML = `
         <div class="stats-grid">
-          <div class="stat-cell"><span class="stat-name">物理攻击</span><div class="stat-num-box"><span class="stat-val highlight-ad">${totals.atk + arcanaTotals.atk + bAtk}</span>${(totals.atk + arcanaTotals.atk) > 0 ? `<span class="stat-plus">+${totals.atk + arcanaTotals.atk}</span>` : ''}</div></div>
-          <div class="stat-cell"><span class="stat-name">法术攻击</span><div class="stat-num-box"><span class="stat-val highlight-ap">${finalAp}</span>${finalAp > 0 ? `<span class="stat-plus">+${finalAp}</span>` : ''}</div></div>
-          <div class="stat-cell"><span class="stat-name">最大生命</span><div class="stat-num-box"><span class="stat-val highlight-hp">${finalHp}</span>${(totals.hp + arcanaTotals.hp) > 0 ? `<span class="stat-plus">+${totals.hp + arcanaTotals.hp}</span>` : ''}</div></div>
-          <div class="stat-cell"><span class="stat-name">物理防御</span><div class="stat-num-box"><span class="stat-val highlight-arm">${totPdef}</span>${(totals.pdef + arcanaTotals.pdef) > 0 ? `<span class="stat-plus">+${totals.pdef + arcanaTotals.pdef}</span>` : ''}</div></div>
-          <div class="stat-cell"><span class="stat-name">法术防御</span><div class="stat-num-box"><span class="stat-val highlight-marm">${totMdef}</span>${(totals.mdef + arcanaTotals.mdef) > 0 ? `<span class="stat-plus">+${totals.mdef + arcanaTotals.mdef}</span>` : ''}</div></div>
-          <div class="stat-cell"><span class="stat-name">冷却缩减</span><div class="stat-num-box"><span class="stat-val highlight-cdr">${cappedCdr}%</span>${cappedCdr >= 40 ? `<span class="stat-cap">满CD</span>` : ''}</div></div>
-          <div class="stat-cell"><span class="stat-name">暴击率</span><div class="stat-num-box"><span class="stat-val highlight-crit">${totalCrit}%</span></div></div>
-          <div class="stat-cell"><span class="stat-name">移动速度</span><div class="stat-num-box"><span class="stat-val highlight-spd">${calcSpeed}</span>${(calcSpeed - bSpeed) > 0 ? `<span class="stat-plus">+${calcSpeed - bSpeed}</span>` : ''}</div></div>
-          <div class="stat-cell"><span class="stat-name">物理穿透</span><div class="stat-num-box"><span class="stat-val highlight-ad">+${totalPhysPierce}</span></div></div>
-          ${totalMagicPierce > 0 ? `<div class="stat-cell"><span class="stat-name">法术穿透</span><div class="stat-num-box"><span class="stat-val highlight-ap">+${totalMagicPierce}</span></div></div>` : ''}
+          <div class="stat-cell"><span class="stat-name">物理攻击</span><div class="stat-num-box"><span class="stat-val">${totals.atk + arcanaTotals.atk + bAtk}</span>${(totals.atk + arcanaTotals.atk) > 0 ? `<span class="stat-plus">+${totals.atk + arcanaTotals.atk}</span>` : ''}</div></div>
+          <div class="stat-cell"><span class="stat-name">法术攻击</span><div class="stat-num-box"><span class="stat-val">${finalAp}</span>${finalAp > 0 ? `<span class="stat-plus">+${finalAp}</span>` : ''}</div></div>
+          <div class="stat-cell"><span class="stat-name">最大生命</span><div class="stat-num-box"><span class="stat-val">${finalHp}</span>${(totals.hp + arcanaTotals.hp) > 0 ? `<span class="stat-plus">+${totals.hp + arcanaTotals.hp}</span>` : ''}</div></div>
+          <div class="stat-cell"><span class="stat-name">物理防御</span><div class="stat-num-box"><span class="stat-val">${totPdef}</span>${(totals.pdef + arcanaTotals.pdef) > 0 ? `<span class="stat-plus">+${totals.pdef + arcanaTotals.pdef}</span>` : ''}</div></div>
+          <div class="stat-cell"><span class="stat-name">法术防御</span><div class="stat-num-box"><span class="stat-val">${totMdef}</span>${(totals.mdef + arcanaTotals.mdef) > 0 ? `<span class="stat-plus">+${totals.mdef + arcanaTotals.mdef}</span>` : ''}</div></div>
+          <div class="stat-cell"><span class="stat-name">冷却缩减</span><div class="stat-num-box"><span class="stat-val">${cappedCdr}%</span>${cappedCdr >= 40 ? `<span class="stat-cap">满CD</span>` : ''}</div></div>
+          <div class="stat-cell"><span class="stat-name">暴击率</span><div class="stat-num-box"><span class="stat-val">${totalCrit}%</span></div></div>
+          <div class="stat-cell"><span class="stat-name">移动速度</span><div class="stat-num-box"><span class="stat-val">${calcSpeed}</span>${(calcSpeed - bSpeed) > 0 ? `<span class="stat-plus">+${calcSpeed - bSpeed}</span>` : ''}</div></div>
+          <div class="stat-cell"><span class="stat-name">物理穿透</span><div class="stat-num-box"><span class="stat-val">${totalPhysPierce > 0 ? `+${totalPhysPierce}` : '0'}</span></div></div>
+          ${totalMagicPierce > 0 ? `<div class="stat-cell"><span class="stat-name">法术穿透</span><div class="stat-num-box"><span class="stat-val">+${totalMagicPierce}</span></div></div>` : ''}
         </div>
       `;
     } else {
@@ -3755,7 +3770,7 @@ function resetToHeroDefaultArcana() {
 
 // ==============================================================================
 // 局内六神装配装战术协同评分引擎 (Synergy Evaluator Engine)
-// 包含物法错位惩罚、重复鞋惩罚、大件成型度、核心机制协同与五维雷达评估
+// 包含全职业核心被动机制联动、物法冲突惩罚、真实五维战力折算与协同评级
 // ==============================================================================
 
 function calculateSynergyScore(currentHero, effItems, currentSlots, skills, cappedCdr) {
@@ -3766,12 +3781,13 @@ function calculateSynergyScore(currentHero, effItems, currentSlots, skills, capp
   cappedCdr = cappedCdr || 0;
 
   const heroRole = currentHero.role || '';
-  const isPhysicalHero = ['战士', '刺客', '射手'].some(r => heroRole.includes(r)) && !['司空震', '芈月'].includes(currentHero.cname);
-  const isMagicHero = heroRole.includes('法师') && !['司空震', '嬴政'].includes(currentHero.cname);
-  const isTankOrSupport = heroRole.includes('坦克') || heroRole.includes('辅助');
+  const heroName = currentHero.cname || '';
+  const isPhysicalHero = ['战士', '刺客', '射手'].some(r => heroRole.includes(r)) && !['司空震', '芈月'].includes(heroName);
+  const isMagicHero = heroRole.includes('法师') && !['司空震', '嬴政'].includes(heroName);
+  const isTankOrSupport = heroRole.includes('坦克') || heroRole.includes('辅助') || currentHero.lane === '对抗路' || currentHero.lane === '游走';
 
   let totalAd = 0, totalAp = 0, totalBonusHp = 0, totalPdef = 0, totalMdef = 0;
-  let totalLifesteal = 0, totalSpellLifesteal = 0, totalCrit = 0, totalPercentSpeed = 0;
+  let totalCrit = 0, totalPercentSpeed = 0;
   let tier3Count = 0, tier2Count = 0, tier1Count = 0;
   let bootsCount = 0;
 
@@ -3782,8 +3798,6 @@ function calculateSynergyScore(currentHero, effItems, currentSlots, skills, capp
     totalBonusHp += st.hp || 0;
     totalPdef += st.pdef || 0;
     totalMdef += st.mdef || 0;
-    totalLifesteal += st.p_lifesteal || 0;
-    totalSpellLifesteal += st.m_lifesteal || 0;
     totalCrit += st.crit || 0;
     totalPercentSpeed += st.percent_speed || 0;
     if (typeof BOOTS_MAP !== 'undefined' && BOOTS_MAP[it.item_name]) bootsCount++;
@@ -3794,180 +3808,179 @@ function calculateSynergyScore(currentHero, effItems, currentSlots, skills, capp
     else tier1Count++;
   });
 
-  // 检测物法错位、重复大件与唯一被动冲突
-  let wastedApCount = 0;
-  let wastedAdCount = 0;
-  if (isPhysicalHero) {
-    wastedApCount = effItems.filter(it => (it.category === '法术') || (it.stats && it.stats.ap >= 80)).length;
-  }
-  if (isMagicHero) {
-    wastedAdCount = effItems.filter(it => (it.category === '攻击') && ((it.stats && it.stats.atk >= 80) || (it.stats && it.stats.crit >= 15))).length;
-  }
+  // 1. 核心装备机制全面识别 (Insights)
+  const slotNames = effItems.map(s => s.item_name);
+  const insights = [];
 
-  // 重复装备统计
-  const slotItemNames = currentSlots.map(s => s.item_name);
-  const nameCounts = {};
-  slotItemNames.forEach(n => nameCounts[n] = (nameCounts[n] || 0) + 1);
-  let duplicateItemCount = 0;
-  for (let n in nameCounts) {
-    if (nameCounts[n] > 1) duplicateItemCount += (nameCounts[n] - 1);
-  }
+  const hasHuangdun = slotNames.includes('怒龙剑盾') || slotNames.includes('龙鳞利剑');
+  const hasPhoenix = slotNames.includes('不死鸟之眼');
+  const hasCangqiong = slotNames.includes('纯净苍穹') || slotNames.includes('天穹');
+  const hasAnyang = slotNames.includes('暗影战斧');
+  const hasBaoLie = slotNames.includes('暴烈之甲');
+  const hasZongshi = slotNames.includes('宗师之力');
+  const hasBinghen = slotNames.includes('冰痕之握');
+  const hasWujin = slotNames.includes('无尽战刃');
+  const hasPoxiao = slotNames.includes('破晓') || slotNames.includes('仁者破晓') || slotNames.includes('仁者·破晓');
+  const hasHonglian = slotNames.includes('红莲斗篷');
+  const hasBuxiang = slotNames.includes('不祥征兆');
+  const hasMowu = slotNames.includes('魔女斗篷');
+  const hasBazhe = slotNames.includes('霸者重装');
+  const hasSupport = slotNames.some(n => n.includes('极影') || n.includes('近卫') || n.includes('形昭') || n.includes('救赎'));
+  const hasDikang = slotNames.includes('抵抗之靴');
+  const hasYinren = slotNames.includes('影忍之足');
+  const hasFanshang = slotNames.includes('反伤刺甲');
+  const hasJihan = slotNames.includes('极寒风暴');
+  const hasMaozi = slotNames.includes('博学者之怒');
+  const hasHuixiang = slotNames.includes('回响之杖');
+  const hasFaChuan = slotNames.includes('虚无法杖') || slotNames.includes('日暮之流');
+  const hasShushen = slotNames.includes('噬神之书');
+  const hasHuiyue = slotNames.includes('辉月');
+  const hasMianju = slotNames.includes('痛苦面具');
+  const hasXianshu = slotNames.includes('贤者之书') || slotNames.includes('贤者天书');
 
-  // 强击唯一被动冲突
-  const spellbladeNames = ['宗师之力', '冰痕之握', '巫术法杖', '光辉之剑'];
-  const spellbladeCount = effItems.filter(it => spellbladeNames.includes(it.item_name)).length;
-  const spellbladeConflict = spellbladeCount > 1;
-
-  // 装备与机制标识提取
-  const effNames = effItems.map(it => it.item_name);
-  const hasYellowShield = effNames.includes('怒龙剑盾') || effNames.includes('龙鳞利剑');
-  const hasPhoenix = effNames.includes('不死鸟之眼');
-  const hasBaoLie = effNames.includes('暴烈之甲');
-  const hasSpellblade = spellbladeCount > 0;
-  const hasBloodRage = effNames.includes('血魔之怒');
-  const hasDamageReduce = effNames.includes('纯净苍穹') || effNames.includes('弱化');
-
-  const totalPhysPierce = effItems.reduce((acc, it) => acc + (it.stats && it.stats.p_pen || 0), 0);
-  const totalMagicPierce = effItems.reduce((acc, it) => acc + (it.stats && it.stats.m_pen || 0), 0);
-  const hasSkillHeal = skills.some(s => (s.tags || []).includes('技能回血'));
-
-  // A. 装备品质与成型基础分 (0 ~ 45分)
-  let buildBaseScore = (tier3Count * 7.5) + (tier2Count * 3.5) + (tier1Count * 1.5);
-  buildBaseScore = Math.min(45, buildBaseScore);
-
-  // B. 机制契合与核心协同分 (0 ~ 30分)
-  let synergyBonus = 0;
-  if (currentHero.cname === '杨戬') {
-    if (hasYellowShield) synergyBonus += 8;
-    if (hasPhoenix) synergyBonus += 8;
-    if (hasBaoLie) synergyBonus += 4;
-    if (hasDamageReduce) synergyBonus += 4;
-    if (hasSpellblade) synergyBonus += 4;
-    if (totalPhysPierce >= 150) synergyBonus += 4;
-  } else if (currentHero.cname === '赵云') {
-    if (hasSpellblade) synergyBonus += 7;
-    if (totalPhysPierce >= 150) synergyBonus += 7;
-    if (hasPhoenix) synergyBonus += 6; // 飞龙在天溢出治疗转永久护盾质变
-    if (hasDamageReduce || hasBloodRage) synergyBonus += 5;
-    if (effNames.includes('破军') || effNames.includes('强者破军')) synergyBonus += 5;
-  } else if (currentHero.cname === '哪吒') {
-    if (hasBloodRage) synergyBonus += 8; // 血魔之怒与火莲圣体盾厚上加厚
-    if (hasBaoLie) synergyBonus += 7;
-    if (hasDamageReduce) synergyBonus += 5;
-    if (effNames.includes('红莲斗篷') || effNames.includes('暗影战斧')) synergyBonus += 6;
-    if (totalBonusHp >= 2000) synergyBonus += 4;
-  } else if (currentHero.cname === '孙尚香' || currentHero.cname === '敖隐' || currentHero.cname === '苍') {
-    if (effNames.includes('宗师之力')) synergyBonus += 8;
-    if (effNames.includes('无尽战刃')) synergyBonus += 8;
-    if (effNames.includes('破晓') || effNames.includes('仁者破晓')) synergyBonus += 8;
-    if (effNames.includes('暴烈之甲') || effNames.includes('影刃')) synergyBonus += 5;
-    if (totalCrit >= 40) synergyBonus += 5;
-  } else if (currentHero.cname === '影') {
-    if (effNames.includes('暗影战斧')) synergyBonus += 8;
-    if (effNames.includes('宗师之力')) synergyBonus += 8;
-    if (effNames.includes('无尽战刃') || effNames.includes('纯净苍穹')) synergyBonus += 8;
-    if (hasBaoLie) synergyBonus += 5;
-  } else if (currentHero.cname === '诸葛亮') {
-    if (effNames.includes('博学者之怒') || effNames.includes('贤者之书') || effNames.includes('贤者天书')) synergyBonus += 8;
-    if (effNames.includes('噬神之书')) synergyBonus += 8;
-    if (effNames.includes('辉月')) synergyBonus += 6;
-    if (totalMagicPierce >= 150) synergyBonus += 6;
-  } else {
-
-    if (hasYellowShield && (hasSkillHeal || totalBonusHp >= 2500)) synergyBonus += 7;
-    if (hasPhoenix && (hasSkillHeal || totalLifesteal > 0)) synergyBonus += 7;
-    if (hasSpellblade) synergyBonus += 5;
-    if (hasDamageReduce || hasBloodRage) synergyBonus += 5;
-    if (totalPhysPierce >= 150 || totalMagicPierce >= 150) synergyBonus += 5;
-  }
-  if (cappedCdr >= 30) synergyBonus += 4;
-  synergyBonus = Math.min(30, synergyBonus);
-
-  // C. 攻防维度健康分 (0 ~ 15分)
-  let balanceScore = 10;
-  if (isPhysicalHero) {
-    if (heroRole.includes('战士')) {
-      if (totalBonusHp >= 1500 && totalAd >= 180) balanceScore = 15;
-      else if (totalBonusHp >= 1000 || totalAd >= 150) balanceScore = 12;
-    } else if (heroRole.includes('刺客') || heroRole.includes('射手')) {
-      if (totalAd >= 250 || totalCrit >= 40) balanceScore = 15;
-      else if (totalAd >= 150) balanceScore = 12;
-    }
-  } else if (isMagicHero) {
-    if (totalAp >= 500) balanceScore = 15;
-    else if (totalAp >= 300) balanceScore = 12;
-  } else if (isTankOrSupport) {
-    if (totalBonusHp >= 3000 && (totalPdef >= 400 || totalMdef >= 200)) balanceScore = 15;
-    else if (totalBonusHp >= 1800) balanceScore = 12;
+  if (hasHuangdun && hasPhoenix) {
+    insights.push({ tag: '不死混伤', item: '怒龙剑盾 + 不死鸟', desc: '真伤与最大生命物理重击双重加持，残血受治疗倍增！' });
+  } else if (hasHuangdun) {
+    insights.push({ tag: '重击发育', item: '怒龙剑盾', desc: '普攻附带最大生命物理重击与持续回复，发育对拼质变。' });
+  } else if (hasPhoenix) {
+    insights.push({ tag: '血统护体', item: '不死鸟之眼', desc: '血量越低受治疗增幅越高，技能回血与残血反杀利器。' });
   }
 
-  // D. 严厉实战惩罚扣分机制
+  if (hasHonglian) {
+    insights.push({ tag: '业炎灼烧', item: '红莲斗篷', desc: '近战每秒对敌造成高额最大生命法术灼烧并附带重伤减疗。' });
+  }
+  if (hasBuxiang) {
+    insights.push({ tag: '寒铁削速', item: '不祥征兆', desc: '受到攻击大幅减少攻击者攻速与移速，强力限制射手突进。' });
+  }
+  if (hasBazhe) {
+    insights.push({ tag: '天元极愈', item: '霸者重装', desc: '巨幅拉升最大生命与双抗，脱战极速回复生命值无需回城。' });
+  }
+  if (hasMowu) {
+    insights.push({ tag: '迷雾法盾', item: '魔女斗篷', desc: '脱战提供高额法术吸收护盾，有效抵御法师秒杀与远程消耗。' });
+  }
+  if (hasSupport) {
+    insights.push({ tag: '军团守护', item: '辅助团队神装', desc: '赋予周围队友双抗/攻速光环增益，关键时刻提供团队保命护盾。' });
+  }
+  if (hasCangqiong) {
+    insights.push({ tag: '驱散免伤', item: '纯净苍穹', desc: '开启获得35%高额免伤并在受控时可用，进场抗集火核心神器。' });
+  }
+  if (hasAnyang) {
+    insights.push({ tag: '切割减CD', item: '暗影战斧', desc: '提供高额物理穿透与15%冷却缩减，大幅缩减技能真空期。' });
+  }
+  if (hasZongshi || hasBinghen) {
+    insights.push({ tag: '强击留人', item: hasZongshi ? '宗师之力' : '冰痕之握', desc: `技能后普攻附带额外爆发与${hasBinghen ? '强力减速' : '移速拉扯'}。` });
+  }
+  if (hasWujin) {
+    insights.push({ tag: '暴击质变', item: '无尽战刃', desc: '提供高额暴击率与暴击效果增益，物理瞬秒爆发核心基石。' });
+  }
+  if (hasPoxiao) {
+    insights.push({ tag: '穿甲破障', item: '破晓', desc: '提供40%物理穿透与攻速暴击，远程射手瓦解重装铁壁。' });
+  }
+  if (hasBaoLie) {
+    insights.push({ tag: '受击增伤', item: '暴烈之甲', desc: '受击叠加最高10%全增伤与10%移速，抗压对拼越战越勇。' });
+  }
+  if (hasFanshang || hasJihan) {
+    insights.push({ tag: '防御反制', item: hasFanshang ? '反伤刺甲' : '极寒风暴', desc: hasFanshang ? '高额物抗反弹法术伤害，克制物理刺客' : '提供20%超高冷缩与冰甲受击范围冲击减速。' });
+  }
+  if (hasMaozi) {
+    insights.push({ tag: '法强跃迁', item: '博学者之怒', desc: '总法术攻击提升30%，技能法伤呈现指数级爆发飞跃。' });
+  }
+  if (hasHuixiang) {
+    insights.push({ tag: '法术引爆', item: '回响之杖', desc: '技能命中触发范围法术爆炸，探草消耗与瞬时爆发兼备。' });
+  }
+  if (hasFaChuan) {
+    insights.push({ tag: '法穿破壁', item: slotNames.includes('虚无法杖') ? '虚无法杖' : '日暮之流', desc: '提供高额百分比或叠层法穿，轻松穿透敌方法防屏障。' });
+  }
+  if (hasShushen) {
+    insights.push({ tag: '法术吸血', item: '噬神之书', desc: '赋予25%法术吸血与10%CD，对拼持续回复赖线不回城。' });
+  }
+  if (hasHuiyue) {
+    insights.push({ tag: '金身规避', item: '辉月', desc: '1.5秒金身无敌与免控，关键时刻规避刺客致命突进秒杀。' });
+  }
+  if (hasMianju) {
+    insights.push({ tag: '生命灼烧', item: '痛苦面具', desc: '技能附带多段目标当前生命百分比伤害，持续消耗前排。' });
+  }
+  if (hasXianshu) {
+    insights.push({ tag: '终极增伤', item: '贤者之书', desc: '按法强最高提升12%全技能增伤，后期法球爆发质变。' });
+  }
+  if (hasDikang) {
+    insights.push({ tag: '韧性防控', item: '抵抗之靴', desc: '提供35%韧性缩短受控时间，大幅提升团战进场容错。' });
+  } else if (hasYinren) {
+    insights.push({ tag: '普攻减伤', item: '影忍之足', desc: '减少8%受到的普攻物理伤害，显著提升对拼承伤上限。' });
+  }
+
+  // 2. 冲突与惩罚检查
   let penalty = 0;
   let penaltyReasons = [];
 
+  let wastedApCount = isPhysicalHero ? effItems.filter(it => (it.category === '法术') || (it.stats && it.stats.ap >= 80)).length : 0;
+  let wastedAdCount = isMagicHero ? effItems.filter(it => (it.category === '攻击') && ((it.stats && it.stats.atk >= 80) || (it.stats && it.stats.crit >= 15))).length : 0;
+
   if (wastedApCount > 0) {
     penalty += wastedApCount * 15;
-    penaltyReasons.push(`物法属性错位：物理英雄装备了 ${wastedApCount} 件法术属性装 (-${wastedApCount * 15}分)`);
+    penaltyReasons.push(`物法错位：物理英雄出了 ${wastedApCount} 件法术属性装 (-${wastedApCount * 15}分)`);
   }
   if (wastedAdCount > 0) {
     penalty += wastedAdCount * 15;
-    penaltyReasons.push(`物法属性错位：法术英雄装备了 ${wastedAdCount} 件高物攻/暴击装 (-${wastedAdCount * 15}分)`);
+    penaltyReasons.push(`物法错位：法术英雄出了 ${wastedAdCount} 件物攻/暴击装 (-${wastedAdCount * 15}分)`);
   }
   if (bootsCount > 1) {
     penalty += (bootsCount - 1) * 15;
-    penaltyReasons.push(`鞋类重复出装：装备了 ${bootsCount} 双鞋子，唯一移速被动浪费 (-${(bootsCount - 1) * 15}分)`);
-  }
-  if (duplicateItemCount > 0) {
-    penalty += duplicateItemCount * 12;
-    penaltyReasons.push(`重复大件购买：存在 ${duplicateItemCount} 件同名重复装备，同名唯一被动无法叠加 (-${duplicateItemCount * 12}分)`);
-  }
-  if (spellbladeConflict) {
-    penalty += 8;
-    penaltyReasons.push(`强击唯一被动重叠冲突：同时装备多件强击装，仅生效优先级最高者 (-8分)`);
-  }
-  if (effItems.length >= 5 && tier1Count >= 3) {
-    penalty += 10;
-    penaltyReasons.push(`散件过多拖累经济：后期装备栏保留过多初级散件，属性成型严重落后 (-10分)`);
+    penaltyReasons.push(`双鞋互斥：装备了 ${bootsCount} 双鞋子，移速被动浪费 (-${(bootsCount - 1) * 15}分)`);
   }
 
-  // 最终总分计算
-  let score = Math.round(buildBaseScore + synergyBonus + balanceScore + 10 - penalty);
-  score = Math.max(15, Math.min(100, score));
+  const nameCounts = {};
+  slotNames.forEach(n => nameCounts[n] = (nameCounts[n] || 0) + 1);
+  let duplicateCount = 0;
+  for (let n in nameCounts) { if (nameCounts[n] > 1) duplicateCount += (nameCounts[n] - 1); }
+  if (duplicateCount > 0) {
+    penalty += duplicateCount * 12;
+    penaltyReasons.push(`重复购买：存在 ${duplicateCount} 件同名重复装备，被动无法叠加 (-${duplicateCount * 12}分)`);
+  }
 
-  // 评级与诊断徽章
-  let rankBadge = 'S+ 巅峰神装契合';
-  let rankColor = '#34c759';
-  let rankSub = '攻防一体，被动联动极佳，完全激活英雄机制潜力';
+  // 3. 最终得分与评级
+  let baseScore = 65 + effItems.length * 5; // 6件成装 = 95
+  if (insights.length >= 4) baseScore += 5;
+  else if (insights.length >= 2) baseScore += 3;
+
+  let score = Math.max(15, Math.min(99, Math.round(baseScore - penalty)));
+  let rankBadge = 'S+ 巅峰神装契合', rankColor = '#34c759', rankSub = `激活 ${insights.length} 项核心被动机制，与【${heroName}】技能特质高度共鸣。`;
 
   if (score >= 90) {
-    rankBadge = 'S+ 巅峰神装契合';
-    rankColor = '#34c759';
-    rankSub = '攻防一体，被动联动极佳，完全激活英雄机制潜力';
+    rankBadge = 'S+ 巅峰神装契合'; rankColor = '#34c759';
   } else if (score >= 80) {
-    rankBadge = 'A 优质战术出装';
-    rankColor = '#0071e3';
-    rankSub = '基础战力扎实，攻防维度完好，个别装备仍有针对性优化空间';
+    rankBadge = 'A 优质战术出装'; rankColor = '#0071e3';
+    rankSub = penaltyReasons[0] || `核心装备成型，激活 ${insights.length} 项战术机制，攻防分布扎实。`;
   } else if (score >= 70) {
-    rankBadge = 'B 常规级可用配装';
-    rankColor = '#ff9500';
-    rankSub = penaltyReasons[0] || '具备基本作战能力，但被动联动较单薄，攻防分布略显失衡';
-  } else if (score >= 60) {
-    rankBadge = 'C 偏离主轴 / 散件较多';
-    rankColor = '#ff5e00';
-    rankSub = penaltyReasons[0] || '初级散件偏多或缺少核心质变大件，实战无法充分激发英雄潜力';
+    rankBadge = 'B 常规级可用配装'; rankColor = '#ff9500';
+    rankSub = penaltyReasons[0] || '具备基本作战能力，但被动联动较单薄，可进一步补强核心质变装。';
   } else {
-    rankBadge = 'D 严重冲突 / 属性倒挂';
-    rankColor = '#ff3b30';
-    rankSub = penaltyReasons.join(' ； ') || '存在严重属性浪费或装备冲突，实战作战效能极低';
+    rankBadge = 'C 存在属性冲突或散件'; rankColor = '#ff3b30';
+    rankSub = penaltyReasons.join(' ； ') || '存在严重属性浪费或装备冲突，实战作战效能受限。';
   }
 
-  // 五维雷达能力评估计算
-  const physBurst = Math.min(100, Math.round((totalAd / 350) * 50 + (totalCrit / 50) * 30 + (totalPhysPierce / 200) * 20));
-  const sustainSurvive = Math.min(100, Math.round((totalBonusHp / 4000) * 45 + (totalPdef / 600) * 30 + (totalMdef / 350) * 25));
-  const cdLoop = Math.min(100, Math.round((cappedCdr / 40) * 70 + (hasSpellblade ? 20 : 0) + (hasSkillHeal ? 10 : 0)));
-  const roamSpeed = Math.min(100, Math.round((bootsCount > 0 ? 50 : 20) + (totalPercentSpeed / 15) * 30 + (hasBaoLie ? 20 : 0)));
+  // 4. 真实五维雷达战力折算 (0~100 百分比)
+  const burstVal = Math.min(100, Math.max(20, Math.round((totalAd / 550) * 55 + (totalAp / 650) * 45 + (totalCrit / 50) * 20)));
+  const tankVal = Math.min(100, Math.max(20, Math.round((totalBonusHp / 5000) * 50 + (totalPdef / 700) * 30 + (totalMdef / 400) * 20)));
+  const cdrVal = Math.min(100, Math.max(20, Math.round((cappedCdr / 40) * 75 + (hasCangqiong ? 15 : 0) + (hasAnyang ? 10 : 0))));
+  const speedVal = Math.min(100, Math.max(20, Math.round((bootsCount > 0 ? 55 : 20) + (totalPercentSpeed / 15) * 30 + (hasBaoLie ? 15 : 0))));
   const hasHardCc = skills.some(s => (s.tags || []).includes('硬控'));
-  const controlScore = Math.min(100, Math.round((hasHardCc ? 50 : 20) + (effNames.includes('冰霜冲击') ? 25 : 0) + (hasSpellblade ? 20 : 0) + (effNames.includes('极寒风暴') ? 15 : 0)));
+  const ccVal = Math.min(100, Math.max(20, Math.round((hasHardCc ? 55 : 25) + (hasBuxiang ? 20 : 0) + (hasBinghen || hasCangqiong ? 20 : 0) + (hasHonglian ? 10 : 0))));
+
+  const radarStats = {
+    burst: burstVal,
+    survive: tankVal,
+    control: cdrVal,
+    mobility: speedVal,
+    sustain: ccVal,
+    list: [burstVal, tankVal, cdrVal, speedVal, ccVal]
+  };
+  radarStats[0] = burstVal;
+  radarStats[1] = tankVal;
+  radarStats[2] = cdrVal;
+  radarStats[3] = speedVal;
+  radarStats[4] = ccVal;
+  radarStats.length = 5;
 
   return {
     score,
@@ -3975,15 +3988,15 @@ function calculateSynergyScore(currentHero, effItems, currentSlots, skills, capp
     rankColor,
     rankSub,
     penaltyReasons,
+    insights,
     synergyContext: {
-      hasYellowShield,
+      hasYellowShield: hasHuangdun,
       hasPhoenix,
       hasBaoLie,
-      hasSpellblade,
-      hasBloodRage,
-      hasDamageReduce
+      hasSpellblade: (hasZongshi || hasBinghen),
+      hasDamageReduce: hasCangqiong
     },
-    radarStats: [physBurst, sustainSurvive, cdLoop, roamSpeed, controlScore]
+    radarStats
   };
 }
 
@@ -4175,72 +4188,28 @@ function renderSynergyContent() {
       </div>
     `;
   });
-  // 2. 装备专属机制联动卡片 (怒龙剑盾、不死鸟、暴烈、强击等)
-  const effNames = effItems.map(it => it.item_name);
-  const hasYellowShield = effNames.includes('怒龙剑盾') || effNames.includes('龙鳞利剑');
-  const hasPhoenix = effNames.includes('不死鸟之眼');
-  const hasBaoLie = effNames.includes('暴烈之甲');
-  const spellbladeNames = ['宗师之力', '冰痕之握', '巫术法杖', '光辉之剑'];
-  const spellbladeItem = effNames.find(n => spellbladeNames.includes(n));
-  const hasSkillHeal = skills.some(s => (s.tags || []).includes('技能回血'));
+
+  // 2. 调用解耦评分引擎 (synergy_evaluator.js)
+  const cappedCdr = typeof calculateCompositeStats === 'function' ? calculateCompositeStats().cdr : 0;
+  const evalResult = calculateSynergyScore(hero, effItems, slots, skills, cappedCdr);
+  const { score, rankBadge, rankColor, rankSub, penaltyReasons, synergyContext, radarStats, insights } = evalResult;
+
+  // 3. 装备专属机制联动卡片 (由评估引擎动态输出)
   const svgStar = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.26 12 2"></polygon></svg>';
   const svgShield = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>';
   const svgHeart = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>';
-  const synergyItems = [];
-  if (hasYellowShield && hasPhoenix) {
-    synergyItems.push({
-      icon: svgShield,
-      title: currentHero.cname === '杨戬' ? '绝地不死战神 · 黄盾真实混伤 × 不死鸟绝地反杀' : '重装攻防永动 · 黄盾生命重击 × 不死鸟法抗屏障',
-      item: '怒龙剑盾 + 不死鸟之眼',
-      desc: currentHero.cname === '杨戬' ? '杨戬 2技能真实伤害扫出后，普攻享受【黄盾·重击】物理与真伤双重加持！残血开大触发不死鸟受治疗翻倍！' : '双防与生命值拉升，黄盾提供普攻最大生命物理重击与续航，不死鸟构筑高额法术屏障并放大残血回复。'
-    });
-  } else if (hasYellowShield) {
-    synergyItems.push({
-      icon: svgStar,
-      title: '怒龙剑盾 (黄盾) · 普攻生命重击与快速发育',
-      item: '怒龙剑盾',
-      desc: `【重击】被动让【${currentHero.cname}】的普攻附带最大生命值百分比物理伤害，对兵线与野怪清剿效率质变提升！`
-    });
-  } else if (hasPhoenix) {
-    synergyItems.push({
-      icon: svgHeart,
-      title: currentHero.cname === '赵云' ? '不死鸟之眼 · 残血超高回血 × 溢出转永久护盾' : (hasSkillHeal ? '不死鸟之眼 · 残血治疗翻倍与极限反杀' : '不死鸟之眼 · 法抗支撑与受治疗增益'),
-      item: '不死鸟之眼',
-      desc: currentHero.cname === '赵云' ? '赵云被动龙鸣低血量享免伤与回血，配合不死鸟血统受治疗量提升 30%~60%，溢出回血转为真实护盾！' : (hasSkillHeal ? `【${currentHero.cname}】自身拥有回血机制，血量每损失10%治疗效果额外提升6%，残血开出技能瞬间拉满！` : '提供高额法术防御与最大生命值，配合铭文或吸血装，在残血时获得高额受治疗提升。')
-    });
-  }
-  if (hasBaoLie) {
-    synergyItems.push({
-      icon: svgStar,
-      title: '暴烈之甲 · 挨打叠层最高 10%全增伤与移速',
-      item: '暴烈之甲',
-      desc: '受到伤害时叠加【无畏】印记（最高 5层增加 10%伤害与 10%移速）。在近战肉搏与抗集火中轻松叠满！'
-    });
-  }
-  if (spellbladeItem) {
-    synergyItems.push({
-      icon: svgStar,
-      title: '强击被动 · 连招强化与减速留人',
-      item: spellbladeItem,
-      desc: `核心装备【${spellbladeItem}】的【强击】被动与【${currentHero.cname}】天然契合，释放技能后下一次普攻附带额外爆发！`
-    });
-  }
-  if (synergyItems.length === 0) {
-    synergyItems.push({
-      icon: svgShield,
-      title: '基础属性套装 · 稳步提升三维基底',
-      item: '基础属性套装',
-      desc: '当前所选装备稳步提升基础数值，建议补充核心输出或防御成装以激发更深层被动协同效果。'
-    });
-  }
+  
   let synergyLinksHtml = '';
-  synergyItems.forEach(item => {
+  const effInsights = (insights && insights.length > 0) ? insights : [
+    { tag: '基础属性协同', item: '属性装配', desc: '当前装备提供稳固的攻防基础数值，建议补齐核心质变神装。' }
+  ];
+  effInsights.forEach(item => {
     synergyLinksHtml += `
       <div class="synergy-link-card">
-        <div class="synergy-link-icon-box">${item.icon}</div>
+        <div class="synergy-link-icon-box">${svgShield}</div>
         <div class="synergy-link-content">
           <div class="synergy-link-title">
-            <span>${item.title}</span>
+            <span>${item.tag} · ${item.item}</span>
             <span class="synergy-link-sub">${item.item}</span>
           </div>
           <div class="synergy-link-desc">${item.desc}</div>
@@ -4248,10 +4217,7 @@ function renderSynergyContent() {
       </div>
     `;
   });
-  // 3. 调用解耦评分引擎 (synergy_evaluator.js)
-  const cappedCdr = typeof calculateCompositeStats === 'function' ? calculateCompositeStats().cdr : 0;
-  const evalResult = calculateSynergyScore(hero, effItems, slots, skills, cappedCdr);
-  const { score, rankBadge, rankColor, rankSub, penaltyReasons, synergyContext, radarStats } = evalResult;
+
   // 4. 调用解耦连招策略引擎 (synergy_combos.js)
   const comboSteps = generateComboSteps(hero, skills, synergyContext);
   let comboHtml = '';
@@ -4263,9 +4229,11 @@ function renderSynergyContent() {
       </div>
     `;
   });
+
   // 5. 组装完整模态框 HTML
   const bodyEl = document.getElementById('synergyModalScroll') || document.getElementById('synergyModalBody');
   if (!bodyEl) return;
+
   if (window.innerWidth <= 768) {
     const isEmp = effItems.length === 0;
     const finalScore = isEmp ? 0 : score;
@@ -4273,6 +4241,13 @@ function renderSynergyContent() {
     const finalTitle = isEmp ? '待装配推演' : rankBadge;
     const finalDesc = isEmp ? '暂未选配装备，请点击一键神装或在下方挑选装备入槽。' : rankSub;
     const cardBorderColor = isEmp ? '#aeaeb2' : rankColor;
+
+    const bVal = isEmp ? 20 : (radarStats ? (radarStats.burst || radarStats[0] || 20) : 20);
+    const sVal = isEmp ? 20 : (radarStats ? (radarStats.survive || radarStats[1] || 20) : 20);
+    const cVal = isEmp ? 20 : (radarStats ? (radarStats.control || radarStats[2] || 20) : 20);
+    const mVal = isEmp ? 20 : (radarStats ? (radarStats.mobility || radarStats[3] || 20) : 20);
+    const tVal = isEmp ? 20 : (radarStats ? (radarStats.sustain || radarStats[4] || 20) : 20);
+
     bodyEl.innerHTML = `
       <div class="synergy-mobile-container">
         <!-- 综合评分与战术评级 (对齐真机图 6) -->
@@ -4291,11 +4266,11 @@ function renderSynergyContent() {
           <div class="synergy-block-title">实战能力五维推演</div>
           <div class="radar-bars-grid">
             ${[
-              { label: '输出爆发', val: isEmp ? 20 : (radarStats ? radarStats.burst : 20) },
-              { label: '生存抗伤', val: isEmp ? 20 : (radarStats ? radarStats.survive : 20) },
-              { label: '技能循环', val: isEmp ? 20 : (radarStats ? radarStats.control : 20) },
-              { label: '机动拉扯', val: isEmp ? 20 : (radarStats ? radarStats.mobility : 20) },
-              { label: '控制留人', val: isEmp ? 20 : (radarStats ? radarStats.sustain : 20) }
+              { label: '输出爆发', val: bVal },
+              { label: '生存抗伤', val: sVal },
+              { label: '技能循环', val: cVal },
+              { label: '机动拉扯', val: mVal },
+              { label: '控制留人', val: tVal }
             ].map(r => `
               <div class="radar-bar-item">
                 <div class="radar-bar-label-row">
@@ -4567,18 +4542,15 @@ function updateSynergyBrief() {
     if (styleTag) styleTag.innerText = syn.rankBadge || '战术协同';
     if (summary) summary.innerText = syn.rankSub || '装备成型，核心战术乘区全面生效。';
     if (highlights) {
-      const activeTags = [];
-      const sc = syn.synergyContext || {};
-      if (sc.hasSpellblade) activeTags.push('强击爆发');
-      if (sc.hasBaoLie) activeTags.push('受击增伤');
-      if (sc.hasPhoenix) activeTags.push('低血回春');
-      if (sc.hasYellowShield) activeTags.push('神盾重击');
-      if (sc.hasBloodRage) activeTags.push('狂怒逆转');
-      if (activeTags.length === 0) activeTags.push('基础属性协同');
-
-      highlights.innerHTML = activeTags.map(t => 
-        `<span class="synergy-highlight-badge">${t}</span>`
-      ).join('');
+      const activeItems = (syn.insights && syn.insights.length > 0)
+        ? syn.insights.slice(0, 3)
+        : [{ tag: '基础属性协同', desc: '当前装备提供稳固的攻防基础数值' }];
+      highlights.innerHTML = activeItems.map(item => `
+        <div class="synergy-highlight-row">
+          <span class="synergy-highlight-badge">${item.tag}</span>
+          <span class="synergy-highlight-desc">${item.item ? `${item.item} · ` : ''}${item.desc}</span>
+        </div>
+      `).join('');
     }
   }
 }

@@ -96,72 +96,28 @@ function renderSynergyContent() {
       </div>
     `;
   });
-  // 2. 装备专属机制联动卡片 (怒龙剑盾、不死鸟、暴烈、强击等)
-  const effNames = effItems.map(it => it.item_name);
-  const hasYellowShield = effNames.includes('怒龙剑盾') || effNames.includes('龙鳞利剑');
-  const hasPhoenix = effNames.includes('不死鸟之眼');
-  const hasBaoLie = effNames.includes('暴烈之甲');
-  const spellbladeNames = ['宗师之力', '冰痕之握', '巫术法杖', '光辉之剑'];
-  const spellbladeItem = effNames.find(n => spellbladeNames.includes(n));
-  const hasSkillHeal = skills.some(s => (s.tags || []).includes('技能回血'));
+
+  // 2. 调用解耦评分引擎 (synergy_evaluator.js)
+  const cappedCdr = typeof calculateCompositeStats === 'function' ? calculateCompositeStats().cdr : 0;
+  const evalResult = calculateSynergyScore(hero, effItems, slots, skills, cappedCdr);
+  const { score, rankBadge, rankColor, rankSub, penaltyReasons, synergyContext, radarStats, insights } = evalResult;
+
+  // 3. 装备专属机制联动卡片 (由评估引擎动态输出)
   const svgStar = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.26 12 2"></polygon></svg>';
   const svgShield = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>';
   const svgHeart = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>';
-  const synergyItems = [];
-  if (hasYellowShield && hasPhoenix) {
-    synergyItems.push({
-      icon: svgShield,
-      title: currentHero.cname === '杨戬' ? '绝地不死战神 · 黄盾真实混伤 × 不死鸟绝地反杀' : '重装攻防永动 · 黄盾生命重击 × 不死鸟法抗屏障',
-      item: '怒龙剑盾 + 不死鸟之眼',
-      desc: currentHero.cname === '杨戬' ? '杨戬 2技能真实伤害扫出后，普攻享受【黄盾·重击】物理与真伤双重加持！残血开大触发不死鸟受治疗翻倍！' : '双防与生命值拉升，黄盾提供普攻最大生命物理重击与续航，不死鸟构筑高额法术屏障并放大残血回复。'
-    });
-  } else if (hasYellowShield) {
-    synergyItems.push({
-      icon: svgStar,
-      title: '怒龙剑盾 (黄盾) · 普攻生命重击与快速发育',
-      item: '怒龙剑盾',
-      desc: `【重击】被动让【${currentHero.cname}】的普攻附带最大生命值百分比物理伤害，对兵线与野怪清剿效率质变提升！`
-    });
-  } else if (hasPhoenix) {
-    synergyItems.push({
-      icon: svgHeart,
-      title: currentHero.cname === '赵云' ? '不死鸟之眼 · 残血超高回血 × 溢出转永久护盾' : (hasSkillHeal ? '不死鸟之眼 · 残血治疗翻倍与极限反杀' : '不死鸟之眼 · 法抗支撑与受治疗增益'),
-      item: '不死鸟之眼',
-      desc: currentHero.cname === '赵云' ? '赵云被动龙鸣低血量享免伤与回血，配合不死鸟血统受治疗量提升 30%~60%，溢出回血转为真实护盾！' : (hasSkillHeal ? `【${currentHero.cname}】自身拥有回血机制，血量每损失10%治疗效果额外提升6%，残血开出技能瞬间拉满！` : '提供高额法术防御与最大生命值，配合铭文或吸血装，在残血时获得高额受治疗提升。')
-    });
-  }
-  if (hasBaoLie) {
-    synergyItems.push({
-      icon: svgStar,
-      title: '暴烈之甲 · 挨打叠层最高 10%全增伤与移速',
-      item: '暴烈之甲',
-      desc: '受到伤害时叠加【无畏】印记（最高 5层增加 10%伤害与 10%移速）。在近战肉搏与抗集火中轻松叠满！'
-    });
-  }
-  if (spellbladeItem) {
-    synergyItems.push({
-      icon: svgStar,
-      title: '强击被动 · 连招强化与减速留人',
-      item: spellbladeItem,
-      desc: `核心装备【${spellbladeItem}】的【强击】被动与【${currentHero.cname}】天然契合，释放技能后下一次普攻附带额外爆发！`
-    });
-  }
-  if (synergyItems.length === 0) {
-    synergyItems.push({
-      icon: svgShield,
-      title: '基础属性套装 · 稳步提升三维基底',
-      item: '基础属性套装',
-      desc: '当前所选装备稳步提升基础数值，建议补充核心输出或防御成装以激发更深层被动协同效果。'
-    });
-  }
+  
   let synergyLinksHtml = '';
-  synergyItems.forEach(item => {
+  const effInsights = (insights && insights.length > 0) ? insights : [
+    { tag: '基础属性协同', item: '属性装配', desc: '当前装备提供稳固的攻防基础数值，建议补齐核心质变神装。' }
+  ];
+  effInsights.forEach(item => {
     synergyLinksHtml += `
       <div class="synergy-link-card">
-        <div class="synergy-link-icon-box">${item.icon}</div>
+        <div class="synergy-link-icon-box">${svgShield}</div>
         <div class="synergy-link-content">
           <div class="synergy-link-title">
-            <span>${item.title}</span>
+            <span>${item.tag} · ${item.item}</span>
             <span class="synergy-link-sub">${item.item}</span>
           </div>
           <div class="synergy-link-desc">${item.desc}</div>
@@ -169,10 +125,7 @@ function renderSynergyContent() {
       </div>
     `;
   });
-  // 3. 调用解耦评分引擎 (synergy_evaluator.js)
-  const cappedCdr = typeof calculateCompositeStats === 'function' ? calculateCompositeStats().cdr : 0;
-  const evalResult = calculateSynergyScore(hero, effItems, slots, skills, cappedCdr);
-  const { score, rankBadge, rankColor, rankSub, penaltyReasons, synergyContext, radarStats } = evalResult;
+
   // 4. 调用解耦连招策略引擎 (synergy_combos.js)
   const comboSteps = generateComboSteps(hero, skills, synergyContext);
   let comboHtml = '';
@@ -184,9 +137,11 @@ function renderSynergyContent() {
       </div>
     `;
   });
+
   // 5. 组装完整模态框 HTML
   const bodyEl = document.getElementById('synergyModalScroll') || document.getElementById('synergyModalBody');
   if (!bodyEl) return;
+
   if (window.innerWidth <= 768) {
     const isEmp = effItems.length === 0;
     const finalScore = isEmp ? 0 : score;
@@ -194,6 +149,13 @@ function renderSynergyContent() {
     const finalTitle = isEmp ? '待装配推演' : rankBadge;
     const finalDesc = isEmp ? '暂未选配装备，请点击一键神装或在下方挑选装备入槽。' : rankSub;
     const cardBorderColor = isEmp ? '#aeaeb2' : rankColor;
+
+    const bVal = isEmp ? 20 : (radarStats ? (radarStats.burst || radarStats[0] || 20) : 20);
+    const sVal = isEmp ? 20 : (radarStats ? (radarStats.survive || radarStats[1] || 20) : 20);
+    const cVal = isEmp ? 20 : (radarStats ? (radarStats.control || radarStats[2] || 20) : 20);
+    const mVal = isEmp ? 20 : (radarStats ? (radarStats.mobility || radarStats[3] || 20) : 20);
+    const tVal = isEmp ? 20 : (radarStats ? (radarStats.sustain || radarStats[4] || 20) : 20);
+
     bodyEl.innerHTML = `
       <div class="synergy-mobile-container">
         <!-- 综合评分与战术评级 (对齐真机图 6) -->
@@ -212,11 +174,11 @@ function renderSynergyContent() {
           <div class="synergy-block-title">实战能力五维推演</div>
           <div class="radar-bars-grid">
             ${[
-              { label: '输出爆发', val: isEmp ? 20 : (radarStats ? radarStats.burst : 20) },
-              { label: '生存抗伤', val: isEmp ? 20 : (radarStats ? radarStats.survive : 20) },
-              { label: '技能循环', val: isEmp ? 20 : (radarStats ? radarStats.control : 20) },
-              { label: '机动拉扯', val: isEmp ? 20 : (radarStats ? radarStats.mobility : 20) },
-              { label: '控制留人', val: isEmp ? 20 : (radarStats ? radarStats.sustain : 20) }
+              { label: '输出爆发', val: bVal },
+              { label: '生存抗伤', val: sVal },
+              { label: '技能循环', val: cVal },
+              { label: '机动拉扯', val: mVal },
+              { label: '控制留人', val: tVal }
             ].map(r => `
               <div class="radar-bar-item">
                 <div class="radar-bar-label-row">

@@ -95,18 +95,15 @@ function updateSynergyBrief() {
     if (styleTag) styleTag.innerText = syn.rankBadge || '战术协同';
     if (summary) summary.innerText = syn.rankSub || '装备成型，核心战术乘区全面生效。';
     if (highlights) {
-      const activeTags = [];
-      const sc = syn.synergyContext || {};
-      if (sc.hasSpellblade) activeTags.push('强击爆发');
-      if (sc.hasBaoLie) activeTags.push('受击增伤');
-      if (sc.hasPhoenix) activeTags.push('低血回春');
-      if (sc.hasYellowShield) activeTags.push('神盾重击');
-      if (sc.hasBloodRage) activeTags.push('狂怒逆转');
-      if (activeTags.length === 0) activeTags.push('基础属性协同');
-
-      highlights.innerHTML = activeTags.map(t => 
-        `<span class="synergy-highlight-badge">${t}</span>`
-      ).join('');
+      const activeItems = (syn.insights && syn.insights.length > 0)
+        ? syn.insights.slice(0, 3)
+        : [{ tag: '基础属性协同', desc: '当前装备提供稳固的攻防基础数值' }];
+      highlights.innerHTML = activeItems.map(item => `
+        <div class="synergy-highlight-row">
+          <span class="synergy-highlight-badge">${item.tag}</span>
+          <span class="synergy-highlight-desc">${item.item ? `${item.item} · ` : ''}${item.desc}</span>
+        </div>
+      `).join('');
     }
   }
 }

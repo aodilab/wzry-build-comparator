@@ -41,7 +41,7 @@ def get_sandbox_html_template() -> str:
 <html lang="zh-CN" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <link rel="icon" href="assets/app_icon.png">
 <title>王者出装箱 ｜ S45赛季六神装推演沙盒</title>
 <style>
