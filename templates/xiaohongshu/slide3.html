@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+{common_css}
+{slide_css}
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+    <div class="brand-pill"><span class="dot"></span>机制协同 · 算法逻辑拆解</div>
+    <div class="page-indicator">03 / 05</div>
+</div>
+
+<div class="title-header">
+    <div class="title-main">机制联动。英雄技能与神装的闭环。</div>
+    <div class="title-sub">深入底层数值逻辑，打通进场抗伤、换血与斩杀战术链路。</div>
+</div>
+
+<!-- 统一纯白大画卷 (Unified Architecture Canvas) -->
+<div class="unified-mech-canvas">
+    
+    <!-- STEP 01: 进场抗性 -->
+    <div class="mech-step-pod">
+        <div class="ms-left">
+            <div class="ms-header">
+                <span class="ms-step-pill pill-step1">STEP 01 · 进场抗性</span>
+                <span class="ms-title">被动【法天象地】极值韧性实测</span>
+            </div>
+            <div class="ms-desc">
+                受损生命累积高额韧性，残血直接触发满额霸体。受版本底层机制限制，常态韧性上限生效仅 25%。出<b>抵抗之靴 (+35%)</b> 将严重溢出，收益直接归零！
+            </div>
+            <div class="ms-chips-row">
+                <span class="chip-unit chip-red">✕ 抵抗之靴: 韧性溢出 35%，纯白浪费 710 金币</span>
+                <span class="chip-unit chip-green">✔ 影忍之足: 普攻免伤 10%，净赚 1,840 实战生命</span>
+            </div>
+        </div>
+        <div class="ms-right-stat">
+            <span class="stat-lbl">最高韧性蓄能</span>
+            <span class="stat-num">90%</span>
+            <span class="stat-sub">进战蓄满极值霸体</span>
+        </div>
+    </div>
+
+    <!-- 极简微向下引导 (消解过度感) -->
+    <div class="flow-step-arrow">
+        <svg width="22" height="12" viewBox="0 0 22 12" fill="none">
+            <path d="M2 2L11 10L20 2" stroke="#86868b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+
+    <!-- STEP 02: 核心换血 -->
+    <div class="mech-step-pod">
+        <div class="ms-left">
+            <div class="ms-header">
+                <span class="ms-step-pill pill-step2">STEP 02 · 核心换血</span>
+                <span class="ms-title">纯净苍穹 35% 减伤覆盖大招吸血</span>
+            </div>
+            <div class="ms-desc">
+                打野杨戬进场易受爆发集火。纯净苍穹 35% 减伤完美包裹大招 3 段激光释放的 <b>2.5 秒黄金窗口</b>，配合首目标 30% 减速确保全中。
+            </div>
+            <div class="ms-chips-row">
+                <span class="chip-unit chip-green">✔ 减伤掩护吸收: 抵消 4,200 致命爆发伤害</span>
+                <span class="chip-unit chip-green">✔ 激光满额吸血: 瞬间回满 2,850 点生命反杀</span>
+            </div>
+        </div>
+        <div class="ms-right-stat">
+            <span class="stat-lbl">主动爆发减免</span>
+            <span class="stat-num stat-num-green">35%</span>
+            <span class="stat-sub">等效锁血 7,050 点</span>
+        </div>
+    </div>
+
+    <!-- 极简微向下引导 (消解过度感) -->
+    <div class="flow-step-arrow">
+        <svg width="22" height="12" viewBox="0 0 22 12" fill="none">
+            <path d="M2 2L11 10L20 2" stroke="#86868b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+
+    <!-- STEP 03: 斩杀收割 -->
+    <div class="mech-step-pod">
+        <div class="ms-left">
+            <div class="ms-header">
+                <span class="ms-step-pill pill-step3">STEP 03 · 斩杀收割</span>
+                <span class="ms-title">270 破甲清零护甲 · 一技能真伤斩杀</span>
+            </div>
+            <div class="ms-desc">
+                二技能横扫附带 5 秒单刀 612 真伤；黑切 170 破甲 + 百穿 100 清空基础护甲；压低血线后触发一技能二段 <b>16% 已损真伤斩杀</b>，敌方血量低于 32% 必定暴毙！
+            </div>
+            <div class="ms-chips-row">
+                <span class="chip-unit chip-green">✔ 斩杀绝对击杀线: 敌方低于 32% 血必杀</span>
+                <span class="chip-unit chip-green">✔ 技能闭环: 击杀瞬间重置哮天犬突进</span>
+            </div>
+        </div>
+        <div class="ms-right-stat">
+            <span class="stat-lbl">已损斩杀伤害</span>
+            <span class="stat-num stat-num-orange">16%</span>
+            <span class="stat-sub">击杀即刻重置CD</span>
+        </div>
+    </div>
+
+    <!-- 画卷底部集成: 实战对位场景 -->
+    <div class="canvas-bottom-scenarios">
+        <div class="scen-head">🎯 国服打野杨戬实战对位克制与协同场景</div>
+        <div class="scen-grid">
+            <div class="scen-cell">
+                <span class="scen-tag">⚔️ 对抗野核刺客 (镜/露娜/裴擒虎)</span>
+                <span class="scen-detail">布甲鞋减普攻 10% + 苍穹主动减伤，直接硬吃第一波爆发，利用真伤反手秒杀。</span>
+            </div>
+            <div class="scen-cell">
+                <span class="scen-tag">🎯 团战切入射手 (狄仁杰/鲁班七号)</span>
+                <span class="scen-detail">270 物理穿透清空基础护甲，1技能咬中突进击杀率达 <b>91.4%</b>。</span>
+            </div>
+            <div class="scen-cell">
+                <span class="scen-tag">🛡️ 防守高爆发法师 (干将/不知火舞)</span>
+                <span class="scen-detail">魔女斗篷 1500 护盾 + 549 法防，彻底避免团战未进场先被消耗残血。</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="bottom-bar">
+    <div class="bottom-left">⚡ 全英雄核心机制已建立数学模型</div>
+    <div class="bottom-right">
+        <span>右滑查看战术协同评分简报</span>
+        <span>→</span>
+    </div>
+</div>
+
+</body>
+</html>

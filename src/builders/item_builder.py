@@ -20,8 +20,8 @@ def build_items(output_file=None):
     items = fetch_json(URL_ITEM_LIST)
     upgrades_map = get_upgrades_map()
     
-    markdown_content = "# 王者荣耀最新赛季完整装备数据库（带合成路径）\n\n"
-    markdown_content += "> 提示：本文件专为 NotebookLM 优化，已清洗所有垃圾 HTML，并计算出了双向的合成拓扑关系（合成配方与升级方向）。\n\n"
+    markdown_content = "# 王者荣耀 S45 赛季（月照长安）全装备属性与双向合成拓扑图谱\n\n"
+    markdown_content += "> 提示：本文件专为 NotebookLM / RAG 优化，已同步王者荣耀 S45 赛季“月照长安”最新装备调整数值（暴烈之甲+1000生命、破魔刀+700生命、制裁之刃重做普攻吸血与攻速、不死鸟之眼增强等），并计算出了完整的双向合成拓扑关系（合成配方与升级方向）。\n\n"
 
     # --- 注入局内装备栏与槽位机制核心法则 ---
     markdown_content += "## 一、 局内装备槽位机制与合成互斥核心法则\n\n"

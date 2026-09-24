@@ -171,4 +171,5 @@ HERO_RECOMMENDED_ARCANA = {
     "大禹": {"red": "异变", "green": "鹰眼", "blue": "隐匿"},
     "元流之子(刺客)": {"red": "异变", "green": "鹰眼", "blue": "隐匿"},
     "卢雅那": {"red": "祸源", "green": "鹰眼", "blue": "狩猎"},
+    "王维": {"red": "梦魇", "green": "心眼", "blue": "狩猎"},
 }

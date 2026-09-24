@@ -1,0 +1,245 @@
+.report-canvas {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 18px;
+    margin: 18px 0;
+}
+
+/* 顶部总分大卡: 更加厚实、沉稳有力 */
+.sec-score-master {
+    background: #ffffff;
+    border-radius: 28px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.03);
+    padding: 26px 36px;
+    display: grid;
+    grid-template-columns: 220px 1fr 210px;
+    gap: 26px;
+    align-items: center;
+}
+.score-bignum-box {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+.score-num {
+    font-size: 92px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: #1d1d1f;
+}
+.score-unit {
+    font-size: 22px;
+    font-weight: 700;
+    color: #86868b;
+}
+.score-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.score-tag-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.st-grade {
+    font-size: 18px;
+    font-weight: 800;
+    background: #f0faf3;
+    color: #1a7f37;
+    padding: 4px 14px;
+    border-radius: 980px;
+    border: 1px solid rgba(26, 127, 55, 0.15);
+}
+.st-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: #6e6e73;
+}
+.score-desc {
+    font-size: 14.5px;
+    color: #424245;
+    line-height: 1.45;
+}
+.score-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #1a7f37;
+}
+
+/* 4维度分解雷达指标 */
+.sec-radar-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+.radar-cell {
+    background: #ffffff;
+    border-radius: 24px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.rc-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+.rc-header {
+    font-size: 14px;
+    font-weight: 700;
+    color: #86868b;
+}
+.rc-grade-tag {
+    font-size: 12px;
+    font-weight: 800;
+    color: #1a7f37;
+    background: #f0faf3;
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+.rc-score-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+.rc-score {
+    font-size: 44px;
+    font-weight: 900;
+    color: #1d1d1f;
+    line-height: 1;
+    letter-spacing: -0.03em;
+}
+.rc-unit {
+    font-size: 16px;
+    font-weight: 700;
+    color: #86868b;
+}
+.rc-bar-track {
+    width: 100%;
+    height: 6px;
+    background: #ebebf0;
+    border-radius: 980px;
+    margin-bottom: 12px;
+    overflow: hidden;
+}
+.rc-bar-fill {
+    height: 100%;
+    border-radius: 980px;
+    background: #0071e3;
+}
+.rc-detail {
+    font-size: 15px;
+    color: #424245;
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+.rc-pill {
+    font-size: 14px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 8px;
+    background: #f5f5f7;
+    color: #0071e3;
+    text-align: center;
+}
+
+/* 局内出装顺规时间轴 */
+.sec-timeline {
+    background: #ffffff;
+    border-radius: 26px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+    padding: 24px 30px;
+}
+.tl-head {
+    font-size: 18px;
+    font-weight: 800;
+    color: #1d1d1f;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.tl-flow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+.tl-node {
+    background: #fbfbfd;
+    border: 1px solid #f0f0f4;
+    border-radius: 18px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.node-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.node-time {
+    font-size: 15px;
+    font-weight: 800;
+    color: #0071e3;
+}
+.node-icons-row {
+    display: flex;
+    gap: 6px;
+}
+.node-icon-thumb {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.node-item-name {
+    font-size: 16.5px;
+    font-weight: 800;
+    color: #1d1d1f;
+}
+.node-tactics {
+    font-size: 14.5px;
+    color: #515154;
+    line-height: 1.45;
+}
+
+/* 沙盒系统诊断意见 */
+.sec-diagnosis {
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.02);
+    padding: 20px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.diag-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #1d1d1f;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.diag-body {
+    font-size: 16.5px;
+    color: #424245;
+    line-height: 1.55;
+}

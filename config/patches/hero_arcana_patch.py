@@ -134,5 +134,12 @@ HERO_ARCANA_PATCHES = {
         "role": "射手",
         "recom_mings": [M_HONGYUE, M_YINGYAN, M_SHOULIE],
         "sugg_tips": "环刃附魔依赖高攻速触发，26攻速铭文组显著加快攻击判定，配合鹰眼穿透快速清理兵线与敌人。"
+    },
+    "王维": {
+        "cname": "王维",
+        "title": "空山遗客",
+        "role": "法师",
+        "recom_mings": [M_MENGYAN, M_XINYAN, M_SHOULIE],
+        "sugg_tips": "88法穿标准法师配置（梦魇+心眼），在前中期直接拉满基础法术穿透与法术攻击，无视敌方脆皮基础魔抗；搭配10狩猎提供10%移动速度与攻速，显著强化王维游走支援、全图大招切入及走位拉扯手感。"
     }
 }

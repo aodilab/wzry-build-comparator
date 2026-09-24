@@ -111,7 +111,13 @@ def build_sandbox_html(output_file=None):
     with open(index_target, "w", encoding="utf-8") as f:
         f.write(html_content)
 
-    print(f"【成功】王者荣耀六神装配装沙盒单文件已生成：'{target}' 与 '{index_target}'（包含 30 颗全量五级铭文库与全英雄推荐铭文）")
+    # 同步输出一份到 dist_pages/index.html，供 Cloudflare Pages 全球托管
+    dist_target = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "dist_pages", "index.html")
+    if os.path.exists(os.path.dirname(dist_target)):
+        with open(dist_target, "w", encoding="utf-8") as f:
+            f.write(html_content)
+
+    print(f"【成功】王者荣耀六神装配装沙盒单文件已生成：'{target}'、'{index_target}' 与 '{dist_target}'（包含 30 颗全量五级铭文库与全英雄推荐铭文）")
     return target
 
 if __name__ == "__main__":

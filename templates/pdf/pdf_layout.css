@@ -1,0 +1,240 @@
+/* Apple-Grade Publication CSS for Honor of Kings Tactical Handbooks */
+@page {
+    size: A4;
+    margin: 18mm 16mm 18mm 16mm;
+    @bottom-center {
+        content: "第 " counter(page) " 页 ｜ 王者荣耀全维度战术知识库 (附赠在线推演沙盒)";
+        font-size: 8.5pt;
+        color: #86868b;
+        font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    color: #1d1d1f;
+    background-color: #ffffff;
+    line-height: 1.6;
+    font-size: 9.5pt;
+    margin: 0; padding: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* 封面设计 (纯白钛金属典雅风格) */
+.cover {
+    page-break-after: always;
+    height: 92vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px 48px;
+    background: radial-gradient(100% 100% at 0% 0%, #fbfcfd 0%, #f4f6fb 100%);
+    border-left: 4px solid #0071e3;
+    box-shadow: inset 0 0 0 1px #e5e5ea;
+    border-radius: 4px;
+}
+
+.cover-tag {
+    display: inline-block;
+    font-size: 9pt;
+    font-weight: 700;
+    color: #0071e3;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+    background: rgba(0, 113, 227, 0.08);
+    padding: 4px 14px;
+    border-radius: 20px;
+}
+
+.cover-title {
+    font-size: 26pt;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #111113;
+    margin: 0 0 14px 0;
+}
+
+.cover-sub {
+    font-size: 12.5pt;
+    color: #515154;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0 0 32px 0;
+}
+
+.cover-meta {
+    font-size: 9pt;
+    color: #86868b;
+    line-height: 1.8;
+    border-top: 1px solid #e5e5ea;
+    padding-top: 20px;
+    width: 100%;
+}
+
+.bonus-box {
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #d2d2d7;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.bonus-title {
+    font-size: 10pt;
+    font-weight: 700;
+    color: #0071e3;
+    margin-bottom: 4px;
+}
+
+.bonus-desc {
+    font-size: 8.5pt;
+    color: #515154;
+    margin: 0;
+}
+
+/* 顶部章节栏 */
+.book-header {
+    border-bottom: 1.5px solid #0071e3;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.book-header-title {
+    font-size: 15pt;
+    font-weight: 800;
+    color: #111113;
+}
+
+.book-header-sub {
+    font-size: 8.5pt;
+    color: #86868b;
+}
+
+/* 英雄卡片 Header */
+.hero-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+    margin-bottom: 14px;
+    padding: 10px 14px;
+    background: linear-gradient(135deg, #f8f9fc 0%, #f0f4fa 100%);
+    border-left: 4px solid #0071e3;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    page-break-inside: avoid;
+}
+
+.hero-avatar-round {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    flex-shrink: 0;
+}
+
+.hero-header-text {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.hero-name-big {
+    font-size: 13.5pt;
+    font-weight: 800;
+    color: #111113;
+}
+
+.hero-title-badge {
+    font-size: 8.5pt;
+    font-weight: 600;
+    color: #0071e3;
+    background: rgba(0,113,227,0.08);
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+/* 技能 Banner 与 图标 */
+.skill-banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    background: #fbfbfd;
+    border: 1px solid #e5e5ea;
+    border-radius: 6px;
+    page-break-inside: avoid;
+}
+
+.skill-icon-round {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 1px solid #d2d2d7;
+    flex-shrink: 0;
+}
+
+.skill-tag {
+    font-size: 8pt;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #eef2ff;
+    color: #4f46e5;
+}
+
+.skill-name {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #1d1d1f;
+}
+
+/* 克制与搭档对位卡片 */
+.matchup-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 6px 0;
+    padding: 8px 12px;
+    background: #ffffff;
+    border: 1px solid #e5e5ea;
+    border-radius: 6px;
+    page-break-inside: avoid;
+}
+
+.matchup-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid #0071e3;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.matchup-content {
+    flex: 1;
+    font-size: 8.8pt;
+    color: #333336;
+    line-height: 1.5;
+}
+
+.matchup-name {
+    color: #0071e3;
+    font-weight: 700;
+}

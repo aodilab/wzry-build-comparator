@@ -1,0 +1,227 @@
+/* ==========================================================================
+   二级页面：技能×出装联动 技能卡片、雷达图与连招打法 (Synergy Cards & Combo)
+   ========================================================================== */
+
+/* 技能与实战 CD 卡片网格 */
+.synergy-skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.synergy-skill-card {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.synergy-skill-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.synergy-skill-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.synergy-skill-badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--apple-subcard);
+  color: var(--color-blue);
+}
+
+.synergy-skill-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.synergy-skill-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.synergy-tag {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--color-amber-bg);
+  color: var(--color-amber);
+  font-weight: 600;
+}
+
+.synergy-cd-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--apple-subcard);
+  font-size: 11.5px;
+}
+
+.synergy-cd-highlight {
+  color: var(--color-green);
+  font-weight: 700;
+}
+
+.synergy-skill-desc {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* 装备被动实战联动深度剖析列表 */
+.synergy-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.synergy-link-card {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.synergy-link-icon-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--apple-subcard);
+  color: var(--color-blue);
+  border: 1px solid var(--apple-border);
+}
+
+.synergy-link-content {
+  flex: 1;
+}
+
+.synergy-link-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.synergy-link-sub {
+  font-size: 11px;
+  color: var(--color-blue);
+  font-weight: 600;
+}
+
+.synergy-link-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin-top: 4px;
+}
+
+/* 契合度评分与连招打法双列 */
+.synergy-bottom-grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 16px;
+}
+
+.synergy-rating-card, .synergy-combo-card {
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--card-shadow);
+}
+
+.synergy-score-circle {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.synergy-score-big {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--color-blue);
+  letter-spacing: -0.02em;
+}
+
+.synergy-radar-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.synergy-radar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+}
+
+.synergy-radar-track {
+  width: 150px;
+  height: 6px;
+  border-radius: 980px;
+  background: var(--apple-subcard);
+  overflow: hidden;
+}
+
+.synergy-radar-fill {
+  height: 100%;
+  border-radius: 980px;
+  background: linear-gradient(90deg, var(--color-blue), var(--color-green));
+}
+
+.synergy-combo-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--apple-subcard);
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.combo-step-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-blue);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-blue);
+}

@@ -16,8 +16,13 @@ def _load(filename: str) -> str:
 
 def get_sandbox_html_template() -> str:
     """按单一职责原则组合拼装完整的单文件 HTML 运行模板"""
-    base_css = _load('base.css')
-    modal_css = _load('modal.css')
+    theme_layout_css = _load('theme_layout.css')
+    sandbox_panels_css = _load('sandbox_panels.css')
+    item_shop_css = _load('item_shop.css')
+    dock_metrics_css = _load('dock_and_metrics.css')
+    modal_arcana_css = _load('modal_arcana.css')
+    modal_synergy_layout_css = _load('modal_synergy_layout.css')
+    modal_synergy_cards_css = _load('modal_synergy_cards.css')
     synergy_css = _load('synergy.css')
     html_body = _load('index.html')
     app_core_js = _load('app_core.js')
@@ -27,6 +32,7 @@ def get_sandbox_html_template() -> str:
     synergy_combos_js = _load('synergy_combos.js')
     app_synergy_js = _load('app_synergy.js')
 
+    combined_css = f"{theme_layout_css}\n\n{sandbox_panels_css}\n\n{item_shop_css}\n\n{dock_metrics_css}\n\n{modal_arcana_css}\n\n{modal_synergy_layout_css}\n\n{modal_synergy_cards_css}\n\n{synergy_css}"
     combined_js = f"{app_core_js}\n\n{app_stats_js}\n\n{app_arcana_js}\n\n{synergy_evaluator_js}\n\n{synergy_combos_js}\n\n{app_synergy_js}"
 
     return f"""<!DOCTYPE html>
@@ -35,11 +41,9 @@ def get_sandbox_html_template() -> str:
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="assets/app_icon.png">
-<title>王者出装箱 ｜ 局内六神装配装沙盒</title>
+<title>王者出装箱 ｜ S45赛季六神装推演沙盒</title>
 <style>
-{base_css}
-{modal_css}
-{synergy_css}
+{combined_css}
 </style>
 <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
 <script>LA.init({{id:"3RHV2P1v28aZF1yy",ck:"3RHV2P1v28aZF1yy",autoTrack:true}})</script>

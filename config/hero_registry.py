@@ -139,6 +139,7 @@ CN_HERO_MANIFEST = {
     188: {"cname": "大禹", "title": "鼎镇山河", "hero_type": 6, "hero_type2": 3},
     583: {"cname": "元流之子(刺客)", "title": "守望之诺", "hero_type": 6, "hero_type2": 0},
     547: {"cname": "卢雅那", "title": "蛇焰使者", "hero_type": 5, "hero_type2": 0},
+    138: {"cname": "王维", "title": "空山遗客", "hero_type": 2, "hero_type2": 0},
 }
 
 def get_manifest_dict():
