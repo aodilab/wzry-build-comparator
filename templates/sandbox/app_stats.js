@@ -173,16 +173,16 @@ function recalculate() {
     if (window.innerWidth <= 768) {
       statsBox.innerHTML = `
         <div class="stats-grid">
-          <div class="stat-cell"><span class="stat-name">物理攻击</span><div class="stat-num-box"><span class="stat-val highlight-ad">${totals.atk + arcanaTotals.atk + bAtk}</span>${(totals.atk + arcanaTotals.atk) > 0 ? `<span class="stat-plus">+${totals.atk + arcanaTotals.atk}</span>` : ''}</div></div>
-          <div class="stat-cell"><span class="stat-name">法术攻击</span><div class="stat-num-box"><span class="stat-val highlight-ap">${finalAp}</span>${finalAp > 0 ? `<span class="stat-plus">+${finalAp}</span>` : ''}</div></div>
-          <div class="stat-cell"><span class="stat-name">最大生命</span><div class="stat-num-box"><span class="stat-val highlight-hp">${finalHp}</span>${(totals.hp + arcanaTotals.hp) > 0 ? `<span class="stat-plus">+${totals.hp + arcanaTotals.hp}</span>` : ''}</div></div>
-          <div class="stat-cell"><span class="stat-name">物理防御</span><div class="stat-num-box"><span class="stat-val highlight-arm">${totPdef}</span>${(totals.pdef + arcanaTotals.pdef) > 0 ? `<span class="stat-plus">+${totals.pdef + arcanaTotals.pdef}</span>` : ''}</div></div>
-          <div class="stat-cell"><span class="stat-name">法术防御</span><div class="stat-num-box"><span class="stat-val highlight-marm">${totMdef}</span>${(totals.mdef + arcanaTotals.mdef) > 0 ? `<span class="stat-plus">+${totals.mdef + arcanaTotals.mdef}</span>` : ''}</div></div>
-          <div class="stat-cell"><span class="stat-name">冷却缩减</span><div class="stat-num-box"><span class="stat-val highlight-cdr">${cappedCdr}%</span>${cappedCdr >= 40 ? `<span class="stat-cap">满CD</span>` : ''}</div></div>
-          <div class="stat-cell"><span class="stat-name">暴击率</span><div class="stat-num-box"><span class="stat-val highlight-crit">${totalCrit}%</span></div></div>
-          <div class="stat-cell"><span class="stat-name">移动速度</span><div class="stat-num-box"><span class="stat-val highlight-spd">${calcSpeed}</span>${(calcSpeed - bSpeed) > 0 ? `<span class="stat-plus">+${calcSpeed - bSpeed}</span>` : ''}</div></div>
-          <div class="stat-cell"><span class="stat-name">物理穿透</span><div class="stat-num-box"><span class="stat-val highlight-ad">+${totalPhysPierce}</span></div></div>
-          ${totalMagicPierce > 0 ? `<div class="stat-cell"><span class="stat-name">法术穿透</span><div class="stat-num-box"><span class="stat-val highlight-ap">+${totalMagicPierce}</span></div></div>` : ''}
+          <div class="stat-cell"><span class="stat-name">物理攻击</span><div class="stat-num-box"><span class="stat-val">${totals.atk + arcanaTotals.atk + bAtk}</span>${(totals.atk + arcanaTotals.atk) > 0 ? `<span class="stat-plus">+${totals.atk + arcanaTotals.atk}</span>` : ''}</div></div>
+          <div class="stat-cell"><span class="stat-name">法术攻击</span><div class="stat-num-box"><span class="stat-val">${finalAp}</span>${finalAp > 0 ? `<span class="stat-plus">+${finalAp}</span>` : ''}</div></div>
+          <div class="stat-cell"><span class="stat-name">最大生命</span><div class="stat-num-box"><span class="stat-val">${finalHp}</span>${(totals.hp + arcanaTotals.hp) > 0 ? `<span class="stat-plus">+${totals.hp + arcanaTotals.hp}</span>` : ''}</div></div>
+          <div class="stat-cell"><span class="stat-name">物理防御</span><div class="stat-num-box"><span class="stat-val">${totPdef}</span>${(totals.pdef + arcanaTotals.pdef) > 0 ? `<span class="stat-plus">+${totals.pdef + arcanaTotals.pdef}</span>` : ''}</div></div>
+          <div class="stat-cell"><span class="stat-name">法术防御</span><div class="stat-num-box"><span class="stat-val">${totMdef}</span>${(totals.mdef + arcanaTotals.mdef) > 0 ? `<span class="stat-plus">+${totals.mdef + arcanaTotals.mdef}</span>` : ''}</div></div>
+          <div class="stat-cell"><span class="stat-name">冷却缩减</span><div class="stat-num-box"><span class="stat-val">${cappedCdr}%</span>${cappedCdr >= 40 ? `<span class="stat-cap">满CD</span>` : ''}</div></div>
+          <div class="stat-cell"><span class="stat-name">暴击率</span><div class="stat-num-box"><span class="stat-val">${totalCrit}%</span></div></div>
+          <div class="stat-cell"><span class="stat-name">移动速度</span><div class="stat-num-box"><span class="stat-val">${calcSpeed}</span>${(calcSpeed - bSpeed) > 0 ? `<span class="stat-plus">+${calcSpeed - bSpeed}</span>` : ''}</div></div>
+          <div class="stat-cell"><span class="stat-name">物理穿透</span><div class="stat-num-box"><span class="stat-val">${totalPhysPierce > 0 ? `+${totalPhysPierce}` : '0'}</span></div></div>
+          ${totalMagicPierce > 0 ? `<div class="stat-cell"><span class="stat-name">法术穿透</span><div class="stat-num-box"><span class="stat-val">+${totalMagicPierce}</span></div></div>` : ''}
         </div>
       `;
     } else {
