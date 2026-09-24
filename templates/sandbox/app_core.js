@@ -134,7 +134,19 @@ function selectHero(hero) {
   updateSpotlight();
   renderArcanaBar();
   renderHeroes();
-  recalculate();
+
+  // 联动主玩分路胶囊按钮
+  const lane = hero.lane || '对抗路';
+  currentHeroActiveLane = lane;
+  document.querySelectorAll('#heroLaneSwitchPills .lane-pill-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lane === lane);
+  });
+
+  if (typeof loadRecommendedEquips === 'function') {
+    loadRecommendedEquips();
+  } else {
+    recalculate();
+  }
 }
 
 

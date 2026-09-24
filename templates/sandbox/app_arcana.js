@@ -68,6 +68,10 @@ function openArcanaModal() {
   const overlay = document.getElementById('arcanaModalOverlay');
   if (!overlay) return;
   overlay.classList.add('active');
+  if (document.body) {
+    document.body.style.overflow = 'hidden';
+    document.body.style.touchAction = 'none';
+  }
   const sub = document.getElementById('arcanaModalSub');
   if (sub) {
     sub.innerText = window.innerWidth <= 768 
@@ -81,6 +85,10 @@ function closeArcanaModal(e) {
   if (e && e.target !== e.currentTarget && !e.target.classList.contains('arcana-modal-close') && !e.target.closest('.arcana-modal-close')) return;
   const overlay = document.getElementById('arcanaModalOverlay');
   if (overlay) overlay.classList.remove('active');
+  if (document.body) {
+    document.body.style.overflow = '';
+    document.body.style.touchAction = '';
+  }
 }
 
 function renderArcanaModal() {

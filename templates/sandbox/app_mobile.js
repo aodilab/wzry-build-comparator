@@ -1,108 +1,143 @@
 // ==============================================================================
 // 王者出装箱 ｜ 移动端抽屉交互、一键权威神装与战术简报同步 (app_mobile.js)
-// 专注：移动端换英雄抽屉、权威经典配装智能速配、战术协同简报主卡片渲染
-// 遵循 AGENTS.md 规范：模块单一职责，行数控制在 150 行以内
+// 专注：移动端换英雄抽屉、分路切换联动一键神装、主视图自选VS推荐简报渲染
+// 遵循 AGENTS.md 规范：模块单一职责，行数控制在 250 行以内
 // ==============================================================================
 
-// === 一键权威神装 (微信小程序同款，根据当前英雄流派智能速配) ===
+let currentHeroActiveLane = '对抗路';
+
+// === 主玩分路切换联动 ===
+function changeHeroActiveLane(lane, btn) {
+  currentHeroActiveLane = lane;
+  document.querySelectorAll('#heroLaneSwitchPills .lane-pill-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  else {
+    const targetBtn = document.querySelector(`#heroLaneSwitchPills .lane-pill-btn[data-lane="${lane}"]`);
+    if (targetBtn) targetBtn.classList.add('active');
+  }
+  // 联动一键神装与推荐出装
+  loadRecommendedEquips();
+}
+
+// === 一键神装 (基于所选分路，优先装填王者官方对应推荐方案) ===
 function loadRecommendedEquips() {
   if (!currentHero) return;
-  let recNames = [];
-  const r = (currentHero.role || '') + (currentHero.lane || '');
-  const cname = currentHero.cname;
 
-  if (cname === '貂蝉') {
-    recNames = ['冷静之靴', '圣杯', '时之预言', '噬神之书', '破茧之衣', '博学者之怒'];
-  } else if (cname === '吕布') {
-    recNames = ['抵抗之靴', '纯净苍穹', '破军', '暴烈之甲', '铸梦·逐风', '极寒风暴'];
-  } else if (cname === '马可波罗') {
-    recNames = ['急速战靴', '末世', '影刃', '破晓', '冰痕之握', '暴烈之甲'];
-  } else if (cname === '王维') {
-    recNames = ['冷静之靴', '回响之杖', '博学者之怒', '虚无法杖', '辉月', '贤者之书'];
-  } else if (cname === '李白') {
-    recNames = ['贪婪之噬', '急速战靴', '泣血之刃', '暗影战斧', '宗师之力', '破军'];
-  } else if (cname === '孙尚香') {
-    recNames = ['急速战靴', '宗师之力', '无尽战刃', '泣血之刃', '破晓', '暴烈之甲'];
-  } else if (r.includes('射手') || r.includes('发育路')) {
-    recNames = ['急速战靴', '影刃', '无尽战刃', '泣血之刃', '破晓', '暴烈之甲'];
-  } else if (r.includes('法师') || r.includes('中路')) {
-    recNames = ['冷静之靴', '回响之杖', '博学者之怒', '虚无法杖', '辉月', '贤者之书'];
-  } else if (r.includes('刺客') || (r.includes('打野') && !r.includes('坦克'))) {
-    recNames = ['贪婪之噬', '抵抗之靴', '暗影战斧', '宗师之力', '无尽战刃', '破军'];
-  } else if (r.includes('坦克') || (r.includes('肉') && r.includes('游走'))) {
-    recNames = ['极影·救赎', '抵抗之靴', '红莲斗篷', '霸者重装', '魔女斗篷', '不祥征兆'];
-  } else if (r.includes('游走') || r.includes('辅助')) {
-    recNames = ['极影·救赎', '冷静之靴', '凝冰之息', '梦魇之牙', '霸者重装', '魔女斗篷'];
+  const presets = (typeof getHeroOfficialPresets === 'function') ? getHeroOfficialPresets(currentHero) : [];
+  let chosenPreset = null;
+
+  // 1. 根据当前主玩分路智能匹配最贴切的官方推荐方案
+  if (currentHeroActiveLane === '打野') {
+    chosenPreset = presets.find(p => (p.items || []).some(it => {
+      const n = it.item_name || '';
+      return n.includes('贪婪之噬') || n.includes('追击刀锋') || n.includes('利斧') || n.includes('巨人之握') || n.includes('打野');
+    })) || presets[0];
+  } else if (currentHeroActiveLane === '游走') {
+    chosenPreset = presets.find(p => (p.items || []).some(it => {
+      const n = it.item_name || '';
+      return n.includes('极影') || n.includes('救赎') || n.includes('近卫') || n.includes('形昭');
+    })) || presets.find(p => p.genre && p.genre.includes('肉')) || presets[0];
+  } else if (currentHeroActiveLane === '中路') {
+    chosenPreset = presets.find(p => p.genre && p.genre.includes('法')) || presets[0];
+  } else if (currentHeroActiveLane === '发育路') {
+    chosenPreset = presets.find(p => p.genre && (p.genre.includes('暴击') || p.genre.includes('穿透') || p.genre.includes('攻速'))) || presets[0];
   } else {
-    // 战士/通用对抗路
-    recNames = ['抵抗之靴', '暗影战斧', '暴烈之甲', '宗师之力', '纯净苍穹', '永夜守护'];
+    // 对抗路
+    chosenPreset = presets.find(p => p.genre && (p.genre.includes('半肉') || p.genre.includes('战阵') || p.genre.includes('坦伤'))) || presets[0];
   }
 
-  const aliasMap = {
-    '强者破军': '破军', '仁者破晓': '破晓', '贤者天书': '贤者之书', '急速之靴': '急速战靴',
-    '破军': '强者破军', '破晓': '仁者破晓', '贤者之书': '贤者天书', '急速战靴': '急速之靴'
-  };
+  if (chosenPreset && chosenPreset.items && chosenPreset.items.length > 0) {
+    currentSlots = [...chosenPreset.items].slice(0, 6);
+  } else {
+    // 通用 fallback
+    const r = (currentHero.role || '') + (currentHero.lane || '');
+    let recNames = ['抵抗之靴', '暗影战斧', '暴烈之甲', '宗师之力', '纯净苍穹', '永夜守护'];
+    if (r.includes('射手') || currentHeroActiveLane === '发育路') recNames = ['急速战靴', '影刃', '无尽战刃', '泣血之刃', '破晓', '暴烈之甲'];
+    else if (r.includes('法师') || currentHeroActiveLane === '中路') recNames = ['冷静之靴', '回响之杖', '博学者之怒', '虚无法杖', '辉月', '贤者之书'];
+    else if (currentHeroActiveLane === '打野') recNames = ['贪婪之噬', '急速战靴', '暗影战斧', '宗师之力', '无尽战刃', '破军'];
+    else if (currentHeroActiveLane === '游走') recNames = ['极影·救赎', '抵抗之靴', '红莲斗篷', '霸者重装', '魔女斗篷', '不祥征兆'];
 
-  currentSlots = [];
-  recNames.forEach(name => {
-    const it = ITEMS_DATA.find(i => i.item_name === name) || ITEMS_DATA.find(i => i.item_name === aliasMap[name]);
-    if (it && currentSlots.length < 6) currentSlots.push(it);
-  });
+    const aliasMap = { '强者破军': '破军', '仁者破晓': '破晓', '贤者天书': '贤者之书', '急速之靴': '急速战靴' };
+    currentSlots = [];
+    recNames.forEach(name => {
+      const it = ITEMS_DATA.find(i => i.item_name === name || i.item_name === aliasMap[name]);
+      if (it && currentSlots.length < 6) currentSlots.push(it);
+    });
+  }
 
   renderSlots();
   renderItems();
   recalculate();
 }
 
-// === 同步主视图战术协同简报卡片 (微信小程序同款高品质提炼) ===
+// === 同步主视图【自选方案 VS 王者推荐方案】简报卡片 ===
 function updateSynergyBrief() {
   const card = document.getElementById('synergyBriefCard');
   if (!card) return;
-  const badge = document.getElementById('synergyBriefBadge');
-  const styleTag = document.getElementById('synergyBriefStyleTag');
   const summary = document.getElementById('synergyBriefSummary');
   const highlights = document.getElementById('synergyBriefHighlights');
 
   if (!currentSlots || currentSlots.length === 0) {
-    if (badge) {
-      badge.innerText = '待选装';
-      badge.className = 'synergy-score-pill';
-      badge.style.background = '';
-    }
-    if (styleTag) {
-      styleTag.innerText = '待装配推演';
-      styleTag.className = 'synergy-brief-tag';
-    }
     if (summary) {
-      summary.innerText = '暂未选配装备。点击“一键神装”或挑选装备入槽，系统将实时演算战术机制。';
+      summary.innerText = '暂未选配装备。点击“一键神装”或挑选装备入槽，实时演算方案对比。';
       summary.className = 'synergy-brief-summary';
     }
     if (highlights) highlights.innerHTML = '';
     return;
   }
 
-  // 汇总有效装备
   const effItems = currentSlots;
-  const skills = (typeof HERO_SKILLS_DATA !== 'undefined' && currentHero) ? (HERO_SKILLS_DATA[currentHero.cname] || []) : [];
+  const officialPresets = typeof getHeroOfficialPresets === 'function' ? getHeroOfficialPresets(currentHero) : [];
+  const activePreset = officialPresets.find(p => p.id === (typeof currentBenchmarkPresetId !== 'undefined' ? currentBenchmarkPresetId : 'official_1')) || officialPresets[0] || { items: [] };
 
-  if (typeof calculateSynergyScore === 'function') {
-    const syn = calculateSynergyScore(currentHero, effItems, currentSlots, skills, 0);
-    if (badge) {
-      badge.innerText = syn.tacticGenre || '实战流派';
-      badge.style.background = syn.genreColor || 'var(--color-blue)';
+  if (typeof compareUserBuildWithOfficial === 'function') {
+    const diff = compareUserBuildWithOfficial(effItems, activePreset, currentHero, typeof currentArcana !== 'undefined' ? currentArcana : {});
+    const cb = diff.comboResult;
+
+    if (summary) {
+      // 提取核心关键数值差
+      const adDiff = diff.uStat.ad - diff.bStat.ad;
+      const hpDiff = diff.uStat.hp - diff.bStat.hp;
+      const cdrDiff = diff.uStat.cdr - diff.bStat.cdr;
+
+      const numTokens = [];
+      numTokens.push(`物理攻击 ${adDiff >= 0 ? '+' : ''}${adDiff}`);
+      if (hpDiff !== 0) numTokens.push(`额外生命 ${hpDiff >= 0 ? '+' : ''}${hpDiff}`);
+      numTokens.push(`冷却缩减 ${cdrDiff >= 0 ? '+' : ''}${cdrDiff}%`);
+
+      summary.innerText = `相较【${activePreset.title || '王者推荐'}】：${numTokens.join(' ｜ ')}`;
     }
-    if (styleTag) styleTag.innerText = syn.tacticGenre || '实战流派';
-    if (summary) summary.innerText = syn.genreDesc || '装备成型，核心战术机制全面生效。';
+
     if (highlights) {
-      const activeItems = (syn.pros && syn.pros.length > 0)
-        ? syn.pros.slice(0, 2)
-        : [{ title: '基础属性协同', desc: '当前装备提供稳固的攻防基础数值' }];
-      highlights.innerHTML = activeItems.map(item => `
-        <div class="synergy-highlight-row">
-          <span class="synergy-highlight-badge">优势</span>
-          <span class="synergy-highlight-desc"><b>${item.title}</b> · ${item.desc}</span>
-        </div>
-      `).join('');
+      let hlHtml = '';
+      // 1. 连招伤害对比
+      if (cb) {
+        const dmgDiff = cb.dmgDiff;
+        const dmgStr = dmgDiff > 0 ? `领先 +${dmgDiff} 爆发` : (dmgDiff < 0 ? `落后 ${dmgDiff}` : '持平');
+        hlHtml += `
+          <div class="synergy-highlight-row">
+            <span class="synergy-highlight-badge" style="background:#0071e3;">连招</span>
+            <span class="synergy-highlight-desc"><b>全套总伤害 ${cb.userCombat.totalDmg}</b> (${dmgStr}) · 回复 +${cb.userCombat.totalHeal} HP</span>
+          </div>
+        `;
+      }
+      // 2. 核心机制优势
+      if (diff.pros && diff.pros.length > 0) {
+        hlHtml += `
+          <div class="synergy-highlight-row">
+            <span class="synergy-highlight-badge" style="background:#16a34a;">优势</span>
+            <span class="synergy-highlight-desc"><b>${diff.pros[0].title}</b> · ${diff.pros[0].desc}</span>
+          </div>
+        `;
+      } else if (diff.cons && diff.cons.length > 0) {
+        hlHtml += `
+          <div class="synergy-highlight-row">
+            <span class="synergy-highlight-badge" style="background:#d97706;">提示</span>
+            <span class="synergy-highlight-desc"><b>${diff.cons[0].title}</b> · ${diff.cons[0].desc}</span>
+          </div>
+        `;
+      }
+      highlights.innerHTML = hlHtml;
     }
   }
 }
@@ -121,6 +156,8 @@ function openHeroModal(e) {
   const overlay = document.getElementById('heroModalOverlay');
   if (!overlay) return;
   overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  document.body.style.touchAction = 'none';
   renderModalHeroes();
 }
 
@@ -130,6 +167,8 @@ function closeHeroModal(e) {
   }
   const overlay = document.getElementById('heroModalOverlay');
   if (overlay) overlay.classList.remove('active');
+  document.body.style.overflow = '';
+  document.body.style.touchAction = '';
 }
 
 function setHeroModalFilter(lane, el) {
@@ -165,6 +204,8 @@ function renderModalHeroes() {
     card.onclick = () => {
       selectHero(h);
       closeHeroModal();
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
     };
     card.innerHTML = `
       <img class="hero-avatar" alt="${h.cname}" src="https://game.gtimg.cn/images/yxzj/img201606/heroimg/${h.ename}/${h.ename}.jpg" onerror="this.src='https://game.gtimg.cn/images/yxzj/img201606/heroimg/105/105.jpg'">

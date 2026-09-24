@@ -52,17 +52,32 @@
 }
 .hero-modal-title { font-size: 15px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
 .hero-modal-scroll {
-  flex: 1; overflow-y: auto; padding: 12px 16px 20px 16px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  flex: 1; overflow-y: auto; overflow-x: hidden !important; padding: 12px 16px 20px 16px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  touch-action: pan-y !important; overscroll-behavior-x: none !important; -webkit-overflow-scrolling: touch !important;
 }
 @keyframes appleModalSlideUp { from { opacity: 0; transform: translateY(30px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
 html, body {
   width: 100% !important;
   max-width: 100vw !important;
   overflow-x: hidden !important;
+  box-sizing: border-box !important;
   position: relative !important;
   overscroll-behavior-x: none !important;
-  touch-action: pan-y !important;
   -webkit-overflow-scrolling: touch !important;
+}
+.hero-modal-overlay, .arcana-modal-overlay, .synergy-modal-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: 100vw !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+  z-index: 9999 !important;
 }
 *, *::before, *::after {
   box-sizing: border-box !important;
@@ -318,15 +333,58 @@ html, body {
     padding: 14px 16px 10px 16px !important; border-bottom: 1px solid rgba(0,0,0,0.05) !important;
     display: flex !important; justify-content: space-between !important; align-items: center !important;
   }
-  .hero-modal-title, .arcana-modal-title { font-size: 15px !important; font-weight: 700 !important; color: #1d1d1f !important; }
-  .hero-modal-scroll { grid-template-columns: repeat(4, 1fr) !important; gap: 8px !important; padding: 10px 12px 30px 12px !important; }
+  .hero-modal-scroll {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-auto-rows: minmax(84px, auto) !important;
+    gap: 8px !important;
+    padding: 10px 12px 30px 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior-y: contain !important;
+    overscroll-behavior-x: none !important;
+    touch-action: pan-y !important;
+    -webkit-overflow-scrolling: touch !important;
+    box-sizing: border-box !important;
+  }
+  #heroModalTabs {
+    width: calc(100% - 24px) !important;
+    margin: 0 12px 10px 12px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
   .hero-modal-scroll .hero-avatar { width: 56px !important; height: 56px !important; border-radius: 14px !important; object-fit: cover !important; }
   .hero-modal-scroll .hero-card {
     display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important;
     padding: 8px 4px !important; border-radius: 14px !important; cursor: pointer !important; background: transparent !important; border: 1.5px solid transparent !important;
+    width: 100% !important; max-width: 100% !important; min-width: 0 !important; box-sizing: border-box !important; min-height: 84px !important;
   }
   .hero-modal-scroll .hero-card.selected { background: #e8f3ff !important; border-color: #0071e3 !important; }
-  .hero-modal-scroll .hero-card-name { font-size: 12px !important; font-weight: 600 !important; color: #1d1d1f !important; margin-top: 6px !important; text-align: center !important; }
+  .hero-modal-scroll .hero-card-name { font-size: 12px !important; font-weight: 600 !important; color: #1d1d1f !important; margin-top: 6px !important; text-align: center !important; max-width: 100% !important; overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; }
+
+  /* 主玩分路胶囊按钮 */
+  .hero-lane-switch-bar {
+    display: flex !important; align-items: center !important;
+    margin-top: 10px !important; padding-top: 9px !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+  }
+  .lane-switch-label {
+    font-size: 11px !important; color: #8e8e93 !important; font-weight: 500 !important; white-space: nowrap !important;
+  }
+  .lane-switch-pills {
+    display: flex !important; gap: 5px !important; margin-left: 6px !important; flex: 1 !important;
+  }
+  .lane-pill-btn {
+    flex: 1 !important; padding: 4px 0 !important; border-radius: 999px !important;
+    background: #f0f0f2 !important; color: #636366 !important; font-size: 11px !important;
+    font-weight: 600 !important; border: 1px solid transparent !important; cursor: pointer !important;
+    text-align: center !important; transition: all 0.2s ease !important;
+  }
+  .lane-pill-btn.active {
+    background: #0071e3 !important; color: #ffffff !important;
+    box-shadow: 0 2px 6px rgba(0, 113, 227, 0.25) !important;
+  }
   .arcana-modal-body {
     display: flex !important;
     flex-direction: column !important;
