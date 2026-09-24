@@ -24,6 +24,7 @@ def get_sandbox_html_template() -> str:
     modal_synergy_layout_css = _load('modal_synergy_layout.css')
     modal_synergy_cards_css = _load('modal_synergy_cards.css')
     synergy_css = _load('synergy.css')
+    mobile_native_css = _load('mobile_native.css')
     html_body = _load('index.html')
     app_core_js = _load('app_core.js')
     app_stats_js = _load('app_stats.js')
@@ -31,9 +32,10 @@ def get_sandbox_html_template() -> str:
     synergy_evaluator_js = _load('synergy_evaluator.js')
     synergy_combos_js = _load('synergy_combos.js')
     app_synergy_js = _load('app_synergy.js')
+    app_mobile_js = _load('app_mobile.js')
 
-    combined_css = f"{theme_layout_css}\n\n{sandbox_panels_css}\n\n{item_shop_css}\n\n{dock_metrics_css}\n\n{modal_arcana_css}\n\n{modal_synergy_layout_css}\n\n{modal_synergy_cards_css}\n\n{synergy_css}"
-    combined_js = f"{app_core_js}\n\n{app_stats_js}\n\n{app_arcana_js}\n\n{synergy_evaluator_js}\n\n{synergy_combos_js}\n\n{app_synergy_js}"
+    combined_css = f"{theme_layout_css}\n\n{sandbox_panels_css}\n\n{item_shop_css}\n\n{dock_metrics_css}\n\n{modal_arcana_css}\n\n{modal_synergy_layout_css}\n\n{modal_synergy_cards_css}\n\n{synergy_css}\n\n{mobile_native_css}"
+    combined_js = f"{app_core_js}\n\n{app_stats_js}\n\n{app_arcana_js}\n\n{synergy_evaluator_js}\n\n{synergy_combos_js}\n\n{app_synergy_js}\n\n{app_mobile_js}"
 
     return f"""<!DOCTYPE html>
 <html lang="zh-CN" data-theme="light">
@@ -46,7 +48,7 @@ def get_sandbox_html_template() -> str:
 {combined_css}
 </style>
 <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
-<script>LA.init({{id:"3RHV2P1v28aZF1yy",ck:"3RHV2P1v28aZF1yy",autoTrack:true}})</script>
+<script>if(window.LA)LA.init({{id:"3RHV2P1v28aZF1yy",ck:"3RHV2P1v28aZF1yy",autoTrack:true}})</script>
 </head>
 
 <body>

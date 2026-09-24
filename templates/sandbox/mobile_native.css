@@ -1,0 +1,171 @@
+/* ==========================================================================
+   王者出装箱 ｜ 移动端微信小程序原生交互复刻与自适应样式体系 (mobile_native.css)
+   严格遵循 Apple HIG 移动端规范，控制在 320 行内 (≤400行红线)
+   ========================================================================== */
+
+/* 1. 换英雄按钮、插槽操作与战术简报主卡片通用样式 */
+.hero-change-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  background: var(--color-blue);
+  color: #ffffff;
+  border-radius: 980px;
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.25);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+.hero-change-btn:active { transform: scale(0.95); filter: brightness(0.92); }
+
+.slot-header-actions { display: flex; align-items: center; gap: 8px; }
+.action-pill-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 4px 10px; border-radius: 980px; font-size: 11.5px; font-weight: 500;
+  cursor: pointer; border: 1px solid transparent; transition: all 0.2s; user-select: none;
+}
+.action-pill-btn.rec-btn { background: var(--color-blue-bg); color: var(--color-blue); border-color: rgba(0, 113, 227, 0.2); }
+.action-pill-btn.rec-btn:hover { background: var(--color-blue); color: #fff; }
+.action-pill-btn.clear-btn { background: var(--apple-subcard); color: var(--text-secondary); border-color: var(--apple-border); }
+.action-pill-btn.clear-btn:hover { color: var(--color-red); border-color: rgba(255, 59, 48, 0.3); }
+
+/* 战术协同主页简报卡片 (微信小程序同款) */
+.synergy-brief-card {
+  margin: 10px 14px; padding: 12px 14px; background: var(--apple-subcard);
+  border: 1px solid var(--apple-border); border-radius: 14px; cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; gap: 8px;
+}
+.synergy-brief-card:hover { background: var(--apple-card-hover); border-color: var(--apple-border-hover); transform: translateY(-1px); }
+.synergy-brief-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.synergy-brief-title-wrap { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.synergy-brief-title { font-size: 13px; font-weight: 700; color: var(--text-primary); white-space: nowrap; }
+.synergy-brief-tag {
+  font-size: 11px; color: var(--color-blue); background: var(--color-blue-bg);
+  padding: 2px 7px; border-radius: 6px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.synergy-brief-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.synergy-jump-txt { font-size: 11px; color: var(--text-tertiary); }
+.synergy-score-pill {
+  font-size: 11px; font-weight: 700; color: #ffffff; background: var(--color-blue);
+  padding: 2px 8px; border-radius: 980px; box-shadow: 0 2px 6px rgba(0, 113, 227, 0.25); white-space: nowrap;
+}
+.synergy-brief-summary { font-size: 12px; color: var(--text-secondary); line-height: 1.45; }
+.synergy-brief-highlights { display: flex; flex-wrap: wrap; gap: 6px; }
+.synergy-highlight-badge {
+  font-size: 11px; padding: 2px 7px; border-radius: 6px; background: rgba(52, 199, 89, 0.1);
+  color: #2e7d32; font-weight: 500; border: 1px solid rgba(52, 199, 89, 0.2);
+}
+.synergy-brief-footer { font-size: 11px; color: var(--color-blue); font-weight: 500; padding-top: 2px; }
+
+.stats-panel-header { padding: 10px 16px 4px 16px; }
+.panel-subtitle { font-size: 11px; color: var(--text-tertiary); font-weight: normal; margin-left: 6px; }
+.mobile-footer-export { display: none; padding: 12px 14px 18px 14px; }
+.mobile-export-btn {
+  width: 100%; height: 44px; border-radius: 980px; background: var(--color-blue);
+  color: #ffffff; font-size: 14px; font-weight: 600; display: flex; align-items: center;
+  justify-content: center; gap: 8px; border: none; cursor: pointer; box-shadow: 0 4px 14px rgba(0, 113, 227, 0.35);
+  transition: all 0.2s;
+}
+.mobile-export-btn:active { transform: scale(0.98); }
+
+/* 2. 英雄选择抽屉 (Hero Modal Overlay) */
+.hero-modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  z-index: 999; display: none; align-items: center; justify-content: center;
+}
+.hero-modal-overlay.active { display: flex; }
+.hero-modal-card {
+  width: 90%; max-width: 580px; max-height: 82vh; background: var(--apple-panel);
+  border: 1px solid var(--apple-panel-border); border-radius: 24px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  display: flex; flex-direction: column; overflow: hidden; animation: appleModalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hero-modal-header {
+  padding: 16px 18px 10px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--apple-border);
+}
+.hero-modal-title { font-size: 15px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+.hero-modal-scroll {
+  flex: 1; overflow-y: auto; padding: 12px 16px 20px 16px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+}
+@keyframes appleModalSlideUp {
+  from { opacity: 0; transform: translateY(30px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 3. 移动端专属媒体查询响应式体系 (@media max-width: 768px) */
+@media (max-width: 768px) {
+  body { padding: 8px 10px 30px 10px; height: auto; min-height: 100vh; overflow-y: auto; overflow-x: hidden; }
+  header { margin: -8px -10px 12px -10px; padding: 10px 14px; position: sticky; top: 0; }
+  .brand-wrapper { gap: 8px; }
+  .brand-app-icon { width: 32px; height: 32px; border-radius: 8px; }
+  .brand-titles h1 { font-size: 15px; }
+  .brand-titles p { display: none; }
+  .header-actions .apple-btn { height: 30px; padding: 0 10px; font-size: 12px; }
+
+  /* 核心栅格：转换为垂直卡片流 */
+  .sandbox-grid { display: flex; flex-direction: column; height: auto; gap: 12px; }
+  .hero-section-panel { order: 1; }
+  .slots-stats-section-panel { order: 2; }
+  .shop-section-panel { order: 3; }
+  .desktop-only { display: none !important; }
+
+  /* 英雄精选卡片 (小程序 hero-bar 风格) */
+  .hero-spotlight { margin: 12px 12px 8px 12px; padding: 12px; border-radius: 16px; cursor: pointer; }
+  .spotlight-avatar { width: 52px; height: 52px; }
+  .spotlight-name { font-size: 18px; }
+  .hero-arcana-bar { margin: 0 12px 12px 12px; padding: 10px 12px; border-radius: 14px; }
+  .arcana-chip { padding: 4px 6px; font-size: 10px; }
+
+  /* 六神装插槽：3x2 网格体系 */
+  .slots-dock { padding: 12px; }
+  .slots-grid { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 78px); gap: 10px; }
+  .slot { height: 78px; border-radius: 14px; }
+  .slot img { width: 44px; height: 44px; border-radius: 10px; }
+  .slot-num { font-size: 13px; }
+  .slot.filled .slot-remove-badge { display: flex; top: -2px; right: -2px; width: 20px; height: 20px; font-size: 13px; }
+
+  /* 战术简报卡片移动端微调 */
+  .synergy-jump-txt { display: none; }
+  .synergy-brief-tag { max-width: 130px; }
+
+  /* 实战面板：紧凑 2 列网格展示 */
+  .health-metrics-scroll {
+    max-height: none; overflow-y: visible; padding: 8px 12px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+  }
+  .metric-section { display: contents; }
+  .metric-section-title { grid-column: span 2; margin-top: 4px; }
+  .metric-card { padding: 8px 10px; border-radius: 10px; }
+  .metric-name { font-size: 12px; }
+  .metric-val { font-size: 15px; }
+
+  /* 装备库横向滑动分类 */
+  .item-segmented-control {
+    overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch;
+    margin: 0 12px 10px 12px; padding: 4px; scrollbar-width: none;
+  }
+  .item-segmented-control::-webkit-scrollbar { display: none; }
+  .item-segmented-control .seg-item { flex: none; padding: 6px 14px; font-size: 12px; }
+  .item-scroll-area { max-height: 450px; padding: 4px 12px 14px 12px; }
+  .mobile-footer-export { display: block; }
+
+  /* 移动端抽屉 (Bottom Sheet) */
+  .hero-modal-card, .arcana-modal-card, .synergy-modal-card {
+    width: 100% !important; max-width: 100% !important; max-height: 88vh !important;
+    border-radius: 22px 22px 0 0 !important; position: fixed; bottom: 0; margin: 0;
+    animation: appleBottomSheetUp 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .hero-modal-scroll { grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 10px 12px 30px 12px; }
+  .arcana-modal-body {
+    flex-direction: column !important; gap: 14px !important; overflow-y: auto !important; padding: 10px 14px 30px 14px !important;
+  }
+}
+
+@keyframes appleBottomSheetUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
