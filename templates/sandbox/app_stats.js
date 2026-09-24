@@ -290,6 +290,11 @@ function recalculate() {
 
   // 诊断互斥
   renderDiagnosis(effectiveItems, consumedNotes);
+
+  // 同步主页面战术协同简报卡片 (微信小程序同款)
+  if (typeof updateSynergyBrief === 'function') {
+    updateSynergyBrief();
+  }
 }
 
 // 诊断装备互斥与冲突提示

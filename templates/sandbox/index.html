@@ -19,9 +19,9 @@
 <!-- 主体三栏交互容器 -->
 <main class="sandbox-grid">
 
-  <!-- 左栏：英雄库选择 -->
-  <section class="apple-panel">
-    <div class="panel-header">
+  <!-- 左栏：英雄库选择 (移动端只展示顶部卡片与自选铭文胶囊，网格由抽屉接管) -->
+  <section class="apple-panel hero-section-panel">
+    <div class="panel-header desktop-only">
       <div class="panel-title">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
         英雄基准属性
@@ -29,14 +29,15 @@
       <span class="panel-badge">15级满级数值</span>
     </div>
 
-    <!-- 苹果精选英雄卡片 -->
-    <div class="hero-spotlight" id="heroSpotlight">
+    <!-- 苹果精选英雄卡片 (支持点击整卡或按钮换英雄) -->
+    <div class="hero-spotlight" id="heroSpotlight" onclick="onHeroSpotlightClick(event)">
       <img id="spotAvatar" class="spotlight-avatar" src="" alt="Hero">
       <div class="spotlight-info">
         <div class="spotlight-title" id="spotTitle">当前选中</div>
         <div class="spotlight-name" id="spotName">-</div>
         <div class="spotlight-lane-tag" id="spotLane">-</div>
       </div>
+      <button class="hero-change-btn" id="heroChangeBtn" onclick="openHeroModal(event)">换英雄 ›</button>
     </div>
 
     <!-- 30 颗满配铭文状态快捷栏 (点击唤起复合配置面板) -->
@@ -53,33 +54,36 @@
       </div>
     </div>
 
-    <div class="search-wrapper">
-      <div class="apple-search">
-        <span class="search-icon">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        </span>
-        <input type="text" id="heroSearch" class="apple-input" placeholder="搜索英雄（如：孙尚香 / 李白）" oninput="filterHeroes()">
+    <!-- PC端常驻英雄浏览与选择网格 (手机端彻底隐藏，转由抽屉呈现) -->
+    <div class="desktop-only">
+      <div class="search-wrapper">
+        <div class="apple-search">
+          <span class="search-icon">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </span>
+          <input type="text" id="heroSearch" class="apple-input" placeholder="搜索英雄（如：孙尚香 / 李白）" oninput="filterHeroes()">
+        </div>
       </div>
-    </div>
 
-    <div class="segmented-control" id="heroTabs">
-      <div class="seg-item active" onclick="setHeroFilter('全部', this)">全部</div>
-      <div class="seg-item" onclick="setHeroFilter('对抗路', this)">对抗</div>
-      <div class="seg-item" onclick="setHeroFilter('打野', this)">打野</div>
-      <div class="seg-item" onclick="setHeroFilter('中路', this)">中路</div>
-      <div class="seg-item" onclick="setHeroFilter('发育路', this)">发育</div>
-      <div class="seg-item" onclick="setHeroFilter('游走', this)">游走</div>
-    </div>
+      <div class="segmented-control" id="heroTabs">
+        <div class="seg-item active" onclick="setHeroFilter('全部', this)">全部</div>
+        <div class="seg-item" onclick="setHeroFilter('对抗路', this)">对抗</div>
+        <div class="seg-item" onclick="setHeroFilter('打野', this)">打野</div>
+        <div class="seg-item" onclick="setHeroFilter('中路', this)">中路</div>
+        <div class="seg-item" onclick="setHeroFilter('发育路', this)">发育</div>
+        <div class="seg-item" onclick="setHeroFilter('游走', this)">游走</div>
+      </div>
 
-    <div class="hero-scroll-area" id="heroListContainer"></div>
+      <div class="hero-scroll-area" id="heroListContainer"></div>
+    </div>
   </section>
 
-  <!-- 中栏：装备商店 -->
-  <section class="apple-panel">
+  <!-- 中栏：局内装备商店 (手机端排列在后方自然流中) -->
+  <section class="apple-panel shop-section-panel">
     <div class="panel-header">
       <div class="panel-title">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-        局内装备图鉴
+        装备库备选
       </div>
       <span class="panel-badge" id="itemCountBadge">全部装备</span>
     </div>
@@ -93,7 +97,7 @@
       </div>
     </div>
 
-    <div class="segmented-control" id="itemTabs">
+    <div class="segmented-control item-segmented-control" id="itemTabs">
       <div class="seg-item active" onclick="setItemFilter('全部', this)">全部</div>
       <div class="seg-item" onclick="setItemFilter('攻击装备', this)">攻击</div>
       <div class="seg-item" onclick="setItemFilter('法术装备', this)">法术</div>
@@ -106,25 +110,24 @@
     <div class="item-scroll-area" id="itemListContainer"></div>
   </section>
 
-  <!-- 右栏：六神装槽位与全维度面板 -->
-  <section class="apple-panel">
+  <!-- 右栏：六神装槽位、战术协同与实战面板 -->
+  <section class="apple-panel slots-stats-section-panel">
     <div class="panel-header">
       <div class="panel-title">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-        生效装备与面板
+        六神装插槽
       </div>
-      <div style="display: flex; align-items: center; gap: 8px;">
+      <div class="slot-header-actions">
         <span class="panel-badge" id="slotCount">已选 0 / 6 件</span>
-        <button class="synergy-header-btn" onclick="openSynergyModal()" title="深度分析当前出装与英雄技能机制联动效果">
-          战术联动分析 ›
-        </button>
+        <button class="action-pill-btn rec-btn" onclick="loadRecommendedEquips()" title="一键填入当前英雄权威经典配装">一键神装</button>
+        <button class="action-pill-btn clear-btn" onclick="resetSlots()" title="清空全部槽位">清空</button>
       </div>
     </div>
 
-    <!-- 灵动槽位 Dock -->
+    <!-- 灵动槽位 Dock (手机端自适应呈现 3x2 网格) -->
     <div class="slots-dock">
       <div class="slots-header">
-        <span style="font-size: 12px; color: var(--text-secondary);">已选神装 (点击卸下)</span>
+        <span style="font-size: 12px; color: var(--text-secondary);">神装卡槽 (点击卸下)</span>
         <div class="slots-cost">
           <span>总造价</span>
           <span id="totalGold" style="color: var(--color-amber);">0 G</span>
@@ -133,16 +136,52 @@
       <div class="slots-grid" id="slotsGrid"></div>
     </div>
 
-    <!-- Apple Health 风格属性指标 -->
-    <div class="health-metrics-scroll" id="statsContainer"></div>
-
-    <!-- 智能诊断 -->
+    <!-- 智能诊断与互斥检测通告条 -->
     <div class="diag-panel">
       <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 4px;">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
         智能诊断与互斥检测
       </div>
       <div id="diagnoseContainer"></div>
+    </div>
+
+    <!-- 战术协同分析简报卡片 (微信小程序同款，点击查看深度机制联动) -->
+    <div class="synergy-brief-card" id="synergyBriefCard" onclick="openSynergyModal()">
+      <div class="synergy-brief-header">
+        <div class="synergy-brief-title-wrap">
+          <span class="synergy-brief-title">战术协同分析</span>
+          <span class="synergy-brief-tag" id="synergyBriefStyleTag">待装配推演</span>
+        </div>
+        <div class="synergy-brief-right">
+          <span class="synergy-jump-txt">详细分析 ›</span>
+          <span class="synergy-score-pill" id="synergyBriefBadge">待选装</span>
+        </div>
+      </div>
+      <div class="synergy-brief-body" id="synergyBriefBody">
+        <div class="synergy-brief-summary" id="synergyBriefSummary">
+          点击下方装备入槽，系统将实时演算技能机制与被动乘区协同。
+        </div>
+        <div class="synergy-brief-highlights" id="synergyBriefHighlights"></div>
+      </div>
+      <div class="synergy-brief-footer">
+        <span>查看完整机制联动、五维雷达与连招策略 ›</span>
+      </div>
+    </div>
+
+    <!-- Apple Health 风格属性指标 -->
+    <div class="stats-panel-header">
+      <div class="panel-title" style="font-size: 13px;">
+        实战面板演算 <span class="panel-subtitle">Lv15满级 + 铭文 + 神装加成</span>
+      </div>
+    </div>
+    <div class="health-metrics-scroll" id="statsContainer"></div>
+
+    <!-- 底部导出方案卡片 (手机端触手可及) -->
+    <div class="mobile-footer-export">
+      <button class="mobile-export-btn" onclick="exportMarkdown()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+        复制完整出装方案
+      </button>
     </div>
   </section>
 
@@ -209,3 +248,36 @@
     </div>
   </div>
 </div>
+
+<!-- 移动端英雄选择抽屉 (Hero Modal Bottom Sheet) -->
+<div class="hero-modal-overlay" id="heroModalOverlay" onclick="closeHeroModal(event)">
+  <div class="hero-modal-card" onclick="event.stopPropagation()">
+    <div class="hero-modal-header">
+      <div class="hero-modal-title">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 6px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        选择演练英雄 <span id="heroModalCountBadge" class="panel-badge">133位</span>
+      </div>
+      <button class="arcana-modal-close" onclick="closeHeroModal()" title="关闭">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="search-wrapper" style="padding: 10px 16px 8px 16px;">
+      <div class="apple-search">
+        <span class="search-icon">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </span>
+        <input type="text" id="heroModalSearch" class="apple-input" placeholder="搜索英雄（如：王维 / 李白 / 孙尚香）" oninput="filterModalHeroes()">
+      </div>
+    </div>
+    <div class="segmented-control" id="heroModalTabs">
+      <div class="seg-item active" onclick="setHeroModalFilter('全部', this)">全部</div>
+      <div class="seg-item" onclick="setHeroModalFilter('对抗路', this)">对抗</div>
+      <div class="seg-item" onclick="setHeroModalFilter('打野', this)">打野</div>
+      <div class="seg-item" onclick="setHeroModalFilter('中路', this)">中路</div>
+      <div class="seg-item" onclick="setHeroModalFilter('发育路', this)">发育</div>
+      <div class="seg-item" onclick="setHeroModalFilter('游走', this)">游走</div>
+    </div>
+    <div class="hero-modal-scroll" id="heroModalListContainer"></div>
+  </div>
+</div>
+

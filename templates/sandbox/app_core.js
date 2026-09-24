@@ -22,6 +22,12 @@ window.onload = () => {
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeBtnIcon(savedTheme);
 
+  // 移动端环境检测与适配 (宽度 <= 768px 或移动端 UA)
+  const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  if (isMobile) {
+    document.body.classList.add('is-mobile');
+  }
+
   initHeroArcana(currentHero);
   updateSpotlight();
   renderArcanaBar();
@@ -29,6 +35,7 @@ window.onload = () => {
   renderItems();
   renderSlots();
   recalculate();
+  updateSynergyBrief();
 };
 
 function toggleTheme() {
@@ -204,8 +211,19 @@ function renderSlots() {
 }
 
 function addItem(item) {
+  // 1. 已装配状态下再次点击 -> 直接卸下 (Toggle，体验与微信小程序对齐)
+  const existingIdx = currentSlots.findIndex(s => s.item_name === item.item_name);
+  if (existingIdx !== -1) {
+    currentSlots.splice(existingIdx, 1);
+    renderSlots();
+    renderItems();
+    recalculate();
+    return;
+  }
+
+  // 2. 检查槽位上限
   if (currentSlots.length >= 6) {
-    alert("局内神装上限仅限 6 格！请先点击右侧槽位中的装备进行卸下或替换。");
+    alert("局内神装上限仅限 6 格！请先点击槽位中的装备进行卸下或替换。");
     return;
   }
   currentSlots.push(item);
@@ -227,6 +245,9 @@ function resetSlots() {
   renderItems();
   recalculate();
 }
+
+// [模块说明] 一键神装、战术协同简报卡片与移动端抽屉交互已下沉解耦至 app_mobile.js 驱动
+
 
 // 核心数值计算、属性面板渲染与被动互斥诊断逻辑
 // 遵循单一职责原则，已下沉解耦至 app_stats.js 驱动
