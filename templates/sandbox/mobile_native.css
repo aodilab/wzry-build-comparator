@@ -106,11 +106,6 @@ html, body {
   .brand-titles h1 { font-size: 17px !important; font-weight: 700 !important; color: #1d1d1f !important; text-align: center !important; letter-spacing: -0.2px !important; }
   .brand-titles p { display: none !important; }
   .header-actions { display: none !important; }
-  header::after {
-    content: "••• ⦿"; position: absolute; right: 14px; font-size: 13px; font-weight: 800;
-    color: #1d1d1f; border: 1px solid rgba(0,0,0,0.12); padding: 2px 10px; border-radius: 999px;
-    background: rgba(255,255,255,0.7); backdrop-filter: blur(8px); letter-spacing: 2px;
-  }
   .sandbox-grid { display: flex; flex-direction: column; height: auto; gap: 12px; }
   .hero-section-panel { order: 1; }
   .slots-stats-section-panel { order: 2; display: flex; flex-direction: column; gap: 12px; background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; }
@@ -373,6 +368,8 @@ html, body {
   .score-overview-right { flex: 1 !important; }
   .overview-summary-title { font-size: 14px !important; font-weight: 700 !important; color: #1d1d1f !important; }
   .overview-summary-desc { font-size: 11px !important; color: #8e8e93 !important; margin-top: 3px !important; line-height: 1.4 !important; }
+  .score-basis-row { display: flex !important; flex-wrap: wrap !important; gap: 4px !important; margin-top: 6px !important; }
+  .basis-chip { font-size: 10px !important; background: #f0f0f4 !important; color: #48484a !important; padding: 2px 6px !important; border-radius: 4px !important; } .basis-chip b { color: #1d1d1f !important; } .basis-chip.penalty { background: rgba(255, 59, 48, 0.1) !important; color: #ff3b30 !important; } .basis-chip.penalty b { color: #ff3b30 !important; }
   .synergy-block-card { background: #ffffff !important; border-radius: 12px !important; border: 1px solid rgba(0,0,0,0.05) !important; padding: 12px !important; }
   .synergy-block-title { font-size: 13px !important; font-weight: 700 !important; color: #1d1d1f !important; margin-bottom: 10px !important; }
   .radar-bars-grid { display: flex !important; flex-direction: column !important; gap: 8px !important; }

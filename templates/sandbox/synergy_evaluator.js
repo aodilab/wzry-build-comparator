@@ -1,6 +1,6 @@
 // ==============================================================================
 // 局内六神装配装战术协同评分引擎 (Synergy Evaluator Engine)
-// 包含真实梯队算分、实战优劣势剖析(PROS/CONS)、机制联动与五维战力推演
+// 包含科学多维量化算分体系、实战直观优劣势剖析(PROS/CONS)、机制质变与五维战力推演
 // ==============================================================================
 
 function calculateSynergyScore(currentHero, effItems, currentSlots, skills, cappedCdr) {
@@ -55,109 +55,166 @@ function calculateSynergyScore(currentHero, effItems, currentSlots, skills, capp
   const hasFaChuan = slotNames.includes('虚无法杖') || slotNames.includes('日暮之流');
   const hasShushen = slotNames.includes('噬神之书');
   const hasHuiyue = slotNames.includes('辉月');
-  const hasMianju = slotNames.includes('痛苦面具');
-  const hasXianshu = slotNames.includes('贤者之书') || slotNames.includes('贤者天书');
+  const hasLifesteal = slotNames.includes('泣血之刃') || slotNames.includes('末世') || slotNames.includes('噬神之书') || slotNames.includes('贪婪之噬') || hasHuangdun || hasPhoenix || hasBazhe;
+  const hasArmorPen = hasAnyang || hasPoxiao || slotNames.includes('碎星锤') || slotNames.includes('破魔刀');
+  const hasDamageReduce = hasCangqiong || slotNames.includes('天穹') || hasHuiyue || slotNames.includes('名刀·司命') || slotNames.includes('贤者的庇护');
 
-  // 1. 实战核心优势 (PROS) 智能归纳
+  // ==========================================
+  // 1. 实战核心优势 (PROS - 直截了当、针对出装机制)
+  // ==========================================
   const pros = [];
-  if (hasHuangdun && hasPhoenix) {
-    pros.push({ title: '绝地不死混伤', desc: '真伤普攻附带黄盾最大生命物理重击，残血开大触发不死鸟受治疗翻倍，残血对拼反杀质变。' });
-  } else if (hasHuangdun) {
-    pros.push({ title: '清野与重击增益', desc: '普攻附带最大生命物理重击与回复，大幅提升前期兵线与野怪清剿效率。' });
-  } else if (hasPhoenix) {
-    pros.push({ title: '血统残血极愈', desc: '血量越低受治疗增幅越高，显著放大技能与吸血回复效率。' });
+  if (hasCangqiong || hasHuiyue) {
+    pros.push({
+      title: '进场免伤避免被秒',
+      desc: hasCangqiong
+        ? '纯净苍穹提供 35% 高额免伤且受控可用，彻底避免刚进场突进时被敌方集火瞬间蒸发。'
+        : '辉月提供 1.5 秒无敌保命金身，关键时刻化解敌方致命爆发连招与高伤指向技能。'
+    });
   }
-
-  if (hasHonglian && (hasBazhe || totalBonusHp >= 3000)) {
-    pros.push({ title: '重装灼烧战阵', desc: `红莲业炎灼烧基于 ${totalBonusHp} 额外生命值造成持续范围法伤并附带重伤，肉搏清线输出兼备。` });
+  if (totalBonusHp >= 3000 || (totalPdef + totalMdef) >= 600) {
+    pros.push({
+      title: '防御极高抗伤扎实',
+      desc: `总额外生命达到 +${totalBonusHp}，物法双抗加成高达 +${totalPdef + totalMdef}，前排坦度极为扎实，能为队友吃满第一波强集火。`
+    });
+  }
+  if (hasPhoenix || hasLifesteal) {
+    pros.push({
+      title: '回复极强续航拉满',
+      desc: hasPhoenix
+        ? '不死鸟之眼大幅放大残血受疗效率，搭配回复技能或重击吸血，残血对拼具备极强反杀续航。'
+        : '具备高额物理/法术吸血加成，对线残血后无需频繁回城，能快速补满状态并持续参团。'
+    });
+  }
+  if ((totalAd >= 180 && hasArmorPen) || (totalAp >= 400 && (hasFaChuan || hasMaozi))) {
+    pros.push({
+      title: '核心爆发瞬秒脆皮',
+      desc: '高额攻击属性搭配核心穿透/暴击，技能与普攻伤害充足，对敌方后排脆皮具备极强的一套秒杀威慑。'
+    });
+  }
+  if (cappedCdr >= 25) {
+    pros.push({
+      title: '冷却缩减高频循环',
+      desc: `冷却缩减达到 ${cappedCdr}%，大幅压缩技能真空期，高频位移留人与多轮技能拉扯反打极具主动权。`
+    });
   }
   if (hasBuxiang) {
-    pros.push({ title: '强力克制突进与攻速', desc: '受到攻击降低攻击者 40% 攻速与移速，极大限制敌方射手走位与普攻输出环境。' });
+    pros.push({
+      title: '压制敌方攻速与走位',
+      desc: '不祥征兆受到攻击削弱敌方 40% 攻速与移速，极大破坏敌方射手走A与普攻刺客的输出环境。'
+    });
   }
-  if (hasBazhe && (totalPdef >= 300 || totalMdef >= 200)) {
-    pros.push({ title: '超高坦度与脱战极愈', desc: '双抗强化与天元高额生命加持，脱战极速回满血量，减少频繁回城节奏损失。' });
-  }
-  if (hasMowu) {
-    pros.push({ title: '高额法术吸收护盾', desc: '脱战生成专属法伤护盾，有效规避敌方法核的高爆发消耗与远距离秒杀。' });
-  }
-  if (hasCangqiong) {
-    pros.push({ title: '进场驱散免伤', desc: '受控可用并提供 35% 减伤，确保切后排或前排接团时不会被瞬时连控集火蒸发。' });
-  }
-  if (hasAnyang) {
-    pros.push({ title: '穿透切割与技能循环', desc: '提供高额物理穿透与 15% 冷缩，显著压缩技能冷却真空期，压制脆皮输出。' });
-  }
-  if (hasZongshi || hasBinghen) {
-    pros.push({ title: '技能强击与拉扯留人', desc: `技能后普攻附带强力额外伤害与${hasBinghen ? '范围减速留人' : '瞬间移速加成'}，连招无缝衔接。` });
-  }
-  if (hasWujin || hasPoxiao) {
-    pros.push({ title: '终极物理爆发', desc: '超高暴击率与穿甲加持，在中后期无论是点杀脆皮还是瓦解前排均具备毁灭级伤害。' });
-  }
-  if (hasMaozi || hasFaChuan) {
-    pros.push({ title: '法强爆发与穿透贯通', desc: '法强提升 30% 配合百分比法穿，技能法球能瞬时撕裂敌方前排魔抗防线。' });
-  }
-  if (hasSupport) {
-    pros.push({ title: '全队光环与绝境救援', desc: '提供团队双抗或攻速增益，主动救援护盾能化解敌方关键第一波爆发。' });
+  if (hasHuangdun && hasPhoenix) {
+    pros.push({
+      title: '绝地不死混伤重击',
+      desc: '黄盾最大生命物理重击搭配真伤普攻，残血开大触发不死鸟受治愈翻倍，残血绝地对拼反杀质变。'
+    });
   }
   if (pros.length === 0) {
-    pros.push({ title: '基础三维属性稳固', desc: '装备提供扎实的基础数值增益，满足常规对局推演基准。' });
+    pros.push({
+      title: '基础三维属性均衡',
+      desc: '装备提供扎实的基础数值增益，满足常规对局推演与平稳对线基准。'
+    });
   }
 
-  // 2. 实战潜在劣势 / 短板 (CONS) 智能诊断
+  // ==========================================
+  // 2. 实战潜在短板 (CONS - 针砭装备缺陷，拒绝空话)
+  // ==========================================
   const cons = [];
-  if (isTankOrSupport && totalAd <= 80 && totalAp <= 100) {
-    cons.push({ title: '单人爆发与收割乏力', desc: '整套出装缺少纯攻击或穿透质变大件，对敌方满血脆皮难以单人瞬秒，较依赖队友伤害跟进。' });
+  if (!isTankOrSupport && totalBonusHp <= 1200 && (totalPdef + totalMdef) <= 220 && !hasDamageReduce) {
+    cons.push({
+      title: '过度注重伤害缺少坦度',
+      desc: '整套配装偏向纯攻击输出，身板极脆容错率偏低，一旦团战切入稍有不慎或吃控制，极易被瞬间反秒。'
+    });
   }
-  if (isPhysicalHero && !isTankOrSupport && totalBonusHp <= 1500 && !hasCangqiong) {
-    cons.push({ title: '身板脆弱容错率偏低', desc: '缺少防御成装与免伤主动，进场遭硬控或被刺客埋伏时极易被瞬秒，对团战切入时机要求极高。' });
-  }
-  if (totalAd >= 150 && !hasAnyang && !hasPoxiao && !slotNames.includes('碎星锤')) {
-    cons.push({ title: '缺少穿甲大件面对重坦乏力', desc: '未装配暗影战斧/碎星锤/破晓等穿透装备，对局进入中后期打敌方上千物抗的前排坦度衰减严重。' });
+  if (!hasLifesteal) {
+    cons.push({
+      title: '缺少回复与续航手段',
+      desc: '整套配装缺少吸血与血量回复大件，打残后无法靠兵线快速补满状态，必须频繁回城补给漏线亏节奏。'
+    });
   }
   if (cappedCdr < 15) {
-    cons.push({ title: '冷却缩减不足技能真空偏长', desc: '当前装配未激活高冷缩区间，技能释放后真空期较长，拉扯或多次反打能力受限。' });
+    cons.push({
+      title: '冷却缩减不足真空偏长',
+      desc: `整套出装仅 ${cappedCdr}% 冷缩，关键技能交完后有数秒无技能空窗期，拉扯与多轮反打能力受限。`
+    });
   }
-  if (totalMdef <= 120 && !hasMowu) {
-    cons.push({ title: '法术防御偏低防法核秒杀弱', desc: '缺少魔女斗篷或永夜守护，若敌方法师经济良好，极易被远距离技能消耗成残血。' });
+  if ((isPhysicalHero && totalAd >= 140 && !hasArmorPen) || (isMagicHero && totalAp >= 300 && !hasFaChuan)) {
+    cons.push({
+      title: '缺少穿甲中后期破坦乏力',
+      desc: '未装配百分比破甲大件（如破晓/碎星锤/虚无法杖），对局进入中后期打敌方上千双抗的前排伤害衰减严重。'
+    });
+  }
+  if (totalMdef <= 120 && !slotNames.includes('魔女斗篷') && !slotNames.includes('永夜守护') && !hasPhoenix) {
+    cons.push({
+      title: '法抗偏低防法核爆发弱',
+      desc: '缺少魔女斗篷或永夜守护，面对敌方高爆发法师（如安琪拉、干将、不知火舞）极易吃技能被瞬间秒杀。'
+    });
+  }
+  if (isTankOrSupport && totalAd <= 80 && totalAp <= 100) {
+    cons.push({
+      title: '纯肉出装单人收割乏力',
+      desc: '整套出装偏向纯防御，缺乏物理攻击与穿透，单人面对满血脆皮无法单杀，较依赖队友补足伤害。'
+    });
+  }
+  if (bootsCount === 0 && totalPercentSpeed <= 0) {
+    cons.push({
+      title: '缺少鞋类成装机动滞后',
+      desc: '未装配鞋类大件，基础移速偏低，极易被敌方长手减速拉扯，支援转线与团战进退节奏滞后。'
+    });
   }
   if (cons.length === 0) {
-    cons.push({ title: '打法走位需防长手拉扯', desc: '面对孙尚香、马可波罗等长手灵活射手拉扯时，需注意卡视野进场避免被提前消耗。' });
+    cons.push({
+      title: '装备造价偏高成型期长',
+      desc: '整套配装多为高造价三级大件，前期过渡较吃经济运营，若逆风发育受阻成型周期会被迫拉长。'
+    });
   }
 
-  // 3. 客观评分系统 (拒绝千篇一律 99 分，打造 72~92 分真实梯度)
-  let baseScore = 60 + Math.min(6, tier3Count) * 3.5; // 满6件 = 81分
-  // 机制加成 (最多 +10分)
-  if (pros.length >= 3) baseScore += 7;
-  else if (pros.length >= 2) baseScore += 5;
-  else baseScore += 2;
+  // ==========================================
+  // 3. 科学量化评分模型 (科学依据：四维透明评分表)
+  // ==========================================
+  // 维度一：神装成件基础分 (上限 35分)
+  const tier3Score = Math.min(6, tier3Count) * 5.8;
 
-  // 攻防与CD合理性加减分
-  if (cappedCdr >= 20 && cappedCdr <= 40) baseScore += 3;
-  if (totalMdef >= 200 && (totalPdef >= 350 || totalAd >= 250)) baseScore += 2;
+  // 维度二：核心机制质变分 (上限 30分)
+  let mechanicScore = 0;
+  if (hasDamageReduce) mechanicScore += 8;
+  if ((hasHuangdun && hasPhoenix) || (hasBazhe && hasHonglian) || (hasAnyang && hasZongshi) || (hasWujin && hasPoxiao)) mechanicScore += 8;
+  if (hasBuxiang || hasJihan) mechanicScore += 7;
+  if (hasSupport || hasMowu) mechanicScore += 7;
+  mechanicScore = Math.min(30, Math.max(10, mechanicScore + effItems.length * 2.5));
 
-  // 短板扣分
+  // 维度三：攻防循环平衡分 (上限 25分)
+  let balanceScore = 0;
+  if (cappedCdr >= 20 && cappedCdr <= 40) balanceScore += 10;
+  else if (cappedCdr >= 10) balanceScore += 5;
+  if (bootsCount === 1) balanceScore += 8;
+  if ((totalPdef + totalMdef) >= 300 || (totalAd >= 200 && hasArmorPen) || (totalAp >= 400 && hasFaChuan)) balanceScore += 7;
+  balanceScore = Math.min(25, balanceScore);
+
+  // 维度四：实战短板惩罚扣分 (扣减项)
   let penalty = 0;
-  let penaltyReasons = [];
-  let wastedApCount = isPhysicalHero ? effItems.filter(it => (it.category === '法术') || (it.stats && it.stats.ap >= 80)).length : 0;
-  let wastedAdCount = isMagicHero ? effItems.filter(it => (it.category === '攻击') && ((it.stats && it.stats.atk >= 80) || (it.stats && it.stats.crit >= 15))).length : 0;
+  const penaltyReasons = [];
+  const wastedApCount = isPhysicalHero ? effItems.filter(it => (it.category === '法术') || (it.stats && it.stats.ap >= 80)).length : 0;
+  const wastedAdCount = isMagicHero ? effItems.filter(it => (it.category === '攻击') && ((it.stats && it.stats.atk >= 80) || (it.stats && it.stats.crit >= 15))).length : 0;
 
   if (wastedApCount > 0) {
     penalty += wastedApCount * 12;
-    penaltyReasons.push(`物法属性错位：物理英雄装备了 ${wastedApCount} 件法术属性装`);
+    penaltyReasons.push(`物法错位：物理英雄出了 ${wastedApCount} 件法术属性装 (-${wastedApCount * 12}分)`);
   }
   if (wastedAdCount > 0) {
     penalty += wastedAdCount * 12;
-    penaltyReasons.push(`物法属性错位：法术英雄装备了 ${wastedAdCount} 件高物攻/暴击装`);
+    penaltyReasons.push(`物法错位：法术英雄出了 ${wastedAdCount} 件物理属性装 (-${wastedAdCount * 12}分)`);
   }
   if (bootsCount > 1) {
-    penalty += (bootsCount - 1) * 10;
-    penaltyReasons.push(`双鞋互斥：装备了 ${bootsCount} 双鞋子`);
+    penalty += (bootsCount - 1) * 8;
+    penaltyReasons.push(`移速互斥：重复装备了 ${bootsCount} 双鞋子 (-${(bootsCount - 1) * 8}分)`);
   }
 
-  // 真实打分结算 (优质出装在 83~92 分，有明显短板在 75~82 分，极品契合在 91~94 分)
-  let rawScore = Math.round(baseScore - penalty);
-  let score = Math.max(35, Math.min(94, rawScore));
+  // 计算综合总分 (72~93 分客观实战梯度)
+  const rawScore = Math.round(tier3Score + mechanicScore + balanceScore - penalty);
+  const score = Math.max(35, Math.min(94, rawScore));
 
-  let rankBadge = 'A 优质主流配装', rankColor = '#0071e3';
+  let rankBadge = 'A 均衡可用配装', rankColor = '#0071e3';
   if (score >= 90) {
     rankBadge = 'S+ 巅峰神装契合'; rankColor = '#34c759';
   } else if (score >= 84) {
@@ -170,12 +227,20 @@ function calculateSynergyScore(currentHero, effItems, currentSlots, skills, capp
     rankBadge = 'C 严重属性冲突'; rankColor = '#ff3b30';
   }
 
-  let rankSub = `综合契合度高，激活 ${pros.length} 项核心战术优势，攻防曲线扎实。`;
-  if (cons.length > 0 && score < 90) {
-    rankSub = `实战优势明显，但需注意【${cons[0].title}】对局影响。`;
-  }
+  const rankSub = cons.length > 0 && score < 92
+    ? `实战优势突出，但需重点注意【${cons[0].title}】局限。`
+    : `综合契合度高，激活 ${pros.length} 项核心战术机制，攻防曲线扎实。`;
 
-  // 4. 真实五维雷达战力折算 (0~100 百分比)
+  // 评分科学依据表细化
+  const scoreBreakdown = {
+    tierScore: Math.round(tier3Score),
+    mechanicScore: Math.round(mechanicScore),
+    balanceScore: Math.round(balanceScore),
+    penaltyScore: Math.round(penalty),
+    penaltyReasons
+  };
+
+  // 4. 五维雷达战力推演
   const burstVal = Math.min(100, Math.max(15, Math.round((totalAd / 520) * 55 + (totalAp / 650) * 45 + (totalCrit / 50) * 20)));
   const tankVal = Math.min(100, Math.max(20, Math.round((totalBonusHp / 5500) * 50 + (totalPdef / 700) * 30 + (totalMdef / 400) * 20)));
   const cdrVal = Math.min(100, Math.max(15, Math.round((cappedCdr / 40) * 75 + (hasCangqiong ? 15 : 0) + (hasAnyang ? 10 : 0))));
@@ -196,6 +261,7 @@ function calculateSynergyScore(currentHero, effItems, currentSlots, skills, capp
     rankSub,
     pros: pros.slice(0, 3),
     cons: cons.slice(0, 2),
+    scoreBreakdown,
     penaltyReasons,
     synergyContext: {
       hasYellowShield: hasHuangdun,
