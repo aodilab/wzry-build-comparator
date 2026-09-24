@@ -29,13 +29,14 @@ def get_sandbox_html_template() -> str:
     app_core_js = _load('app_core.js')
     app_stats_js = _load('app_stats.js')
     app_arcana_js = _load('app_arcana.js')
+    synergy_comparator_js = _load('synergy_comparator.js')
     synergy_evaluator_js = _load('synergy_evaluator.js')
     synergy_combos_js = _load('synergy_combos.js')
     app_synergy_js = _load('app_synergy.js')
     app_mobile_js = _load('app_mobile.js')
 
     combined_css = f"{theme_layout_css}\n\n{sandbox_panels_css}\n\n{item_shop_css}\n\n{dock_metrics_css}\n\n{modal_arcana_css}\n\n{modal_synergy_layout_css}\n\n{modal_synergy_cards_css}\n\n{synergy_css}\n\n{mobile_native_css}"
-    combined_js = f"{app_core_js}\n\n{app_stats_js}\n\n{app_arcana_js}\n\n{synergy_evaluator_js}\n\n{synergy_combos_js}\n\n{app_synergy_js}\n\n{app_mobile_js}"
+    combined_js = f"{app_core_js}\n\n{app_stats_js}\n\n{app_arcana_js}\n\n{synergy_comparator_js}\n\n{synergy_evaluator_js}\n\n{synergy_combos_js}\n\n{app_synergy_js}\n\n{app_mobile_js}"
 
     return f"""<!DOCTYPE html>
 <html lang="zh-CN" data-theme="light">
