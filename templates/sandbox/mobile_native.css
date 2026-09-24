@@ -381,15 +381,20 @@ html, body {
   .radar-val { font-weight: 700 !important; color: #0071e3 !important; }
   .radar-track { width: 100% !important; height: 6px !important; background: #e5e5ea !important; border-radius: 999px !important; overflow: hidden !important; }
   .radar-fill { height: 100% !important; background: linear-gradient(90deg, #0071e3, #34c759) !important; border-radius: 999px !important; }
-  .modal-skills-list { display: flex !important; flex-direction: column !important; gap: 8px !important; }
-  .synergy-skill-card { background: #fbfbfd !important; border-radius: 10px !important; padding: 10px !important; border: 1px solid rgba(0,0,0,0.04) !important; }
-  .synergy-skill-header { display: flex !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 4px !important; }
-  .synergy-skill-name-wrap { display: flex !important; align-items: center !important; gap: 6px !important; }
-  .synergy-type-badge { font-size: 10px !important; padding: 1px 5px !important; border-radius: 4px !important; color: #fff !important; font-weight: 700 !important; }
-  .synergy-skill-name { font-size: 13px !important; font-weight: 700 !important; color: #1d1d1f !important; }
-  .synergy-skill-cd { font-size: 10px !important; color: #8e8e93 !important; }
-  .synergy-skill-desc { font-size: 11px !important; color: #6e6e73 !important; line-height: 1.4 !important; }
-  .synergy-tags-row { display: flex !important; gap: 4px !important; margin-top: 6px !important; }
-  .synergy-tag { font-size: 10px !important; padding: 2px 6px !important; border-radius: 4px !important; font-weight: 600 !important; }
+  .synergy-block-title.pro-title { color: #2e7d32 !important; display: flex !important; align-items: center !important; gap: 5px !important; }
+  .synergy-block-title.con-title { color: #d97706 !important; display: flex !important; align-items: center !important; gap: 5px !important; }
+  .synergy-points-box { display: flex !important; flex-direction: column !important; gap: 8px !important; }
+  .point-card { padding: 9px 11px !important; border-radius: 10px !important; display: flex !important; flex-direction: column !important; gap: 4px !important; border: 1px solid rgba(0,0,0,0.04) !important; }
+  .point-card.pro-card { background: rgba(52,199,89,0.06) !important; border-left: 3.5px solid #34c759 !important; }
+  .point-card.con-card { background: rgba(255,149,0,0.06) !important; border-left: 3.5px solid #ff9500 !important; }
+  .point-header { display: flex !important; align-items: center !important; gap: 6px !important; }
+  .point-badge { font-size: 10px !important; font-weight: 700 !important; padding: 1px 6px !important; border-radius: 4px !important; color: #fff !important; line-height: 1.2 !important; }
+  .point-badge.pro-badge { background: #34c759 !important; } .point-badge.con-badge { background: #ff9500 !important; }
+  .point-title { font-size: 12.5px !important; font-weight: 700 !important; color: #1d1d1f !important; }
+  .point-desc { font-size: 11px !important; color: #48484a !important; line-height: 1.4 !important; }
+  .modal-combo-list { display: flex !important; flex-direction: column !important; gap: 6px !important; }
+  .synergy-combo-item { display: flex !important; align-items: flex-start !important; gap: 8px !important; background: #fbfbfd !important; padding: 7px 9px !important; border-radius: 8px !important; border: 1px solid rgba(0,0,0,0.03) !important; }
+  .synergy-combo-num { width: 17px !important; height: 17px !important; border-radius: 50% !important; background: #0071e3 !important; color: #fff !important; font-size: 10px !important; font-weight: 700 !important; display: flex !important; align-items: center !important; justify-content: center !important; flex-shrink: 0 !important; }
+  .synergy-combo-text { font-size: 11px !important; color: #3a3a3c !important; line-height: 1.4 !important; flex: 1 !important; }
 }
 @keyframes appleBottomSheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
