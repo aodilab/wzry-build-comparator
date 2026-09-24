@@ -1,86 +1,76 @@
 /* ==========================================================================
-   二级页面：技能×出装联动 技能卡片、雷达图与连招打法 (Synergy Cards & Combo)
+   二级页面：技能×出装联动 核心优劣势剖析、雷达图与连招打法 (Synergy Cards & Combo)
    ========================================================================== */
 
-/* 技能与实战 CD 卡片网格 */
-.synergy-skills-grid {
+/* 实战核心优劣势深度剖析 (PROS & CONS) 网格 */
+.synergy-pros-cons-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
-.synergy-skill-card {
-  padding: 14px 16px;
-  border-radius: 16px;
-  background: var(--apple-card);
-  border: 1px solid var(--apple-border);
-  box-shadow: var(--card-shadow);
+.synergy-pros-col, .synergy-cons-col {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.synergy-skill-top {
+.synergy-points-box {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.synergy-skill-name-row {
+.point-card {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.point-card.pro-card {
+  background: rgba(52, 199, 89, 0.04);
+  border-left: 3px solid #34c759;
+}
+
+.point-card.con-card {
+  background: rgba(255, 149, 0, 0.04);
+  border-left: 3px solid #ff9500;
+}
+
+.point-header {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.synergy-skill-badge {
-  font-size: 10.5px;
+.point-badge {
+  font-size: 11px;
   font-weight: 700;
   padding: 2px 7px;
   border-radius: 6px;
-  background: var(--apple-subcard);
-  color: var(--color-blue);
+  color: #fff;
+  line-height: 1.2;
 }
 
-.synergy-skill-name {
-  font-size: 14px;
+.point-badge.pro-badge { background: #34c759; }
+.point-badge.con-badge { background: #ff9500; }
+
+.point-title {
+  font-size: 13.5px;
   font-weight: 700;
   color: var(--text-primary);
 }
 
-.synergy-skill-tags {
-  display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
-}
-
-.synergy-tag {
-  font-size: 10px;
-  padding: 1px 6px;
-  border-radius: 4px;
-  background: var(--color-amber-bg);
-  color: var(--color-amber);
-  font-weight: 600;
-}
-
-.synergy-cd-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 10px;
-  border-radius: 8px;
-  background: var(--apple-subcard);
-  font-size: 11.5px;
-}
-
-.synergy-cd-highlight {
-  color: var(--color-green);
-  font-weight: 700;
-}
-
-.synergy-skill-desc {
-  font-size: 11.5px;
+.point-desc {
+  font-size: 12px;
   color: var(--text-secondary);
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 /* 装备被动实战联动深度剖析列表 */

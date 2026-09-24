@@ -58,75 +58,13 @@ function renderSynergyContent() {
       ? `${effItems.length}/6件已装配 · ${effItems.length > 0 ? '战术协同' : '待装配推演'}`
       : `装备栏: ${effItems.length} / 6 件已装配 ｜ 技能机制与被动乘区深度诊断`;
   }
-  // 1. 技能卡片列表 HTML 组装
-  let skillsCardsHtml = '';
-  skills.forEach((sk, idx) => {
-    const skType = sk.type || (idx === 0 || (sk.name && sk.name.includes('被动')) ? '被动技能' : `主动技能 ${idx}`);
-    const isPassive = skType.includes('被动') || (sk.name && sk.name.includes('被动'));
-    const badgeColor = isPassive ? '#ff9500' : '#0071e3';
-    // 阶梯冷却展示
-    let cdDisplay = sk.cd || '无冷却';
-    if (cdDisplay.includes('｜')) {
-      const parts = cdDisplay.split('｜').map(p => p.trim());
-      cdDisplay = parts.join(' <span style="color:var(--text-tertiary);margin:0 2px;">/</span> ');
-    }
-    // 标签展示
-    let tagsHtml = '';
-    (sk.tags || []).forEach(t => {
-      let tColor = 'var(--text-secondary)';
-      let tBg = 'rgba(0,0,0,0.04)';
-      if (t === '技能回血') { tColor = '#34c759'; tBg = 'rgba(52, 199, 89, 0.1)'; }
-      else if (t === '硬控') { tColor = '#ff3b30'; tBg = 'rgba(255, 59, 48, 0.1)'; }
-      else if (t === '真实伤害') { tColor = '#af52de'; tBg = 'rgba(175, 82, 222, 0.1)'; }
-      else if (t === '免伤' || t === '护盾') { tColor = '#ff9500'; tBg = 'rgba(255, 149, 0, 0.1)'; }
-      else if (t === '强化普攻') { tColor = '#0071e3'; tBg = 'rgba(0, 113, 227, 0.1)'; }
-      tagsHtml += `<span class="synergy-tag" style="color:${tColor};background:${tBg};border-color:transparent;">${t}</span>`;
-    });
-    skillsCardsHtml += `
-      <div class="synergy-skill-card">
-        <div class="synergy-skill-header">
-          <div class="synergy-skill-name-wrap">
-            <span class="synergy-type-badge" style="background:${badgeColor}">${skType}</span>
-            <span class="synergy-skill-name">${sk.name || `技能 ${idx + 1}`}</span>
-          </div>
-          <div class="synergy-skill-cd">CD: ${cdDisplay}</div>
-        </div>
-        <div class="synergy-skill-desc">${sk.desc || '暂无描述'}</div>
-        ${tagsHtml ? `<div class="synergy-tags-row">${tagsHtml}</div>` : ''}
-      </div>
-    `;
-  });
 
   // 2. 调用解耦评分引擎 (synergy_evaluator.js)
   const cappedCdr = typeof calculateCompositeStats === 'function' ? calculateCompositeStats().cdr : 0;
   const evalResult = calculateSynergyScore(hero, effItems, slots, skills, cappedCdr);
-  const { score, rankBadge, rankColor, rankSub, penaltyReasons, synergyContext, radarStats, insights } = evalResult;
+  const { score, rankBadge, rankColor, rankSub, penaltyReasons, synergyContext, radarStats, pros, cons } = evalResult;
 
-  // 3. 装备专属机制联动卡片 (由评估引擎动态输出)
-  const svgStar = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.26 12 2"></polygon></svg>';
-  const svgShield = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>';
-  const svgHeart = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>';
-  
-  let synergyLinksHtml = '';
-  const effInsights = (insights && insights.length > 0) ? insights : [
-    { tag: '基础属性协同', item: '属性装配', desc: '当前装备提供稳固的攻防基础数值，建议补齐核心质变神装。' }
-  ];
-  effInsights.forEach(item => {
-    synergyLinksHtml += `
-      <div class="synergy-link-card">
-        <div class="synergy-link-icon-box">${svgShield}</div>
-        <div class="synergy-link-content">
-          <div class="synergy-link-title">
-            <span>${item.tag} · ${item.item}</span>
-            <span class="synergy-link-sub">${item.item}</span>
-          </div>
-          <div class="synergy-link-desc">${item.desc}</div>
-        </div>
-      </div>
-    `;
-  });
-
-  // 4. 调用解耦连招策略引擎 (synergy_combos.js)
+  // 3. 调用解耦连招策略引擎 (synergy_combos.js)
   const comboSteps = generateComboSteps(hero, skills, synergyContext);
   let comboHtml = '';
   comboSteps.forEach((st, idx) => {
@@ -138,7 +76,7 @@ function renderSynergyContent() {
     `;
   });
 
-  // 5. 组装完整模态框 HTML
+  // 4. 组装完整模态框 HTML
   const bodyEl = document.getElementById('synergyModalScroll') || document.getElementById('synergyModalBody');
   if (!bodyEl) return;
 
@@ -147,7 +85,7 @@ function renderSynergyContent() {
     const finalScore = isEmp ? 0 : score;
     const finalBadge = isEmp ? '未选装' : rankBadge.split(' ')[0];
     const finalTitle = isEmp ? '待装配推演' : rankBadge;
-    const finalDesc = isEmp ? '暂未选配装备，请点击一键神装或在下方挑选装备入槽。' : rankSub;
+    const finalDesc = isEmp ? '暂未选配装备，请点击一键神装或挑选装备入槽。' : rankSub;
     const cardBorderColor = isEmp ? '#aeaeb2' : rankColor;
 
     const bVal = isEmp ? 20 : (radarStats ? (radarStats.burst || radarStats[0] || 20) : 20);
@@ -156,9 +94,16 @@ function renderSynergyContent() {
     const mVal = isEmp ? 20 : (radarStats ? (radarStats.mobility || radarStats[3] || 20) : 20);
     const tVal = isEmp ? 20 : (radarStats ? (radarStats.sustain || radarStats[4] || 20) : 20);
 
+    const prosList = (pros && pros.length > 0) ? pros : [
+      { title: '基础三维属性提升', desc: '所选装备提供稳定的基础攻防面板，支撑基础作战需求。' }
+    ];
+    const consList = (cons && cons.length > 0) ? cons : [
+      { title: '走位与团战容错', desc: '实战中需防范长手英雄走位拉扯或高频连环硬控。' }
+    ];
+
     bodyEl.innerHTML = `
       <div class="synergy-mobile-container">
-        <!-- 综合评分与战术评级 (对齐真机图 6) -->
+        <!-- 综合评分与战术评级 -->
         <div class="synergy-score-overview" style="border-left: 4px solid ${cardBorderColor};">
           <div class="score-overview-left">
             <div class="overview-score-num">${finalScore}分</div>
@@ -169,7 +114,48 @@ function renderSynergyContent() {
             <div class="overview-summary-desc">${finalDesc}</div>
           </div>
         </div>
-        <!-- 五维实战能力推演 (对齐真机图 6: 进度条) -->
+
+        <!-- 实战核心优势 (PROS - 优势在哪里) -->
+        ${!isEmp ? `
+          <div class="synergy-block-card">
+            <div class="synergy-block-title pro-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              实战核心优势剖析 (PROS)
+            </div>
+            <div class="synergy-points-box">
+              ${prosList.map(p => `
+                <div class="point-card pro-card">
+                  <div class="point-header">
+                    <span class="point-badge pro-badge">优势</span>
+                    <span class="point-title">${p.title}</span>
+                  </div>
+                  <div class="point-desc">${p.desc}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- 潜在短板与劣势 (CONS - 劣势在哪里) -->
+          <div class="synergy-block-card">
+            <div class="synergy-block-title con-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              潜在短板与防克制预警 (CONS)
+            </div>
+            <div class="synergy-points-box">
+              ${consList.map(c => `
+                <div class="point-card con-card">
+                  <div class="point-header">
+                    <span class="point-badge con-badge">劣势</span>
+                    <span class="point-title">${c.title}</span>
+                  </div>
+                  <div class="point-desc">${c.desc}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- 五维实战能力推演 (真实进度条) -->
         <div class="synergy-block-card">
           <div class="synergy-block-title">实战能力五维推演</div>
           <div class="radar-bars-grid">
@@ -192,22 +178,11 @@ function renderSynergyContent() {
             `).join('')}
           </div>
         </div>
-        <!-- 英雄技能与机制矩阵 (对齐真机图 6) -->
-        <div class="synergy-block-card">
-          <div class="synergy-block-title">英雄技能与机制矩阵 (${skills.length}个技能)</div>
-          <div class="modal-skills-list">
-            ${skillsCardsHtml}
-          </div>
-        </div>
-        ${!isEmp && synergyLinksHtml ? `
-          <div class="synergy-block-card">
-            <div class="synergy-block-title">核心被动机制全景联动 (${effItems.length}项已激活)</div>
-            <div class="modal-insights-list">${synergyLinksHtml}</div>
-          </div>
-        ` : ''}
+
+        <!-- 实战核心打法与最佳连招 -->
         ${!isEmp && comboHtml ? `
           <div class="synergy-block-card">
-            <div class="synergy-block-title">实战连招与打法策略建议</div>
+            <div class="synergy-block-title">实战连招与打法策略指引</div>
             <div class="modal-combo-list">${comboHtml}</div>
           </div>
         ` : ''}
@@ -248,13 +223,42 @@ function renderSynergyContent() {
       <div class="synergy-links-list">
         ${synergyLinksHtml}
       </div>
-      <!-- 官方技能权威成长梯队与机制明细 -->
-      <div class="synergy-section-title">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.26 12 2"></polygon></svg>
-        英雄技能机制与满级成长阶梯 (S34-S35 权威同步)
-      </div>
-      <div class="synergy-skills-grid">
-        ${skillsCardsHtml}
+      <!-- 实战核心优势与潜在短板深度剖析 (PROS & CONS) -->
+      <div class="synergy-pros-cons-grid">
+        <div class="synergy-pros-col">
+          <div class="synergy-section-title" style="color:#2e7d32;display:flex;align-items:center;gap:6px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            实战核心优势剖析 (PROS)
+          </div>
+          <div class="synergy-points-box">
+            ${prosList.map(p => `
+              <div class="point-card pro-card">
+                <div class="point-header">
+                  <span class="point-badge pro-badge">优势</span>
+                  <span class="point-title">${p.title}</span>
+                </div>
+                <div class="point-desc">${p.desc}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div class="synergy-cons-col">
+          <div class="synergy-section-title" style="color:#d97706;display:flex;align-items:center;gap:6px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            潜在短板与防克制预警 (CONS)
+          </div>
+          <div class="synergy-points-box">
+            ${consList.map(c => `
+              <div class="point-card con-card">
+                <div class="point-header">
+                  <span class="point-badge con-badge">劣势</span>
+                  <span class="point-title">${c.title}</span>
+                </div>
+                <div class="point-desc">${c.desc}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
       </div>
       <!-- 实战核心连招与打法指引 -->
       <div class="synergy-section-title">

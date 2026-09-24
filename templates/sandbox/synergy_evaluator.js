@@ -1,6 +1,6 @@
 // ==============================================================================
 // 局内六神装配装战术协同评分引擎 (Synergy Evaluator Engine)
-// 包含全职业核心被动机制联动、物法冲突惩罚、真实五维战力折算与协同评级
+// 包含真实梯队算分、实战优劣势剖析(PROS/CONS)、机制联动与五维战力推演
 // ==============================================================================
 
 function calculateSynergyScore(currentHero, effItems, currentSlots, skills, cappedCdr) {
@@ -18,8 +18,7 @@ function calculateSynergyScore(currentHero, effItems, currentSlots, skills, capp
 
   let totalAd = 0, totalAp = 0, totalBonusHp = 0, totalPdef = 0, totalMdef = 0;
   let totalCrit = 0, totalPercentSpeed = 0;
-  let tier3Count = 0, tier2Count = 0, tier1Count = 0;
-  let bootsCount = 0;
+  let tier3Count = 0, bootsCount = 0;
 
   effItems.forEach(it => {
     const st = it.stats || {};
@@ -31,17 +30,10 @@ function calculateSynergyScore(currentHero, effItems, currentSlots, skills, capp
     totalCrit += st.crit || 0;
     totalPercentSpeed += st.percent_speed || 0;
     if (typeof BOOTS_MAP !== 'undefined' && BOOTS_MAP[it.item_name]) bootsCount++;
-
-    const price = it.total_price || 0;
-    if (price >= 1800) tier3Count++;
-    else if (price >= 700) tier2Count++;
-    else tier1Count++;
+    if ((it.total_price || 0) >= 1700) tier3Count++;
   });
 
-  // 1. 核心装备机制全面识别 (Insights)
   const slotNames = effItems.map(s => s.item_name);
-  const insights = [];
-
   const hasHuangdun = slotNames.includes('怒龙剑盾') || slotNames.includes('龙鳞利剑');
   const hasPhoenix = slotNames.includes('不死鸟之眼');
   const hasCangqiong = slotNames.includes('纯净苍穹') || slotNames.includes('天穹');
@@ -50,14 +42,12 @@ function calculateSynergyScore(currentHero, effItems, currentSlots, skills, capp
   const hasZongshi = slotNames.includes('宗师之力');
   const hasBinghen = slotNames.includes('冰痕之握');
   const hasWujin = slotNames.includes('无尽战刃');
-  const hasPoxiao = slotNames.includes('破晓') || slotNames.includes('仁者破晓') || slotNames.includes('仁者·破晓');
+  const hasPoxiao = slotNames.includes('破晓') || slotNames.includes('仁者破晓');
   const hasHonglian = slotNames.includes('红莲斗篷');
   const hasBuxiang = slotNames.includes('不祥征兆');
   const hasMowu = slotNames.includes('魔女斗篷');
   const hasBazhe = slotNames.includes('霸者重装');
   const hasSupport = slotNames.some(n => n.includes('极影') || n.includes('近卫') || n.includes('形昭') || n.includes('救赎'));
-  const hasDikang = slotNames.includes('抵抗之靴');
-  const hasYinren = slotNames.includes('影忍之足');
   const hasFanshang = slotNames.includes('反伤刺甲');
   const hasJihan = slotNames.includes('极寒风暴');
   const hasMaozi = slotNames.includes('博学者之怒');
@@ -68,157 +58,145 @@ function calculateSynergyScore(currentHero, effItems, currentSlots, skills, capp
   const hasMianju = slotNames.includes('痛苦面具');
   const hasXianshu = slotNames.includes('贤者之书') || slotNames.includes('贤者天书');
 
+  // 1. 实战核心优势 (PROS) 智能归纳
+  const pros = [];
   if (hasHuangdun && hasPhoenix) {
-    insights.push({ tag: '不死混伤', item: '怒龙剑盾 + 不死鸟', desc: '真伤与最大生命物理重击双重加持，残血受治疗倍增！' });
+    pros.push({ title: '绝地不死混伤', desc: '真伤普攻附带黄盾最大生命物理重击，残血开大触发不死鸟受治疗翻倍，残血对拼反杀质变。' });
   } else if (hasHuangdun) {
-    insights.push({ tag: '重击发育', item: '怒龙剑盾', desc: '普攻附带最大生命物理重击与持续回复，发育对拼质变。' });
+    pros.push({ title: '清野与重击增益', desc: '普攻附带最大生命物理重击与回复，大幅提升前期兵线与野怪清剿效率。' });
   } else if (hasPhoenix) {
-    insights.push({ tag: '血统护体', item: '不死鸟之眼', desc: '血量越低受治疗增幅越高，技能回血与残血反杀利器。' });
+    pros.push({ title: '血统残血极愈', desc: '血量越低受治疗增幅越高，显著放大技能与吸血回复效率。' });
   }
 
-  if (hasHonglian) {
-    insights.push({ tag: '业炎灼烧', item: '红莲斗篷', desc: '近战每秒对敌造成高额最大生命法术灼烧并附带重伤减疗。' });
+  if (hasHonglian && (hasBazhe || totalBonusHp >= 3000)) {
+    pros.push({ title: '重装灼烧战阵', desc: `红莲业炎灼烧基于 ${totalBonusHp} 额外生命值造成持续范围法伤并附带重伤，肉搏清线输出兼备。` });
   }
   if (hasBuxiang) {
-    insights.push({ tag: '寒铁削速', item: '不祥征兆', desc: '受到攻击大幅减少攻击者攻速与移速，强力限制射手突进。' });
+    pros.push({ title: '强力克制突进与攻速', desc: '受到攻击降低攻击者 40% 攻速与移速，极大限制敌方射手走位与普攻输出环境。' });
   }
-  if (hasBazhe) {
-    insights.push({ tag: '天元极愈', item: '霸者重装', desc: '巨幅拉升最大生命与双抗，脱战极速回复生命值无需回城。' });
+  if (hasBazhe && (totalPdef >= 300 || totalMdef >= 200)) {
+    pros.push({ title: '超高坦度与脱战极愈', desc: '双抗强化与天元高额生命加持，脱战极速回满血量，减少频繁回城节奏损失。' });
   }
   if (hasMowu) {
-    insights.push({ tag: '迷雾法盾', item: '魔女斗篷', desc: '脱战提供高额法术吸收护盾，有效抵御法师秒杀与远程消耗。' });
-  }
-  if (hasSupport) {
-    insights.push({ tag: '军团守护', item: '辅助团队神装', desc: '赋予周围队友双抗/攻速光环增益，关键时刻提供团队保命护盾。' });
+    pros.push({ title: '高额法术吸收护盾', desc: '脱战生成专属法伤护盾，有效规避敌方法核的高爆发消耗与远距离秒杀。' });
   }
   if (hasCangqiong) {
-    insights.push({ tag: '驱散免伤', item: '纯净苍穹', desc: '开启获得35%高额免伤并在受控时可用，进场抗集火核心神器。' });
+    pros.push({ title: '进场驱散免伤', desc: '受控可用并提供 35% 减伤，确保切后排或前排接团时不会被瞬时连控集火蒸发。' });
   }
   if (hasAnyang) {
-    insights.push({ tag: '切割减CD', item: '暗影战斧', desc: '提供高额物理穿透与15%冷却缩减，大幅缩减技能真空期。' });
+    pros.push({ title: '穿透切割与技能循环', desc: '提供高额物理穿透与 15% 冷缩，显著压缩技能冷却真空期，压制脆皮输出。' });
   }
   if (hasZongshi || hasBinghen) {
-    insights.push({ tag: '强击留人', item: hasZongshi ? '宗师之力' : '冰痕之握', desc: `技能后普攻附带额外爆发与${hasBinghen ? '强力减速' : '移速拉扯'}。` });
+    pros.push({ title: '技能强击与拉扯留人', desc: `技能后普攻附带强力额外伤害与${hasBinghen ? '范围减速留人' : '瞬间移速加成'}，连招无缝衔接。` });
   }
-  if (hasWujin) {
-    insights.push({ tag: '暴击质变', item: '无尽战刃', desc: '提供高额暴击率与暴击效果增益，物理瞬秒爆发核心基石。' });
+  if (hasWujin || hasPoxiao) {
+    pros.push({ title: '终极物理爆发', desc: '超高暴击率与穿甲加持，在中后期无论是点杀脆皮还是瓦解前排均具备毁灭级伤害。' });
   }
-  if (hasPoxiao) {
-    insights.push({ tag: '穿甲破障', item: '破晓', desc: '提供40%物理穿透与攻速暴击，远程射手瓦解重装铁壁。' });
+  if (hasMaozi || hasFaChuan) {
+    pros.push({ title: '法强爆发与穿透贯通', desc: '法强提升 30% 配合百分比法穿，技能法球能瞬时撕裂敌方前排魔抗防线。' });
   }
-  if (hasBaoLie) {
-    insights.push({ tag: '受击增伤', item: '暴烈之甲', desc: '受击叠加最高10%全增伤与10%移速，抗压对拼越战越勇。' });
+  if (hasSupport) {
+    pros.push({ title: '全队光环与绝境救援', desc: '提供团队双抗或攻速增益，主动救援护盾能化解敌方关键第一波爆发。' });
   }
-  if (hasFanshang || hasJihan) {
-    insights.push({ tag: '防御反制', item: hasFanshang ? '反伤刺甲' : '极寒风暴', desc: hasFanshang ? '高额物抗反弹法术伤害，克制物理刺客' : '提供20%超高冷缩与冰甲受击范围冲击减速。' });
-  }
-  if (hasMaozi) {
-    insights.push({ tag: '法强跃迁', item: '博学者之怒', desc: '总法术攻击提升30%，技能法伤呈现指数级爆发飞跃。' });
-  }
-  if (hasHuixiang) {
-    insights.push({ tag: '法术引爆', item: '回响之杖', desc: '技能命中触发范围法术爆炸，探草消耗与瞬时爆发兼备。' });
-  }
-  if (hasFaChuan) {
-    insights.push({ tag: '法穿破壁', item: slotNames.includes('虚无法杖') ? '虚无法杖' : '日暮之流', desc: '提供高额百分比或叠层法穿，轻松穿透敌方法防屏障。' });
-  }
-  if (hasShushen) {
-    insights.push({ tag: '法术吸血', item: '噬神之书', desc: '赋予25%法术吸血与10%CD，对拼持续回复赖线不回城。' });
-  }
-  if (hasHuiyue) {
-    insights.push({ tag: '金身规避', item: '辉月', desc: '1.5秒金身无敌与免控，关键时刻规避刺客致命突进秒杀。' });
-  }
-  if (hasMianju) {
-    insights.push({ tag: '生命灼烧', item: '痛苦面具', desc: '技能附带多段目标当前生命百分比伤害，持续消耗前排。' });
-  }
-  if (hasXianshu) {
-    insights.push({ tag: '终极增伤', item: '贤者之书', desc: '按法强最高提升12%全技能增伤，后期法球爆发质变。' });
-  }
-  if (hasDikang) {
-    insights.push({ tag: '韧性防控', item: '抵抗之靴', desc: '提供35%韧性缩短受控时间，大幅提升团战进场容错。' });
-  } else if (hasYinren) {
-    insights.push({ tag: '普攻减伤', item: '影忍之足', desc: '减少8%受到的普攻物理伤害，显著提升对拼承伤上限。' });
+  if (pros.length === 0) {
+    pros.push({ title: '基础三维属性稳固', desc: '装备提供扎实的基础数值增益，满足常规对局推演基准。' });
   }
 
-  // 2. 冲突与惩罚检查
+  // 2. 实战潜在劣势 / 短板 (CONS) 智能诊断
+  const cons = [];
+  if (isTankOrSupport && totalAd <= 80 && totalAp <= 100) {
+    cons.push({ title: '单人爆发与收割乏力', desc: '整套出装缺少纯攻击或穿透质变大件，对敌方满血脆皮难以单人瞬秒，较依赖队友伤害跟进。' });
+  }
+  if (isPhysicalHero && !isTankOrSupport && totalBonusHp <= 1500 && !hasCangqiong) {
+    cons.push({ title: '身板脆弱容错率偏低', desc: '缺少防御成装与免伤主动，进场遭硬控或被刺客埋伏时极易被瞬秒，对团战切入时机要求极高。' });
+  }
+  if (totalAd >= 150 && !hasAnyang && !hasPoxiao && !slotNames.includes('碎星锤')) {
+    cons.push({ title: '缺少穿甲大件面对重坦乏力', desc: '未装配暗影战斧/碎星锤/破晓等穿透装备，对局进入中后期打敌方上千物抗的前排坦度衰减严重。' });
+  }
+  if (cappedCdr < 15) {
+    cons.push({ title: '冷却缩减不足技能真空偏长', desc: '当前装配未激活高冷缩区间，技能释放后真空期较长，拉扯或多次反打能力受限。' });
+  }
+  if (totalMdef <= 120 && !hasMowu) {
+    cons.push({ title: '法术防御偏低防法核秒杀弱', desc: '缺少魔女斗篷或永夜守护，若敌方法师经济良好，极易被远距离技能消耗成残血。' });
+  }
+  if (cons.length === 0) {
+    cons.push({ title: '打法走位需防长手拉扯', desc: '面对孙尚香、马可波罗等长手灵活射手拉扯时，需注意卡视野进场避免被提前消耗。' });
+  }
+
+  // 3. 客观评分系统 (拒绝千篇一律 99 分，打造 72~92 分真实梯度)
+  let baseScore = 60 + Math.min(6, tier3Count) * 3.5; // 满6件 = 81分
+  // 机制加成 (最多 +10分)
+  if (pros.length >= 3) baseScore += 7;
+  else if (pros.length >= 2) baseScore += 5;
+  else baseScore += 2;
+
+  // 攻防与CD合理性加减分
+  if (cappedCdr >= 20 && cappedCdr <= 40) baseScore += 3;
+  if (totalMdef >= 200 && (totalPdef >= 350 || totalAd >= 250)) baseScore += 2;
+
+  // 短板扣分
   let penalty = 0;
   let penaltyReasons = [];
-
   let wastedApCount = isPhysicalHero ? effItems.filter(it => (it.category === '法术') || (it.stats && it.stats.ap >= 80)).length : 0;
   let wastedAdCount = isMagicHero ? effItems.filter(it => (it.category === '攻击') && ((it.stats && it.stats.atk >= 80) || (it.stats && it.stats.crit >= 15))).length : 0;
 
   if (wastedApCount > 0) {
-    penalty += wastedApCount * 15;
-    penaltyReasons.push(`物法错位：物理英雄出了 ${wastedApCount} 件法术属性装 (-${wastedApCount * 15}分)`);
+    penalty += wastedApCount * 12;
+    penaltyReasons.push(`物法属性错位：物理英雄装备了 ${wastedApCount} 件法术属性装`);
   }
   if (wastedAdCount > 0) {
-    penalty += wastedAdCount * 15;
-    penaltyReasons.push(`物法错位：法术英雄出了 ${wastedAdCount} 件物攻/暴击装 (-${wastedAdCount * 15}分)`);
+    penalty += wastedAdCount * 12;
+    penaltyReasons.push(`物法属性错位：法术英雄装备了 ${wastedAdCount} 件高物攻/暴击装`);
   }
   if (bootsCount > 1) {
-    penalty += (bootsCount - 1) * 15;
-    penaltyReasons.push(`双鞋互斥：装备了 ${bootsCount} 双鞋子，移速被动浪费 (-${(bootsCount - 1) * 15}分)`);
+    penalty += (bootsCount - 1) * 10;
+    penaltyReasons.push(`双鞋互斥：装备了 ${bootsCount} 双鞋子`);
   }
 
-  const nameCounts = {};
-  slotNames.forEach(n => nameCounts[n] = (nameCounts[n] || 0) + 1);
-  let duplicateCount = 0;
-  for (let n in nameCounts) { if (nameCounts[n] > 1) duplicateCount += (nameCounts[n] - 1); }
-  if (duplicateCount > 0) {
-    penalty += duplicateCount * 12;
-    penaltyReasons.push(`重复购买：存在 ${duplicateCount} 件同名重复装备，被动无法叠加 (-${duplicateCount * 12}分)`);
-  }
+  // 真实打分结算 (优质出装在 83~92 分，有明显短板在 75~82 分，极品契合在 91~94 分)
+  let rawScore = Math.round(baseScore - penalty);
+  let score = Math.max(35, Math.min(94, rawScore));
 
-  // 3. 最终得分与评级
-  let baseScore = 65 + effItems.length * 5; // 6件成装 = 95
-  if (insights.length >= 4) baseScore += 5;
-  else if (insights.length >= 2) baseScore += 3;
-
-  let score = Math.max(15, Math.min(99, Math.round(baseScore - penalty)));
-  let rankBadge = 'S+ 巅峰神装契合', rankColor = '#34c759', rankSub = `激活 ${insights.length} 项核心被动机制，与【${heroName}】技能特质高度共鸣。`;
-
+  let rankBadge = 'A 优质主流配装', rankColor = '#0071e3';
   if (score >= 90) {
     rankBadge = 'S+ 巅峰神装契合'; rankColor = '#34c759';
-  } else if (score >= 80) {
-    rankBadge = 'A 优质战术出装'; rankColor = '#0071e3';
-    rankSub = penaltyReasons[0] || `核心装备成型，激活 ${insights.length} 项战术机制，攻防分布扎实。`;
-  } else if (score >= 70) {
-    rankBadge = 'B 常规级可用配装'; rankColor = '#ff9500';
-    rankSub = penaltyReasons[0] || '具备基本作战能力，但被动联动较单薄，可进一步补强核心质变装。';
+  } else if (score >= 84) {
+    rankBadge = 'S 顶尖实战套路'; rankColor = '#0071e3';
+  } else if (score >= 76) {
+    rankBadge = 'A 均衡可用配装'; rankColor = '#ff9500';
+  } else if (score >= 65) {
+    rankBadge = 'B 存在明显短板'; rankColor = '#ff5e00';
   } else {
-    rankBadge = 'C 存在属性冲突或散件'; rankColor = '#ff3b30';
-    rankSub = penaltyReasons.join(' ； ') || '存在严重属性浪费或装备冲突，实战作战效能受限。';
+    rankBadge = 'C 严重属性冲突'; rankColor = '#ff3b30';
+  }
+
+  let rankSub = `综合契合度高，激活 ${pros.length} 项核心战术优势，攻防曲线扎实。`;
+  if (cons.length > 0 && score < 90) {
+    rankSub = `实战优势明显，但需注意【${cons[0].title}】对局影响。`;
   }
 
   // 4. 真实五维雷达战力折算 (0~100 百分比)
-  const burstVal = Math.min(100, Math.max(20, Math.round((totalAd / 550) * 55 + (totalAp / 650) * 45 + (totalCrit / 50) * 20)));
-  const tankVal = Math.min(100, Math.max(20, Math.round((totalBonusHp / 5000) * 50 + (totalPdef / 700) * 30 + (totalMdef / 400) * 20)));
-  const cdrVal = Math.min(100, Math.max(20, Math.round((cappedCdr / 40) * 75 + (hasCangqiong ? 15 : 0) + (hasAnyang ? 10 : 0))));
+  const burstVal = Math.min(100, Math.max(15, Math.round((totalAd / 520) * 55 + (totalAp / 650) * 45 + (totalCrit / 50) * 20)));
+  const tankVal = Math.min(100, Math.max(20, Math.round((totalBonusHp / 5500) * 50 + (totalPdef / 700) * 30 + (totalMdef / 400) * 20)));
+  const cdrVal = Math.min(100, Math.max(15, Math.round((cappedCdr / 40) * 75 + (hasCangqiong ? 15 : 0) + (hasAnyang ? 10 : 0))));
   const speedVal = Math.min(100, Math.max(20, Math.round((bootsCount > 0 ? 55 : 20) + (totalPercentSpeed / 15) * 30 + (hasBaoLie ? 15 : 0))));
   const hasHardCc = skills.some(s => (s.tags || []).includes('硬控'));
   const ccVal = Math.min(100, Math.max(20, Math.round((hasHardCc ? 55 : 25) + (hasBuxiang ? 20 : 0) + (hasBinghen || hasCangqiong ? 20 : 0) + (hasHonglian ? 10 : 0))));
 
   const radarStats = {
-    burst: burstVal,
-    survive: tankVal,
-    control: cdrVal,
-    mobility: speedVal,
-    sustain: ccVal,
+    burst: burstVal, survive: tankVal, control: cdrVal, mobility: speedVal, sustain: ccVal,
     list: [burstVal, tankVal, cdrVal, speedVal, ccVal]
   };
-  radarStats[0] = burstVal;
-  radarStats[1] = tankVal;
-  radarStats[2] = cdrVal;
-  radarStats[3] = speedVal;
-  radarStats[4] = ccVal;
-  radarStats.length = 5;
+  radarStats[0] = burstVal; radarStats[1] = tankVal; radarStats[2] = cdrVal; radarStats[3] = speedVal; radarStats[4] = ccVal; radarStats.length = 5;
 
   return {
     score,
     rankBadge,
     rankColor,
     rankSub,
+    pros: pros.slice(0, 3),
+    cons: cons.slice(0, 2),
     penaltyReasons,
-    insights,
     synergyContext: {
       hasYellowShield: hasHuangdun,
       hasPhoenix,
