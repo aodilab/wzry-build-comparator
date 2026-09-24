@@ -23,28 +23,8 @@ function changeHeroActiveLane(lane, btn) {
 function loadRecommendedEquips() {
   if (!currentHero) return;
 
-  const presets = (typeof getHeroOfficialPresets === 'function') ? getHeroOfficialPresets(currentHero) : [];
-  let chosenPreset = null;
-
-  // 1. 根据当前主玩分路智能匹配最贴切的官方推荐方案
-  if (currentHeroActiveLane === '打野') {
-    chosenPreset = presets.find(p => (p.items || []).some(it => {
-      const n = it.item_name || '';
-      return n.includes('贪婪之噬') || n.includes('追击刀锋') || n.includes('利斧') || n.includes('巨人之握') || n.includes('打野');
-    })) || presets[0];
-  } else if (currentHeroActiveLane === '游走') {
-    chosenPreset = presets.find(p => (p.items || []).some(it => {
-      const n = it.item_name || '';
-      return n.includes('极影') || n.includes('救赎') || n.includes('近卫') || n.includes('形昭');
-    })) || presets.find(p => p.genre && p.genre.includes('肉')) || presets[0];
-  } else if (currentHeroActiveLane === '中路') {
-    chosenPreset = presets.find(p => p.genre && p.genre.includes('法')) || presets[0];
-  } else if (currentHeroActiveLane === '发育路') {
-    chosenPreset = presets.find(p => p.genre && (p.genre.includes('暴击') || p.genre.includes('穿透') || p.genre.includes('攻速'))) || presets[0];
-  } else {
-    // 对抗路
-    chosenPreset = presets.find(p => p.genre && (p.genre.includes('半肉') || p.genre.includes('战阵') || p.genre.includes('坦伤'))) || presets[0];
-  }
+  const presets = (typeof getHeroOfficialPresets === 'function') ? getHeroOfficialPresets(currentHero, currentHeroActiveLane) : [];
+  let chosenPreset = (presets && presets.length > 0) ? presets[0] : null;
 
   if (chosenPreset && chosenPreset.items && chosenPreset.items.length > 0) {
     currentSlots = [...chosenPreset.items].slice(0, 6);
@@ -52,10 +32,10 @@ function loadRecommendedEquips() {
     // 通用 fallback
     const r = (currentHero.role || '') + (currentHero.lane || '');
     let recNames = ['抵抗之靴', '暗影战斧', '暴烈之甲', '宗师之力', '纯净苍穹', '永夜守护'];
-    if (r.includes('射手') || currentHeroActiveLane === '发育路') recNames = ['急速战靴', '影刃', '无尽战刃', '泣血之刃', '破晓', '暴烈之甲'];
-    else if (r.includes('法师') || currentHeroActiveLane === '中路') recNames = ['冷静之靴', '回响之杖', '博学者之怒', '虚无法杖', '辉月', '贤者之书'];
-    else if (currentHeroActiveLane === '打野') recNames = ['贪婪之噬', '急速战靴', '暗影战斧', '宗师之力', '无尽战刃', '破军'];
-    else if (currentHeroActiveLane === '游走') recNames = ['极影·救赎', '抵抗之靴', '红莲斗篷', '霸者重装', '魔女斗篷', '不祥征兆'];
+    if (currentHeroActiveLane === '打野') recNames = ['贪婪之噬', '抵抗之靴', '暗影战斧', '纯净苍穹', '宗师之力', '破军'];
+    else if (currentHeroActiveLane === '游走') recNames = ['极影·救赎', '影忍之足', '红莲斗篷', '霸者重装', '魔女斗篷', '不祥征兆'];
+    else if (currentHeroActiveLane === '中路' || r.includes('法师')) recNames = ['冷静之靴', '回响之杖', '博学者之怒', '虚无法杖', '辉月', '贤者之书'];
+    else if (currentHeroActiveLane === '发育路' || r.includes('射手')) recNames = ['急速战靴', '影刃', '无尽战刃', '泣血之刃', '破晓', '暴烈之甲'];
 
     const aliasMap = { '强者破军': '破军', '仁者破晓': '破晓', '贤者天书': '贤者之书', '急速之靴': '急速战靴' };
     currentSlots = [];
@@ -68,6 +48,9 @@ function loadRecommendedEquips() {
   renderSlots();
   renderItems();
   recalculate();
+  if (typeof updateSynergyBrief === 'function') {
+    updateSynergyBrief();
+  }
 }
 
 // === 同步主视图【自选方案 VS 王者推荐方案】简报卡片 ===
@@ -87,7 +70,7 @@ function updateSynergyBrief() {
   }
 
   const effItems = currentSlots;
-  const officialPresets = typeof getHeroOfficialPresets === 'function' ? getHeroOfficialPresets(currentHero) : [];
+  const officialPresets = typeof getHeroOfficialPresets === 'function' ? getHeroOfficialPresets(currentHero, currentHeroActiveLane) : [];
   const activePreset = officialPresets.find(p => p.id === (typeof currentBenchmarkPresetId !== 'undefined' ? currentBenchmarkPresetId : 'official_1')) || officialPresets[0] || { items: [] };
 
   if (typeof compareUserBuildWithOfficial === 'function') {

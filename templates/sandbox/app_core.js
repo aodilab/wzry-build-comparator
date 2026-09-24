@@ -34,9 +34,13 @@ window.onload = () => {
   renderArcanaBar();
   renderHeroes();
   renderItems();
-  renderSlots();
-  recalculate();
-  updateSynergyBrief();
+  if (typeof loadRecommendedEquips === 'function') {
+    loadRecommendedEquips();
+  } else {
+    renderSlots();
+    recalculate();
+    updateSynergyBrief();
+  }
 };
 
 function toggleTheme() {
