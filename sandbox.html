@@ -2091,11 +2091,11 @@ header {
 
 
 /* ==========================================================================
-   王者出装箱 ｜ 微信小程序像素级原生复刻样式体系 (mobile_native.css)
-   基于 templates/miniprogram/index.wxss 1:1 转译，严格控制在 ≤350 行
+   王者出装箱 ｜ 微信小程序 100% 像素级原生真机复刻样式体系 (mobile_native.css)
+   完全对照微信小程序真机 6 张实机截图与 templates/miniprogram/index.wxss
+   控制在 ≤350 行，满足 AGENTS.md 规范
    ========================================================================== */
-
-/* 1. 全局与通用操作辅助 */
+/* 1. PC 宽屏默认基础操作与状态辅助 */
 .hero-change-btn {
   font-size: 12px; color: var(--color-blue); padding: 5px 12px; border-radius: 99px;
   background: var(--color-blue-bg); font-weight: 600; border: none; cursor: pointer; white-space: nowrap;
@@ -2108,8 +2108,6 @@ header {
 }
 .action-pill-btn.rec-btn { background: var(--color-blue); color: #ffffff; }
 .action-pill-btn.clear-btn { background: rgba(255, 59, 48, 0.1); color: #ff3b30; }
-
-/* 战术简报主卡片 (PC宽屏下的优雅展示) */
 .synergy-brief-card {
   margin: 10px 14px; padding: 12px 14px; background: var(--apple-subcard);
   border: 1px solid var(--apple-border); border-radius: 14px; cursor: pointer;
@@ -2126,12 +2124,9 @@ header {
 .synergy-brief-highlights { display: flex; flex-wrap: wrap; gap: 6px; }
 .synergy-highlight-badge { font-size: 11px; padding: 2px 7px; border-radius: 6px; background: rgba(52, 199, 89, 0.1); color: #2e7d32; font-weight: 500; border: 1px solid rgba(52, 199, 89, 0.2); }
 .synergy-brief-footer { font-size: 11px; color: var(--color-blue); font-weight: 500; }
-
 .stats-panel-header { padding: 10px 16px 4px 16px; }
 .panel-subtitle { font-size: 11px; color: var(--text-tertiary); font-weight: normal; margin-left: 6px; }
 .mobile-footer-export { display: none; }
-
-/* 英雄选择抽屉 (Hero Modal Overlay) */
 .hero-modal-overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -2151,42 +2146,52 @@ header {
   flex: 1; overflow-y: auto; padding: 12px 16px 20px 16px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
 }
 @keyframes appleModalSlideUp { from { opacity: 0; transform: translateY(30px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
-
-
+/* 属性颜色高亮字典 */
+.highlight-ad { color: #f59e0b !important; }
+.highlight-ap { color: #8b5cf6 !important; }
+.highlight-hp { color: #10b981 !important; }
+.highlight-arm { color: #0284c7 !important; }
+.highlight-marm { color: #f59e0b !important; }
+.highlight-cdr { color: #0284c7 !important; }
+.highlight-crit { color: #ef4444 !important; }
+.highlight-spd { color: #10b981 !important; }
 /* ==========================================================================
-   2. 移动端微信小程序像素级复刻核心 (@media max-width: 768px)
+   2. 移动端微信小程序 100% 像素级真机复刻 (@media max-width: 768px)
    ========================================================================== */
 @media (max-width: 768px) {
   body {
     background-color: #f5f5f7 !important;
     padding: 12px !important;
-    padding-bottom: calc(40px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(48px + env(safe-area-inset-bottom)) !important;
     height: auto !important; min-height: 100vh !important;
     overflow-y: auto !important; overflow-x: hidden !important;
   }
-
-  /* 顶部紧凑导航 */
   header {
-    margin: -12px -12px 12px -12px !important; padding: 8px 14px !important;
-    position: sticky; top: 0; z-index: 100;
+    margin: -12px -12px 12px -12px !important; padding: 10px 16px !important;
+    background: #f5f5f7 !important; border: none !important; box-shadow: none !important;
+    position: sticky; top: 0; z-index: 100; display: flex !important;
+    align-items: center !important; justify-content: center !important; position: relative !important;
   }
-  .brand-wrapper { gap: 8px; }
-  .brand-app-icon { width: 30px; height: 30px; border-radius: 7px; }
-  .brand-titles h1 { font-size: 14px; }
-  .brand-titles p { display: none; }
-  .header-actions .apple-btn { height: 28px; padding: 0 10px; font-size: 11px; }
-
+  .brand-wrapper { margin: 0 auto !important; gap: 0 !important; }
+  .brand-app-icon { display: none !important; }
+  .brand-titles h1 { font-size: 17px !important; font-weight: 700 !important; color: #1d1d1f !important; text-align: center !important; letter-spacing: -0.2px !important; }
+  .brand-titles p { display: none !important; }
+  .header-actions { display: none !important; }
+  /* 微信右侧胶囊模拟 (图 1 真实质感) */
+  header::after {
+    content: "••• ⦿"; position: absolute; right: 14px; font-size: 13px; font-weight: 800;
+    color: #1d1d1f; border: 1px solid rgba(0,0,0,0.12); padding: 2px 10px; border-radius: 999px;
+    background: rgba(255,255,255,0.7); backdrop-filter: blur(8px); letter-spacing: 2px;
+  }
   /* 核心五大卡片单列自然流 */
   .sandbox-grid { display: flex; flex-direction: column; height: auto; gap: 12px; }
   .hero-section-panel { order: 1; }
   .slots-stats-section-panel { order: 2; display: flex; flex-direction: column; gap: 12px; background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; }
   .shop-section-panel { order: 3; }
   .desktop-only { display: none !important; }
-
-  /* 卡片 1: 顶部英雄快捷卡片 (小程序 hero-bar 风格) */
   .hero-section-panel {
     background: #ffffff !important; border: 1px solid rgba(0,0,0,0.06) !important;
-    border-radius: 14px !important; padding: 12px 14px !important; box-shadow: 0 2px 8px rgba(0,0,0,0.03) !important;
+    border-radius: 14px !important; padding: 12px 14px !important; box-shadow: 0 2px 8px rgba(0,0,0,0.02) !important;
   }
   .hero-spotlight {
     margin: 0 !important; padding: 0 !important; background: transparent !important;
@@ -2194,131 +2199,157 @@ header {
   }
   .spotlight-avatar {
     width: 48px !important; height: 48px !important; border-radius: 11px !important;
-    border: 1.5px solid var(--color-blue) !important; box-shadow: 0 2px 6px rgba(0, 113, 227, 0.15) !important;
+    border: 1.5px solid #0071e3 !important; box-shadow: 0 2px 8px rgba(0, 113, 227, 0.15) !important; flex-shrink: 0;
   }
   .spotlight-info { margin-left: 10px; flex: 1; }
-  .spotlight-title { display: none; }
+  .spotlight-title { font-size: 11px !important; color: #8e8e93 !important; font-weight: 400 !important; margin-top: 3px !important; display: block !important; }
+  .spotlight-name-wrap { display: flex; align-items: center; gap: 6px; }
   .spotlight-name { font-size: 16px !important; font-weight: 700; color: #1d1d1f; }
   .spotlight-lane-tag {
     font-size: 10px !important; padding: 2px 6px !important; border-radius: 4px !important;
-    background: var(--color-blue-bg) !important; color: var(--color-blue) !important; font-weight: 600; margin-top: 3px;
+    background: #e8f3ff !important; color: #0071e3 !important; font-weight: 600; display: inline-block;
+  }
+  .spotlight-role-tag {
+    font-size: 10px !important; padding: 2px 6px !important; border-radius: 4px !important;
+    background: #fef3c7 !important; color: #d97706 !important; font-weight: 600; display: inline-block;
   }
   .hero-change-btn {
-    font-size: 12px !important; color: var(--color-blue) !important; padding: 5px 12px !important;
-    border-radius: 99px !important; background: var(--color-blue-bg) !important; font-weight: 600 !important;
+    font-size: 12px !important; color: #0071e3 !important; padding: 5px 12px !important;
+    border-radius: 999px !important; background: #e8f3ff !important; font-weight: 600 !important;
   }
-
   .hero-arcana-bar {
-    margin: 10px 0 0 0 !important; padding: 8px 0 0 0 !important;
+    margin: 10px 0 0 0 !important; padding: 9px 0 0 0 !important;
     background: transparent !important; border: none !important; border-top: 1px solid rgba(0,0,0,0.05) !important;
-    box-shadow: none !important; display: flex; align-items: center; justify-content: space-between;
+    box-shadow: none !important; display: flex !important; flex-direction: row !important;
+    align-items: center !important; justify-content: space-between !important;
   }
   .hero-arcana-bar:hover { transform: none; box-shadow: none; border-color: rgba(0,0,0,0.05); }
-  .arcana-bar-header { display: flex; align-items: center; }
-  .arcana-bar-label { font-size: 11px !important; color: #6e6e73 !important; font-weight: 600; }
-  .arcana-bar-label svg { display: none; }
-  .arcana-edit-link {
-    font-size: 11px !important; color: var(--color-blue) !important; font-weight: 600;
-    padding: 3px 9px; background: var(--color-blue-bg); border-radius: 99px;
+  .hero-arcana-bar .hero-change-btn {
+    font-size: 11px !important; color: #0071e3 !important; padding: 4px 10px !important;
+    border-radius: 999px !important; background: #e8f3ff !important; font-weight: 600 !important;
+    margin: 0 !important; flex-shrink: 0 !important;
   }
-  .arcana-chips { display: flex; gap: 5px; margin-left: 6px; }
-  .arcana-chip { padding: 2px 6px !important; font-size: 10px !important; border-radius: 4px !important; font-weight: 600; }
-
-  /* 卡片 2: 六神装插槽卡片 (小程序 section-card 风格) */
+  .arcana-bar-header { display: flex !important; align-items: center !important; flex: 1 !important; }
+  .arcana-bar-label { font-size: 11px !important; color: #8e8e93 !important; font-weight: 500 !important; white-space: nowrap !important; }
+  .arcana-bar-label svg { display: none; }
+  .arcana-chips { display: flex !important; gap: 5px !important; margin-left: 6px !important; }
+  .arcana-chip { padding: 2px 7px !important; font-size: 10px !important; border-radius: 4px !important; font-weight: 600 !important; border: none !important; }
+  .arcana-chip-img { display: none !important; }
+  .arcana-chip-red { background: #fee2e2 !important; color: #dc2626 !important; }
+  .arcana-chip-green { background: #dcfce7 !important; color: #16a34a !important; }
+  .arcana-chip-blue { background: #e0f2fe !important; color: #0284c7 !important; }
   .slots-dock {
     background: #ffffff !important; border: 1px solid rgba(0,0,0,0.06) !important;
-    border-radius: 14px !important; padding: 14px !important; box-shadow: 0 2px 8px rgba(0,0,0,0.03) !important;
+    border-radius: 14px !important; padding: 14px !important; box-shadow: 0 2px 8px rgba(0,0,0,0.02) !important;
   }
-  .panel-header {
+  .slots-stats-section-panel > .panel-header {
     background: #ffffff !important; border: 1px solid rgba(0,0,0,0.06) !important;
     border-radius: 14px 14px 0 0 !important; padding: 12px 14px 6px 14px !important;
-    border-bottom: none !important;
+    border-bottom: none !important; display: flex !important; justify-content: space-between !important; align-items: center !important;
   }
-  .panel-title { font-size: 14px !important; font-weight: 700; color: #1d1d1f; }
-  .slots-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-  .slots-cost { font-size: 13px !important; font-weight: 700 !important; color: #b45309 !important; }
-
+  .slots-stats-section-panel > .panel-header .panel-title { font-size: 14px !important; font-weight: 700; color: #1d1d1f; }
+  .slots-stats-section-panel > .panel-header .panel-title svg { display: none; }
+  .slot-header-actions { display: flex; align-items: center; gap: 6px; }
+  .slot-header-actions .panel-badge { display: none; }
+  .slot-header-actions .clear-btn { display: none; }
+  .slot-header-actions .rec-btn {
+    background: #0071e3 !important; color: #ffffff !important; font-size: 11px !important;
+    padding: 4px 12px !important; border-radius: 999px !important; font-weight: 600 !important;
+  }
+  .slots-header { display: none !important; }
   .slots-grid {
     grid-template-columns: repeat(3, 1fr) !important;
-    grid-template-rows: repeat(2, 82px) !important; gap: 8px !important;
+    grid-template-rows: repeat(2, 82px) !important; gap: 8px !important; margin-bottom: 10px;
   }
   .slot {
     height: 82px !important; border-radius: 10px !important;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    background: #fbfbfd !important; border: 1.5px dashed rgba(0,0,0,0.08) !important;
+    background: #fbfbfd !important; border: 1.5px dashed rgba(0,0,0,0.08) !important; position: relative;
   }
   .slot.filled {
     background: #ffffff !important; border: 1.5px solid rgba(0, 113, 227, 0.3) !important;
     box-shadow: 0 3px 9px rgba(0, 113, 227, 0.08) !important;
   }
+  .empty-plus { font-size: 16px; color: #aeaeb2; font-weight: 300; line-height: 1; }
+  .empty-txt { font-size: 10px; color: #aeaeb2; margin-top: 4px; font-weight: 500; }
   .slot img { width: 42px !important; height: 42px !important; border-radius: 8px !important; }
-  .slot-num { font-size: 11px !important; color: #aeaeb2 !important; font-weight: 500; }
-  .slot-num::before { content: "+ 空槽 "; font-size: 11px; }
+  .slot-item-name { font-size: 10px; font-weight: 600; color: #1d1d1f; margin-top: 4px; max-width: 90%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   .slot.filled .slot-remove-badge {
     display: flex !important; top: 4px !important; right: 4px !important;
     width: 17px !important; height: 17px !important; border-radius: 50% !important;
     background: rgba(255, 59, 48, 0.9) !important; font-size: 11px !important; line-height: 16px !important;
+    align-items: center; justify-content: center; color: #fff;
   }
-
+  /* 总造价栏 */
+  .mobile-gold-bar {
+    display: flex !important; justify-content: space-between !important; align-items: center !important;
+    margin-top: 10px !important; padding-top: 10px !important; border-top: 1px solid rgba(0,0,0,0.05) !important;
+  }
+  .mobile-gold-label { font-size: 11px !important; color: #8e8e93 !important; font-weight: 500 !important; }
+  .mobile-gold-val { font-size: 13px !important; font-weight: 700 !important; color: #b45309 !important; }
   .diag-panel {
     background: #fffbeb !important; border: 1px solid rgba(217, 119, 6, 0.2) !important;
-    border-radius: 8px !important; padding: 8px 10px !important; margin: 8px 14px 0 14px !important;
+    border-radius: 8px !important; padding: 7px 10px !important; margin: 8px 0 0 0 !important;
   }
-  .diag-card { padding: 0 !important; background: transparent !important; border: none !important; font-size: 11px !important; color: #b45309 !important; }
-
-  /* 卡片 3: 出装战术协同分析卡片 (小程序 synergy-card 风格) */
+  .diag-panel > div:first-child { display: none !important; }
+  .diag-card { padding: 0 !important; background: transparent !important; border: none !important; font-size: 11px !important; color: #b45309 !important; line-height: 1.4 !important; }
   .synergy-brief-card {
     background: #ffffff !important; border: 1px solid rgba(0,0,0,0.06) !important;
-    border-left: 4px solid var(--color-blue) !important; border-radius: 14px !important;
-    padding: 12px 14px !important; margin: 0 !important; box-shadow: 0 2px 8px rgba(0,0,0,0.03) !important;
+    border-left: 4px solid #0071e3 !important; border-radius: 14px !important;
+    padding: 12px 14px !important; margin: 0 !important; box-shadow: 0 2px 8px rgba(0,0,0,0.02) !important;
   }
   .synergy-brief-header { display: flex; justify-content: space-between; align-items: center; }
   .synergy-brief-title { font-size: 14px !important; font-weight: 700; color: #1d1d1f; }
-  .synergy-brief-tag { font-size: 10px !important; padding: 2px 6px !important; border-radius: 4px !important; }
-  .synergy-jump-txt { display: block !important; font-size: 11px !important; color: var(--color-blue) !important; font-weight: 600; }
-  .synergy-score-pill { font-size: 11px !important; padding: 2px 8px !important; border-radius: 99px !important; }
-
+  .synergy-brief-tag { font-size: 10px !important; padding: 2px 6px !important; border-radius: 4px !important; background: #e5e5ea !important; color: #8e8e93 !important; font-weight: 500 !important; }
+  .synergy-brief-tag.active { background: #e8f3ff !important; color: #0071e3 !important; font-weight: 600 !important; }
+  .synergy-jump-txt { display: block !important; font-size: 11px !important; color: #0071e3 !important; font-weight: 600; }
+  .synergy-score-pill { font-size: 11px !important; padding: 2px 8px !important; border-radius: 999px !important; background: #e5e5ea !important; color: #8e8e93 !important; font-weight: 600 !important; }
+  .synergy-score-pill.active { background: #0071e3 !important; color: #fff !important; font-weight: 700 !important; }
   .synergy-brief-body {
-    background: #f9f9fb; padding: 8px 10px; border-radius: 9px;
-    border: 1px solid rgba(0,0,0,0.03); margin-top: 6px; display: flex; flex-direction: column; gap: 6px;
+    background: #fbfbfd; padding: 10px 11px; border-radius: 9px;
+    border: 1px solid rgba(0,0,0,0.04); margin-top: 6px; display: flex; flex-direction: column; gap: 6px;
   }
-  .synergy-brief-summary { font-size: 11px !important; color: #1d1d1f !important; font-weight: 600; line-height: 1.4; }
-  .synergy-brief-summary::before { content: "• "; color: var(--color-blue); font-size: 14px; margin-right: 2px; }
+  .synergy-brief-summary { font-size: 11px !important; color: #86868b !important; line-height: 1.5; font-weight: 400; }
+  .synergy-brief-summary.active { color: #1d1d1f !important; font-weight: 600; }
+  .synergy-brief-highlights { display: flex; flex-direction: column; gap: 5px; }
   .synergy-highlight-badge { font-size: 10px !important; padding: 1px 6px !important; border-radius: 4px !important; }
-  .synergy-brief-footer { font-size: 10px !important; color: var(--color-blue) !important; font-weight: 600; text-align: right; padding-top: 4px; border-top: 1px dashed rgba(0,0,0,0.06); }
-
-  /* 卡片 4: 实时实战面板演算 (小程序 stats-grid 风格) */
+  .synergy-brief-footer { font-size: 10px !important; color: #0071e3 !important; font-weight: 600; text-align: right; padding-top: 4px; border-top: 1px dashed rgba(0,0,0,0.06); }
   .stats-panel-header {
     background: #ffffff !important; border: 1px solid rgba(0,0,0,0.06) !important;
     border-radius: 14px 14px 0 0 !important; padding: 12px 14px 4px 14px !important;
     border-bottom: none !important;
   }
+  .stats-panel-header .panel-title { font-size: 14px !important; font-weight: 700 !important; color: #1d1d1f !important; }
   .health-metrics-scroll {
     background: #ffffff !important; border: 1px solid rgba(0,0,0,0.06) !important;
     border-radius: 0 0 14px 14px !important; padding: 4px 14px 14px 14px !important;
     border-top: none !important; max-height: none !important; overflow: visible !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02) !important;
   }
   .stats-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
   .stat-cell {
     background: #f9f9fb !important; padding: 8px 10px !important; border-radius: 9px !important;
     border: 1px solid rgba(0,0,0,0.04) !important; display: flex !important;
-    align-items: center !important; justify-content: space-between !important;
+    align-items: center !important; justify-content: space-between !important; min-height: 38px !important;
   }
   .stat-name { font-size: 11px !important; color: #6e6e73 !important; }
+  .stat-num-box { display: flex !important; align-items: baseline !important; gap: 2px !important; }
   .stat-val { font-size: 14px !important; font-weight: 700 !important; font-family: -apple-system, "SF Pro Rounded", sans-serif !important; }
-  .stat-plus { font-size: 10px !important; color: var(--color-green) !important; font-weight: 600 !important; margin-left: 3px; }
-  .stat-cap { font-size: 9px !important; color: var(--color-green) !important; background: var(--color-green-bg) !important; padding: 1px 4px !important; border-radius: 3px !important; }
-
-  /* 卡片 5: 装备库备选 (小程序 item-card 风格) */
+  .stat-plus { font-size: 10px !important; color: #10b981 !important; font-weight: 600 !important; margin-left: 2px; }
+  .stat-cap { font-size: 9px !important; color: #10b981 !important; background: rgba(16, 185, 129, 0.12) !important; padding: 1px 4px !important; border-radius: 3px !important; }
   .shop-section-panel {
     background: #ffffff !important; border: 1px solid rgba(0,0,0,0.06) !important;
-    border-radius: 14px !important; padding: 12px 14px !important; box-shadow: 0 2px 8px rgba(0,0,0,0.03) !important;
+    border-radius: 14px !important; padding: 12px 14px !important; box-shadow: 0 2px 8px rgba(0,0,0,0.02) !important;
   }
   .shop-section-panel .panel-header {
     background: transparent !important; border: none !important; padding: 0 0 10px 0 !important;
+    display: flex !important; justify-content: space-between !important; align-items: center !important;
   }
-  .shop-section-panel .search-wrapper { padding: 0 0 8px 0 !important; }
+  .shop-section-panel .panel-title { font-size: 14px !important; font-weight: 700 !important; display: flex; align-items: center; gap: 6px; }
+  .shop-section-panel .panel-title svg { display: none; }
+  .shop-count-tag { font-size: 10px !important; padding: 2px 7px !important; border-radius: 999px !important; background: #e8f3ff !important; color: #0071e3 !important; font-weight: 600 !important; }
+  .shop-tip-txt { font-size: 10px !important; color: #8e8e93 !important; font-weight: 400 !important; }
+  .shop-section-panel .search-wrapper { display: none !important; } /* 移动端小程序直接是分类栏 */
   .item-segmented-control {
     overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch;
     margin: 0 0 10px 0 !important; padding: 2px 0 !important; scrollbar-width: none;
@@ -2326,14 +2357,13 @@ header {
   }
   .item-segmented-control::-webkit-scrollbar { display: none; }
   .item-segmented-control .seg-item {
-    flex: none !important; padding: 5px 13px !important; border-radius: 980px !important;
+    flex: none !important; padding: 5px 14px !important; border-radius: 980px !important;
     background: #e5e5ea !important; color: #636366 !important; font-size: 12px !important; font-weight: 500 !important;
   }
   .item-segmented-control .seg-item.active {
-    background: var(--color-blue) !important; color: #ffffff !important; font-weight: 600 !important;
+    background: #0071e3 !important; color: #ffffff !important; font-weight: 600 !important;
     box-shadow: 0 2px 6px rgba(0, 113, 227, 0.25) !important;
   }
-
   .item-scroll-area { max-height: 480px !important; padding: 0 !important; display: flex !important; flex-direction: column !important; gap: 7px !important; }
   .item-card {
     display: flex !important; flex-direction: row !important; align-items: center !important;
@@ -2348,35 +2378,96 @@ header {
   .item-title-row { display: flex !important; justify-content: space-between !important; align-items: center !important; }
   .item-name-box { display: flex !important; align-items: center !important; gap: 4px !important; }
   .item-cname { font-size: 13px !important; font-weight: 600 !important; color: #1d1d1f !important; }
-  .item-equipped-badge { font-size: 10px !important; color: #34c759 !important; background: rgba(52, 199, 89, 0.15) !important; padding: 1px 5px !important; border-radius: 99px !important; font-weight: 700 !important; }
-  .item-gold-pill { font-size: 10px !important; font-weight: 600 !important; color: #b45309 !important; background: rgba(245, 158, 11, 0.12) !important; padding: 1px 7px !important; border-radius: 99px !important; }
-  .item-des { font-size: 10px !important; color: #6e6e73 !important; margin-top: 2px !important; display: -webkit-box !important; -webkit-line-clamp: 2 !important; -webkit-box-orient: vertical !important; overflow: hidden !important; line-height: 1.4 !important; }
+  .item-equipped-badge { font-size: 9px !important; color: #34c759 !important; background: rgba(52, 199, 89, 0.15) !important; padding: 1px 5px !important; border-radius: 99px !important; font-weight: 700 !important; }
+  .item-gold-pill { font-size: 10px !important; font-weight: 600 !important; color: #b45309 !important; background: #fef3c7 !important; padding: 2px 7px !important; border-radius: 99px !important; }
+  .item-des { font-size: 10px !important; color: #8e8e93 !important; margin-top: 2px !important; display: -webkit-box !important; -webkit-line-clamp: 2 !important; -webkit-box-orient: vertical !important; overflow: hidden !important; line-height: 1.4 !important; }
   .item-add-btn {
-    width: 24px !important; height: 24px !important; border-radius: 50% !important; background: var(--color-blue) !important;
-    color: #fff !important; font-size: 14px !important; font-weight: 700 !important; display: flex !important;
+    width: 24px !important; height: 24px !important; border-radius: 50% !important; background: #e8f3ff !important;
+    color: #0071e3 !important; font-size: 14px !important; font-weight: 700 !important; display: flex !important;
     align-items: center !important; justify-content: center !important; flex-shrink: 0 !important; margin-left: 6px !important;
   }
-  .item-add-btn.equipped-btn { background: #34c759 !important; }
-
-  /* 底部复制方案卡片 */
-  .mobile-footer-export { display: block !important; padding: 4px 0 10px 0 !important; }
-  .mobile-export-btn {
-    width: 100% !important; height: 42px !important; border-radius: 980px !important;
-    background: var(--color-blue) !important; color: #ffffff !important; font-size: 14px !important;
-    font-weight: 600 !important; display: flex !important; align-items: center !important; justify-content: center !important;
-    gap: 8px !important; border: none !important; cursor: pointer !important; box-shadow: 0 4px 14px rgba(0, 113, 227, 0.35) !important;
-  }
-
-  /* 抽屉 Sheet */
+  .item-add-btn.equipped-btn { background: rgba(52, 199, 89, 0.18) !important; color: #34c759 !important; font-weight: 700 !important; }
   .hero-modal-card, .arcana-modal-card, .synergy-modal-card {
-    width: 100% !important; max-width: 100% !important; max-height: 88vh !important;
+    width: 100% !important; max-width: 100% !important; max-height: 85vh !important;
     border-radius: 20px 20px 0 0 !important; position: fixed !important; bottom: 0 !important;
-    margin: 0 !important; animation: appleBottomSheetUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    margin: 0 !important; animation: appleBottomSheetUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    background: #ffffff !important; border: none !important;
   }
+  .hero-modal-header, .arcana-modal-header, .synergy-modal-header {
+    padding: 14px 16px 10px 16px !important; border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+    display: flex !important; justify-content: space-between !important; align-items: center !important;
+  }
+  .hero-modal-title, .arcana-modal-title { font-size: 15px !important; font-weight: 700 !important; color: #1d1d1f !important; }
   .hero-modal-scroll { grid-template-columns: repeat(4, 1fr) !important; gap: 8px !important; padding: 10px 12px 30px 12px !important; }
-  .arcana-modal-body { flex-direction: column !important; gap: 12px !important; overflow-y: auto !important; padding: 10px 12px 30px 12px !important; }
+  .hero-modal-scroll .hero-avatar { width: 56px !important; height: 56px !important; border-radius: 14px !important; object-fit: cover !important; }
+  .hero-modal-scroll .hero-card {
+    display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important;
+    padding: 8px 4px !important; border-radius: 14px !important; cursor: pointer !important; background: transparent !important; border: 1.5px solid transparent !important;
+  }
+  .hero-modal-scroll .hero-card.selected { background: #e8f3ff !important; border-color: #0071e3 !important; }
+  .hero-modal-scroll .hero-card-name { font-size: 12px !important; font-weight: 600 !important; color: #1d1d1f !important; margin-top: 6px !important; text-align: center !important; }
+  .arcana-modal-body {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    overflow-y: auto !important;
+    padding: 10px 14px 20px 14px !important;
+  }
+  /* 铭文抽屉 (图 5 原生样式) */
+  .arcana-mobile-header-sub { font-size: 11px !important; color: #8e8e93 !important; margin: 4px 0 6px 0 !important; }
+  .arcana-presets-bar { display: flex !important; gap: 6px !important; overflow-x: auto !important; white-space: nowrap !important; margin-bottom: 10px !important; scrollbar-width: none !important; width: 100% !important; min-height: 28px !important; }
+  .arcana-presets-bar::-webkit-scrollbar { display: none; }
+  .arcana-preset-pill { padding: 4px 12px !important; border-radius: 999px !important; background: #e5e5ea !important; color: #636366 !important; font-size: 11px !important; font-weight: 500 !important; cursor: pointer !important; flex-shrink: 0 !important; }
+  .arcana-mobile-tabs { display: flex !important; gap: 8px !important; margin-bottom: 10px !important; }
+  .arcana-mobile-tab { flex: 1 !important; padding: 7px 0 !important; border-radius: 8px !important; background: #f0f0f2 !important; color: #636366 !important; font-size: 11px !important; font-weight: 600 !important; text-align: center !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 4px !important; cursor: pointer !important; }
+  .arcana-mobile-tab.active { background: #ffffff !important; color: #1d1d1f !important; box-shadow: 0 1px 4px rgba(0,0,0,0.08) !important; }
+  .dot { width: 6px !important; height: 6px !important; border-radius: 50% !important; display: inline-block !important; }
+  .red-dot { background: #dc2626 !important; }
+  .green-dot { background: #16a34a !important; }
+  .blue-dot { background: #0284c7 !important; }
+  .arcana-mobile-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+  .arcana-pick-card { background: #f9f9fb !important; border-radius: 10px !important; padding: 8px 10px !important; border: 1.5px solid transparent !important; }
+  .arcana-pick-card.active { background: #f0f7ff !important; border-color: #0071e3 !important; }
+  .arcana-pick-top { display: flex !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 6px !important; }
+  .arcana-pick-img { width: 28px !important; height: 28px !important; }
+  .arcana-stepper { display: flex !important; align-items: center !important; gap: 6px !important; background: #e5e5ea !important; padding: 2px 6px !important; border-radius: 999px !important; }
+  .stepper-btn { background: transparent !important; border: none !important; font-size: 14px !important; font-weight: 700 !important; color: #1d1d1f !important; cursor: pointer !important; padding: 0 4px !important; line-height: 1 !important; }
+  .stepper-btn.disabled { opacity: 0.3 !important; cursor: not-allowed !important; }
+  .stepper-count { font-size: 13px !important; font-weight: 700 !important; color: #1d1d1f !important; min-width: 16px !important; text-align: center !important; }
+  .arcana-pick-name { font-size: 13px !important; font-weight: 700 !important; color: #1d1d1f !important; margin-bottom: 2px !important; }
+  .arcana-pick-des { font-size: 10px !important; color: #8e8e93 !important; line-height: 1.3 !important; }
+  .modal-footer-box { position: sticky !important; bottom: 0 !important; background: #fff !important; padding: 10px 0 !important; margin-top: 10px !important; }
+  .arcana-confirm-btn { width: 100% !important; height: 42px !important; border-radius: 999px !important; background: #0071e3 !important; color: #fff !important; font-size: 14px !important; font-weight: 600 !important; border: none !important; cursor: pointer !important; }
+  /* 战术机制深度推演抽屉 (图 6 原生样式) */
+  .synergy-header-hero img { display: none !important; }
+  .synergy-header-actions .apple-btn { display: none !important; }
+  .synergy-mobile-container { display: flex !important; flex-direction: column !important; gap: 12px !important; padding: 10px 14px 40px 14px !important; }
+  .synergy-score-overview { background: #fbfbfd !important; border-radius: 12px !important; padding: 12px !important; display: flex !important; align-items: center !important; gap: 12px !important; border: 1px solid rgba(0,0,0,0.05) !important; }
+  .score-overview-left { display: flex !important; flex-direction: column !important; align-items: center !important; min-width: 60px !important; }
+  .overview-score-num { font-size: 24px !important; font-weight: 800 !important; color: #1d1d1f !important; line-height: 1 !important; }
+  .overview-grade-tag { font-size: 10px !important; padding: 2px 6px !important; border-radius: 999px !important; color: #fff !important; font-weight: 700 !important; margin-top: 4px !important; }
+  .score-overview-right { flex: 1 !important; }
+  .overview-summary-title { font-size: 14px !important; font-weight: 700 !important; color: #1d1d1f !important; }
+  .overview-summary-desc { font-size: 11px !important; color: #8e8e93 !important; margin-top: 3px !important; line-height: 1.4 !important; }
+  .synergy-block-card { background: #ffffff !important; border-radius: 12px !important; border: 1px solid rgba(0,0,0,0.05) !important; padding: 12px !important; }
+  .synergy-block-title { font-size: 13px !important; font-weight: 700 !important; color: #1d1d1f !important; margin-bottom: 10px !important; }
+  .radar-bars-grid { display: flex !important; flex-direction: column !important; gap: 8px !important; }
+  .radar-bar-item { display: flex !important; flex-direction: column !important; gap: 3px !important; }
+  .radar-bar-label-row { display: flex !important; justify-content: space-between !important; font-size: 11px !important; color: #6e6e73 !important; }
+  .radar-val { font-weight: 700 !important; color: #0071e3 !important; }
+  .radar-track { width: 100% !important; height: 6px !important; background: #e5e5ea !important; border-radius: 999px !important; overflow: hidden !important; }
+  .radar-fill { height: 100% !important; background: linear-gradient(90deg, #0071e3, #34c759) !important; border-radius: 999px !important; }
+  .modal-skills-list { display: flex !important; flex-direction: column !important; gap: 8px !important; }
+  .synergy-skill-card { background: #fbfbfd !important; border-radius: 10px !important; padding: 10px !important; border: 1px solid rgba(0,0,0,0.04) !important; }
+  .synergy-skill-header { display: flex !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 4px !important; }
+  .synergy-skill-name-wrap { display: flex !important; align-items: center !important; gap: 6px !important; }
+  .synergy-type-badge { font-size: 10px !important; padding: 1px 5px !important; border-radius: 4px !important; color: #fff !important; font-weight: 700 !important; }
+  .synergy-skill-name { font-size: 13px !important; font-weight: 700 !important; color: #1d1d1f !important; }
+  .synergy-skill-cd { font-size: 10px !important; color: #8e8e93 !important; }
+  .synergy-skill-desc { font-size: 11px !important; color: #6e6e73 !important; line-height: 1.4 !important; }
+  .synergy-tags-row { display: flex !important; gap: 4px !important; margin-top: 6px !important; }
+  .synergy-tag { font-size: 10px !important; padding: 2px 6px !important; border-radius: 4px !important; font-weight: 600 !important; }
 }
-
 @keyframes appleBottomSheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
 </style>
@@ -2406,7 +2497,7 @@ header {
 <!-- 主体三栏交互容器 -->
 <main class="sandbox-grid">
 
-  <!-- 左栏：英雄库选择 (移动端只展示顶部卡片与自选铭文胶囊，网格由抽屉接管) -->
+  <!-- 左栏：英雄库选择 (移动端展示顶部精选卡片与自选铭文胶囊，网格由抽屉接管) -->
   <section class="apple-panel hero-section-panel">
     <div class="panel-header desktop-only">
       <div class="panel-title">
@@ -2416,29 +2507,27 @@ header {
       <span class="panel-badge">15级满级数值</span>
     </div>
 
-    <!-- 苹果精选英雄卡片 (支持点击整卡或按钮换英雄) -->
+    <!-- 苹果精选英雄卡片 (100% 微信小程序 hero-bar 原生规范) -->
     <div class="hero-spotlight" id="heroSpotlight" onclick="onHeroSpotlightClick(event)">
       <img id="spotAvatar" class="spotlight-avatar" src="" alt="Hero">
       <div class="spotlight-info">
-        <div class="spotlight-title" id="spotTitle">当前选中</div>
-        <div class="spotlight-name" id="spotName">-</div>
-        <div class="spotlight-lane-tag" id="spotLane">-</div>
+        <div class="spotlight-name-wrap">
+          <span class="spotlight-name" id="spotName">-</span>
+          <span class="spotlight-lane-tag" id="spotLane">-</span>
+          <span class="spotlight-role-tag" id="spotRole">-</span>
+        </div>
+        <div class="spotlight-title" id="spotTitle">-</div>
       </div>
-      <button class="hero-change-btn" id="heroChangeBtn" onclick="openHeroModal(event)">换英雄 ›</button>
+      <button class="hero-change-btn" id="heroChangeBtn" onclick="openHeroModal(event)">换英雄</button>
     </div>
 
-    <!-- 30 颗满配铭文状态快捷栏 (点击唤起复合配置面板) -->
+    <!-- 30 颗满配铭文状态快捷栏 (微信小程序 hero-arcana-row 100% 原生规范) -->
     <div class="hero-arcana-bar" onclick="openArcanaModal()" title="点击自定义调整铭文搭配">
       <div class="arcana-bar-header">
-        <span class="arcana-bar-label">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-          30 颗满配铭文方案
-        </span>
-        <span class="arcana-edit-link">调整铭文 ›</span>
+        <span class="arcana-bar-label">自选铭文：</span>
+        <div class="arcana-chips" id="arcanaChipsBar"></div>
       </div>
-      <div class="arcana-chips" id="arcanaChipsBar">
-        <!-- 动态显示红绿蓝三色铭文胶囊 -->
-      </div>
+      <button class="hero-change-btn" onclick="openArcanaModal(event)">调整铭文</button>
     </div>
 
     <!-- PC端常驻英雄浏览与选择网格 (手机端彻底隐藏，转由抽屉呈现) -->
@@ -2470,9 +2559,9 @@ header {
     <div class="panel-header">
       <div class="panel-title">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-        装备库备选
+        装备库备选 <span class="shop-count-tag" id="itemCountBadge">114件</span>
       </div>
-      <span class="panel-badge" id="itemCountBadge">全部装备</span>
+      <span class="shop-tip-txt">含S44无象神器与原初神装</span>
     </div>
 
     <div class="search-wrapper">
@@ -2497,12 +2586,12 @@ header {
     <div class="item-scroll-area" id="itemListContainer"></div>
   </section>
 
-  <!-- 右栏：六神装槽位、战术协同与实战面板 -->
+  <!-- 右栏：六神装插槽、战术协同与实战面板 -->
   <section class="apple-panel slots-stats-section-panel">
     <div class="panel-header">
       <div class="panel-title">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-        六神装插槽
+        六神装插槽 <span id="slotCountDisplay">(0/6)</span>
       </div>
       <div class="slot-header-actions">
         <span class="panel-badge" id="slotCount">已选 0 / 6 件</span>
@@ -2511,7 +2600,7 @@ header {
       </div>
     </div>
 
-    <!-- 灵动槽位 Dock (手机端自适应呈现 3x2 网格) -->
+    <!-- 灵动槽位 Dock (手机端自适应呈现 3x2 网格，空槽 + 空槽 1~6) -->
     <div class="slots-dock">
       <div class="slots-header">
         <span style="font-size: 12px; color: var(--text-secondary);">神装卡槽 (点击卸下)</span>
@@ -2521,15 +2610,20 @@ header {
         </div>
       </div>
       <div class="slots-grid" id="slotsGrid"></div>
-    </div>
-
-    <!-- 智能诊断与互斥检测通告条 -->
-    <div class="diag-panel">
-      <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 4px;">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-        智能诊断与互斥检测
+      
+      <!-- 智能诊断与互斥检测通告条 -->
+      <div class="diag-panel">
+        <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 4px;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          智能诊断与互斥检测
+        </div>
+        <div id="diagnoseContainer"></div>
       </div>
-      <div id="diagnoseContainer"></div>
+
+      <div class="mobile-gold-bar">
+        <span class="mobile-gold-label">六神装总造价</span>
+        <span class="mobile-gold-val" id="mobileTotalGold">0 金币</span>
+      </div>
     </div>
 
     <!-- 战术协同分析简报卡片 (微信小程序同款，点击查看深度机制联动) -->
@@ -2546,19 +2640,19 @@ header {
       </div>
       <div class="synergy-brief-body" id="synergyBriefBody">
         <div class="synergy-brief-summary" id="synergyBriefSummary">
-          点击下方装备入槽，系统将实时演算技能机制与被动乘区协同。
+          暂未选配装备。点击“一键神装”或挑选装备入槽，系统将实时演算战术机制。
         </div>
         <div class="synergy-brief-highlights" id="synergyBriefHighlights"></div>
       </div>
-      <div class="synergy-brief-footer">
+      <div class="synergy-brief-footer" id="synergyBriefFooter" style="display:none;">
         <span>查看完整机制联动、五维雷达与连招策略 ›</span>
       </div>
     </div>
 
-    <!-- Apple Health 风格属性指标 -->
+    <!-- 实时实战面板演算 (严格 2 列网格) -->
     <div class="stats-panel-header">
-      <div class="panel-title" style="font-size: 13px;">
-        实战面板演算 <span class="panel-subtitle">Lv15满级 + 铭文 + 神装加成</span>
+      <div class="panel-title">
+        实战面板演算 <span class="panel-subtitle">Lv15满级 + 铭文 + 神装综合加成</span>
       </div>
     </div>
     <div class="health-metrics-scroll" id="statsContainer"></div>
@@ -2574,7 +2668,7 @@ header {
 
 </main>
 
-<!-- 二级页面：技能×出装深度联动分析模态框 (Synergy Modal) -->
+<!-- 二级页面：技能×出装深度联动分析模态框 (Synergy Modal Sheet) -->
 <div class="synergy-modal-overlay" id="synergyModalOverlay" onclick="closeSynergyModal(event)">
   <div class="synergy-modal-card" onclick="event.stopPropagation()">
     <div class="synergy-modal-header">
@@ -2589,85 +2683,53 @@ header {
         </div>
       </div>
       <div class="synergy-header-actions">
-        <button class="apple-btn apple-btn-secondary" onclick="copySynergyReport()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-          复制分析报告
-        </button>
-        <button class="arcana-modal-close" onclick="closeSynergyModal()" title="关闭">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
+        <button class="apple-btn apple-btn-secondary desktop-only" onclick="copySynergyReport()">复制报告</button>
+        <button class="arcana-modal-close" id="synergyModalCloseBtn" onclick="closeSynergyModal()" title="关闭">✕</button>
       </div>
     </div>
 
-    <div class="synergy-modal-scroll" id="synergyModalScroll">
-      <!-- 动态填充四大核心板块 -->
-    </div>
+    <div class="synergy-modal-scroll" id="synergyModalScroll"></div>
   </div>
 </div>
-
 
 <!-- 铭文复合配置面板 (Apple HIG Sheet Modal) -->
 <div class="arcana-modal-overlay" id="arcanaModalOverlay" onclick="closeArcanaModal(event)">
   <div class="arcana-modal-card" onclick="event.stopPropagation()">
     <div class="arcana-modal-header">
       <div>
-        <div class="arcana-modal-title">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 6px;"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>30 颗满配五级铭文配置
-        </div>
-        <div class="arcana-modal-subtitle" id="arcanaModalSub">
-          当前英雄专属推荐，属性已自动实时累加至 15 级最终面板
-        </div>
+        <div class="arcana-modal-title">铭文自由配置</div>
+        <div class="arcana-modal-subtitle" id="arcanaModalSub">各色满配10颗 · 支持微调混搭</div>
       </div>
       <div class="arcana-modal-actions">
-        <button class="apple-btn apple-btn-secondary" onclick="resetToHeroDefaultArcana()" title="重置为当前英雄的官方推荐铭文">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
-          恢复官方推荐
-        </button>
-        <button class="arcana-modal-close" onclick="closeArcanaModal()" title="关闭">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
+        <button class="apple-btn apple-btn-secondary desktop-only" onclick="resetToHeroDefaultArcana()">恢复推荐</button>
+        <button class="arcana-modal-close" id="arcanaModalCloseBtn" onclick="closeArcanaModal()" title="关闭">✕</button>
       </div>
     </div>
 
-    <!-- 三栏红绿蓝配置区 -->
-    <div class="arcana-modal-body" id="arcanaModalBody">
-      <!-- 动态渲染红色/绿色/蓝色铭文槽位与选择列表 -->
-    </div>
+    <div class="arcana-modal-body" id="arcanaModalBody"></div>
   </div>
 </div>
 
-<!-- 移动端英雄选择抽屉 (Hero Modal Bottom Sheet) -->
+<!-- 移动端英雄选择抽屉 (Hero Modal Bottom Sheet 100% 对齐图 4) -->
 <div class="hero-modal-overlay" id="heroModalOverlay" onclick="closeHeroModal(event)">
   <div class="hero-modal-card" onclick="event.stopPropagation()">
     <div class="hero-modal-header">
       <div class="hero-modal-title">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 6px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-        选择演练英雄 <span id="heroModalCountBadge" class="panel-badge">133位</span>
+        选择演练英雄 (<span id="heroModalCountBadge">132位</span>)
       </div>
-      <button class="arcana-modal-close" onclick="closeHeroModal()" title="关闭">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-      </button>
-    </div>
-    <div class="search-wrapper" style="padding: 10px 16px 8px 16px;">
-      <div class="apple-search">
-        <span class="search-icon">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        </span>
-        <input type="text" id="heroModalSearch" class="apple-input" placeholder="搜索英雄（如：王维 / 李白 / 孙尚香）" oninput="filterModalHeroes()">
-      </div>
+      <button class="arcana-modal-close" id="heroModalCloseBtn" onclick="closeHeroModal()" title="关闭">✕</button>
     </div>
     <div class="segmented-control" id="heroModalTabs">
       <div class="seg-item active" onclick="setHeroModalFilter('全部', this)">全部</div>
-      <div class="seg-item" onclick="setHeroModalFilter('对抗路', this)">对抗</div>
+      <div class="seg-item" onclick="setHeroModalFilter('对抗路', this)">对抗路</div>
       <div class="seg-item" onclick="setHeroModalFilter('打野', this)">打野</div>
       <div class="seg-item" onclick="setHeroModalFilter('中路', this)">中路</div>
-      <div class="seg-item" onclick="setHeroModalFilter('发育路', this)">发育</div>
+      <div class="seg-item" onclick="setHeroModalFilter('发育路', this)">发育路</div>
       <div class="seg-item" onclick="setHeroModalFilter('游走', this)">游走</div>
     </div>
     <div class="hero-modal-scroll" id="heroModalListContainer"></div>
   </div>
 </div>
-
 
 <script>
 // === 静态内嵌数据 ===
@@ -2730,10 +2792,16 @@ function updateThemeBtnIcon(theme) {
 
 function updateSpotlight() {
   if (!currentHero) return;
-  document.getElementById('spotAvatar').src = `https://game.gtimg.cn/images/yxzj/img201606/heroimg/${currentHero.ename}/${currentHero.ename}.jpg`;
-  document.getElementById('spotName').innerText = currentHero.cname || '未知英雄';
-  document.getElementById('spotTitle').innerText = currentHero.title ? `${currentHero.title} · Lv.15 满级` : 'Lv.15 满级状态';
-  document.getElementById('spotLane').innerText = `${currentHero.lane || '对抗路'} ｜ ${currentHero.role || '战士'}`;
+  const avatar = document.getElementById('spotAvatar');
+  if (avatar) avatar.src = `https://game.gtimg.cn/images/yxzj/img201606/heroimg/${currentHero.ename}/${currentHero.ename}.jpg`;
+  const name = document.getElementById('spotName');
+  if (name) name.innerText = currentHero.cname || '未知英雄';
+  const title = document.getElementById('spotTitle');
+  if (title) title.innerText = currentHero.title || '正义爆轰';
+  const lane = document.getElementById('spotLane');
+  if (lane) lane.innerText = currentHero.lane || '对抗路';
+  const role = document.getElementById('spotRole');
+  if (role) role.innerText = currentHero.role || '坦克';
 }
 
 function setHeroFilter(lane, el) {
@@ -2819,7 +2887,7 @@ function renderItems() {
     return matchCat && matchQuery;
   });
 
-  document.getElementById('itemCountBadge').innerText = `${filtered.length} 件装备`;
+  document.getElementById('itemCountBadge').innerText = window.innerWidth <= 768 ? `${filtered.length}件` : `${filtered.length} 件装备`;
 
   filtered.forEach(it => {
     const inSlot = currentSlots.some(s => s.item_name === it.item_name);
@@ -2877,8 +2945,13 @@ function renderItems() {
 
 function renderSlots() {
   const grid = document.getElementById('slotsGrid');
+  if (!grid) return;
   grid.innerHTML = '';
-  document.getElementById('slotCount').innerText = `已选 ${currentSlots.length} / 6 件`;
+  
+  const countBadge = document.getElementById('slotCount');
+  if (countBadge) countBadge.innerText = `已选 ${currentSlots.length} / 6 件`;
+  const countDisplay = document.getElementById('slotCountDisplay');
+  if (countDisplay) countDisplay.innerText = `(${currentSlots.length}/6)`;
 
   for (let i = 0; i < 6; i++) {
     const item = currentSlots[i];
@@ -2889,11 +2962,15 @@ function renderSlots() {
       slot.onclick = () => removeSlot(i);
       slot.innerHTML = `
         <img alt="${item.item_name}" src="https://game.gtimg.cn/images/yxzj/img201606/itemimgo/${item.item_id}.png" onerror="this.src='https://game.gtimg.cn/images/yxzj/img201606/itemimg/${item.item_id}.jpg'">
+        <span class="slot-item-name">${item.item_name}</span>
         <span class="slot-remove-badge">×</span>
       `;
     } else {
       slot.className = 'slot';
-      slot.innerHTML = `<span class="slot-num">${i + 1}</span>`;
+      slot.innerHTML = `
+        <div class="empty-plus">+</div>
+        <div class="empty-txt">空槽 ${i + 1}</div>
+      `;
     }
     grid.appendChild(slot);
   }
@@ -3130,6 +3207,8 @@ function recalculate() {
 
   const goldEl = document.getElementById('totalGold');
   if (goldEl) goldEl.innerText = `${totalGold.toLocaleString()} G`;
+  const mobileGoldEl = document.getElementById('mobileTotalGold');
+  if (mobileGoldEl) mobileGoldEl.innerText = `${totalGold} 金币`;
   
   const statsBox = document.getElementById('statsContainer');
   if (statsBox) {
@@ -3138,14 +3217,14 @@ function recalculate() {
         <div class="stats-grid">
           <div class="stat-cell"><span class="stat-name">物理攻击</span><div class="stat-num-box"><span class="stat-val highlight-ad">${totals.atk + arcanaTotals.atk + bAtk}</span>${(totals.atk + arcanaTotals.atk) > 0 ? `<span class="stat-plus">+${totals.atk + arcanaTotals.atk}</span>` : ''}</div></div>
           <div class="stat-cell"><span class="stat-name">法术攻击</span><div class="stat-num-box"><span class="stat-val highlight-ap">${finalAp}</span>${finalAp > 0 ? `<span class="stat-plus">+${finalAp}</span>` : ''}</div></div>
-          <div class="stat-cell"><span class="stat-name">最大生命</span><div class="stat-num-box"><span class="stat-val highlight-hp">${finalHp.toLocaleString()}</span>${(totals.hp + arcanaTotals.hp) > 0 ? `<span class="stat-plus">+${totals.hp + arcanaTotals.hp}</span>` : ''}</div></div>
+          <div class="stat-cell"><span class="stat-name">最大生命</span><div class="stat-num-box"><span class="stat-val highlight-hp">${finalHp}</span>${(totals.hp + arcanaTotals.hp) > 0 ? `<span class="stat-plus">+${totals.hp + arcanaTotals.hp}</span>` : ''}</div></div>
           <div class="stat-cell"><span class="stat-name">物理防御</span><div class="stat-num-box"><span class="stat-val highlight-arm">${totPdef}</span>${(totals.pdef + arcanaTotals.pdef) > 0 ? `<span class="stat-plus">+${totals.pdef + arcanaTotals.pdef}</span>` : ''}</div></div>
           <div class="stat-cell"><span class="stat-name">法术防御</span><div class="stat-num-box"><span class="stat-val highlight-marm">${totMdef}</span>${(totals.mdef + arcanaTotals.mdef) > 0 ? `<span class="stat-plus">+${totals.mdef + arcanaTotals.mdef}</span>` : ''}</div></div>
           <div class="stat-cell"><span class="stat-name">冷却缩减</span><div class="stat-num-box"><span class="stat-val highlight-cdr">${cappedCdr}%</span>${cappedCdr >= 40 ? `<span class="stat-cap">满CD</span>` : ''}</div></div>
           <div class="stat-cell"><span class="stat-name">暴击率</span><div class="stat-num-box"><span class="stat-val highlight-crit">${totalCrit}%</span></div></div>
           <div class="stat-cell"><span class="stat-name">移动速度</span><div class="stat-num-box"><span class="stat-val highlight-spd">${calcSpeed}</span>${(calcSpeed - bSpeed) > 0 ? `<span class="stat-plus">+${calcSpeed - bSpeed}</span>` : ''}</div></div>
           <div class="stat-cell"><span class="stat-name">物理穿透</span><div class="stat-num-box"><span class="stat-val highlight-ad">+${totalPhysPierce}</span></div></div>
-          <div class="stat-cell"><span class="stat-name">法术穿透</span><div class="stat-num-box"><span class="stat-val highlight-ap">+${totalMagicPierce}</span></div></div>
+          ${totalMagicPierce > 0 ? `<div class="stat-cell"><span class="stat-name">法术穿透</span><div class="stat-num-box"><span class="stat-val highlight-ap">+${totalMagicPierce}</span></div></div>` : ''}
         </div>
       `;
     } else {
@@ -3284,6 +3363,13 @@ function renderDiagnosis(effectiveItems, consumedNotes) {
   const diagBox = document.getElementById('diagnoseContainer');
   if (!diagBox) return;
   diagBox.innerHTML = '';
+  const diagPanel = diagBox.closest('.diag-panel');
+  if (effectiveItems.length === 0) {
+    if (diagPanel) diagPanel.style.display = 'none';
+    return;
+  }
+  if (diagPanel) diagPanel.style.display = '';
+
   const effNames = effectiveItems.map(i => i.item_name);
   const issues = [];
 
@@ -3366,16 +3452,47 @@ function renderArcanaBar() {
   });
 }
 
+let currentArcanaMobileTab = 'red';
+
+function switchArcanaMobileTab(tab) {
+  currentArcanaMobileTab = tab;
+  renderArcanaModal();
+}
+
+function applyArcanaPreset(name) {
+  if (name === '官方推荐') {
+    initHeroArcana(currentHero);
+  } else if (name === '物理百穿') {
+    currentArcana = { red: { '异变': 10 }, green: { '鹰眼': 10 }, blue: { '隐匿': 10 } };
+  } else if (name === '暴击流') {
+    currentArcana = { red: { '无双': 3, '祸源': 7 }, green: { '鹰眼': 10 }, blue: { '夺萃': 10 } };
+  } else if (name === '攻速暴击') {
+    currentArcana = { red: { '红月': 10 }, green: { '鹰眼': 10 }, blue: { '狩猎': 10 } };
+  } else if (name === '法术爆发') {
+    currentArcana = { red: { '梦魇': 10 }, green: { '心眼': 10 }, blue: { '狩猎': 10 } };
+  } else if (name === '坦克千血') {
+    currentArcana = { red: { '宿命': 10 }, green: { '虚空': 10 }, blue: { '调和': 10 } };
+  }
+  renderArcanaBar();
+  renderArcanaModal();
+  recalculate();
+}
+
 function openArcanaModal() {
   const overlay = document.getElementById('arcanaModalOverlay');
   if (!overlay) return;
   overlay.classList.add('active');
-  document.getElementById('arcanaModalSub').innerText = `【${currentHero.cname || ''}】铭文方案，支持自由增减颗数混搭，修改后立即实时重新演算面板`;
+  const sub = document.getElementById('arcanaModalSub');
+  if (sub) {
+    sub.innerText = window.innerWidth <= 768 
+      ? '各色满配10颗 · 支持微调混搭' 
+      : `【${currentHero.cname || ''}】铭文方案，支持自由增减颗数混搭，修改后立即实时重新演算面板`;
+  }
   renderArcanaModal();
 }
 
 function closeArcanaModal(e) {
-  if (e && e.target !== e.currentTarget) return;
+  if (e && e.target !== e.currentTarget && !e.target.classList.contains('arcana-modal-close') && !e.target.closest('.arcana-modal-close')) return;
   const overlay = document.getElementById('arcanaModalOverlay');
   if (overlay) overlay.classList.remove('active');
 }
@@ -3384,6 +3501,57 @@ function renderArcanaModal() {
   const body = document.getElementById('arcanaModalBody');
   if (!body) return;
   body.innerHTML = '';
+
+  if (window.innerWidth <= 768) {
+    const rTot = getColorTotalCount('red');
+    const gTot = getColorTotalCount('green');
+    const bTot = getColorTotalCount('blue');
+    const presets = ['官方推荐', '物理百穿', '暴击流', '攻速暴击', '法术爆发', '坦克千血'];
+    const activeTab = currentArcanaMobileTab || 'red';
+    const activeMap = currentArcana[activeTab] || {};
+    const colorArcanas = Object.values(ARCANA_DATA).filter(a => a.color_type === activeTab);
+
+    body.innerHTML = `
+      <div class="arcana-mobile-header-sub">流派快捷预设：</div>
+      <div class="arcana-presets-bar">
+        ${presets.map(p => `<div class="arcana-preset-pill" onclick="applyArcanaPreset('${p}')">${p}</div>`).join('')}
+      </div>
+      <div class="arcana-mobile-tabs">
+        <div class="arcana-mobile-tab ${activeTab==='red'?'active':''}" onclick="switchArcanaMobileTab('red')">
+          <span class="dot red-dot"></span>红色 (${rTot}/10)
+        </div>
+        <div class="arcana-mobile-tab ${activeTab==='green'?'active':''}" onclick="switchArcanaMobileTab('green')">
+          <span class="dot green-dot"></span>绿色 (${gTot}/10)
+        </div>
+        <div class="arcana-mobile-tab ${activeTab==='blue'?'active':''}" onclick="switchArcanaMobileTab('blue')">
+          <span class="dot blue-dot"></span>蓝色 (${bTot}/10)
+        </div>
+      </div>
+      <div class="arcana-mobile-grid">
+        ${colorArcanas.map(a => {
+          const cnt = activeMap[a.name] || 0;
+          return `
+            <div class="arcana-pick-card ${cnt > 0 ? 'active' : ''}">
+              <div class="arcana-pick-top">
+                <img class="arcana-pick-img" src="${a.icon}" alt="${a.name}">
+                <div class="arcana-stepper">
+                  <button class="stepper-btn ${cnt > 0 ? '' : 'disabled'}" onclick="modifyArcanaCount('${activeTab}', '${a.name}', -1)">-</button>
+                  <span class="stepper-count">${cnt}</span>
+                  <button class="stepper-btn" onclick="modifyArcanaCount('${activeTab}', '${a.name}', 1)">+</button>
+                </div>
+              </div>
+              <div class="arcana-pick-name">${a.name}</div>
+              <div class="arcana-pick-des">${a.raw_des}</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      <div class="modal-footer-box">
+        <button class="arcana-confirm-btn" onclick="closeArcanaModal()">确定装配并生效</button>
+      </div>
+    `;
+    return;
+  }
 
   const sections = [
     { key: 'red', title: '红色铭文 (上限10颗)', colClass: 'arcana-col-red', activeClass: 'arcana-active-red' },
@@ -3914,17 +4082,14 @@ function generateComboSteps(currentHero, skills, synergyContext) {
 // 专注 UI 交互生命周期、DOM 挂载与 Canvas 雷达图渲染
 // 评分计算下沉至 synergy_evaluator.js，实操连招下沉至 synergy_combos.js
 // ==============================================================================
-
 function openSynergyModal() {
   const modal = document.getElementById('synergyModalOverlay') || document.getElementById('synergyModal');
   if (!modal) return;
   modal.classList.add('active');
   if (document.body) document.body.style.overflow = 'hidden';
-  
   // 渲染内容
   renderSynergyContent();
 }
-
 function closeSynergyModal(e) {
   if (e && e.target && e.target !== e.currentTarget && !e.target.classList.contains('arcana-modal-close') && !e.target.closest('.arcana-modal-close')) {
     return;
@@ -3933,12 +4098,10 @@ function closeSynergyModal(e) {
   if (modal) modal.classList.remove('active');
   if (document.body) document.body.style.overflow = '';
 }
-
 function renderSynergyContent() {
   const hero = (typeof currentHero !== 'undefined' && currentHero) ? currentHero : HEROES_DATA[0];
   const skills = HERO_SKILLS_DATA[hero.cname] || [];
   const slots = (typeof currentSlots !== 'undefined' && currentSlots) ? currentSlots : [];
-  
   // 汇总当前装备 (支持官方名与常用别名双向自适应容错)
   const aliasMap = {
     '强者破军': '破军', '仁者破晓': '破晓', '贤者天书': '贤者之书', '急速之靴': '急速战靴',
@@ -3952,32 +4115,40 @@ function renderSynergyContent() {
                (s.stats ? s : null);
     if (it) effItems.push(it);
   });
-
   // 同步模态框顶部英雄概览
   const avatar = document.getElementById('synergyHeroAvatar');
   const name = document.getElementById('synergyHeroName');
   const role = document.getElementById('synergyHeroRole');
   const sub = document.getElementById('synergyHeroSub');
   if (avatar) avatar.src = `https://game.gtimg.cn/images/yxzj/img201606/heroimg/${hero.ename}/${hero.ename}.jpg`;
-  if (name) name.innerText = hero.cname;
-  if (role) role.innerText = `${hero.lane || ''} · ${hero.role || ''}`;
-  if (sub) sub.innerText = `装备栏: ${effItems.length} / 6 件已装配 ｜ 技能机制与被动乘区深度诊断`;
-
-
+  if (name) {
+    name.innerText = window.innerWidth <= 768 ? `${hero.cname} 战术机制深度推演` : hero.cname;
+  }
+  if (role) {
+    if (window.innerWidth <= 768) {
+      role.style.display = 'none';
+    } else {
+      role.innerText = `${hero.lane || ''} · ${hero.role || ''}`;
+      role.style.display = '';
+    }
+  }
+  if (sub) {
+    sub.innerText = window.innerWidth <= 768
+      ? `${effItems.length}/6件已装配 · ${effItems.length > 0 ? '战术协同' : '待装配推演'}`
+      : `装备栏: ${effItems.length} / 6 件已装配 ｜ 技能机制与被动乘区深度诊断`;
+  }
   // 1. 技能卡片列表 HTML 组装
   let skillsCardsHtml = '';
   skills.forEach((sk, idx) => {
     const skType = sk.type || (idx === 0 || (sk.name && sk.name.includes('被动')) ? '被动技能' : `主动技能 ${idx}`);
     const isPassive = skType.includes('被动') || (sk.name && sk.name.includes('被动'));
     const badgeColor = isPassive ? '#ff9500' : '#0071e3';
-    
     // 阶梯冷却展示
     let cdDisplay = sk.cd || '无冷却';
     if (cdDisplay.includes('｜')) {
       const parts = cdDisplay.split('｜').map(p => p.trim());
       cdDisplay = parts.join(' <span style="color:var(--text-tertiary);margin:0 2px;">/</span> ');
     }
-    
     // 标签展示
     let tagsHtml = '';
     (sk.tags || []).forEach(t => {
@@ -3988,10 +4159,8 @@ function renderSynergyContent() {
       else if (t === '真实伤害') { tColor = '#af52de'; tBg = 'rgba(175, 82, 222, 0.1)'; }
       else if (t === '免伤' || t === '护盾') { tColor = '#ff9500'; tBg = 'rgba(255, 149, 0, 0.1)'; }
       else if (t === '强化普攻') { tColor = '#0071e3'; tBg = 'rgba(0, 113, 227, 0.1)'; }
-      
       tagsHtml += `<span class="synergy-tag" style="color:${tColor};background:${tBg};border-color:transparent;">${t}</span>`;
     });
-
     skillsCardsHtml += `
       <div class="synergy-skill-card">
         <div class="synergy-skill-header">
@@ -4006,8 +4175,6 @@ function renderSynergyContent() {
       </div>
     `;
   });
-
-
   // 2. 装备专属机制联动卡片 (怒龙剑盾、不死鸟、暴烈、强击等)
   const effNames = effItems.map(it => it.item_name);
   const hasYellowShield = effNames.includes('怒龙剑盾') || effNames.includes('龙鳞利剑');
@@ -4015,97 +4182,57 @@ function renderSynergyContent() {
   const hasBaoLie = effNames.includes('暴烈之甲');
   const spellbladeNames = ['宗师之力', '冰痕之握', '巫术法杖', '光辉之剑'];
   const spellbladeItem = effNames.find(n => spellbladeNames.includes(n));
-  const hasSpellblade = Boolean(spellbladeItem);
-  const hasBloodRage = effNames.includes('血魔之怒');
   const hasSkillHeal = skills.some(s => (s.tags || []).includes('技能回血'));
-
+  const svgStar = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.26 12 2"></polygon></svg>';
+  const svgShield = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>';
+  const svgHeart = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>';
   const synergyItems = [];
-
-  // 怒龙剑盾 × 不死鸟联动
   if (hasYellowShield && hasPhoenix) {
-    if (currentHero.cname === '杨戬') {
-      synergyItems.push({
-        icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.26 12 2"></polygon></svg>',
-        title: '绝地不死战神 · 黄盾真实混伤 × 不死鸟血统绝地反杀',
-        item: '怒龙剑盾 + 不死鸟之眼',
-        desc: `杨戬 2技能真实伤害扫出后，普攻享受【黄盾·重击】最大生命物理重击与纯粹真伤双重加持！当血线跌至 50% 以下时，开启 3技能大招扫射触发【不死鸟之眼】受治疗量 30%~60% 惊人翻倍，瞬间把残血吸至满血，重击清线快、对拼真伤穿透、残血逆风绝杀！`
-      });
-    } else {
-      synergyItems.push({
-        icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>',
-        title: '重装攻防永动 · 黄盾生命重击 × 不死鸟法抗屏障',
-        item: '怒龙剑盾 + 不死鸟之眼',
-        desc: `双防与生命值全维度拉升，黄盾提供平A最大生命物理重击与续航，不死鸟构筑高额法术屏障并放大残血回复，形成攻守兼备的肉装作战矩阵。`
-      });
-    }
+    synergyItems.push({
+      icon: svgShield,
+      title: currentHero.cname === '杨戬' ? '绝地不死战神 · 黄盾真实混伤 × 不死鸟绝地反杀' : '重装攻防永动 · 黄盾生命重击 × 不死鸟法抗屏障',
+      item: '怒龙剑盾 + 不死鸟之眼',
+      desc: currentHero.cname === '杨戬' ? '杨戬 2技能真实伤害扫出后，普攻享受【黄盾·重击】物理与真伤双重加持！残血开大触发不死鸟受治疗翻倍！' : '双防与生命值拉升，黄盾提供普攻最大生命物理重击与续航，不死鸟构筑高额法术屏障并放大残血回复。'
+    });
   } else if (hasYellowShield) {
-    if (currentHero.cname === '杨戬') {
-      synergyItems.push({
-        icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.26 12 2"></polygon></svg>',
-        title: '怒龙剑盾 (黄盾) · 真实伤害与重击双重普攻质变',
-        item: '怒龙剑盾',
-        desc: `杨戬 2技能【虚妄破灭】命中后获得 5秒真实伤害普攻，与黄盾【神力/重击】形成双重混伤！每次普攻附加最大生命百分比物理重击并回复生命，真伤刀刀穿透护甲，彻底扫清杨戬清线慢的发育痛点！`
-      });
-    } else {
-      synergyItems.push({
-        icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.26 12 2"></polygon></svg>',
-        title: '怒龙剑盾 (黄盾) · 普攻生命重击与快速发育',
-        item: '怒龙剑盾',
-        desc: `【重击】被动让【${currentHero.cname}】的普攻附带最大生命值百分比物理伤害，对兵线与野怪清剿效率质变提升，并在近身肉搏中提供持续普攻回复。`
-      });
-    }
+    synergyItems.push({
+      icon: svgStar,
+      title: '怒龙剑盾 (黄盾) · 普攻生命重击与快速发育',
+      item: '怒龙剑盾',
+      desc: `【重击】被动让【${currentHero.cname}】的普攻附带最大生命值百分比物理伤害，对兵线与野怪清剿效率质变提升！`
+    });
   } else if (hasPhoenix) {
-    if (currentHero.cname === '赵云') {
-      synergyItems.push({
-        icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>',
-        title: '不死鸟之眼 · 残血超高回血 × 溢出治疗转永久护盾质变',
-        item: '不死鸟之眼',
-        desc: `赵云被动【龙鸣】在【飞龙在天】(≤40%血量)档位拥有 20%免伤与极限回血；搭配不死鸟之眼【血统】被动，残血时2技能刺击受治疗量提升高达 30%~60%！更为关键的是：赵云溢出当前档位的回血会转化为永久护盾，总量充满一个档位时护盾立刻转化为真实生命，真正达成医学奇迹与残血不死战神！`
-      });
-    } else if (hasSkillHeal) {
-      synergyItems.push({
-        icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>',
-        title: '不死鸟之眼 · 残血治疗翻倍与极限反杀',
-        item: '不死鸟之眼',
-        desc: `【${currentHero.cname}】自身拥有回血机制，与不死鸟之眼的唯一被动【血统】形成质变联动！血量每损失 10%，受到的所有治疗效果额外增加 6%，残血时开出技能回血可瞬间拉满血线，创造极限残血反杀！`
-      });
-    } else {
-      synergyItems.push({
-        icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>',
-        title: '不死鸟之眼 · 法抗支撑与受治疗增益',
-        item: '不死鸟之眼',
-        desc: `提供高额法术防御与最大生命值，配合铭文或吸血装，在残血时获得高额受治疗提升，增强对法师的抗击打与赖线能力。`
-      });
-    }
+    synergyItems.push({
+      icon: svgHeart,
+      title: currentHero.cname === '赵云' ? '不死鸟之眼 · 残血超高回血 × 溢出转永久护盾' : (hasSkillHeal ? '不死鸟之眼 · 残血治疗翻倍与极限反杀' : '不死鸟之眼 · 法抗支撑与受治疗增益'),
+      item: '不死鸟之眼',
+      desc: currentHero.cname === '赵云' ? '赵云被动龙鸣低血量享免伤与回血，配合不死鸟血统受治疗量提升 30%~60%，溢出回血转为真实护盾！' : (hasSkillHeal ? `【${currentHero.cname}】自身拥有回血机制，血量每损失10%治疗效果额外提升6%，残血开出技能瞬间拉满！` : '提供高额法术防御与最大生命值，配合铭文或吸血装，在残血时获得高额受治疗提升。')
+    });
   }
-
   if (hasBaoLie) {
     synergyItems.push({
-      icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>',
+      icon: svgStar,
       title: '暴烈之甲 · 挨打叠层最高 10%全增伤与移速',
       item: '暴烈之甲',
-      desc: `受到伤害时叠加【无畏】印记（最高 5层增加 10%伤害与 10%移速）。在近战肉搏与抗集火中轻松叠满，显著提升技能爆发与残血拉扯追击能力！`
+      desc: '受到伤害时叠加【无畏】印记（最高 5层增加 10%伤害与 10%移速）。在近战肉搏与抗集火中轻松叠满！'
     });
   }
-
-  if (hasSpellblade) {
+  if (spellbladeItem) {
     synergyItems.push({
-      icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>',
+      icon: svgStar,
       title: '强击被动 · 连招强化与减速留人',
       item: spellbladeItem,
-      desc: `核心装备【${spellbladeItem}】的【强击】被动与【${currentHero.cname}】的技能机制天然契合！在释放技能后下一次普攻附带额外爆发伤害与强力减速，实现技能平A无缝衔接！`
+      desc: `核心装备【${spellbladeItem}】的【强击】被动与【${currentHero.cname}】天然契合，释放技能后下一次普攻附带额外爆发！`
     });
   }
-
   if (synergyItems.length === 0) {
     synergyItems.push({
-      icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>',
+      icon: svgShield,
       title: '基础属性套装 · 稳步提升三维基底',
       item: '基础属性套装',
-      desc: `当前所选装备稳步提升基础数值，建议补充暗影战斧、冰痕之握、纯净苍穹或无尽战刃等核心成装，激发全量被动联动特效！`
+      desc: '当前所选装备稳步提升基础数值，建议补充核心输出或防御成装以激发更深层被动协同效果。'
     });
   }
-
   let synergyLinksHtml = '';
   synergyItems.forEach(item => {
     synergyLinksHtml += `
@@ -4121,12 +4248,10 @@ function renderSynergyContent() {
       </div>
     `;
   });
-
   // 3. 调用解耦评分引擎 (synergy_evaluator.js)
   const cappedCdr = typeof calculateCompositeStats === 'function' ? calculateCompositeStats().cdr : 0;
   const evalResult = calculateSynergyScore(hero, effItems, slots, skills, cappedCdr);
   const { score, rankBadge, rankColor, rankSub, penaltyReasons, synergyContext, radarStats } = evalResult;
-
   // 4. 调用解耦连招策略引擎 (synergy_combos.js)
   const comboSteps = generateComboSteps(hero, skills, synergyContext);
   let comboHtml = '';
@@ -4138,16 +4263,79 @@ function renderSynergyContent() {
       </div>
     `;
   });
-
   // 5. 组装完整模态框 HTML
   const bodyEl = document.getElementById('synergyModalScroll') || document.getElementById('synergyModalBody');
   if (!bodyEl) return;
-
+  if (window.innerWidth <= 768) {
+    const isEmp = effItems.length === 0;
+    const finalScore = isEmp ? 0 : score;
+    const finalBadge = isEmp ? '未选装' : rankBadge.split(' ')[0];
+    const finalTitle = isEmp ? '待装配推演' : rankBadge;
+    const finalDesc = isEmp ? '暂未选配装备，请点击一键神装或在下方挑选装备入槽。' : rankSub;
+    const cardBorderColor = isEmp ? '#aeaeb2' : rankColor;
+    bodyEl.innerHTML = `
+      <div class="synergy-mobile-container">
+        <!-- 综合评分与战术评级 (对齐真机图 6) -->
+        <div class="synergy-score-overview" style="border-left: 4px solid ${cardBorderColor};">
+          <div class="score-overview-left">
+            <div class="overview-score-num">${finalScore}分</div>
+            <div class="overview-grade-tag" style="background:${isEmp ? '#8e8e93' : rankColor}">${finalBadge}</div>
+          </div>
+          <div class="score-overview-right">
+            <div class="overview-summary-title">${finalTitle}</div>
+            <div class="overview-summary-desc">${finalDesc}</div>
+          </div>
+        </div>
+        <!-- 五维实战能力推演 (对齐真机图 6: 进度条) -->
+        <div class="synergy-block-card">
+          <div class="synergy-block-title">实战能力五维推演</div>
+          <div class="radar-bars-grid">
+            ${[
+              { label: '输出爆发', val: isEmp ? 20 : (radarStats ? radarStats.burst : 20) },
+              { label: '生存抗伤', val: isEmp ? 20 : (radarStats ? radarStats.survive : 20) },
+              { label: '技能循环', val: isEmp ? 20 : (radarStats ? radarStats.control : 20) },
+              { label: '机动拉扯', val: isEmp ? 20 : (radarStats ? radarStats.mobility : 20) },
+              { label: '控制留人', val: isEmp ? 20 : (radarStats ? radarStats.sustain : 20) }
+            ].map(r => `
+              <div class="radar-bar-item">
+                <div class="radar-bar-label-row">
+                  <span class="radar-label">${r.label}</span>
+                  <span class="radar-val">${r.val}%</span>
+                </div>
+                <div class="radar-track">
+                  <div class="radar-fill" style="width: ${r.val}%;"></div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <!-- 英雄技能与机制矩阵 (对齐真机图 6) -->
+        <div class="synergy-block-card">
+          <div class="synergy-block-title">英雄技能与机制矩阵 (${skills.length}个技能)</div>
+          <div class="modal-skills-list">
+            ${skillsCardsHtml}
+          </div>
+        </div>
+        ${!isEmp && synergyLinksHtml ? `
+          <div class="synergy-block-card">
+            <div class="synergy-block-title">核心被动机制全景联动 (${effItems.length}项已激活)</div>
+            <div class="modal-insights-list">${synergyLinksHtml}</div>
+          </div>
+        ` : ''}
+        ${!isEmp && comboHtml ? `
+          <div class="synergy-block-card">
+            <div class="synergy-block-title">实战连招与打法策略建议</div>
+            <div class="modal-combo-list">${comboHtml}</div>
+          </div>
+        ` : ''}
+      </div>
+    `;
+    return;
+  }
   bodyEl.innerHTML = `
     <div class="synergy-container">
       <!-- 配装综合契合度总览 -->
       <div class="synergy-score-card">
-
         <div class="synergy-score-left">
           <div class="synergy-score-circle" style="border-color:${rankColor};box-shadow: 0 4px 20px ${rankColor}33;">
             <div class="synergy-score-num" style="color:${rankColor};">${score}</div>
@@ -4169,7 +4357,6 @@ function renderSynergyContent() {
           <div class="synergy-radar-legend">五维战力雷达图</div>
         </div>
       </div>
-
       <!-- 核心被动与装备机制质变联动 -->
       <div class="synergy-section-title">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
@@ -4178,7 +4365,6 @@ function renderSynergyContent() {
       <div class="synergy-links-list">
         ${synergyLinksHtml}
       </div>
-
       <!-- 官方技能权威成长梯队与机制明细 -->
       <div class="synergy-section-title">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.26 12 2"></polygon></svg>
@@ -4187,7 +4373,6 @@ function renderSynergyContent() {
       <div class="synergy-skills-grid">
         ${skillsCardsHtml}
       </div>
-
       <!-- 实战核心连招与打法指引 -->
       <div class="synergy-section-title">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
@@ -4198,13 +4383,11 @@ function renderSynergyContent() {
       </div>
     </div>
   `;
-
   // 6. 异步渲染 Canvas 雷达图
   setTimeout(() => {
     drawSynergyRadar(radarStats, rankColor);
   }, 50);
 }
-
 // 绘制五维雷达图
 function drawSynergyRadar(stats, primaryColor) {
   const canvas = document.getElementById('synergyRadarCanvas');
@@ -4217,9 +4400,7 @@ function drawSynergyRadar(stats, primaryColor) {
   const r = 55;
   const labels = ['爆发', '生存', '续航', '机动', '控场'];
   const sides = 5;
-
   ctx.clearRect(0, 0, w, h);
-
   // 绘制雷达网格背景
   for (let step = 1; step <= 4; step++) {
     const curR = (r / 4) * step;
@@ -4236,7 +4417,6 @@ function drawSynergyRadar(stats, primaryColor) {
     ctx.lineWidth = 1;
     ctx.stroke();
   }
-
   // 绘制轴线与文字
   ctx.font = '10px -apple-system, sans-serif';
   ctx.fillStyle = 'var(--text-tertiary)';
@@ -4251,12 +4431,10 @@ function drawSynergyRadar(stats, primaryColor) {
     ctx.lineTo(x, y);
     ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
     ctx.stroke();
-
     const lx = cx + (r + 14) * Math.cos(angle);
     const ly = cy + (r + 14) * Math.sin(angle);
     ctx.fillText(labels[i], lx, ly);
   }
-
   // 绘制数据多边形
   ctx.beginPath();
   for (let i = 0; i < sides; i++) {
@@ -4275,15 +4453,12 @@ function drawSynergyRadar(stats, primaryColor) {
   ctx.lineWidth = 2;
   ctx.stroke();
 }
-
 // 复制战术协同报告
 function copySynergyReport() {
   const hero = (typeof currentHero !== 'undefined' && currentHero) ? currentHero : HEROES_DATA[0];
   const slots = (typeof currentSlots !== 'undefined' && currentSlots) ? currentSlots : [];
   const itemsText = slots.map(s => s.item_name).join(' + ') || '暂无装备';
-  
   const text = `【王者出装箱 · 战术协同诊断报告】\n英雄：${hero.cname}（${hero.title || ''}）\n出装：${itemsText}\n状态：已完成机制核定与雷达评估\n报告源自：王者出装箱 (https://13253374290.github.io/wzry-knowledge-base/)`;
-  
   if (navigator.clipboard) {
     navigator.clipboard.writeText(text).then(() => {
       if (typeof showToast === 'function') showToast('战术协同报告已复制到剪贴板！');
@@ -4363,10 +4538,17 @@ function updateSynergyBrief() {
   if (!currentSlots || currentSlots.length === 0) {
     if (badge) {
       badge.innerText = '待选装';
-      badge.style.background = 'var(--text-tertiary)';
+      badge.className = 'synergy-score-pill';
+      badge.style.background = '';
     }
-    if (styleTag) styleTag.innerText = '待装配推演';
-    if (summary) summary.innerText = '点击下方装备入槽，系统将实时演算技能机制与被动乘区协同。';
+    if (styleTag) {
+      styleTag.innerText = '待装配推演';
+      styleTag.className = 'synergy-brief-tag';
+    }
+    if (summary) {
+      summary.innerText = '暂未选配装备。点击“一键神装”或挑选装备入槽，系统将实时演算战术机制。';
+      summary.className = 'synergy-brief-summary';
+    }
     if (highlights) highlights.innerHTML = '';
     return;
   }

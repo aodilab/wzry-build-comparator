@@ -19,7 +19,7 @@
 <!-- 主体三栏交互容器 -->
 <main class="sandbox-grid">
 
-  <!-- 左栏：英雄库选择 (移动端只展示顶部卡片与自选铭文胶囊，网格由抽屉接管) -->
+  <!-- 左栏：英雄库选择 (移动端展示顶部精选卡片与自选铭文胶囊，网格由抽屉接管) -->
   <section class="apple-panel hero-section-panel">
     <div class="panel-header desktop-only">
       <div class="panel-title">
@@ -29,29 +29,27 @@
       <span class="panel-badge">15级满级数值</span>
     </div>
 
-    <!-- 苹果精选英雄卡片 (支持点击整卡或按钮换英雄) -->
+    <!-- 苹果精选英雄卡片 (100% 微信小程序 hero-bar 原生规范) -->
     <div class="hero-spotlight" id="heroSpotlight" onclick="onHeroSpotlightClick(event)">
       <img id="spotAvatar" class="spotlight-avatar" src="" alt="Hero">
       <div class="spotlight-info">
-        <div class="spotlight-title" id="spotTitle">当前选中</div>
-        <div class="spotlight-name" id="spotName">-</div>
-        <div class="spotlight-lane-tag" id="spotLane">-</div>
+        <div class="spotlight-name-wrap">
+          <span class="spotlight-name" id="spotName">-</span>
+          <span class="spotlight-lane-tag" id="spotLane">-</span>
+          <span class="spotlight-role-tag" id="spotRole">-</span>
+        </div>
+        <div class="spotlight-title" id="spotTitle">-</div>
       </div>
-      <button class="hero-change-btn" id="heroChangeBtn" onclick="openHeroModal(event)">换英雄 ›</button>
+      <button class="hero-change-btn" id="heroChangeBtn" onclick="openHeroModal(event)">换英雄</button>
     </div>
 
-    <!-- 30 颗满配铭文状态快捷栏 (点击唤起复合配置面板) -->
+    <!-- 30 颗满配铭文状态快捷栏 (微信小程序 hero-arcana-row 100% 原生规范) -->
     <div class="hero-arcana-bar" onclick="openArcanaModal()" title="点击自定义调整铭文搭配">
       <div class="arcana-bar-header">
-        <span class="arcana-bar-label">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-          30 颗满配铭文方案
-        </span>
-        <span class="arcana-edit-link">调整铭文 ›</span>
+        <span class="arcana-bar-label">自选铭文：</span>
+        <div class="arcana-chips" id="arcanaChipsBar"></div>
       </div>
-      <div class="arcana-chips" id="arcanaChipsBar">
-        <!-- 动态显示红绿蓝三色铭文胶囊 -->
-      </div>
+      <button class="hero-change-btn" onclick="openArcanaModal(event)">调整铭文</button>
     </div>
 
     <!-- PC端常驻英雄浏览与选择网格 (手机端彻底隐藏，转由抽屉呈现) -->
@@ -83,9 +81,9 @@
     <div class="panel-header">
       <div class="panel-title">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-        装备库备选
+        装备库备选 <span class="shop-count-tag" id="itemCountBadge">114件</span>
       </div>
-      <span class="panel-badge" id="itemCountBadge">全部装备</span>
+      <span class="shop-tip-txt">含S44无象神器与原初神装</span>
     </div>
 
     <div class="search-wrapper">
@@ -110,12 +108,12 @@
     <div class="item-scroll-area" id="itemListContainer"></div>
   </section>
 
-  <!-- 右栏：六神装槽位、战术协同与实战面板 -->
+  <!-- 右栏：六神装插槽、战术协同与实战面板 -->
   <section class="apple-panel slots-stats-section-panel">
     <div class="panel-header">
       <div class="panel-title">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-        六神装插槽
+        六神装插槽 <span id="slotCountDisplay">(0/6)</span>
       </div>
       <div class="slot-header-actions">
         <span class="panel-badge" id="slotCount">已选 0 / 6 件</span>
@@ -124,7 +122,7 @@
       </div>
     </div>
 
-    <!-- 灵动槽位 Dock (手机端自适应呈现 3x2 网格) -->
+    <!-- 灵动槽位 Dock (手机端自适应呈现 3x2 网格，空槽 + 空槽 1~6) -->
     <div class="slots-dock">
       <div class="slots-header">
         <span style="font-size: 12px; color: var(--text-secondary);">神装卡槽 (点击卸下)</span>
@@ -134,15 +132,20 @@
         </div>
       </div>
       <div class="slots-grid" id="slotsGrid"></div>
-    </div>
-
-    <!-- 智能诊断与互斥检测通告条 -->
-    <div class="diag-panel">
-      <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 4px;">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-        智能诊断与互斥检测
+      
+      <!-- 智能诊断与互斥检测通告条 -->
+      <div class="diag-panel">
+        <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 4px;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          智能诊断与互斥检测
+        </div>
+        <div id="diagnoseContainer"></div>
       </div>
-      <div id="diagnoseContainer"></div>
+
+      <div class="mobile-gold-bar">
+        <span class="mobile-gold-label">六神装总造价</span>
+        <span class="mobile-gold-val" id="mobileTotalGold">0 金币</span>
+      </div>
     </div>
 
     <!-- 战术协同分析简报卡片 (微信小程序同款，点击查看深度机制联动) -->
@@ -159,19 +162,19 @@
       </div>
       <div class="synergy-brief-body" id="synergyBriefBody">
         <div class="synergy-brief-summary" id="synergyBriefSummary">
-          点击下方装备入槽，系统将实时演算技能机制与被动乘区协同。
+          暂未选配装备。点击“一键神装”或挑选装备入槽，系统将实时演算战术机制。
         </div>
         <div class="synergy-brief-highlights" id="synergyBriefHighlights"></div>
       </div>
-      <div class="synergy-brief-footer">
+      <div class="synergy-brief-footer" id="synergyBriefFooter" style="display:none;">
         <span>查看完整机制联动、五维雷达与连招策略 ›</span>
       </div>
     </div>
 
-    <!-- Apple Health 风格属性指标 -->
+    <!-- 实时实战面板演算 (严格 2 列网格) -->
     <div class="stats-panel-header">
-      <div class="panel-title" style="font-size: 13px;">
-        实战面板演算 <span class="panel-subtitle">Lv15满级 + 铭文 + 神装加成</span>
+      <div class="panel-title">
+        实战面板演算 <span class="panel-subtitle">Lv15满级 + 铭文 + 神装综合加成</span>
       </div>
     </div>
     <div class="health-metrics-scroll" id="statsContainer"></div>
@@ -187,7 +190,7 @@
 
 </main>
 
-<!-- 二级页面：技能×出装深度联动分析模态框 (Synergy Modal) -->
+<!-- 二级页面：技能×出装深度联动分析模态框 (Synergy Modal Sheet) -->
 <div class="synergy-modal-overlay" id="synergyModalOverlay" onclick="closeSynergyModal(event)">
   <div class="synergy-modal-card" onclick="event.stopPropagation()">
     <div class="synergy-modal-header">
@@ -202,82 +205,50 @@
         </div>
       </div>
       <div class="synergy-header-actions">
-        <button class="apple-btn apple-btn-secondary" onclick="copySynergyReport()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-          复制分析报告
-        </button>
-        <button class="arcana-modal-close" onclick="closeSynergyModal()" title="关闭">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
+        <button class="apple-btn apple-btn-secondary desktop-only" onclick="copySynergyReport()">复制报告</button>
+        <button class="arcana-modal-close" id="synergyModalCloseBtn" onclick="closeSynergyModal()" title="关闭">✕</button>
       </div>
     </div>
 
-    <div class="synergy-modal-scroll" id="synergyModalScroll">
-      <!-- 动态填充四大核心板块 -->
-    </div>
+    <div class="synergy-modal-scroll" id="synergyModalScroll"></div>
   </div>
 </div>
-
 
 <!-- 铭文复合配置面板 (Apple HIG Sheet Modal) -->
 <div class="arcana-modal-overlay" id="arcanaModalOverlay" onclick="closeArcanaModal(event)">
   <div class="arcana-modal-card" onclick="event.stopPropagation()">
     <div class="arcana-modal-header">
       <div>
-        <div class="arcana-modal-title">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 6px;"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>30 颗满配五级铭文配置
-        </div>
-        <div class="arcana-modal-subtitle" id="arcanaModalSub">
-          当前英雄专属推荐，属性已自动实时累加至 15 级最终面板
-        </div>
+        <div class="arcana-modal-title">铭文自由配置</div>
+        <div class="arcana-modal-subtitle" id="arcanaModalSub">各色满配10颗 · 支持微调混搭</div>
       </div>
       <div class="arcana-modal-actions">
-        <button class="apple-btn apple-btn-secondary" onclick="resetToHeroDefaultArcana()" title="重置为当前英雄的官方推荐铭文">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
-          恢复官方推荐
-        </button>
-        <button class="arcana-modal-close" onclick="closeArcanaModal()" title="关闭">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
+        <button class="apple-btn apple-btn-secondary desktop-only" onclick="resetToHeroDefaultArcana()">恢复推荐</button>
+        <button class="arcana-modal-close" id="arcanaModalCloseBtn" onclick="closeArcanaModal()" title="关闭">✕</button>
       </div>
     </div>
 
-    <!-- 三栏红绿蓝配置区 -->
-    <div class="arcana-modal-body" id="arcanaModalBody">
-      <!-- 动态渲染红色/绿色/蓝色铭文槽位与选择列表 -->
-    </div>
+    <div class="arcana-modal-body" id="arcanaModalBody"></div>
   </div>
 </div>
 
-<!-- 移动端英雄选择抽屉 (Hero Modal Bottom Sheet) -->
+<!-- 移动端英雄选择抽屉 (Hero Modal Bottom Sheet 100% 对齐图 4) -->
 <div class="hero-modal-overlay" id="heroModalOverlay" onclick="closeHeroModal(event)">
   <div class="hero-modal-card" onclick="event.stopPropagation()">
     <div class="hero-modal-header">
       <div class="hero-modal-title">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 6px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-        选择演练英雄 <span id="heroModalCountBadge" class="panel-badge">133位</span>
+        选择演练英雄 (<span id="heroModalCountBadge">132位</span>)
       </div>
-      <button class="arcana-modal-close" onclick="closeHeroModal()" title="关闭">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-      </button>
-    </div>
-    <div class="search-wrapper" style="padding: 10px 16px 8px 16px;">
-      <div class="apple-search">
-        <span class="search-icon">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        </span>
-        <input type="text" id="heroModalSearch" class="apple-input" placeholder="搜索英雄（如：王维 / 李白 / 孙尚香）" oninput="filterModalHeroes()">
-      </div>
+      <button class="arcana-modal-close" id="heroModalCloseBtn" onclick="closeHeroModal()" title="关闭">✕</button>
     </div>
     <div class="segmented-control" id="heroModalTabs">
       <div class="seg-item active" onclick="setHeroModalFilter('全部', this)">全部</div>
-      <div class="seg-item" onclick="setHeroModalFilter('对抗路', this)">对抗</div>
+      <div class="seg-item" onclick="setHeroModalFilter('对抗路', this)">对抗路</div>
       <div class="seg-item" onclick="setHeroModalFilter('打野', this)">打野</div>
       <div class="seg-item" onclick="setHeroModalFilter('中路', this)">中路</div>
-      <div class="seg-item" onclick="setHeroModalFilter('发育路', this)">发育</div>
+      <div class="seg-item" onclick="setHeroModalFilter('发育路', this)">发育路</div>
       <div class="seg-item" onclick="setHeroModalFilter('游走', this)">游走</div>
     </div>
     <div class="hero-modal-scroll" id="heroModalListContainer"></div>
   </div>
 </div>
-
