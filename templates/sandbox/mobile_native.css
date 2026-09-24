@@ -362,14 +362,11 @@ html, body {
   .synergy-header-actions .apple-btn { display: none !important; }
   .synergy-mobile-container { display: flex !important; flex-direction: column !important; gap: 12px !important; padding: 10px 14px 40px 14px !important; }
   .synergy-score-overview { background: #fbfbfd !important; border-radius: 12px !important; padding: 12px !important; display: flex !important; align-items: center !important; gap: 12px !important; border: 1px solid rgba(0,0,0,0.05) !important; }
-  .score-overview-left { display: flex !important; flex-direction: column !important; align-items: center !important; min-width: 60px !important; }
-  .overview-score-num { font-size: 24px !important; font-weight: 800 !important; color: #1d1d1f !important; line-height: 1 !important; }
-  .overview-grade-tag { font-size: 10px !important; padding: 2px 6px !important; border-radius: 999px !important; color: #fff !important; font-weight: 700 !important; margin-top: 4px !important; }
+  .score-overview-left { display: flex !important; flex-direction: column !important; align-items: center !important; }
+  .overview-genre-tag { font-size: 11px !important; padding: 4px 8px !important; border-radius: 6px !important; color: #fff !important; font-weight: 700 !important; white-space: nowrap !important; }
   .score-overview-right { flex: 1 !important; }
-  .overview-summary-title { font-size: 14px !important; font-weight: 700 !important; color: #1d1d1f !important; }
-  .overview-summary-desc { font-size: 11px !important; color: #8e8e93 !important; margin-top: 3px !important; line-height: 1.4 !important; }
-  .score-basis-row { display: flex !important; flex-wrap: wrap !important; gap: 4px !important; margin-top: 6px !important; }
-  .basis-chip { font-size: 10px !important; background: #f0f0f4 !important; color: #48484a !important; padding: 2px 6px !important; border-radius: 4px !important; } .basis-chip b { color: #1d1d1f !important; } .basis-chip.penalty { background: rgba(255, 59, 48, 0.1) !important; color: #ff3b30 !important; } .basis-chip.penalty b { color: #ff3b30 !important; }
+  .overview-summary-title { font-size: 14px !important; font-weight: 700 !important; }
+  .overview-summary-desc { font-size: 11.5px !important; color: #636366 !important; margin-top: 3px !important; line-height: 1.4 !important; }
   .synergy-block-card { background: #ffffff !important; border-radius: 12px !important; border: 1px solid rgba(0,0,0,0.05) !important; padding: 12px !important; }
   .synergy-block-title { font-size: 13px !important; font-weight: 700 !important; color: #1d1d1f !important; margin-bottom: 10px !important; }
   .radar-bars-grid { display: flex !important; flex-direction: column !important; gap: 8px !important; }

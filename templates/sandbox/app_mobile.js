@@ -88,20 +88,19 @@ function updateSynergyBrief() {
   if (typeof calculateSynergyScore === 'function') {
     const syn = calculateSynergyScore(currentHero, effItems, currentSlots, skills, 0);
     if (badge) {
-      const shortGrade = (syn.rankBadge || '').split(' ')[0] || '';
-      badge.innerText = `${syn.score}分 · ${shortGrade}`;
-      badge.style.background = syn.rankColor || 'var(--color-blue)';
+      badge.innerText = syn.tacticGenre || '实战流派';
+      badge.style.background = syn.genreColor || 'var(--color-blue)';
     }
-    if (styleTag) styleTag.innerText = syn.rankBadge || '战术协同';
-    if (summary) summary.innerText = syn.rankSub || '装备成型，核心战术乘区全面生效。';
+    if (styleTag) styleTag.innerText = syn.tacticGenre || '实战流派';
+    if (summary) summary.innerText = syn.genreDesc || '装备成型，核心战术机制全面生效。';
     if (highlights) {
-      const activeItems = (syn.insights && syn.insights.length > 0)
-        ? syn.insights.slice(0, 3)
-        : [{ tag: '基础属性协同', desc: '当前装备提供稳固的攻防基础数值' }];
+      const activeItems = (syn.pros && syn.pros.length > 0)
+        ? syn.pros.slice(0, 2)
+        : [{ title: '基础属性协同', desc: '当前装备提供稳固的攻防基础数值' }];
       highlights.innerHTML = activeItems.map(item => `
         <div class="synergy-highlight-row">
-          <span class="synergy-highlight-badge">${item.tag}</span>
-          <span class="synergy-highlight-desc">${item.item ? `${item.item} · ` : ''}${item.desc}</span>
+          <span class="synergy-highlight-badge">优势</span>
+          <span class="synergy-highlight-desc"><b>${item.title}</b> · ${item.desc}</span>
         </div>
       `).join('');
     }

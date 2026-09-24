@@ -1,16 +1,16 @@
 // ==============================================================================
-// 王者出装箱 ｜ 局内六神装配装沙盒 - 战术协同弹窗与视图装配层 (app_synergy.js)
-// 专注 UI 交互生命周期、DOM 挂载与 Canvas 雷达图渲染
-// 评分计算下沉至 synergy_evaluator.js，实操连招下沉至 synergy_combos.js
+// 王者出装箱 ｜ 局内六神装配装沙盒 - 战术流派与实战优劣势剖析弹窗 (app_synergy.js)
+// 专注：战术流派定性展示、实战核心优势PROS、潜在短板CONS、五维能力推演与连招指引
 // ==============================================================================
+
 function openSynergyModal() {
   const modal = document.getElementById('synergyModalOverlay') || document.getElementById('synergyModal');
   if (!modal) return;
   modal.classList.add('active');
   if (document.body) document.body.style.overflow = 'hidden';
-  // 渲染内容
   renderSynergyContent();
 }
+
 function closeSynergyModal(e) {
   if (e && e.target && e.target !== e.currentTarget && !e.target.classList.contains('arcana-modal-close') && !e.target.closest('.arcana-modal-close')) {
     return;
@@ -19,11 +19,12 @@ function closeSynergyModal(e) {
   if (modal) modal.classList.remove('active');
   if (document.body) document.body.style.overflow = '';
 }
+
 function renderSynergyContent() {
   const hero = (typeof currentHero !== 'undefined' && currentHero) ? currentHero : HEROES_DATA[0];
   const skills = HERO_SKILLS_DATA[hero.cname] || [];
   const slots = (typeof currentSlots !== 'undefined' && currentSlots) ? currentSlots : [];
-  // 汇总当前装备 (支持官方名与常用别名双向自适应容错)
+
   const aliasMap = {
     '强者破军': '破军', '仁者破晓': '破晓', '贤者天书': '贤者之书', '急速之靴': '急速战靴',
     '破军': '强者破军', '破晓': '仁者破晓', '贤者之书': '贤者天书', '急速战靴': '急速之靴'
@@ -36,7 +37,7 @@ function renderSynergyContent() {
                (s.stats ? s : null);
     if (it) effItems.push(it);
   });
-  // 同步模态框顶部英雄概览
+
   const avatar = document.getElementById('synergyHeroAvatar');
   const name = document.getElementById('synergyHeroName');
   const role = document.getElementById('synergyHeroRole');
@@ -55,16 +56,16 @@ function renderSynergyContent() {
   }
   if (sub) {
     sub.innerText = window.innerWidth <= 768
-      ? `${effItems.length}/6件已装配 · ${effItems.length > 0 ? '战术协同' : '待装配推演'}`
-      : `装备栏: ${effItems.length} / 6 件已装配 ｜ 技能机制与被动乘区深度诊断`;
+      ? `${effItems.length}/6件已装配 · ${effItems.length > 0 ? '实战流派推演' : '待装配推演'}`
+      : `装备栏: ${effItems.length} / 6 件已装配 ｜ 实战流派定位与优劣势深度诊断`;
   }
 
-  // 2. 调用解耦评分引擎 (synergy_evaluator.js)
+  // 1. 调用评估引擎获取流派定性与优劣势
   const cappedCdr = typeof calculateCompositeStats === 'function' ? calculateCompositeStats().cdr : 0;
   const evalResult = calculateSynergyScore(hero, effItems, slots, skills, cappedCdr);
-  const { score, rankBadge, rankColor, rankSub, penaltyReasons, synergyContext, radarStats, pros, cons, scoreBreakdown } = evalResult;
+  const { tacticGenre, genreDesc, genreColor, pros, cons, radarStats, synergyContext } = evalResult;
 
-  // 3. 调用解耦连招策略引擎 (synergy_combos.js)
+  // 2. 调用连招策略引擎
   const comboSteps = generateComboSteps(hero, skills, synergyContext);
   let comboHtml = '';
   comboSteps.forEach((st, idx) => {
@@ -76,50 +77,39 @@ function renderSynergyContent() {
     `;
   });
 
-  // 4. 组装完整模态框 HTML
   const bodyEl = document.getElementById('synergyModalScroll') || document.getElementById('synergyModalBody');
   if (!bodyEl) return;
 
+  const isEmp = effItems.length === 0;
+  const finalGenre = isEmp ? '待选装推演' : tacticGenre;
+  const finalDesc = isEmp ? '暂未选配装备，请点击一键神装或挑选装备入槽开始推演。' : genreDesc;
+  const themeColor = isEmp ? '#8e8e93' : genreColor;
+
+  const bVal = isEmp ? 20 : (radarStats ? (radarStats.burst || radarStats[0] || 20) : 20);
+  const sVal = isEmp ? 20 : (radarStats ? (radarStats.survive || radarStats[1] || 20) : 20);
+  const cVal = isEmp ? 20 : (radarStats ? (radarStats.control || radarStats[2] || 20) : 20);
+  const mVal = isEmp ? 20 : (radarStats ? (radarStats.mobility || radarStats[3] || 20) : 20);
+  const tVal = isEmp ? 20 : (radarStats ? (radarStats.sustain || radarStats[4] || 20) : 20);
+
+  const prosList = (pros && pros.length > 0) ? pros : [
+    { title: '基础三维属性稳固', desc: '所选装备提供稳定的基础攻防面板，支撑基础作战需求。' }
+  ];
+  const consList = (cons && cons.length > 0) ? cons : [
+    { title: '走位与团战容错', desc: '实战中需防范长手英雄走位拉扯或高频连环硬控。' }
+  ];
+
+  // 移动端排版
   if (window.innerWidth <= 768) {
-    const isEmp = effItems.length === 0;
-    const finalScore = isEmp ? 0 : score;
-    const finalBadge = isEmp ? '未选装' : rankBadge.split(' ')[0];
-    const finalTitle = isEmp ? '待装配推演' : rankBadge;
-    const finalDesc = isEmp ? '暂未选配装备，请点击一键神装或挑选装备入槽。' : rankSub;
-    const cardBorderColor = isEmp ? '#aeaeb2' : rankColor;
-
-    const bVal = isEmp ? 20 : (radarStats ? (radarStats.burst || radarStats[0] || 20) : 20);
-    const sVal = isEmp ? 20 : (radarStats ? (radarStats.survive || radarStats[1] || 20) : 20);
-    const cVal = isEmp ? 20 : (radarStats ? (radarStats.control || radarStats[2] || 20) : 20);
-    const mVal = isEmp ? 20 : (radarStats ? (radarStats.mobility || radarStats[3] || 20) : 20);
-    const tVal = isEmp ? 20 : (radarStats ? (radarStats.sustain || radarStats[4] || 20) : 20);
-
-    const prosList = (pros && pros.length > 0) ? pros : [
-      { title: '基础三维属性提升', desc: '所选装备提供稳定的基础攻防面板，支撑基础作战需求。' }
-    ];
-    const consList = (cons && cons.length > 0) ? cons : [
-      { title: '走位与团战容错', desc: '实战中需防范长手英雄走位拉扯或高频连环硬控。' }
-    ];
-
     bodyEl.innerHTML = `
       <div class="synergy-mobile-container">
-        <!-- 综合评分与战术评级 -->
-        <div class="synergy-score-overview" style="border-left: 4px solid ${cardBorderColor};">
+        <!-- 战术流派定性大卡片 (替代生硬打分) -->
+        <div class="synergy-score-overview" style="border-left: 4px solid ${themeColor};">
           <div class="score-overview-left">
-            <div class="overview-score-num">${finalScore}分</div>
-            <div class="overview-grade-tag" style="background:${isEmp ? '#8e8e93' : rankColor}">${finalBadge}</div>
+            <span class="overview-genre-tag" style="background:${themeColor};">${isEmp ? '未选装' : '流派定位'}</span>
           </div>
           <div class="score-overview-right">
-            <div class="overview-summary-title">${finalTitle}</div>
+            <div class="overview-summary-title" style="color:${themeColor};">${finalGenre}</div>
             <div class="overview-summary-desc">${finalDesc}</div>
-            ${!isEmp && scoreBreakdown ? `
-              <div class="score-basis-row">
-                <span class="basis-chip">神装成件: <b>${scoreBreakdown.tierScore}/35</b></span>
-                <span class="basis-chip">机制质变: <b>${scoreBreakdown.mechanicScore}/30</b></span>
-                <span class="basis-chip">攻防循环: <b>${scoreBreakdown.balanceScore}/25</b></span>
-                ${scoreBreakdown.penaltyScore > 0 ? `<span class="basis-chip penalty">短板扣减: <b>-${scoreBreakdown.penaltyScore}</b></span>` : ''}
-              </div>
-            ` : ''}
           </div>
         </div>
 
@@ -143,7 +133,7 @@ function renderSynergyContent() {
             </div>
           </div>
 
-          <!-- 潜在短板与劣势 (CONS - 劣势在哪里) -->
+          <!-- 潜在短板与防克制 (CONS - 劣势在哪里) -->
           <div class="synergy-block-card">
             <div class="synergy-block-title con-title">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
@@ -163,7 +153,7 @@ function renderSynergyContent() {
           </div>
         ` : ''}
 
-        <!-- 五维实战能力推演 (真实进度条) -->
+        <!-- 五维实战能力推演 (平滑进度条) -->
         <div class="synergy-block-card">
           <div class="synergy-block-title">实战能力五维推演</div>
           <div class="radar-bars-grid">
@@ -198,32 +188,20 @@ function renderSynergyContent() {
     `;
     return;
   }
+
+  // 桌面端排版
   bodyEl.innerHTML = `
     <div class="synergy-container">
-      <!-- 配装综合契合度总览 -->
+      <!-- 战术流派定性大卡片 -->
       <div class="synergy-score-card">
         <div class="synergy-score-left">
-          <div class="synergy-score-circle" style="border-color:${rankColor};box-shadow: 0 4px 20px ${rankColor}33;">
-            <div class="synergy-score-num" style="color:${rankColor};">${score}</div>
-            <div class="synergy-score-label">契合评分</div>
+          <div class="synergy-score-circle" style="border-color:${themeColor};box-shadow: 0 4px 20px ${themeColor}33;">
+            <div class="synergy-score-num" style="color:${themeColor};font-size:20px;">${isEmp ? '待配' : '流派'}</div>
+            <div class="synergy-score-label">战术定位</div>
           </div>
           <div class="synergy-score-detail">
-            <div class="synergy-score-badge" style="background:${rankColor}15;color:${rankColor};border: 1px solid ${rankColor}33;">${rankBadge}</div>
-            <div class="synergy-score-sub">${rankSub}</div>
-            ${!isEmp && scoreBreakdown ? `
-              <div class="score-basis-row desktop">
-                <span class="basis-chip">神装成件: <b>${scoreBreakdown.tierScore}/35</b></span>
-                <span class="basis-chip">机制质变: <b>${scoreBreakdown.mechanicScore}/30</b></span>
-                <span class="basis-chip">攻防循环: <b>${scoreBreakdown.balanceScore}/25</b></span>
-                ${scoreBreakdown.penaltyScore > 0 ? `<span class="basis-chip penalty">短板扣减: <b>-${scoreBreakdown.penaltyScore}</b></span>` : ''}
-              </div>
-            ` : ''}
-            ${penaltyReasons.length > 0 ? `
-              <div class="synergy-penalty-box">
-                <div class="synergy-penalty-title">诊断惩罚扣分明细：</div>
-                ${penaltyReasons.map(r => `<div class="synergy-penalty-item">• ${r}</div>`).join('')}
-              </div>
-            ` : ''}
+            <div class="synergy-score-badge" style="background:${themeColor}15;color:${themeColor};border: 1px solid ${themeColor}33;font-size:14px;padding:4px 10px;">${finalGenre}</div>
+            <div class="synergy-score-sub" style="font-size:12.5px;margin-top:6px;line-height:1.5;">${finalDesc}</div>
           </div>
         </div>
         <div class="synergy-radar-box">
@@ -231,14 +209,7 @@ function renderSynergyContent() {
           <div class="synergy-radar-legend">五维战力雷达图</div>
         </div>
       </div>
-      <!-- 核心被动与装备机制质变联动 -->
-      <div class="synergy-section-title">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-        装备专属机制与被动质变联动
-      </div>
-      <div class="synergy-links-list">
-        ${synergyLinksHtml}
-      </div>
+
       <!-- 实战核心优势与潜在短板深度剖析 (PROS & CONS) -->
       <div class="synergy-pros-cons-grid">
         <div class="synergy-pros-col">
@@ -276,6 +247,7 @@ function renderSynergyContent() {
           </div>
         </div>
       </div>
+
       <!-- 实战核心连招与打法指引 -->
       <div class="synergy-section-title">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
@@ -286,11 +258,12 @@ function renderSynergyContent() {
       </div>
     </div>
   `;
-  // 6. 异步渲染 Canvas 雷达图
+
   setTimeout(() => {
-    drawSynergyRadar(radarStats, rankColor);
+    drawSynergyRadar(radarStats, themeColor);
   }, 50);
 }
+
 // 绘制五维雷达图
 function drawSynergyRadar(stats, primaryColor) {
   const canvas = document.getElementById('synergyRadarCanvas');
@@ -301,12 +274,14 @@ function drawSynergyRadar(stats, primaryColor) {
   const cx = w / 2;
   const cy = h / 2;
   const r = 55;
-  const labels = ['爆发', '生存', '续航', '机动', '控场'];
+  const labels = ['爆发', '生存', '循环', '机动', '控场'];
   const sides = 5;
   ctx.clearRect(0, 0, w, h);
-  // 绘制雷达网格背景
-  for (let step = 1; step <= 4; step++) {
-    const curR = (r / 4) * step;
+
+  ctx.strokeStyle = '#e5e5ea';
+  ctx.lineWidth = 1;
+  for (let s = 1; s <= 4; s++) {
+    const curR = (r / 4) * s;
     ctx.beginPath();
     for (let i = 0; i < sides; i++) {
       const angle = (Math.PI * 2 / sides) * i - Math.PI / 2;
@@ -316,29 +291,24 @@ function drawSynergyRadar(stats, primaryColor) {
       else ctx.lineTo(x, y);
     }
     ctx.closePath();
-    ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
-    ctx.lineWidth = 1;
     ctx.stroke();
   }
-  // 绘制轴线与文字
-  ctx.font = '10px -apple-system, sans-serif';
-  ctx.fillStyle = 'var(--text-tertiary)';
+
+  ctx.font = '10px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto';
+  ctx.fillStyle = '#8e8e93';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   for (let i = 0; i < sides; i++) {
     const angle = (Math.PI * 2 / sides) * i - Math.PI / 2;
-    const x = cx + r * Math.cos(angle);
-    const y = cy + r * Math.sin(angle);
     ctx.beginPath();
     ctx.moveTo(cx, cy);
-    ctx.lineTo(x, y);
-    ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
+    ctx.lineTo(cx + r * Math.cos(angle), cy + r * Math.sin(angle));
     ctx.stroke();
     const lx = cx + (r + 14) * Math.cos(angle);
     const ly = cy + (r + 14) * Math.sin(angle);
     ctx.fillText(labels[i], lx, ly);
   }
-  // 绘制数据多边形
+
   ctx.beginPath();
   for (let i = 0; i < sides; i++) {
     const val = Math.max(10, Math.min(100, stats[i] || 20));
@@ -355,19 +325,4 @@ function drawSynergyRadar(stats, primaryColor) {
   ctx.strokeStyle = primaryColor;
   ctx.lineWidth = 2;
   ctx.stroke();
-}
-// 复制战术协同报告
-function copySynergyReport() {
-  const hero = (typeof currentHero !== 'undefined' && currentHero) ? currentHero : HEROES_DATA[0];
-  const slots = (typeof currentSlots !== 'undefined' && currentSlots) ? currentSlots : [];
-  const itemsText = slots.map(s => s.item_name).join(' + ') || '暂无装备';
-  const text = `【王者出装箱 · 战术协同诊断报告】\n英雄：${hero.cname}（${hero.title || ''}）\n出装：${itemsText}\n状态：已完成机制核定与雷达评估\n报告源自：王者出装箱 (https://13253374290.github.io/wzry-knowledge-base/)`;
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(text).then(() => {
-      if (typeof showToast === 'function') showToast('战术协同报告已复制到剪贴板！');
-      else alert('战术协同报告已复制！');
-    });
-  } else {
-    alert(text);
-  }
 }
