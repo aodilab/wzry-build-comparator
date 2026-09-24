@@ -3931,7 +3931,63 @@ function resetToHeroDefaultArcana() {
 // 进行全维属性差值 (Diff) 与核心机制技能 (苍穹免伤/破晓穿透/泣血续航等) 对比剖析
 // ==============================================================================
 
-// === 1. 官方基准出装生成器 (100% 遵照官方原始命名与方案数量) ===
+// === 1. 官方基准出装生成器 (以“爆发/半肉/全肉”等实战装备类型命名) ===
+function inferPresetTypeName(items, hero, desc, idx) {
+  desc = desc || '';
+  const cname = (hero && hero.cname) || '';
+  const role = (hero && hero.role) || '';
+  let ad = 0, ap = 0, hp = 0, pdef = 0, mdef = 0, crit = 0;
+  const names = (items || []).map(i => i.item_name || '');
+
+  (items || []).forEach(it => {
+    const st = it.stats || {};
+    ad += st.atk || 0;
+    ap += st.ap || 0;
+    hp += st.hp || 0;
+    pdef += st.pdef || 0;
+    mdef += st.mdef || 0;
+    crit += st.crit || 0;
+  });
+
+  // 1. 优先提取官方 Tips 中的明确意图关键词
+  if (desc.includes('全输出') || desc.includes('直接击破') || desc.includes('秒杀')) return '极限高爆秒人';
+  if (desc.includes('全肉') || desc.includes('提高生存') || desc.includes('控制敌人')) return '全肉控制抗伤';
+  if (desc.includes('半肉') || desc.includes('容错') || desc.includes('吸血')) return '半肉稳健容错';
+  if (desc.includes('穿透') || desc.includes('暴击')) return '暴击破甲输出';
+  if (desc.includes('冷却') || desc.includes('频繁的使用')) return '极速冷却拉扯';
+
+  // 2. 根据装备数值属性智能定性
+  if (role.includes('射手')) {
+    if (crit >= 35 || names.includes('破军')) return '暴击穿透秒人';
+    if (hp >= 1500 || names.includes('纯净苍穹') || names.includes('暴烈之甲')) return '半肉自保流';
+    return idx === 0 ? '暴击破甲流' : '法球攻速流';
+  }
+
+  if (role.includes('法师')) {
+    if (ap >= 600 || names.includes('博学者之怒') || names.includes('贤者之书')) return '法核爆发秒人';
+    if (names.includes('痛苦面具') || names.includes('凝冰之息') || names.includes('噬神之书')) return '冷却消耗拉扯';
+    return idx === 0 ? '法核爆发秒人' : '技能消耗拉扯';
+  }
+
+  if (role.includes('坦克') || role.includes('辅助')) {
+    if (ad <= 80 && hp >= 4000) return '全肉承伤控场';
+    if (ad >= 100 || names.includes('暗影战斧') || names.includes('暴烈之甲')) return '半肉进场输出';
+    return idx === 0 ? '重装坦伤控场' : '半肉输出对拼';
+  }
+
+  if (role.includes('刺客')) {
+    if (ad >= 240 || names.includes('破军')) return '瞬杀高爆收割';
+    if (hp >= 1500 || names.includes('纯净苍穹') || names.includes('名刀·司命')) return '半肉进场容错';
+    return idx === 0 ? '极致爆发秒人' : '半肉收割容错';
+  }
+
+  // 战士/对抗路
+  if (hp >= 2000 && ad >= 140) return '半肉战阵突进';
+  if (hp >= 3500) return '重装坦伤反击';
+  if (ad >= 250) return '高爆刺杀流';
+  return idx === 0 ? '半肉稳健进场' : '极限输出切入';
+}
+
 function getHeroOfficialPresets(hero) {
   if (!hero) return [];
   const cname = hero.cname || '';
@@ -3949,24 +4005,28 @@ function getHeroOfficialPresets(hero) {
   // 1. 优先读取官方真实出装数据库 (SSOT)
   if (typeof OFFICIAL_HERO_BUILDS !== 'undefined' && OFFICIAL_HERO_BUILDS[cname]) {
     const rawList = OFFICIAL_HERO_BUILDS[cname];
-    return rawList.map((p, idx) => ({
-      id: p.id || `official_${idx + 1}`,
-      title: p.name || `推荐出装${idx + 1}`, // 100% 官方原始名字
-      tag: `官方方案${idx + 1}`,
-      desc: p.desc || '王者官方推荐经典对局思路。',
-      itemNames: p.item_names || [],
-      items: resolveItems(p.item_names || [])
-    }));
+    return rawList.map((p, idx) => {
+      const items = resolveItems(p.item_names || []);
+      const typeTitle = inferPresetTypeName(items, hero, p.desc, idx);
+      return {
+        id: p.id || `official_${idx + 1}`,
+        title: typeTitle, // 如“全肉抗伤”、“半肉输出”、“高爆发秒人”
+        tag: `官方方案${idx + 1}`,
+        desc: p.desc || '王者官方推荐经典实战思路。',
+        itemNames: p.item_names || [],
+        items
+      };
+    });
   }
 
-  // 2. 兜底 fallback (遵循官方命名规范：推荐出装一、推荐出装二)
+  // 2. 兜底 fallback (按职业划分经典双方案)
   const role = hero.role || '';
   const lane = hero.lane || '';
   const r = role + lane;
 
   let p1Names = [], p2Names = [];
-  let p1Desc = '官方综合胜率最高的经典主流配装思路。';
-  let p2Desc = '强化实战特定维度的官方备选方案。';
+  let p1Desc = '官方综合胜率最高的经典高爆配装思路。';
+  let p2Desc = '强化实战对拼与防御容错的稳健方案。';
 
   if (r.includes('射手') || r.includes('发育路')) {
     p1Names = ['急速战靴', '影刃', '无尽战刃', '泣血之刃', '破晓', '暴烈之甲'];
@@ -3995,9 +4055,12 @@ function getHeroOfficialPresets(hero) {
     p2Desc = '强化对线抗压与技能冷却回转，多轮拉扯反打。';
   }
 
+  const p1Items = resolveItems(p1Names);
+  const p2Items = resolveItems(p2Names);
+
   return [
-    { id: 'official_1', title: '推荐出装一', tag: '官方方案1', desc: p1Desc, itemNames: p1Names, items: resolveItems(p1Names) },
-    { id: 'official_2', title: '推荐出装二', tag: '官方方案2', desc: p2Desc, itemNames: p2Names, items: resolveItems(p2Names) }
+    { id: 'official_1', title: inferPresetTypeName(p1Items, hero, p1Desc, 0), tag: '官方方案1', desc: p1Desc, itemNames: p1Names, items: p1Items },
+    { id: 'official_2', title: inferPresetTypeName(p2Items, hero, p2Desc, 1), tag: '官方方案2', desc: p2Desc, itemNames: p2Names, items: p2Items }
   ];
 }
 
