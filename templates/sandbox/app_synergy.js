@@ -62,7 +62,7 @@ function renderSynergyContent() {
   // 2. 调用解耦评分引擎 (synergy_evaluator.js)
   const cappedCdr = typeof calculateCompositeStats === 'function' ? calculateCompositeStats().cdr : 0;
   const evalResult = calculateSynergyScore(hero, effItems, slots, skills, cappedCdr);
-  const { score, rankBadge, rankColor, rankSub, penaltyReasons, synergyContext, radarStats, pros, cons } = evalResult;
+  const { score, rankBadge, rankColor, rankSub, penaltyReasons, synergyContext, radarStats, pros, cons, scoreBreakdown } = evalResult;
 
   // 3. 调用解耦连招策略引擎 (synergy_combos.js)
   const comboSteps = generateComboSteps(hero, skills, synergyContext);
@@ -112,6 +112,14 @@ function renderSynergyContent() {
           <div class="score-overview-right">
             <div class="overview-summary-title">${finalTitle}</div>
             <div class="overview-summary-desc">${finalDesc}</div>
+            ${!isEmp && scoreBreakdown ? `
+              <div class="score-basis-row">
+                <span class="basis-chip">神装成件: <b>${scoreBreakdown.tierScore}/35</b></span>
+                <span class="basis-chip">机制质变: <b>${scoreBreakdown.mechanicScore}/30</b></span>
+                <span class="basis-chip">攻防循环: <b>${scoreBreakdown.balanceScore}/25</b></span>
+                ${scoreBreakdown.penaltyScore > 0 ? `<span class="basis-chip penalty">短板扣减: <b>-${scoreBreakdown.penaltyScore}</b></span>` : ''}
+              </div>
+            ` : ''}
           </div>
         </div>
 
@@ -202,6 +210,14 @@ function renderSynergyContent() {
           <div class="synergy-score-detail">
             <div class="synergy-score-badge" style="background:${rankColor}15;color:${rankColor};border: 1px solid ${rankColor}33;">${rankBadge}</div>
             <div class="synergy-score-sub">${rankSub}</div>
+            ${!isEmp && scoreBreakdown ? `
+              <div class="score-basis-row desktop">
+                <span class="basis-chip">神装成件: <b>${scoreBreakdown.tierScore}/35</b></span>
+                <span class="basis-chip">机制质变: <b>${scoreBreakdown.mechanicScore}/30</b></span>
+                <span class="basis-chip">攻防循环: <b>${scoreBreakdown.balanceScore}/25</b></span>
+                ${scoreBreakdown.penaltyScore > 0 ? `<span class="basis-chip penalty">短板扣减: <b>-${scoreBreakdown.penaltyScore}</b></span>` : ''}
+              </div>
+            ` : ''}
             ${penaltyReasons.length > 0 ? `
               <div class="synergy-penalty-box">
                 <div class="synergy-penalty-title">诊断惩罚扣分明细：</div>
