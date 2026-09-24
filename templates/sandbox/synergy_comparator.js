@@ -68,16 +68,17 @@ function getHeroOfficialPresets(hero, lane) {
 
   // 1. 若分路为【打野】：必须包含打野刀体系！
   if (lane === '打野') {
-    // 检查官方预设中是否有真正携带打野刀的方案 (如韩信、李白、澜、镜等原生刺客打野)
+    // 检查官方预设中是否有真正携带打野刀的方案 (如韩信、李白、澜、镜等原生刺客打野，以及杨戬局内打野方案)
     if (typeof OFFICIAL_HERO_BUILDS !== 'undefined' && OFFICIAL_HERO_BUILDS[cname]) {
-      const jungleOfficial = OFFICIAL_HERO_BUILDS[cname].filter(p => hasJungleBlade(p.item_names));
+      const jungleOfficial = OFFICIAL_HERO_BUILDS[cname].filter(p => p.lane === '打野' || hasJungleBlade(p.item_names));
       if (jungleOfficial.length > 0) {
         return jungleOfficial.map((p, idx) => {
           const items = resolveItems(p.item_names);
+          const typeName = inferPresetTypeName(items, hero, p.desc, idx);
           return {
-            id: `official_jungle_${idx + 1}`,
-            title: `王者推荐·${inferPresetTypeName(items, hero, p.desc, idx)}`,
-            genre: inferPresetTypeName(items, hero, p.desc, idx),
+            id: p.id || `official_jungle_${idx + 1}`,
+            title: `王者推荐·${typeName}`,
+            genre: typeName,
             desc: p.desc || '王者官方推荐打野经典出装。',
             itemNames: p.item_names,
             items
@@ -86,19 +87,12 @@ function getHeroOfficialPresets(hero, lane) {
       }
     }
 
-    // 若官方原始接口未录入打野刀方案（如杨戬、亚瑟、铠、夏侯惇、司空震、诸葛亮等），提供专属国服实战打野双体系
+    // 若官方原始接口未录入打野刀方案（如亚瑟、铠、夏侯惇、司空震、诸葛亮等），提供专属国服实战打野双体系
     let p1Names, p2Names;
     let p1Title = '王者推荐·野区高爆流', p1Desc = '红野刀贪婪之噬配合黑切穿透，野区清野控龙与抓人爆发极快。';
     let p2Title = '王者推荐·肉野容错流', p2Desc = '肉野刀巨人之握配合高额双抗，进场坦度惊人兼具持续肉搏伤害。';
 
-    if (cname === '杨戬') {
-      p1Title = '王者推荐·红野爆发流';
-      p1Desc = '贪婪之噬配合暗影战斧与纯净苍穹，1技能哮天犬咬中配合大招激光瞬秒敌方后排。';
-      p1Names = ['贪婪之噬', '抵抗之靴', '暗影战斧', '纯净苍穹', '宗师之力', '破军'];
-      p2Title = '王者推荐·肉野战坦流';
-      p2Desc = '巨人之握配合肉装，法天象地变身吸收海量爆发，团战真伤横扫持续输出。';
-      p2Names = ['巨人之握', '抵抗之靴', '暗影战斧', '暴烈之甲', '纯净苍穹', '永夜守护'];
-    } else if (cname === '司空震') {
+    if (cname === '司空震') {
       p1Title = '王者推荐·符文极速流';
       p1Desc = '符文大剑配合金色圣剑与法穿，远近普攻雷霆连击爆发极高。';
       p1Names = ['符文大剑', '秘法之靴', '金色圣剑', '噬神之书', '博学者之怒', '虚无法杖'];
@@ -184,7 +178,7 @@ function getHeroOfficialPresets(hero, lane) {
 
   // 5. 对抗路及其他：战士/战坦体系（官方真实出装优先，排除打野刀和辅助装）
   if (typeof OFFICIAL_HERO_BUILDS !== 'undefined' && OFFICIAL_HERO_BUILDS[cname]) {
-    const rawList = OFFICIAL_HERO_BUILDS[cname].filter(p => !hasJungleBlade(p.item_names) && !hasRoamItem(p.item_names));
+    const rawList = OFFICIAL_HERO_BUILDS[cname].filter(p => p.lane === '对抗路' || (!p.lane && !hasJungleBlade(p.item_names) && !hasRoamItem(p.item_names)));
     if (rawList.length > 0) {
       return rawList.map((p, idx) => {
         const items = resolveItems(p.item_names || []);
