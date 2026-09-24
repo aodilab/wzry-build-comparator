@@ -43,6 +43,18 @@
       <button class="hero-change-btn" id="heroChangeBtn" onclick="openHeroModal(event)">换英雄</button>
     </div>
 
+    <!-- 局内实战分路快捷切换 (影响一键神装与推荐出装方案) -->
+    <div class="hero-lane-switch-bar">
+      <span class="lane-switch-label">主玩分路：</span>
+      <div class="lane-switch-pills" id="heroLaneSwitchPills">
+        <button class="lane-pill-btn active" data-lane="对抗路" onclick="changeHeroActiveLane('对抗路', this)">对抗路</button>
+        <button class="lane-pill-btn" data-lane="打野" onclick="changeHeroActiveLane('打野', this)">打野</button>
+        <button class="lane-pill-btn" data-lane="中路" onclick="changeHeroActiveLane('中路', this)">中路</button>
+        <button class="lane-pill-btn" data-lane="发育路" onclick="changeHeroActiveLane('发育路', this)">发育路</button>
+        <button class="lane-pill-btn" data-lane="游走" onclick="changeHeroActiveLane('游走', this)">游走</button>
+      </div>
+    </div>
+
     <!-- 30 颗满配铭文状态快捷栏 (微信小程序 hero-arcana-row 100% 原生规范) -->
     <div class="hero-arcana-bar" onclick="openArcanaModal()" title="点击自定义调整铭文搭配">
       <div class="arcana-bar-header">
@@ -148,26 +160,21 @@
       </div>
     </div>
 
-    <!-- 战术协同分析简报卡片 (微信小程序同款，点击查看深度机制联动) -->
+    <!-- 方案对比与战术协同简报卡片 (对标王者官方推荐出装) -->
     <div class="synergy-brief-card" id="synergyBriefCard" onclick="openSynergyModal()">
       <div class="synergy-brief-header">
         <div class="synergy-brief-title-wrap">
-          <span class="synergy-brief-title">战术协同分析</span>
-          <span class="synergy-brief-tag" id="synergyBriefStyleTag">待装配推演</span>
+          <span class="synergy-brief-title">自选方案 VS 王者推荐方案</span>
         </div>
         <div class="synergy-brief-right">
-          <span class="synergy-jump-txt">详细分析 ›</span>
-          <span class="synergy-score-pill" id="synergyBriefBadge">待选装</span>
+          <span class="synergy-jump-txt">详细对比 ›</span>
         </div>
       </div>
       <div class="synergy-brief-body" id="synergyBriefBody">
         <div class="synergy-brief-summary" id="synergyBriefSummary">
-          暂未选配装备。点击“一键神装”或挑选装备入槽，系统将实时演算战术机制。
+          暂未选配装备。点击“一键神装”或挑选装备入槽，实时演算方案对比。
         </div>
         <div class="synergy-brief-highlights" id="synergyBriefHighlights"></div>
-      </div>
-      <div class="synergy-brief-footer" id="synergyBriefFooter" style="display:none;">
-        <span>查看完整机制联动、五维雷达与连招策略 ›</span>
       </div>
     </div>
 

@@ -339,46 +339,408 @@
   align-items: center;
 }
 
-.diff-metric-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-
-.diff-metric-values {
+/* 弹窗整体容器 */
+.synergy-view-container {
   display: flex;
-  align-items: center;
-  gap: 6px;
+  flex-direction: column;
+  gap: 14px;
+  padding: 10px 14px 40px 14px;
 }
 
-.diff-metric-user {
+/* 对标王者推荐方案卡片组 */
+.benchmark-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.benchmark-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.benchmark-header-title {
   font-size: 13px;
   font-weight: 700;
   color: var(--text-primary);
 }
-
-.diff-pill {
-  font-size: 10.5px;
-  font-weight: 700;
-  padding: 1px 6px;
-  border-radius: 5px;
-  line-height: 1.3;
-}
-
-.diff-pill-plus {
-  background: rgba(52, 199, 89, 0.12);
-  color: #2e7d32;
-  border: 1px solid rgba(52, 199, 89, 0.3);
-}
-
-.diff-pill-minus {
-  background: rgba(255, 59, 48, 0.12);
-  color: #d32f2f;
-  border: 1px solid rgba(255, 59, 48, 0.3);
-}
-
-.diff-pill-equal {
-  background: var(--apple-subcard);
+.benchmark-hint {
+  font-size: 11px;
   color: var(--text-secondary);
 }
+.benchmark-presets-grid {
+  display: grid;
+  gap: 8px;
+}
+.benchmark-preset-card {
+  background: var(--apple-card);
+  border: 1.5px solid var(--apple-border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.benchmark-preset-card.active {
+  border-color: #0071e3;
+  background: #f0f7ff;
+}
+.benchmark-preset-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.benchmark-preset-tag {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.benchmark-active-pill {
+  font-size: 10px;
+  font-weight: 700;
+  color: #0071e3;
+  background: #e8f3ff;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* 推荐方案的具体6件装备微缩图 */
+.benchmark-items-wrap {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+.benchmark-mini-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.benchmark-mini-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #f0f0f2;
+}
+.benchmark-mini-name {
+  font-size: 9.5px;
+  color: var(--text-secondary);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 48px;
+}
+
+/* 铭文差异提示条 */
+.arcana-diff-alert {
+  background: #eef7ff;
+  border: 1px solid #c7e2fe;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 11px;
+  color: #0071e3;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.4;
+}
+
+/* 3列/4列数值对照卡片表 */
+.diff-table-card {
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.diff-table-header {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr 1.3fr;
+  padding: 8px 10px;
+  background: var(--apple-subcard);
+  border-bottom: 1px solid var(--apple-border);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-align: center;
+}
+.diff-table-header .col-metric { text-align: left; }
+.diff-table-body {
+  display: flex;
+  flex-direction: column;
+}
+.diff-table-row {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr 1.3fr;
+  padding: 8px 10px;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+  font-size: 12px;
+  text-align: center;
+}
+.diff-table-row:last-child { border-bottom: none; }
+.diff-table-row .col-metric {
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 11.5px;
+}
+.diff-table-row .col-user {
+  color: var(--text-primary);
+  font-family: -apple-system, "SF Pro Rounded", sans-serif;
+}
+.diff-table-row .col-user.font-bold { font-weight: 700; color: #0071e3; }
+.diff-table-row .col-base {
+  color: var(--text-secondary);
+  font-family: -apple-system, "SF Pro Rounded", sans-serif;
+}
+.diff-status-pill {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  white-space: nowrap;
+}
+.diff-status-pill.status-plus {
+  background: #dcfce7;
+  color: #16a34a;
+}
+.diff-status-pill.status-minus {
+  background: #fee2e2;
+  color: #dc2626;
+}
+.diff-status-pill.status-equal {
+  background: #f0f0f2;
+  color: #8e8e93;
+}
+
+/* 核心装备机制差异 (PROS / CONS) */
+.mechanics-diff-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mechanics-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.mechanic-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.mechanic-group-title {
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.mechanic-group-title.pro-group-title { color: #2e7d32; }
+.mechanic-group-title.con-group-title { color: #d97706; }
+.mechanic-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.mechanic-card {
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.mechanic-card.pro-card {
+  background: rgba(52, 199, 89, 0.05);
+  border-left: 3.5px solid #34c759;
+}
+.mechanic-card.con-card {
+  background: rgba(255, 149, 0, 0.05);
+  border-left: 3.5px solid #ff9500;
+}
+.mechanic-card-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.mechanic-pill {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+  color: #fff;
+  line-height: 1.2;
+}
+.mechanic-pill.pro-pill { background: #34c759; }
+.mechanic-pill.con-pill { background: #ff9500; }
+.mechanic-card-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.mechanic-card-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+.mechanic-empty-box {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  background: var(--apple-subcard);
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* 实战连招伤害推演卡片 */
+.combo-calc-section {
+  background: #fbfbfd;
+  border-radius: 14px;
+  padding: 12px;
+  border: 1px solid var(--apple-border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.combo-calc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.combo-calc-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.combo-calc-tag {
+  font-size: 11px;
+  color: #0071e3;
+  background: #e8f3ff;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.combo-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.combo-metric-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 9px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.combo-metric-label {
+  font-size: 10.5px;
+  color: var(--text-secondary);
+}
+.combo-metric-values {
+  display: flex;
+  flex-direction: column;
+}
+.combo-metric-val {
+  font-size: 16px;
+  font-weight: 800;
+  color: #1d1d1f;
+  font-family: -apple-system, "SF Pro Rounded", sans-serif;
+}
+.combo-metric-sub {
+  font-size: 10px;
+  color: #8e8e93;
+}
+.combo-diff-pill {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: 3px;
+  width: fit-content;
+}
+.combo-diff-pill.status-plus { background: #dcfce7; color: #16a34a; }
+.combo-diff-pill.status-minus { background: #fee2e2; color: #dc2626; }
+.combo-diff-pill.status-equal { background: #f0f0f2; color: #8e8e93; }
+
+.combo-steps-box {
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.combo-steps-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+.combo-step-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: #f9f9fb;
+}
+.combo-step-num {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #0071e3;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.combo-step-info {
+  flex: 1;
+  min-width: 0;
+}
+.combo-step-name {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #1d1d1f;
+}
+.combo-step-desc {
+  font-size: 10px;
+  color: #8e8e93;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.combo-step-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+.combo-step-dmg {
+  font-size: 12px;
+  font-weight: 800;
+  color: #e11d48;
+  font-family: -apple-system, "SF Pro Rounded", sans-serif;
+}
+.combo-step-heal {
+  font-size: 10px;
+  font-weight: 700;
+  color: #16a34a;
+  font-family: -apple-system, "SF Pro Rounded", sans-serif;
+}
+
+
 
