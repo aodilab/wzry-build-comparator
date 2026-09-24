@@ -1,0 +1,230 @@
+/* ==========================================================================
+   Apple Human Interface Guidelines (HIG) Design System
+   支持苹果标志性浅色 (Apple Silver-White) 与深色 (Apple Space-Gray) 原生双外观
+   ========================================================================== */
+
+:root[data-theme="light"] {
+  --apple-bg: #f5f5f7;
+  --apple-canvas-ambient: radial-gradient(circle at 10% 10%, rgba(0, 113, 227, 0.06) 0%, transparent 45%),
+                          radial-gradient(circle at 90% 20%, rgba(175, 82, 222, 0.05) 0%, transparent 50%),
+                          radial-gradient(circle at 50% 85%, rgba(255, 149, 0, 0.05) 0%, transparent 50%);
+  --apple-panel: rgba(255, 255, 255, 0.85);
+  --apple-panel-border: rgba(0, 0, 0, 0.08);
+  --apple-card: #ffffff;
+  --apple-card-hover: #fafafc;
+  --apple-subcard: rgba(0, 0, 0, 0.03);
+  --apple-slot-bg: rgba(0, 0, 0, 0.03);
+  --apple-slot-border: rgba(0, 0, 0, 0.12);
+  --apple-border: rgba(0, 0, 0, 0.07);
+  --apple-border-hover: rgba(0, 113, 227, 0.4);
+  
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-tertiary: #86868b;
+  
+  --color-blue: #0071e3;
+  --color-blue-bg: rgba(0, 113, 227, 0.1);
+  --color-amber: #d97706;
+  --color-amber-bg: rgba(217, 119, 6, 0.1);
+  --color-green: #34c759;
+  --color-green-bg: rgba(52, 199, 89, 0.12);
+  --color-red: #ff3b30;
+  --color-red-bg: rgba(255, 59, 48, 0.1);
+  --color-purple: #af52de;
+  --color-purple-bg: rgba(175, 82, 222, 0.1);
+
+  --segmented-bg: rgba(118, 118, 128, 0.12);
+  --segmented-active: #ffffff;
+  --segmented-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --panel-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.03);
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --card-shadow-hover: 0 8px 24px -4px rgba(0, 0, 0, 0.12);
+  --header-bg: rgba(245, 245, 247, 0.82);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.18);
+}
+
+:root[data-theme="dark"] {
+  --apple-bg: #000000;
+  --apple-canvas-ambient: radial-gradient(circle at 10% 10%, rgba(10, 132, 255, 0.1) 0%, transparent 45%),
+                          radial-gradient(circle at 90% 20%, rgba(191, 90, 242, 0.08) 0%, transparent 50%),
+                          radial-gradient(circle at 50% 85%, rgba(255, 159, 10, 0.06) 0%, transparent 50%);
+  --apple-panel: rgba(28, 28, 30, 0.75);
+  --apple-panel-border: rgba(255, 255, 255, 0.1);
+  --apple-card: rgba(44, 44, 46, 0.55);
+  --apple-card-hover: rgba(58, 58, 60, 0.75);
+  --apple-subcard: rgba(255, 255, 255, 0.04);
+  --apple-slot-bg: rgba(255, 255, 255, 0.04);
+  --apple-slot-border: rgba(255, 255, 255, 0.14);
+  --apple-border: rgba(255, 255, 255, 0.08);
+  --apple-border-hover: rgba(10, 132, 255, 0.5);
+  
+  --text-primary: #f5f5f7;
+  --text-secondary: #86868b;
+  --text-tertiary: #636366;
+  
+  --color-blue: #0a84ff;
+  --color-blue-bg: rgba(10, 132, 255, 0.15);
+  --color-amber: #ff9f0a;
+  --color-amber-bg: rgba(255, 159, 10, 0.15);
+  --color-green: #30d158;
+  --color-green-bg: rgba(48, 209, 88, 0.15);
+  --color-red: #ff453a;
+  --color-red-bg: rgba(255, 69, 58, 0.15);
+  --color-purple: #bf5af2;
+  --color-purple-bg: rgba(191, 90, 242, 0.15);
+
+  --segmented-bg: rgba(118, 118, 128, 0.24);
+  --segmented-active: rgba(255, 255, 255, 0.18);
+  --segmented-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --panel-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --header-bg: rgba(13, 14, 18, 0.82);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", "Helvetica Neue", sans-serif;
+}
+
+body {
+  background-color: var(--apple-bg);
+  background-image: var(--apple-canvas-ambient);
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: 16px 24px;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ==========================================================================
+   1. 苹果风格顶部导航 (Apple Translucent Navigation Bar)
+   ========================================================================== */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  margin: -16px -24px 20px -24px;
+  background: var(--header-bg);
+  backdrop-filter: blur(25px) saturate(190%);
+  -webkit-backdrop-filter: blur(25px) saturate(190%);
+  border-bottom: 1px solid var(--apple-panel-border);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-app-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--apple-border);
+  flex-shrink: 0;
+}
+
+.brand-titles h1 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-titles p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 苹果药丸按钮 */
+.apple-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 980px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid transparent;
+  outline: none;
+}
+
+.apple-btn-secondary {
+  background: var(--apple-subcard);
+  color: var(--text-primary);
+  border-color: var(--apple-border);
+}
+
+.apple-btn-secondary:hover {
+  background: var(--apple-card-hover);
+  border-color: var(--apple-border-hover);
+}
+
+.apple-btn-secondary:active {
+  transform: scale(0.97);
+}
+
+.apple-btn-primary {
+  background: var(--color-blue);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.3);
+}
+
+.apple-btn-primary:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.45);
+  transform: translateY(-1px);
+}
+
+.apple-btn-primary:active {
+  transform: scale(0.97);
+}
+
+/* 浅色/深色主题切换药丸 */
+.theme-toggle-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--apple-subcard);
+  border: 1px solid var(--apple-border);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.25s;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--apple-card-hover);
+  border-color: var(--apple-border-hover);
+  transform: rotate(15deg);
+}

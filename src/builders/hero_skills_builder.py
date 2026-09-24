@@ -117,8 +117,8 @@ def build_hero_skills(output_file=None, max_workers=10):
                 print(f"抓取警告: {res['cname']}, 原因: {res.get('error')}")
 
     # 生成 Markdown 知识库
-    markdown_content = "# 王者荣耀最新赛季全英雄技能数值与等级成长数据库\n\n"
-    markdown_content += f"> 本知识库收录国服全量 {len(hero_results)} 位正统英雄的微观数值面板：包含1~15级基础属性、技能Lv1-Lv6等级数值阶梯、冷却消耗与加成公式。专为 NotebookLM 优化。\n\n"
+    markdown_content = "# 王者荣耀 S45 赛季（月照长安）全英雄技能数值与等级成长数据库\n\n"
+    markdown_content += f"> 本知识库收录王者荣耀 S45 赛季“月照长安”国服全量 {len(hero_results)} 位正统英雄（含第133位新英雄王维及技能重做英雄）的微观数值面板：包含1~15级基础属性、技能Lv1-Lv6等级数值阶梯、冷却消耗与加成公式。专为 NotebookLM / RAG 优化。\n\n"
 
     # 按职业归类展示
     by_role = {}

@@ -1,0 +1,112 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    width: 1242px;
+    height: 1656px;
+    background: #f5f5f7;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    color: #1d1d1f;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 56px 96px 52px 96px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 顶部状态与页码 */
+.top-nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+.brand-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    color: #0071e3;
+    font-size: 19px;
+    font-weight: 700;
+    padding: 8px 22px;
+    border-radius: 980px;
+    border: 1px solid rgba(0, 113, 227, 0.15);
+    box-shadow: 0 2px 10px rgba(0, 113, 227, 0.05);
+}
+.brand-pill .dot {
+    width: 8px; height: 8px;
+    background: #0071e3;
+    border-radius: 50%;
+}
+.page-indicator {
+    font-size: 19px;
+    font-weight: 700;
+    color: #86868b;
+    background: #ffffff;
+    padding: 8px 22px;
+    border-radius: 980px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* 苹果风格主题大标题区: 极具统治力的主题文案 (Huge Headline + Crisp Subtitle) */
+.title-header {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 22px;
+}
+.title-main {
+    font-size: 46px;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    color: #1d1d1f;
+    margin-bottom: 8px;
+}
+.title-sub {
+    font-size: 19px;
+    color: #6e6e73;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+}
+
+/* 一体化核心画卷: 纯白微质感画布，留白充沛，呼吸感拉满 */
+.main-canvas {
+    flex: 1;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 40px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.04), 0 2px 10px rgba(0, 0, 0, 0.02);
+    padding: 44px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* 底部状态条 */
+.bottom-bar {
+    width: 100%;
+    margin-top: 24px;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.bottom-left {
+    font-size: 19px;
+    font-weight: 600;
+    color: #6e6e73;
+}
+.bottom-right {
+    font-size: 19px;
+    font-weight: 700;
+    color: #0071e3;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}

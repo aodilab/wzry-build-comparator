@@ -113,8 +113,8 @@ def build_arcana(output_file=None, max_workers=10):
                 print(f"抓取警告: {result['cname']}, 原因: {result.get('error')}")
 
     # 生成 Markdown
-    markdown_content = "# 王者荣耀最新赛季全铭文属性及英雄推荐搭配数据库\n\n"
-    markdown_content += "> 本数据库基于官方最新数据接口实时清洗生成，完美支持 NotebookLM 智能检索与关联分析。\n\n"
+    markdown_content = "# 王者荣耀 S45 赛季（月照长安）全铭文属性及全英雄推荐搭配数据库\n\n"
+    markdown_content += f"> 本数据库已全面收录王者荣耀 S45 赛季“月照长安”国服全量 {len(hero_ming_list)} 位英雄（含第133位新英雄王维）推荐铭文方案与官方全量五级铭文属性，完美支持 NotebookLM / RAG 智能检索与关联分析。\n\n"
     
     # 第一部分：铭文图鉴
     markdown_content += "## 第一部分：官方最新五级（高级）铭文图鉴\n\n"

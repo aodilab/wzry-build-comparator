@@ -1,0 +1,141 @@
+/* 淘宝店铺与沙盒引流品牌视觉样式 */
+.cover-brand-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #e5e5ea;
+}
+.brand-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.brand-logo-img {
+    height: 38px;
+    width: auto;
+    object-fit: contain;
+}
+.brand-name {
+    font-size: 13pt;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #1d1d1f;
+}
+
+.cover-meta {
+    margin: 18px 0 24px;
+    font-size: 9pt;
+    color: #6e6e73;
+    line-height: 1.8;
+}
+.cover-meta div {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 极具吸引力与高转化的沙盒卡片 */
+.bonus-box-branded {
+    margin-top: 20px;
+    padding: 22px 24px;
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1.5px solid #0071e3;
+    width: 100%;
+    box-shadow: 0 6px 24px rgba(0, 113, 227, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.bonus-left {
+    flex: 1;
+    padding-right: 22px;
+}
+.bonus-tag-banner {
+    display: inline-block;
+    font-size: 8pt;
+    font-weight: 700;
+    color: #0071e3;
+    background: rgba(0, 113, 227, 0.08);
+    padding: 3px 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+}
+.bonus-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+.bonus-title-branded {
+    font-size: 13.5pt;
+    font-weight: 800;
+    color: #1d1d1f;
+    letter-spacing: -0.01em;
+}
+.bonus-slogan {
+    font-size: 9.5pt;
+    font-weight: 600;
+    color: #d97706;
+    margin-bottom: 10px;
+}
+.bonus-url-box {
+    margin-bottom: 12px;
+}
+.bonus-url-link {
+    color: #0071e3;
+    font-size: 11pt;
+    font-weight: 700;
+    text-decoration: underline;
+    font-family: -apple-system, monospace;
+}
+.bonus-features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-size: 8.5pt;
+    color: #3a3a3c;
+    line-height: 1.45;
+}
+.bonus-item {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+.bonus-dot {
+    color: #0071e3;
+    font-weight: 900;
+}
+.bonus-features-list strong {
+    color: #1d1d1f;
+    font-weight: 700;
+}
+.bonus-right-qr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-left: 22px;
+    border-left: 1px solid #e5e5ea;
+}
+.qr-img {
+    width: 92px;
+    height: 92px;
+    border-radius: 8px;
+    border: 1px solid #e5e5ea;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.qr-caption {
+    font-size: 8.5pt;
+    color: #1d1d1f;
+    margin-top: 8px;
+    font-weight: 700;
+}
+.qr-sub {
+    font-size: 7.5pt;
+    color: #86868b;
+    margin-top: 2px;
+}

@@ -8,11 +8,16 @@ import re
 def parse_level_sequence(text):
     """
     匹配文本中类似 150/170/190/210/230/250 或 11/10.4/9.8/9.2/8.6/8 的成长序列
+    支持带单位如 45s / 40s / 35s
     """
     if not text:
         return []
-    pattern = r'(\d+(?:\.\d+)?(?:/\d+(?:\.\d+)?){2,5})'
-    return re.findall(pattern, text)
+    normalized = re.sub(r'(\d+(?:\.\d+)?)\s*(?:s|秒)\b', r'\1', text)
+    pattern = r'(\d+(?:\.\d+)?(?:\s*/\s*\d+(?:\.\d+)?){2,5})'
+    matches = re.findall(pattern, normalized)
+    if matches:
+        return [re.sub(r'\s+', '', m) for m in matches]
+    return []
 
 def format_cd_steps(cd_text):
     """
@@ -27,6 +32,10 @@ def format_cd_steps(cd_text):
         steps = seqs[0].split('/')
         return " ｜ ".join([f"Lv{i+1}: {v}s" for i, v in enumerate(steps)])
     
+    # 范围冷却格式如 6s - 4.5s 或 10-7秒
+    if "-" in cd_text:
+        return cd_text.strip()
+
     # 固定冷却
     clean_val = re.sub(r'[^\d\.]', '', cd_text)
     return f"固定 {clean_val}s" if clean_val else cd_text

@@ -48,6 +48,7 @@ HERO_SPECIAL_STATS = {
     531: {"cname": "镜", "hp": (3146, 6241), "atk": (177, 391), "pdef": (95, 365), "mdef": (50, 169), "speed": 390, "aspeed": "+1.0%"},
     548: {"cname": "亚连", "hp": (3320, 7350), "atk": (175, 380), "pdef": (106, 412), "mdef": (50, 169), "speed": 380, "aspeed": "+2.0%"},
     577: {"cname": "少司缘", "hp": (3210, 7150), "atk": (155, 310), "pdef": (115, 415), "mdef": (50, 169), "speed": 370, "aspeed": "+1.0%"},
+    138: {"cname": "王维", "hp": (3120, 6150), "atk": (158, 288), "pdef": (88, 335), "mdef": (50, 169), "speed": 360, "aspeed": "+1.0%"},
 }
 
 def get_hero_base_stats(ename, cname, role_str="战士"):

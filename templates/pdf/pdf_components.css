@@ -1,0 +1,301 @@
+/* 装备微标签 (Item Chip) */
+.item-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 7px 2px 4px;
+    border-radius: 6px;
+    font-size: 8.5pt;
+    font-weight: 600;
+    vertical-align: middle;
+    margin: 2px 3px;
+    background: #f5f5f7;
+    border: 1px solid #d2d2d7;
+    color: #1d1d1f;
+}
+
+.item-chip img {
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    object-fit: cover;
+    display: inline-block;
+}
+
+.item-chip.gold {
+    background: #fffbeb;
+    border-color: #fde68a;
+    color: #92400e;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+
+.path-arrow {
+    color: #0071e3;
+    font-weight: 800;
+    margin: 0 2px;
+}
+
+.plus-sign {
+    color: #d97706;
+    font-weight: 800;
+    margin: 0 2px;
+}
+
+/* 装备手册卡片 */
+.item-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-left: 3px solid #f59e0b;
+    border-radius: 6px;
+    page-break-inside: avoid;
+}
+
+.item-avatar-large {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 1px solid #d2d2d7;
+}
+
+.item-name-big {
+    font-size: 11pt;
+    font-weight: 800;
+    color: #111113;
+}
+
+/* 铭文微标签 (Arcana Chip) */
+.arcana-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px 2px 4px;
+    border-radius: 12px;
+    font-size: 8.5pt;
+    font-weight: 600;
+    vertical-align: middle;
+    margin: 2px 3px;
+    background: #f5f5f7;
+    border: 1px solid #d2d2d7;
+}
+
+.arcana-chip img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    display: inline-block;
+}
+
+.arcana-chip.红色 { background: #fff1f2; border-color: #fecdd3; color: #be123c; }
+.arcana-chip.蓝色 { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
+.arcana-chip.绿色 { background: #f0fdf4; border-color: #bbf7d0; color: #15803d; }
+
+.arcana-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    background: #f8fafc;
+    border-left: 3px solid #0071e3;
+    border-radius: 6px;
+    page-break-inside: avoid;
+}
+
+.arcana-avatar-large {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.arcana-name-big {
+    font-size: 11pt;
+    font-weight: 800;
+    color: #111113;
+}
+
+/* 战场机制专项卡片 */
+.mechanic-card {
+    margin: 12px 0;
+    padding: 12px 16px;
+    background: #f8f9fb;
+    border-radius: 8px;
+    border: 1px solid #e5e5ea;
+    page-break-inside: avoid;
+}
+
+.mechanic-card.blue { border-left: 4px solid #0071e3; background: #f0f7ff; }
+.mechanic-card.red { border-left: 4px solid #ef4444; background: #fef2f2; }
+.mechanic-card.dragon { border-left: 4px solid #8b5cf6; background: #f5f3ff; }
+
+.formula-box {
+    margin: 14px 0;
+    padding: 14px 18px;
+    background: #1d1d1f;
+    color: #f5f5f7;
+    border-radius: 8px;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 9pt;
+    line-height: 1.6;
+}
+
+.formula-title {
+    font-weight: 700;
+    color: #38bdf8;
+    margin-bottom: 6px;
+    font-family: -apple-system, sans-serif;
+}
+
+/* 通用正文样式 */
+h1 {
+    font-size: 16pt;
+    font-weight: 800;
+    color: #111113;
+    margin-top: 26px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #e5e5ea;
+    padding-bottom: 6px;
+    page-break-after: avoid;
+}
+
+h2 {
+    font-size: 12pt;
+    font-weight: 700;
+    color: #111113;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    page-break-after: avoid;
+}
+
+h3 {
+    font-size: 10.5pt;
+    font-weight: 700;
+    color: #0071e3;
+    margin-top: 14px;
+    margin-bottom: 8px;
+    page-break-after: avoid;
+}
+
+p { margin: 0 0 8px 0; color: #333336; }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 16px 0;
+    font-size: 8.5pt;
+}
+
+th {
+    background-color: #f5f5f7;
+    color: #111113;
+    font-weight: 700;
+    text-align: left;
+    padding: 7px 8px;
+    border: 1px solid #d2d2d7;
+}
+
+td {
+    padding: 6px 8px;
+    border: 1px solid #e5e5ea;
+    color: #333336;
+    vertical-align: middle;
+}
+
+tr:nth-child(even) td { background-color: #fbfbfd; }
+
+blockquote {
+    margin: 10px 0;
+    padding: 8px 14px;
+    background-color: #f0f7ff;
+    border-left: 3px solid #0071e3;
+    color: #1d1d1f;
+    font-size: 8.5pt;
+    border-radius: 0 6px 6px 0;
+}
+
+code {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 8pt;
+    background-color: #f5f5f7;
+    padding: 2px 4px;
+    border-radius: 4px;
+    color: #bf4800;
+}
+
+ul, ol { margin: 0 0 10px 0; padding-left: 18px; }
+li { margin-bottom: 4px; color: #333336; }
+
+/* 分路实战推演导读卡 */
+.lane-verify-banner {
+    background: #fbfbfd;
+    border: 1px solid #e5e5ea;
+    border-left: 3.5px solid #0071e3;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin: 14px 0 20px;
+    font-size: 8.5pt;
+    color: #6e6e73;
+    line-height: 1.6;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.lane-verify-tag {
+    background: rgba(0, 113, 227, 0.08);
+    color: #0071e3;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.lane-verify-banner a {
+    color: #0071e3;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* 英雄出装微型验算胶囊 */
+.build-slot-line {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 6px;
+    margin: 8px 0;
+    font-size: 8.5pt;
+    line-height: 1.4;
+}
+.build-slot-label {
+    font-weight: 700;
+    color: #1d1d1f;
+    white-space: nowrap;
+}
+.build-slot-items {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    flex-wrap: nowrap;
+}
+.sandbox-verify-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: #f0f7ff;
+    border: 1px solid rgba(0, 113, 227, 0.35);
+    color: #0071e3;
+    padding: 2px 7px;
+    border-radius: 980px;
+    font-size: 7.5pt;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+    margin-left: 6px;
+    box-shadow: 0 1px 3px rgba(0, 113, 227, 0.08);
+}
+

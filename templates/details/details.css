@@ -1,0 +1,112 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    width: 800px;
+    height: 1000px;
+    background: #f5f5f7;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    color: #1d1d1f;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 55px 45px;
+    position: relative;
+    overflow: hidden;
+}
+
+.header-area {
+    text-align: center;
+    margin-bottom: 26px;
+    width: 100%;
+}
+
+.season-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #ffffff;
+    color: #0071e3;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 6px 18px;
+    border-radius: 20px;
+    letter-spacing: 0.02em;
+    border: 1px solid rgba(0, 113, 227, 0.16);
+    box-shadow: 0 2px 10px rgba(0, 113, 227, 0.06);
+    margin-bottom: 12px;
+}
+.season-pill .dot {
+    width: 6px;
+    height: 6px;
+    background: #0071e3;
+    border-radius: 50%;
+}
+
+.main-title {
+    font-size: 46px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    color: #1d1d1f;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 19px;
+    color: #6e6e73;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.subtitle-badge {
+    background: #0071e3;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 6px;
+}
+
+.hero-stage {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Apple 旗舰纯白卡片 */
+.pro-card {
+    width: 710px;
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 26px 26px;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.card-footer-tip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fbfbfd;
+    border: 1px solid #f0f0f4;
+    border-radius: 14px;
+    padding: 12px 18px;
+    font-size: 14px;
+    color: #6e6e73;
+    font-weight: 600;
+}
+.card-footer-tip strong {
+    color: #0071e3;
+    font-weight: 700;
+}

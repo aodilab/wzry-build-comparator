@@ -135,8 +135,8 @@ def build_hero_builds(output_file=None, max_workers=10):
                 print(f"抓取警告: {res['cname']}, 原因: {res.get('error')}")
 
     # 生成 Markdown 知识库
-    markdown_content = "# 王者荣耀最新赛季五大分路定位与实战出装思路库\n\n"
-    markdown_content += f"> 本知识库收录国服全量 {len(hero_results)} 位英雄按【对抗路、打野、中路、发育路、游走】分路组织的官方出装。\n"
+    markdown_content = "# 王者荣耀 S45 赛季（月照长安）五大分路定位与实战出装思路库\n\n"
+    markdown_content += f"> 本知识库收录王者荣耀 S45 赛季“月照长安”国服全量 {len(hero_results)} 位英雄（含第133位新英雄王维及重做英雄）按【对抗路、打野、中路、发育路、游走】分路组织的实战出装与最新装备数值调整（暴烈/破魔刀增血、制裁之刃重做等）。\n"
     markdown_content += "> 核心规则贯彻：严格排除已被合成消耗的原料小件，仅对最终 6 件成装进行净属性叠加，并预测 15 级终极实战面板。专为局内出装决策设计。\n\n"
 
     by_lane = {"对抗路": [], "打野": [], "中路": [], "发育路": [], "游走": [], "其他": []}

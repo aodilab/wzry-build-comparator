@@ -22,11 +22,23 @@ from .new_heroes import (
     YING_HERO_PATCH,
     YUANLIU_TANK_HERO_PATCH,
     YUANLIU_MAGE_HERO_PATCH,
+    WANGWEI_HERO_PATCH,
+    WANGWEI_ARCANA_PATCH,
 )
 
 from .variants import (
     YANGJIAN_HERO_PATCH,
     CANG_HERO_PATCH,
+)
+
+from .s45_heroes_patch import (
+    NIUMO_HERO_PATCH,
+    GUANYU_HERO_PATCH,
+    LIBAI_HERO_PATCH,
+    MENGYA_HERO_PATCH,
+    XIAHOUDUN_HERO_PATCH,
+    KONGKONGER_HERO_PATCH,
+    LUBU_HERO_PATCH,
 )
 
 from .hero_builds_patch import HERO_BUILDS_PATCHES
@@ -40,6 +52,14 @@ if "大司命" not in HERO_ARCANA_PATCHES:
     HERO_ARCANA_PATCHES["大司命"] = DASIMING_ARCANA_PATCH
 if "大司命" not in HERO_RELATIONS_PATCHES:
     HERO_RELATIONS_PATCHES["大司命"] = DASIMING_HERO_PATCH.get("relations", {})
+
+# 补齐王维已有补丁到统一字典
+if "王维" not in HERO_BUILDS_PATCHES:
+    HERO_BUILDS_PATCHES["王维"] = WANGWEI_HERO_PATCH.get("equips", [])
+if "王维" not in HERO_ARCANA_PATCHES:
+    HERO_ARCANA_PATCHES["王维"] = WANGWEI_ARCANA_PATCH
+if "王维" not in HERO_RELATIONS_PATCHES:
+    HERO_RELATIONS_PATCHES["王维"] = WANGWEI_HERO_PATCH.get("relations", {})
 
 # 全局受控重做技能补丁统一注册字典
 REWORKED_HERO_SKILLS_PATCHES = {
@@ -57,5 +77,14 @@ REWORKED_HERO_SKILLS_PATCHES = {
     "苍": CANG_HERO_PATCH,
     "元流之子(坦克)": YUANLIU_TANK_HERO_PATCH,
     "元流之子(法师)": YUANLIU_MAGE_HERO_PATCH,
+    "王维": WANGWEI_HERO_PATCH,
+    "牛魔": NIUMO_HERO_PATCH,
+    "关羽": GUANYU_HERO_PATCH,
+    "李白": LIBAI_HERO_PATCH,
+    "蒙犽": MENGYA_HERO_PATCH,
+    "夏侯惇": XIAHOUDUN_HERO_PATCH,
+    "空空儿": KONGKONGER_HERO_PATCH,
+    "吕布": LUBU_HERO_PATCH,
 }
+
 

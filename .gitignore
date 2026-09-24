@@ -41,8 +41,13 @@ scratch/
 *.log
 .cache/
 
-# 商业私有化资产（严禁上传到公开 GitHub，防止小程序被直接盗版抄袭）
+# 商业私有化资产与电商运营（严禁上传到公开 GitHub，防止数字资产与运营策略泄露）
+taobao/
 miniprogram/
 src/builders/miniprogram_builder.py
 templates/miniprogram/
+
+# 生产分发物料与 Cloudflare 账户凭证（仅由 Wrangler CLI 自动化推送）
+.wrangler/
+dist_pages/
 

@@ -129,8 +129,8 @@ def build_hero_relations(output_file=None, max_workers=10):
                 print(f"抓取警告: {res['cname']}, 原因: {res.get('error')}")
 
     # 生成 Markdown
-    markdown_content = "# 王者荣耀最新赛季英雄战术克制与阵容搭档拓扑库\n\n"
-    markdown_content += f"> 本知识库收录国服全量 {len(hero_results)} 位英雄的克制与协同关系网络，专为 BP 选人决策、阵容搭配与反制分析设计。\n\n"
+    markdown_content = "# 王者荣耀 S45 赛季（月照长安）英雄战术克制与阵容搭档拓扑库\n\n"
+    markdown_content += f"> 本知识库收录王者荣耀 S45 赛季“月照长安”国服全量 {len(hero_results)} 位英雄的克制与协同关系网络（包含第133位新英雄王维及重做英雄），专为 BP 选人决策、阵容搭配与反制分析设计。\n\n"
 
     by_role = {}
     for h in hero_results:
