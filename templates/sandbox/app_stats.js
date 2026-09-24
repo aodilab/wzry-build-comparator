@@ -165,6 +165,8 @@ function recalculate() {
 
   const goldEl = document.getElementById('totalGold');
   if (goldEl) goldEl.innerText = `${totalGold.toLocaleString()} G`;
+  const mobileGoldEl = document.getElementById('mobileTotalGold');
+  if (mobileGoldEl) mobileGoldEl.innerText = `${totalGold} 金币`;
   
   const statsBox = document.getElementById('statsContainer');
   if (statsBox) {
@@ -173,14 +175,14 @@ function recalculate() {
         <div class="stats-grid">
           <div class="stat-cell"><span class="stat-name">物理攻击</span><div class="stat-num-box"><span class="stat-val highlight-ad">${totals.atk + arcanaTotals.atk + bAtk}</span>${(totals.atk + arcanaTotals.atk) > 0 ? `<span class="stat-plus">+${totals.atk + arcanaTotals.atk}</span>` : ''}</div></div>
           <div class="stat-cell"><span class="stat-name">法术攻击</span><div class="stat-num-box"><span class="stat-val highlight-ap">${finalAp}</span>${finalAp > 0 ? `<span class="stat-plus">+${finalAp}</span>` : ''}</div></div>
-          <div class="stat-cell"><span class="stat-name">最大生命</span><div class="stat-num-box"><span class="stat-val highlight-hp">${finalHp.toLocaleString()}</span>${(totals.hp + arcanaTotals.hp) > 0 ? `<span class="stat-plus">+${totals.hp + arcanaTotals.hp}</span>` : ''}</div></div>
+          <div class="stat-cell"><span class="stat-name">最大生命</span><div class="stat-num-box"><span class="stat-val highlight-hp">${finalHp}</span>${(totals.hp + arcanaTotals.hp) > 0 ? `<span class="stat-plus">+${totals.hp + arcanaTotals.hp}</span>` : ''}</div></div>
           <div class="stat-cell"><span class="stat-name">物理防御</span><div class="stat-num-box"><span class="stat-val highlight-arm">${totPdef}</span>${(totals.pdef + arcanaTotals.pdef) > 0 ? `<span class="stat-plus">+${totals.pdef + arcanaTotals.pdef}</span>` : ''}</div></div>
           <div class="stat-cell"><span class="stat-name">法术防御</span><div class="stat-num-box"><span class="stat-val highlight-marm">${totMdef}</span>${(totals.mdef + arcanaTotals.mdef) > 0 ? `<span class="stat-plus">+${totals.mdef + arcanaTotals.mdef}</span>` : ''}</div></div>
           <div class="stat-cell"><span class="stat-name">冷却缩减</span><div class="stat-num-box"><span class="stat-val highlight-cdr">${cappedCdr}%</span>${cappedCdr >= 40 ? `<span class="stat-cap">满CD</span>` : ''}</div></div>
           <div class="stat-cell"><span class="stat-name">暴击率</span><div class="stat-num-box"><span class="stat-val highlight-crit">${totalCrit}%</span></div></div>
           <div class="stat-cell"><span class="stat-name">移动速度</span><div class="stat-num-box"><span class="stat-val highlight-spd">${calcSpeed}</span>${(calcSpeed - bSpeed) > 0 ? `<span class="stat-plus">+${calcSpeed - bSpeed}</span>` : ''}</div></div>
           <div class="stat-cell"><span class="stat-name">物理穿透</span><div class="stat-num-box"><span class="stat-val highlight-ad">+${totalPhysPierce}</span></div></div>
-          <div class="stat-cell"><span class="stat-name">法术穿透</span><div class="stat-num-box"><span class="stat-val highlight-ap">+${totalMagicPierce}</span></div></div>
+          ${totalMagicPierce > 0 ? `<div class="stat-cell"><span class="stat-name">法术穿透</span><div class="stat-num-box"><span class="stat-val highlight-ap">+${totalMagicPierce}</span></div></div>` : ''}
         </div>
       `;
     } else {
@@ -319,6 +321,13 @@ function renderDiagnosis(effectiveItems, consumedNotes) {
   const diagBox = document.getElementById('diagnoseContainer');
   if (!diagBox) return;
   diagBox.innerHTML = '';
+  const diagPanel = diagBox.closest('.diag-panel');
+  if (effectiveItems.length === 0) {
+    if (diagPanel) diagPanel.style.display = 'none';
+    return;
+  }
+  if (diagPanel) diagPanel.style.display = '';
+
   const effNames = effectiveItems.map(i => i.item_name);
   const issues = [];
 

@@ -38,16 +38,47 @@ function renderArcanaBar() {
   });
 }
 
+let currentArcanaMobileTab = 'red';
+
+function switchArcanaMobileTab(tab) {
+  currentArcanaMobileTab = tab;
+  renderArcanaModal();
+}
+
+function applyArcanaPreset(name) {
+  if (name === '官方推荐') {
+    initHeroArcana(currentHero);
+  } else if (name === '物理百穿') {
+    currentArcana = { red: { '异变': 10 }, green: { '鹰眼': 10 }, blue: { '隐匿': 10 } };
+  } else if (name === '暴击流') {
+    currentArcana = { red: { '无双': 3, '祸源': 7 }, green: { '鹰眼': 10 }, blue: { '夺萃': 10 } };
+  } else if (name === '攻速暴击') {
+    currentArcana = { red: { '红月': 10 }, green: { '鹰眼': 10 }, blue: { '狩猎': 10 } };
+  } else if (name === '法术爆发') {
+    currentArcana = { red: { '梦魇': 10 }, green: { '心眼': 10 }, blue: { '狩猎': 10 } };
+  } else if (name === '坦克千血') {
+    currentArcana = { red: { '宿命': 10 }, green: { '虚空': 10 }, blue: { '调和': 10 } };
+  }
+  renderArcanaBar();
+  renderArcanaModal();
+  recalculate();
+}
+
 function openArcanaModal() {
   const overlay = document.getElementById('arcanaModalOverlay');
   if (!overlay) return;
   overlay.classList.add('active');
-  document.getElementById('arcanaModalSub').innerText = `【${currentHero.cname || ''}】铭文方案，支持自由增减颗数混搭，修改后立即实时重新演算面板`;
+  const sub = document.getElementById('arcanaModalSub');
+  if (sub) {
+    sub.innerText = window.innerWidth <= 768 
+      ? '各色满配10颗 · 支持微调混搭' 
+      : `【${currentHero.cname || ''}】铭文方案，支持自由增减颗数混搭，修改后立即实时重新演算面板`;
+  }
   renderArcanaModal();
 }
 
 function closeArcanaModal(e) {
-  if (e && e.target !== e.currentTarget) return;
+  if (e && e.target !== e.currentTarget && !e.target.classList.contains('arcana-modal-close') && !e.target.closest('.arcana-modal-close')) return;
   const overlay = document.getElementById('arcanaModalOverlay');
   if (overlay) overlay.classList.remove('active');
 }
@@ -56,6 +87,57 @@ function renderArcanaModal() {
   const body = document.getElementById('arcanaModalBody');
   if (!body) return;
   body.innerHTML = '';
+
+  if (window.innerWidth <= 768) {
+    const rTot = getColorTotalCount('red');
+    const gTot = getColorTotalCount('green');
+    const bTot = getColorTotalCount('blue');
+    const presets = ['官方推荐', '物理百穿', '暴击流', '攻速暴击', '法术爆发', '坦克千血'];
+    const activeTab = currentArcanaMobileTab || 'red';
+    const activeMap = currentArcana[activeTab] || {};
+    const colorArcanas = Object.values(ARCANA_DATA).filter(a => a.color_type === activeTab);
+
+    body.innerHTML = `
+      <div class="arcana-mobile-header-sub">流派快捷预设：</div>
+      <div class="arcana-presets-bar">
+        ${presets.map(p => `<div class="arcana-preset-pill" onclick="applyArcanaPreset('${p}')">${p}</div>`).join('')}
+      </div>
+      <div class="arcana-mobile-tabs">
+        <div class="arcana-mobile-tab ${activeTab==='red'?'active':''}" onclick="switchArcanaMobileTab('red')">
+          <span class="dot red-dot"></span>红色 (${rTot}/10)
+        </div>
+        <div class="arcana-mobile-tab ${activeTab==='green'?'active':''}" onclick="switchArcanaMobileTab('green')">
+          <span class="dot green-dot"></span>绿色 (${gTot}/10)
+        </div>
+        <div class="arcana-mobile-tab ${activeTab==='blue'?'active':''}" onclick="switchArcanaMobileTab('blue')">
+          <span class="dot blue-dot"></span>蓝色 (${bTot}/10)
+        </div>
+      </div>
+      <div class="arcana-mobile-grid">
+        ${colorArcanas.map(a => {
+          const cnt = activeMap[a.name] || 0;
+          return `
+            <div class="arcana-pick-card ${cnt > 0 ? 'active' : ''}">
+              <div class="arcana-pick-top">
+                <img class="arcana-pick-img" src="${a.icon}" alt="${a.name}">
+                <div class="arcana-stepper">
+                  <button class="stepper-btn ${cnt > 0 ? '' : 'disabled'}" onclick="modifyArcanaCount('${activeTab}', '${a.name}', -1)">-</button>
+                  <span class="stepper-count">${cnt}</span>
+                  <button class="stepper-btn" onclick="modifyArcanaCount('${activeTab}', '${a.name}', 1)">+</button>
+                </div>
+              </div>
+              <div class="arcana-pick-name">${a.name}</div>
+              <div class="arcana-pick-des">${a.raw_des}</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      <div class="modal-footer-box">
+        <button class="arcana-confirm-btn" onclick="closeArcanaModal()">确定装配并生效</button>
+      </div>
+    `;
+    return;
+  }
 
   const sections = [
     { key: 'red', title: '红色铭文 (上限10颗)', colClass: 'arcana-col-red', activeClass: 'arcana-active-red' },

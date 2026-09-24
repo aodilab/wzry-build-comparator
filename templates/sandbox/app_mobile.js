@@ -66,10 +66,17 @@ function updateSynergyBrief() {
   if (!currentSlots || currentSlots.length === 0) {
     if (badge) {
       badge.innerText = '待选装';
-      badge.style.background = 'var(--text-tertiary)';
+      badge.className = 'synergy-score-pill';
+      badge.style.background = '';
     }
-    if (styleTag) styleTag.innerText = '待装配推演';
-    if (summary) summary.innerText = '点击下方装备入槽，系统将实时演算技能机制与被动乘区协同。';
+    if (styleTag) {
+      styleTag.innerText = '待装配推演';
+      styleTag.className = 'synergy-brief-tag';
+    }
+    if (summary) {
+      summary.innerText = '暂未选配装备。点击“一键神装”或挑选装备入槽，系统将实时演算战术机制。';
+      summary.className = 'synergy-brief-summary';
+    }
     if (highlights) highlights.innerHTML = '';
     return;
   }

@@ -58,10 +58,16 @@ function updateThemeBtnIcon(theme) {
 
 function updateSpotlight() {
   if (!currentHero) return;
-  document.getElementById('spotAvatar').src = `https://game.gtimg.cn/images/yxzj/img201606/heroimg/${currentHero.ename}/${currentHero.ename}.jpg`;
-  document.getElementById('spotName').innerText = currentHero.cname || '未知英雄';
-  document.getElementById('spotTitle').innerText = currentHero.title ? `${currentHero.title} · Lv.15 满级` : 'Lv.15 满级状态';
-  document.getElementById('spotLane').innerText = `${currentHero.lane || '对抗路'} ｜ ${currentHero.role || '战士'}`;
+  const avatar = document.getElementById('spotAvatar');
+  if (avatar) avatar.src = `https://game.gtimg.cn/images/yxzj/img201606/heroimg/${currentHero.ename}/${currentHero.ename}.jpg`;
+  const name = document.getElementById('spotName');
+  if (name) name.innerText = currentHero.cname || '未知英雄';
+  const title = document.getElementById('spotTitle');
+  if (title) title.innerText = currentHero.title || '正义爆轰';
+  const lane = document.getElementById('spotLane');
+  if (lane) lane.innerText = currentHero.lane || '对抗路';
+  const role = document.getElementById('spotRole');
+  if (role) role.innerText = currentHero.role || '坦克';
 }
 
 function setHeroFilter(lane, el) {
@@ -147,7 +153,7 @@ function renderItems() {
     return matchCat && matchQuery;
   });
 
-  document.getElementById('itemCountBadge').innerText = `${filtered.length} 件装备`;
+  document.getElementById('itemCountBadge').innerText = window.innerWidth <= 768 ? `${filtered.length}件` : `${filtered.length} 件装备`;
 
   filtered.forEach(it => {
     const inSlot = currentSlots.some(s => s.item_name === it.item_name);
@@ -205,8 +211,13 @@ function renderItems() {
 
 function renderSlots() {
   const grid = document.getElementById('slotsGrid');
+  if (!grid) return;
   grid.innerHTML = '';
-  document.getElementById('slotCount').innerText = `已选 ${currentSlots.length} / 6 件`;
+  
+  const countBadge = document.getElementById('slotCount');
+  if (countBadge) countBadge.innerText = `已选 ${currentSlots.length} / 6 件`;
+  const countDisplay = document.getElementById('slotCountDisplay');
+  if (countDisplay) countDisplay.innerText = `(${currentSlots.length}/6)`;
 
   for (let i = 0; i < 6; i++) {
     const item = currentSlots[i];
@@ -217,11 +228,15 @@ function renderSlots() {
       slot.onclick = () => removeSlot(i);
       slot.innerHTML = `
         <img alt="${item.item_name}" src="https://game.gtimg.cn/images/yxzj/img201606/itemimgo/${item.item_id}.png" onerror="this.src='https://game.gtimg.cn/images/yxzj/img201606/itemimg/${item.item_id}.jpg'">
+        <span class="slot-item-name">${item.item_name}</span>
         <span class="slot-remove-badge">×</span>
       `;
     } else {
       slot.className = 'slot';
-      slot.innerHTML = `<span class="slot-num">${i + 1}</span>`;
+      slot.innerHTML = `
+        <div class="empty-plus">+</div>
+        <div class="empty-txt">空槽 ${i + 1}</div>
+      `;
     }
     grid.appendChild(slot);
   }
