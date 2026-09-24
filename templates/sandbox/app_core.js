@@ -167,21 +167,38 @@ function renderItems() {
       ? `<div class="item-passive-pill" title="${it.des2}">${passiveClean}</div>` 
       : `<div class="item-passive-pill pill-subtle">${it.category || '基础装备'}</div>`;
 
-    card.innerHTML = `
-      <span class="item-equipped-badge">已装配</span>
-      <div class="item-top">
+    if (window.innerWidth <= 768) {
+      card.innerHTML = `
         <img class="item-icon" alt="${it.item_name}" src="https://game.gtimg.cn/images/yxzj/img201606/itemimgo/${it.item_id}.png" onerror="this.src='https://game.gtimg.cn/images/yxzj/img201606/itemimg/${it.item_id}.jpg'">
-        <div class="item-meta">
-          <div class="item-name">${it.item_name}</div>
-          <div class="item-price-pill">${it.total_price || 0} G</div>
+        <div class="item-info">
+          <div class="item-title-row">
+            <div class="item-name-box">
+              <span class="item-cname">${it.item_name}</span>
+              ${inSlot ? '<span class="item-equipped-badge">已装配</span>' : ''}
+            </div>
+            <span class="item-gold-pill">${it.total_price || 0} 金币</span>
+          </div>
+          <div class="item-des">${it.des1 || it.des2 || '基础属性加成'}</div>
         </div>
-      </div>
-      <div class="item-body">
-        <div class="item-stat-line item-stat-primary">${line1}</div>
-        <div class="item-stat-line">${line2}</div>
-      </div>
-      ${passivePillHtml}
-    `;
+        <div class="item-add-btn ${inSlot ? 'equipped-btn' : ''}">${inSlot ? '✓' : '+'}</div>
+      `;
+    } else {
+      card.innerHTML = `
+        <span class="item-equipped-badge">已装配</span>
+        <div class="item-top">
+          <img class="item-icon" alt="${it.item_name}" src="https://game.gtimg.cn/images/yxzj/img201606/itemimgo/${it.item_id}.png" onerror="this.src='https://game.gtimg.cn/images/yxzj/img201606/itemimg/${it.item_id}.jpg'">
+          <div class="item-meta">
+            <div class="item-name">${it.item_name}</div>
+            <div class="item-price-pill">${it.total_price || 0} G</div>
+          </div>
+        </div>
+        <div class="item-body">
+          <div class="item-stat-line item-stat-primary">${line1}</div>
+          <div class="item-stat-line">${line2}</div>
+        </div>
+        ${passivePillHtml}
+      `;
+    }
     container.appendChild(card);
   });
 }
