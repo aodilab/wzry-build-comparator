@@ -352,11 +352,15 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 .benchmark-header-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 2px;
 }
 .benchmark-header-title {
   font-size: 13px;
@@ -367,49 +371,64 @@
   font-size: 11px;
   color: var(--text-secondary);
 }
-.benchmark-presets-grid {
-  display: grid;
-  gap: 8px;
+
+/* iOS 原生分段控制器 (Segmented Tab Bar) */
+.benchmark-segmented-bar {
+  display: flex;
+  background: #ebebed;
+  padding: 3px;
+  border-radius: 999px;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 4px;
 }
-.benchmark-preset-card {
-  background: var(--apple-card);
-  border: 1.5px solid var(--apple-border);
-  border-radius: 12px;
-  padding: 10px 12px;
+.benchmark-tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 6px 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #636366;
+  border-radius: 999px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  user-select: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.benchmark-tab-item.active {
+  background: #ffffff;
+  color: #1d1d1f;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 激活的对标出装单卡片 (100% 容器宽度，绝不超出屏幕) */
+.benchmark-active-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  padding: 10px 12px;
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-.benchmark-preset-card.active {
-  border-color: #0071e3;
-  background: #f0f7ff;
-}
-.benchmark-preset-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.benchmark-preset-tag {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-.benchmark-active-pill {
-  font-size: 10px;
-  font-weight: 700;
-  color: #0071e3;
-  background: #e8f3ff;
-  padding: 2px 6px;
-  border-radius: 4px;
+.benchmark-active-desc {
+  font-size: 11px;
+  line-height: 1.4;
+  color: #6e6e73;
 }
 
-/* 推荐方案的具体6件装备微缩图 */
+/* 推荐方案的具体6件装备微缩图 (均匀6等分) */
 .benchmark-items-wrap {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
 }
 .benchmark-mini-item {
   display: flex;

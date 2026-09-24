@@ -65,8 +65,9 @@ function renderSynergyContent() {
     sub.innerText = `自选 ${effItems.length}/6 件 · 对标王者官方推荐出装机制全维对比`;
   }
 
-  // 1. 获取王者推荐方案列表与当前选中的基准
-  const officialPresets = typeof getHeroOfficialPresets === 'function' ? getHeroOfficialPresets(hero) : [];
+  // 1. 获取王者推荐方案列表与当前选中的基准 (联动当前选中的主玩分路)
+  const currentLane = (typeof currentHeroActiveLane !== 'undefined') ? currentHeroActiveLane : (hero.lane || '对抗路');
+  const officialPresets = typeof getHeroOfficialPresets === 'function' ? getHeroOfficialPresets(hero, currentLane) : [];
   const activePreset = officialPresets.find(p => p.id === currentBenchmarkPresetId) || officialPresets[0] || { items: [] };
 
   // 2. 调用全维对比核心引擎
@@ -80,31 +81,30 @@ function renderSynergyContent() {
 
   const isEmp = effItems.length === 0;
 
-  // 3. 渲染王者推荐方案卡片 (包含该方案具体的 6 件装备微缩图，让用户看清对方出了什么)
+  // 3. 渲染王者推荐方案 (iOS 原生分段控制器切换方案 + 100% 容器宽度单卡片，彻底消灭横向滚动与晃动)
   const presetsHtml = `
     <div class="benchmark-section">
       <div class="benchmark-header-row">
-        <span class="benchmark-header-title">王者推荐方案备选</span>
-        <span class="benchmark-hint">点击可切换对标方案</span>
+        <span class="benchmark-header-title">王者推荐方案</span>
+        <span class="benchmark-hint">点击标签切换对标</span>
       </div>
-      <div class="benchmark-presets-grid" style="grid-template-columns: repeat(${Math.max(1, officialPresets.length)}, 1fr);">
+      <div class="benchmark-segmented-bar">
         ${officialPresets.map(p => `
-          <div class="benchmark-preset-card ${p.id === activePreset.id ? 'active' : ''}" onclick="switchBenchmarkPreset('${p.id}')">
-            <div class="benchmark-preset-top">
-              <span class="benchmark-preset-tag">${p.title}</span>
-              ${p.id === activePreset.id ? '<span class="benchmark-active-pill">对标中</span>' : ''}
-            </div>
-            <!-- 具体出装 6 件套微缩呈现 -->
-            <div class="benchmark-items-wrap">
-              ${(p.items || []).map(it => `
-                <div class="benchmark-mini-item" title="${it.item_name}">
-                  <img src="${it.icon || 'https://game.gtimg.cn/images/yxzj/img201606/itemimg/' + it.item_id + '.jpg'}" alt="${it.item_name}" class="benchmark-mini-img" onerror="this.style.opacity='0.5'">
-                  <span class="benchmark-mini-name">${it.item_name}</span>
-                </div>
-              `).join('')}
-            </div>
+          <div class="benchmark-tab-item ${p.id === activePreset.id ? 'active' : ''}" onclick="switchBenchmarkPreset('${p.id}')">
+            ${p.title}
           </div>
         `).join('')}
+      </div>
+      <div class="benchmark-active-card">
+        ${activePreset.desc ? `<div class="benchmark-active-desc">${activePreset.desc}</div>` : ''}
+        <div class="benchmark-items-wrap">
+          ${(activePreset.items || []).map(it => `
+            <div class="benchmark-mini-item" title="${it.item_name}">
+              <img src="${it.icon || 'https://game.gtimg.cn/images/yxzj/img201606/itemimg/' + it.item_id + '.jpg'}" alt="${it.item_name}" class="benchmark-mini-img" onerror="this.style.opacity='0.5'">
+              <span class="benchmark-mini-name">${it.item_name}</span>
+            </div>
+          `).join('')}
+        </div>
       </div>
     </div>
   `;
@@ -122,7 +122,7 @@ function renderSynergyContent() {
     <div class="diff-table-card">
       <div class="diff-table-header">
         <div class="col-metric">属性指标</div>
-        <div class="col-user">自选数值 (您)</div>
+        <div class="col-user">自选数值</div>
         <div class="col-base">王者推荐数值</div>
         <div class="col-diff">相比推荐差异</div>
       </div>

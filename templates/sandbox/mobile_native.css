@@ -323,21 +323,49 @@ html, body {
     align-items: center !important; justify-content: center !important; flex-shrink: 0 !important; margin-left: 6px !important;
   }
   .item-add-btn.equipped-btn { background: rgba(52, 199, 89, 0.18) !important; color: #34c759 !important; font-weight: 700 !important; }
-  .hero-modal-card, .arcana-modal-card, .synergy-modal-card {
+  .hero-modal-card {
     width: 100% !important; max-width: 100% !important; max-height: 85vh !important;
     border-radius: 20px 20px 0 0 !important; position: fixed !important; bottom: 0 !important;
     margin: 0 !important; animation: appleBottomSheetUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
     background: #ffffff !important; border: none !important;
+    display: flex !important; flex-direction: column !important; overflow: hidden !important;
+  }
+  .arcana-modal-card, .synergy-modal-card {
+    width: 100% !important; max-width: 100% !important; max-height: 85vh !important;
+    border-radius: 20px 20px 0 0 !important; position: fixed !important; bottom: 0 !important;
+    margin: 0 !important; animation: appleBottomSheetUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    background: #ffffff !important; border: none !important;
+    display: flex !important; flex-direction: column !important; overflow: hidden !important;
   }
   .hero-modal-header, .arcana-modal-header, .synergy-modal-header {
     padding: 14px 16px 10px 16px !important; border-bottom: 1px solid rgba(0,0,0,0.05) !important;
     display: flex !important; justify-content: space-between !important; align-items: center !important;
+    flex-shrink: 0 !important;
+  }
+  .synergy-modal-scroll {
+    padding: 12px 14px 40px 14px !important;
+    gap: 14px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-x: none !important;
+    overscroll-behavior-y: contain !important;
+    touch-action: pan-y !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .diff-table-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
   }
   .hero-modal-scroll {
     grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    grid-auto-rows: minmax(84px, auto) !important;
+    grid-auto-rows: minmax(78px, auto) !important;
     gap: 8px !important;
-    padding: 10px 12px 30px 12px !important;
+    padding: 8px 12px 30px 12px !important;
     width: 100% !important;
     max-width: 100% !important;
     overflow-y: auto !important;
@@ -347,21 +375,64 @@ html, body {
     touch-action: pan-y !important;
     -webkit-overflow-scrolling: touch !important;
     box-sizing: border-box !important;
+    flex: 1 1 auto !important;
   }
   #heroModalTabs {
     width: calc(100% - 24px) !important;
-    margin: 0 12px 10px 12px !important;
+    margin: 8px 12px 6px 12px !important;
     box-sizing: border-box !important;
     overflow: hidden !important;
+    flex-shrink: 0 !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    display: flex !important;
+    background: #e5e5ea !important;
+    border-radius: 999px !important;
+    padding: 2px !important;
+    gap: 3px !important;
   }
-  .hero-modal-scroll .hero-avatar { width: 56px !important; height: 56px !important; border-radius: 14px !important; object-fit: cover !important; }
+  #heroModalTabs .seg-item {
+    flex: 1 !important;
+    height: 32px !important;
+    line-height: 32px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    text-align: center !important;
+    border-radius: 999px !important;
+    color: #636366 !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+  #heroModalTabs .seg-item.active {
+    background: #ffffff !important;
+    color: #1d1d1f !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12) !important;
+  }
+  .hero-modal-scroll .hero-avatar {
+    width: 46px !important;
+    height: 46px !important;
+    border-radius: 12px !important;
+    object-fit: cover !important;
+    flex-shrink: 0 !important;
+  }
   .hero-modal-scroll .hero-card {
     display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important;
-    padding: 8px 4px !important; border-radius: 14px !important; cursor: pointer !important; background: transparent !important; border: 1.5px solid transparent !important;
-    width: 100% !important; max-width: 100% !important; min-width: 0 !important; box-sizing: border-box !important; min-height: 84px !important;
+    padding: 6px 2px !important; border-radius: 12px !important; cursor: pointer !important; background: transparent !important; border: 1.5px solid transparent !important;
+    width: 100% !important; max-width: 100% !important; min-width: 0 !important; box-sizing: border-box !important; min-height: 76px !important;
   }
   .hero-modal-scroll .hero-card.selected { background: #e8f3ff !important; border-color: #0071e3 !important; }
-  .hero-modal-scroll .hero-card-name { font-size: 12px !important; font-weight: 600 !important; color: #1d1d1f !important; margin-top: 6px !important; text-align: center !important; max-width: 100% !important; overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; }
+  .hero-modal-scroll .hero-card-name {
+    font-size: 12px !important; font-weight: 600 !important; color: #1d1d1f !important;
+    margin-top: 4px !important; text-align: center !important; width: 100% !important;
+    height: 16px !important; line-height: 16px !important; flex-shrink: 0 !important;
+    overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important;
+  }
 
   /* 主玩分路胶囊按钮 */
   .hero-lane-switch-bar {
