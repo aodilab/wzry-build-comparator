@@ -232,17 +232,153 @@
   border: 1px solid var(--apple-border);
 }
 
-.score-basis-row.desktop .basis-chip b {
+/* ==========================================================================
+   官方出装横向全维对比 (Benchmark Presets & Numerical Diff Styles)
+   ========================================================================== */
+.benchmark-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.benchmark-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 700;
   color: var(--text-primary);
 }
 
-.score-basis-row.desktop .basis-chip.penalty {
-  background: rgba(255, 59, 48, 0.1);
-  color: #ff3b30;
-  border-color: rgba(255, 59, 48, 0.2);
+.benchmark-hint {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  font-weight: normal;
 }
 
-.score-basis-row.desktop .basis-chip.penalty b {
-  color: #ff3b30;
+.benchmark-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.benchmark-preset-card {
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--apple-card);
+  border: 1.5px solid var(--apple-border);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.benchmark-preset-card:hover {
+  border-color: #0071e3;
+  transform: translateY(-1px);
+}
+
+.benchmark-preset-card.active {
+  background: rgba(0, 113, 227, 0.05);
+  border-color: #0071e3;
+  box-shadow: 0 2px 10px rgba(0, 113, 227, 0.15);
+}
+
+.benchmark-preset-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.benchmark-preset-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--apple-subcard);
+  color: var(--text-secondary);
+}
+
+.benchmark-preset-card.active .benchmark-preset-tag {
+  background: #0071e3;
+  color: #fff;
+}
+
+.benchmark-preset-name {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.benchmark-preset-desc {
+  font-size: 10.5px;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+
+/* 全维数值对比 (Diff Grid) */
+.diff-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.diff-metric-card {
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.diff-metric-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.diff-metric-values {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.diff-metric-user {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.diff-pill {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 5px;
+  line-height: 1.3;
+}
+
+.diff-pill-plus {
+  background: rgba(52, 199, 89, 0.12);
+  color: #2e7d32;
+  border: 1px solid rgba(52, 199, 89, 0.3);
+}
+
+.diff-pill-minus {
+  background: rgba(255, 59, 48, 0.12);
+  color: #d32f2f;
+  border: 1px solid rgba(255, 59, 48, 0.3);
+}
+
+.diff-pill-equal {
+  background: var(--apple-subcard);
+  color: var(--text-secondary);
 }
 
