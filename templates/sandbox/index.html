@@ -113,7 +113,7 @@
     <div class="studio-presets-header">
       <div class="studio-presets-title">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0071e3" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-        官方权威推荐方案
+        王者官方推荐方案
         <span class="studio-presets-subtitle">点击任意方案，六神装与150级专属铭文自动装配联动</span>
       </div>
       <span class="studio-presets-badge" id="officialPresetTip">3套官方流派</span>
@@ -173,7 +173,7 @@
           </div>
           <div class="slots-dock-actions">
             <span class="panel-badge" id="slotCount">0 / 6 件</span>
-            <button class="action-pill-btn rec-btn" onclick="loadRecommendedEquips()" title="一键填入当前英雄权威经典配装">一键神装</button>
+            <button class="action-pill-btn rec-btn" onclick="loadRecommendedEquips()" title="一键填入当前英雄王者官方推荐配装">一键神装</button>
             <button class="action-pill-btn clear-btn" onclick="resetSlots()" title="清空全部槽位">清空</button>
           </div>
         </div>
@@ -206,21 +206,36 @@
         <div class="arcana-chips" id="arcanaChipsBar"></div>
       </div>
 
-      <!-- 方案对比与战术协同简报卡片 (对标王者官方推荐出装) -->
-      <div class="synergy-brief-card" id="synergyBriefCard" onclick="openSynergyModal()">
-        <div class="synergy-brief-header">
-          <div class="synergy-brief-title-wrap">
-            <span class="synergy-brief-title">自选方案 VS 官方推荐</span>
+      <!-- 全新：自选方案 VS 王者官方推荐 实时全维对比看板 -->
+      <div class="synergy-compare-board" id="synergyCompareBoard">
+        <div class="compare-board-header">
+          <div class="compare-title-wrap">
+            <span class="compare-main-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg>
+              自选方案 VS 官方推荐
+            </span>
           </div>
-          <div class="synergy-brief-right">
-            <span class="synergy-jump-txt">详细对比报告 ›</span>
+          <div class="compare-benchmark-selector">
+            <span>对标:</span>
+            <span class="compare-select-pill" id="compareBenchmarkName" onclick="cycleBenchmarkPreset()" title="点击切换对标的王者官方推荐流派">半肉流 ▾</span>
           </div>
         </div>
-        <div class="synergy-brief-body" id="synergyBriefBody">
-          <div class="synergy-brief-summary" id="synergyBriefSummary">
-            暂未选配装备。点击上方“官方推荐方案”或挑选装备入槽，实时演算方案对比。
+
+        <!-- 4 维核心数值实时对比网格 (攻击/伤害、生存血抗、技能运转、穿透/特色) -->
+        <div class="compare-grid-cards" id="compareGridCards">
+          <!-- 动态渲染 4 项对比卡片 -->
+        </div>
+
+        <!-- 智能实战战术诊断结论 -->
+        <div class="compare-verdict-box" id="compareVerdictBox">
+          <div class="compare-verdict-text" id="compareVerdictText">
+            暂未装配装备。挑选装备入槽或点击上方“王者官方推荐方案”，实时演算全维对比。
           </div>
-          <div class="synergy-brief-highlights" id="synergyBriefHighlights"></div>
+          <div class="compare-report-link-row">
+            <button class="compare-detail-link" onclick="openSynergyModal()">
+              查看技能机制与乘区详报 ›
+            </button>
+          </div>
         </div>
       </div>
 
