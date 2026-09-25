@@ -814,11 +814,21 @@ header {
   min-height: 520px;
 }
 
-.shop-section-panel,
+.shop-section-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
 .slots-stats-section-panel {
   height: 100%;
   display: flex;
   flex-direction: column;
+  padding: 14px;
+  gap: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* 通用 Apple Panel 与基础组件 */
@@ -1040,33 +1050,69 @@ header {
 .slots-dock {
   padding: 14px 16px;
   background: var(--apple-card);
-  border-bottom: 1px solid var(--apple-border);
+  border: 1px solid var(--apple-border);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
 }
 
-.slots-header {
+.slots-dock-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  gap: 6px;
 }
 
-.slots-cost {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--color-amber);
+.slots-dock-title-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.slots-dock-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: 4px;
+  white-space: nowrap;
 }
 
+.slots-gold-badge {
+  font-size: 11px;
+  background: var(--apple-subcard);
+  padding: 2px 6px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--apple-border);
+  white-space: nowrap;
+}
+
+.slots-dock-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.slots-dock-actions .panel-badge {
+  white-space: nowrap;
+  font-size: 11px;
+  padding: 2px 6px;
+}
+
+/* 2 行 3 列经典神装卡槽，100% 杜绝溢出并充分展开装备名称 */
 .slots-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
+  width: 100%;
 }
 
 .slot {
-  aspect-ratio: 1;
+  height: 80px;
   background: var(--apple-slot-bg);
   border: 1.5px dashed var(--apple-slot-border);
   border-radius: 12px;
@@ -1074,9 +1120,11 @@ header {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 3px;
+  padding: 4px 6px;
   cursor: pointer;
   position: relative;
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .slot:hover {
@@ -1093,22 +1141,47 @@ header {
 
 .slot.filled:hover {
   border-color: var(--color-red);
-  transform: scale(0.96);
+  transform: translateY(-1px);
 }
 
 .slot img {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
   object-fit: cover;
+  flex-shrink: 0;
+}
+
+.slot-item-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty-plus {
+  font-size: 18px;
+  color: var(--text-tertiary);
+  font-weight: 300;
+  line-height: 1;
+}
+
+.empty-txt {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  font-weight: 500;
 }
 
 .slot-remove-badge {
   position: absolute;
-  top: -4px;
-  right: -4px;
-  width: 16px;
-  height: 16px;
+  top: 4px;
+  right: 4px;
+  width: 17px;
+  height: 17px;
   border-radius: 50%;
   background: var(--color-red);
   color: #fff;
@@ -1117,17 +1190,11 @@ header {
   display: none;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
 .slot.filled:hover .slot-remove-badge {
   display: flex;
-}
-
-.slot-num {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-tertiary);
 }
 
 /* Apple Health 风格健康与体能指标 */
@@ -1238,14 +1305,23 @@ header {
 
 /* 智能诊断通告 (Apple Notification Banner) */
 .diag-panel {
-  padding: 12px 16px;
-  background: var(--apple-card);
-  border-top: 1px solid var(--apple-border);
-  max-height: 130px;
-  overflow-y: auto;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: var(--apple-subcard);
+  border: 1px solid var(--apple-border);
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+.diag-panel-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .diag-card {
@@ -1259,19 +1335,19 @@ header {
 }
 
 .diag-card-warn {
-  background: var(--color-red-bg);
+  background: rgba(255, 59, 48, 0.08);
   border: 1px solid rgba(255, 59, 48, 0.2);
-  color: var(--color-red);
+  color: #d32f2f;
 }
 
 .diag-card-pass {
-  background: var(--color-green-bg);
+  background: rgba(52, 199, 89, 0.08);
   border: 1px solid rgba(52, 199, 89, 0.2);
-  color: var(--color-green);
+  color: #2e7d32;
 }
 
 .diag-card-info {
-  background: var(--color-blue-bg);
+  background: rgba(0, 113, 227, 0.08);
   border: 1px solid rgba(0, 113, 227, 0.2);
   color: var(--color-blue);
 }
@@ -1294,93 +1370,97 @@ header {
 }
 
 /* ==========================================================================
-   英雄专属铭文指示条 (Hero Arcana Bar)
+   自选铭文规整卡片 (Hero Arcana Card - 严谨对齐排版)
    ========================================================================== */
 .hero-arcana-bar {
-  margin: 0 16px 12px 16px;
-  padding: 10px 14px;
+  margin: 0;
+  padding: 12px 14px;
   background: var(--apple-card);
   border: 1px solid var(--apple-border);
-  border-radius: 14px;
-  cursor: pointer;
+  border-radius: 16px;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: var(--card-shadow);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .hero-arcana-bar:hover {
   background: var(--apple-card-hover);
-  border-color: var(--color-blue);
-  transform: translateY(-2px);
+  border-color: var(--apple-border-hover);
   box-shadow: var(--card-shadow-hover);
 }
 
-.arcana-bar-header {
+.arcana-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.arcana-bar-label {
-  font-size: 11.5px;
-  font-weight: 600;
-  color: var(--text-primary);
+.arcana-card-title-wrap {
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-.arcana-edit-link {
+.arcana-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.arcana-card-subtitle {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.arcana-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-align-arcana-btn {
   font-size: 11px;
   color: var(--color-blue);
-  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 980px;
+  background: var(--color-blue-bg);
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.hero-align-arcana-btn:hover {
+  background: rgba(0, 113, 227, 0.2);
 }
 
 .arcana-chips {
-  display: flex;
-  gap: 6px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
 }
 
 .arcana-chip {
-  flex: 1;
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 8px;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px 8px;
   border-radius: 8px;
-  background: var(--apple-subcard);
   font-size: 11px;
-  font-weight: 500;
-  color: var(--text-secondary);
+  font-weight: 600;
   border: 1px solid transparent;
   transition: all 0.2s;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.arcana-chip-img {
-  width: 18px;
-  height: 18px;
-  border-radius: 4px;
-  object-fit: cover;
-  flex-shrink: 0;
 }
 
 .arcana-chip-red { background: rgba(255, 59, 48, 0.08); color: #d32f2f; border-color: rgba(255, 59, 48, 0.2); }
 .arcana-chip-green { background: rgba(52, 199, 89, 0.08); color: #2e7d32; border-color: rgba(52, 199, 89, 0.2); }
 .arcana-chip-blue { background: rgba(0, 113, 227, 0.08); color: #0277bd; border-color: rgba(0, 113, 227, 0.2); }
-
-/* 铭文快捷对齐按钮 */
-.arcana-bar-actions { display: flex; align-items: center; gap: 6px; }
-.hero-align-arcana-btn {
-  font-size: 11px; color: var(--color-green); padding: 4px 10px; border-radius: 99px;
-  background: var(--color-green-bg); font-weight: 600; border: none; cursor: pointer; white-space: nowrap;
-  transition: all 0.2s ease;
-}
-.hero-align-arcana-btn:hover { background: rgba(52, 199, 89, 0.22); transform: scale(1.02); }
 
 /* 官方权威推荐套装方案卡片 */
 .official-preset-container {
@@ -3853,32 +3933,32 @@ html, body {
 
     <!-- 右侧：六神装卡槽、自选铭文与全维演算面板 -->
     <section class="apple-panel slots-stats-section-panel">
-      <div class="panel-header">
-        <div class="panel-title">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-          六神装插槽 <span id="slotCountDisplay">(0/6)</span>
-        </div>
-        <div class="slot-header-actions">
-          <span class="panel-badge" id="slotCount">已选 0 / 6 件</span>
-          <button class="action-pill-btn rec-btn" onclick="loadRecommendedEquips()" title="一键填入当前英雄权威经典配装">一键神装</button>
-          <button class="action-pill-btn clear-btn" onclick="resetSlots()" title="清空全部槽位">清空</button>
-        </div>
-      </div>
-
-      <!-- 灵动槽位 Dock -->
+      <!-- 灵动槽位 Dock：集成标题、造价与操作 -->
       <div class="slots-dock">
-        <div class="slots-header">
-          <span style="font-size: 12px; color: var(--text-secondary);">神装卡槽 (点击卸下)</span>
-          <div class="slots-cost">
-            <span>总造价</span>
-            <span id="totalGold" style="color: var(--color-amber);">0 G</span>
+        <div class="slots-dock-header">
+          <div class="slots-dock-title-group">
+            <span class="slots-dock-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              六神装插槽
+            </span>
+            <span class="slots-gold-badge" title="当前神装总造价">
+              <span style="font-size: 11px;">总造价</span>
+              <strong id="totalGold" style="color: var(--color-amber); margin-left: 2px;">0 G</strong>
+            </span>
+          </div>
+          <div class="slots-dock-actions">
+            <span class="panel-badge" id="slotCount">0 / 6 件</span>
+            <button class="action-pill-btn rec-btn" onclick="loadRecommendedEquips()" title="一键填入当前英雄权威经典配装">一键神装</button>
+            <button class="action-pill-btn clear-btn" onclick="resetSlots()" title="清空全部槽位">清空</button>
           </div>
         </div>
+
+        <!-- 2 行 3 列绝不溢出经典卡槽网格 -->
         <div class="slots-grid" id="slotsGrid"></div>
         
         <!-- 智能诊断与互斥检测通告条 -->
-        <div class="diag-panel">
-          <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 4px;">
+        <div class="diag-panel" id="diagPanelBox">
+          <div class="diag-panel-title">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
             智能诊断与互斥检测
           </div>
@@ -3886,16 +3966,19 @@ html, body {
         </div>
       </div>
 
-      <!-- 30 颗满配铭文状态快捷栏 (含一键对齐方案专属铭文) -->
+      <!-- 30 颗满配铭文状态快捷卡片 (严谨规范排版) -->
       <div class="hero-arcana-bar" title="点击自定义调整铭文搭配">
-        <div class="arcana-bar-header" onclick="openArcanaModal()">
-          <span class="arcana-bar-label">自选铭文：</span>
-          <div class="arcana-chips" id="arcanaChipsBar"></div>
+        <div class="arcana-card-header">
+          <div class="arcana-card-title-wrap">
+            <span class="arcana-card-title">自选铭文</span>
+            <span class="arcana-card-subtitle">30颗满配</span>
+          </div>
+          <div class="arcana-card-actions">
+            <button class="hero-align-arcana-btn" id="alignArcanaBtn" onclick="alignArcanaWithCurrentBuild(event)" title="一键将自选铭文对齐当前官方推荐出装铭文">对齐方案铭文</button>
+            <button class="hero-change-btn" onclick="openArcanaModal(event)">调整铭文</button>
+          </div>
         </div>
-        <div class="arcana-bar-actions">
-          <button class="hero-align-arcana-btn" id="alignArcanaBtn" onclick="alignArcanaWithCurrentBuild(event)" title="一键将自选铭文对齐当前官方推荐出装铭文">对齐方案铭文</button>
-          <button class="hero-change-btn" onclick="openArcanaModal(event)">调整铭文</button>
-        </div>
+        <div class="arcana-chips" id="arcanaChipsBar"></div>
       </div>
 
       <!-- 方案对比与战术协同简报卡片 (对标王者官方推荐出装) -->
