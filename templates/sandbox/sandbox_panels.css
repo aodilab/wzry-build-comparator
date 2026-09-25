@@ -574,11 +574,21 @@
   min-height: 520px;
 }
 
-.shop-section-panel,
+.shop-section-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
 .slots-stats-section-panel {
   height: 100%;
   display: flex;
   flex-direction: column;
+  padding: 14px;
+  gap: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* 通用 Apple Panel 与基础组件 */
