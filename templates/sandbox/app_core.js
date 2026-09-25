@@ -34,6 +34,7 @@ window.onload = () => {
   renderArcanaBar();
   renderHeroes();
   renderItems();
+  renderHeroHallLaneBar(currentHero);
   if (typeof renderHeroLanePills === 'function') {
     renderHeroLanePills(currentHero);
   }
@@ -173,19 +174,111 @@ function selectHero(hero) {
   updateSpotlight();
   renderArcanaBar();
   renderHeroes();
+  renderHeroHallLaneBar(hero);
 
-  // 动态渲染该英雄真实支持的官方推荐分路胶囊
-  if (typeof renderHeroLanePills === 'function') {
-    renderHeroLanePills(hero);
+  // 在层级 1 立即唤出实战分路轻量选择浮层，先定分路再进入推演室
+  openLanePicker(hero);
+}
+
+// === 层级 1 实战分路决策控制器 ===
+function getSupportedLanesForHero(hero) {
+  let supported = [];
+  const cname = hero ? hero.cname : '';
+  if (typeof OFFICIAL_HERO_BUILDS !== 'undefined' && OFFICIAL_HERO_BUILDS[cname]) {
+    const hData = OFFICIAL_HERO_BUILDS[cname];
+    if (hData.supported_lanes && hData.supported_lanes.length > 0) {
+      supported = hData.supported_lanes;
+    } else if (hData.lanes) {
+      supported = Object.keys(hData.lanes);
+    }
+  }
+  if (!supported || supported.length === 0) {
+    supported = hero && hero.lane ? [hero.lane] : ['对抗路'];
+  }
+  return supported;
+}
+
+function renderHeroHallLaneBar(hero) {
+  if (!hero) return;
+  const avatar = document.getElementById('hallSelectedAvatar');
+  if (avatar) avatar.src = `https://game.gtimg.cn/images/yxzj/img201606/heroimg/${hero.ename}/${hero.ename}.jpg`;
+  const name = document.getElementById('hallSelectedName');
+  if (name) name.innerText = hero.cname || '英雄';
+  const role = document.getElementById('hallSelectedRole');
+  if (role) role.innerText = hero.role || '职业';
+
+  const container = document.getElementById('hallLanePills');
+  if (!container) return;
+  container.innerHTML = '';
+
+  const lanes = getSupportedLanesForHero(hero);
+  lanes.forEach(lane => {
+    const btn = document.createElement('button');
+    btn.className = `hall-lane-pill-btn ${lane === currentHeroActiveLane ? 'active' : ''}`;
+    btn.innerHTML = `<span>${lane}</span><span style="font-size:11px;opacity:0.8;">›</span>`;
+    btn.onclick = () => confirmHeroLaneAndEnter(lane);
+    container.appendChild(btn);
+  });
+}
+
+function openLanePicker(hero) {
+  if (!hero) return;
+  const overlay = document.getElementById('lanePickerOverlay');
+  if (!overlay) return;
+
+  const avatar = document.getElementById('pickerHeroAvatar');
+  if (avatar) avatar.src = `https://game.gtimg.cn/images/yxzj/img201606/heroimg/${hero.ename}/${hero.ename}.jpg`;
+  const name = document.getElementById('pickerHeroName');
+  if (name) name.innerText = hero.cname || '英雄';
+  const role = document.getElementById('pickerHeroRole');
+  if (role) role.innerText = hero.role || '职业';
+
+  const container = document.getElementById('pickerLaneOptions');
+  if (container) {
+    container.innerHTML = '';
+    const lanes = getSupportedLanesForHero(hero);
+    lanes.forEach((lane, idx) => {
+      const btn = document.createElement('button');
+      btn.className = `lane-picker-btn ${lane === currentHeroActiveLane ? 'active' : ''}`;
+      btn.onclick = () => confirmHeroLaneAndEnter(lane);
+      btn.innerHTML = `
+        <div class="lane-picker-btn-name">${lane}</div>
+        <div class="lane-picker-btn-tip">${idx === 0 ? '官方首选分路' : '实战推荐流派'} · 点击进入</div>
+      `;
+      container.appendChild(btn);
+    });
   }
 
+  overlay.classList.add('active');
+}
+
+function closeLanePicker(e) {
+  if (e && e.target && e.target.classList && !e.target.classList.contains('lane-picker-overlay') && !e.target.classList.contains('arcana-modal-close')) {
+    return;
+  }
+  const overlay = document.getElementById('lanePickerOverlay');
+  if (overlay) overlay.classList.remove('active');
+}
+
+function confirmHeroLaneAndEnter(lane) {
+  currentHeroActiveLane = lane;
+  const overlay = document.getElementById('lanePickerOverlay');
+  if (overlay) overlay.classList.remove('active');
+
+  // 同步分路胶囊状态
+  if (typeof renderHeroLanePills === 'function') {
+    renderHeroLanePills(currentHero);
+  }
+  renderHeroHallLaneBar(currentHero);
+
+  // 联动加载官方出装与专属铭文
   if (typeof loadRecommendedEquips === 'function') {
     loadRecommendedEquips();
   } else {
     recalculate();
   }
 
-  // 选定英雄后平滑进入方案推演室 (Level 2)
+  // 选好分路后，正式滑入层级 2 推演室
   switchView('studio');
 }
 

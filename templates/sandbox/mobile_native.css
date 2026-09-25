@@ -65,7 +65,7 @@ html, body {
   overscroll-behavior-x: none !important;
   -webkit-overflow-scrolling: touch !important;
 }
-.hero-modal-overlay, .arcana-modal-overlay, .synergy-modal-overlay {
+.hero-modal-overlay, .arcana-modal-overlay, .synergy-modal-overlay, .lane-picker-overlay {
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
@@ -146,6 +146,29 @@ html, body {
     display: flex !important;
   }
   .hero-hall-segmented::-webkit-scrollbar { display: none !important; }
+  .hero-hall-lane-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    padding: 10px 12px !important;
+  }
+  .hall-lane-left {
+    justify-content: flex-start !important;
+  }
+  .hall-lane-pills {
+    overflow-x: auto !important;
+    padding-top: 6px !important;
+    border-top: 1px solid rgba(0,0,0,0.05) !important;
+  }
+  .lane-picker-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    margin: 0 !important;
+    animation: appleBottomSheetUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
   .hero-hall-grid {
     grid-template-columns: repeat(4, 1fr) !important;
     gap: 8px !important;
