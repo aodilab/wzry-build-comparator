@@ -585,10 +585,26 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 14px;
+  padding: 14px 14px 90px 14px;
   gap: 12px;
   overflow-y: auto;
   overflow-x: hidden;
+  overscroll-behavior-y: contain;
+  scroll-behavior: smooth;
+}
+
+.slots-stats-section-panel::-webkit-scrollbar {
+  width: 6px;
+}
+.slots-stats-section-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+.slots-stats-section-panel::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.16);
+  border-radius: 980px;
+}
+.slots-stats-section-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
 }
 
 /* 通用 Apple Panel 与基础组件 */
