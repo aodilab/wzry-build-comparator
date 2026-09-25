@@ -239,15 +239,461 @@ header {
 
 
 /* ==========================================================================
-   2. 主体三栏网格架构与英雄侧边栏
+   2. 多层级工作台与面板架构 (Apple Silver-White HIG)
+   支持两段式流转：选英雄大厅 (Level 1) -> 方案与推演室 (Level 2)
    ========================================================================== */
-.sandbox-grid {
-  display: grid;
-  grid-template-columns: 310px 1fr 390px;
-  gap: 20px;
-  height: calc(100vh - 94px);
+
+/* 视图容器流转切换 */
+.view-container {
+  display: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.view-container.active {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 顶部 Stepper 导航 */
+.header-nav-stepper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--segmented-bg);
+  padding: 3px 6px;
+  border-radius: 980px;
+}
+
+.step-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: transparent;
+  padding: 5px 12px;
+  border-radius: 980px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.step-nav-btn:hover {
+  color: var(--text-primary);
+}
+
+.step-nav-btn.active {
+  background: var(--segmented-active);
+  color: var(--color-blue);
+  box-shadow: var(--segmented-shadow);
+  font-weight: 600;
+}
+
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-blue-bg);
+  color: var(--color-blue);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.step-divider {
+  color: var(--text-tertiary);
+  font-size: 14px;
+  user-select: none;
+}
+
+.step-hero-badge {
+  background: var(--color-blue);
+  color: #ffffff;
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 980px;
+  margin-left: 2px;
+}
+
+/* ==========================================================================
+   层级一：选英雄大厅 (Hero Selection Hall)
+   ========================================================================== */
+.hero-hall-header-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: var(--apple-panel);
+  border: 1px solid var(--apple-panel-border);
+  border-radius: 18px;
+  box-shadow: var(--panel-shadow);
+  margin-bottom: 14px;
+}
+
+.hero-hall-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.hero-hall-main-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.hero-hall-subtitle {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.hero-hall-search {
+  width: 280px;
+  padding: 0;
+}
+
+.hero-hall-segmented {
+  max-width: 680px;
+  margin: 0 auto 16px auto;
+}
+
+.hero-hall-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+  gap: 12px;
+  padding-bottom: 24px;
+}
+
+.hero-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 8px 10px 8px;
+  border-radius: 16px;
+  border: 1px solid var(--apple-border);
+  background: var(--apple-card);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--card-shadow);
+  position: relative;
+}
+
+.hero-card:hover {
+  background: var(--apple-card-hover);
+  border-color: var(--apple-border-hover);
+  transform: translateY(-3px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.hero-card.selected {
+  background: var(--color-blue-bg);
+  border-color: var(--color-blue);
+  box-shadow: 0 0 0 2px var(--color-blue), 0 4px 12px rgba(0, 113, 227, 0.2);
+}
+
+.hero-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--apple-border);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-card:hover .hero-avatar {
+  transform: scale(1.06);
+}
+
+.hero-card.selected .hero-avatar {
+  border-color: var(--color-blue);
+}
+
+.hero-card-name {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 8px;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.hero-card-role-tag {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   层级二：方案与推演室 (Hero Studio)
+   ========================================================================== */
+.studio-hero-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  background: var(--apple-panel);
+  border: 1px solid var(--apple-panel-border);
+  border-radius: 16px;
+  box-shadow: var(--panel-shadow);
+  margin-bottom: 14px;
+}
+
+.studio-hero-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.studio-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  background: var(--apple-subcard);
+  border: 1px solid var(--apple-border);
+  border-radius: 980px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.studio-back-btn:hover {
+  background: var(--apple-card-hover);
+  color: var(--color-blue);
+  border-color: var(--color-blue);
+}
+
+.studio-hero-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.studio-hero-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--color-blue);
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.2);
+}
+
+.studio-hero-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.studio-hero-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.brand-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 6px;
+  background: var(--color-blue-bg);
+  color: var(--color-blue);
+}
+
+.studio-hero-sub {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.studio-hero-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* 动态主玩分路胶囊选择栏 */
+.studio-lane-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.studio-lane-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.lane-switch-pills {
+  display: flex;
+  gap: 6px;
+}
+
+.lane-pill-btn {
+  padding: 5px 14px;
+  border-radius: 980px;
+  border: 1.5px solid var(--apple-border);
+  background: var(--apple-subcard);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lane-pill-btn:hover {
+  border-color: var(--apple-border-hover);
+  color: var(--text-primary);
+}
+
+.lane-pill-btn.active {
+  background: var(--color-blue-bg);
+  color: var(--color-blue);
+  border-color: var(--color-blue);
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.15);
+}
+
+/* 官方 3 套推荐方案 Showcase 展台 */
+.studio-presets-showcase {
+  background: var(--apple-panel);
+  border: 1px solid var(--apple-panel-border);
+  border-radius: 18px;
+  padding: 12px 18px 14px 18px;
+  box-shadow: var(--panel-shadow);
+  margin-bottom: 16px;
+}
+
+.studio-presets-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.studio-presets-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.studio-presets-subtitle {
+  font-size: 11px;
+  font-weight: normal;
+  color: var(--text-tertiary);
+  margin-left: 6px;
+}
+
+.studio-presets-badge {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  background: var(--apple-subcard);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.studio-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.studio-presets-grid .official-preset-card {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--apple-card);
+  border: 1.5px solid var(--apple-border);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  box-shadow: var(--card-shadow);
+}
+
+.studio-presets-grid .official-preset-card:hover {
+  border-color: var(--apple-border-hover);
+  background: var(--apple-card-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.studio-presets-grid .official-preset-card.active {
+  border-color: var(--color-blue);
+  background: var(--color-blue-bg);
+  box-shadow: 0 0 0 2px var(--color-blue), 0 4px 12px rgba(0, 113, 227, 0.18);
+}
+
+.studio-presets-grid .preset-genre-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.studio-presets-grid .preset-desc-line {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.studio-presets-grid .preset-items-preview {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0;
+}
+
+.studio-presets-grid .preset-mini-item-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--apple-border);
+  transition: transform 0.2s;
+}
+
+.studio-presets-grid .preset-mini-item-icon:hover {
+  transform: scale(1.15);
+  border-color: var(--color-blue);
+}
+
+.studio-presets-grid .preset-arcana-pill {
+  font-size: 11px;
+  color: var(--color-blue);
+  background: var(--apple-subcard);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+/* 下半部：两栏推演工作台 (左商店 1fr ｜ 右卡槽与面板 420px) */
+.studio-workbench-grid {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 16px;
+  height: calc(100vh - 290px);
+  min-height: 520px;
+}
+
+.shop-section-panel,
+.slots-stats-section-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 通用 Apple Panel 与基础组件 */
 .apple-panel {
   background: var(--apple-panel);
   border: 1px solid var(--apple-panel-border);
@@ -255,15 +701,12 @@ header {
   backdrop-filter: blur(25px) saturate(190%);
   -webkit-backdrop-filter: blur(25px) saturate(190%);
   box-shadow: var(--panel-shadow);
-  display: flex;
-  flex-direction: column;
   overflow: hidden;
   position: relative;
-  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .panel-header {
-  padding: 16px 18px 12px 18px;
+  padding: 14px 18px 10px 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -276,21 +719,24 @@ header {
   display: flex;
   align-items: center;
   gap: 8px;
-  letter-spacing: -0.01em;
 }
 
-.panel-badge {
+.shop-count-tag {
   font-size: 11px;
+  font-weight: 500;
   color: var(--text-secondary);
   background: var(--apple-subcard);
-  padding: 3px 8px;
+  padding: 2px 7px;
   border-radius: 6px;
-  font-weight: 500;
 }
 
-/* 苹果 Spotlight 搜索框 */
+.shop-tip-txt {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
 .search-wrapper {
-  padding: 0 16px 12px 16px;
+  padding: 0 16px 10px 16px;
 }
 
 .apple-search {
@@ -305,14 +751,13 @@ header {
   left: 12px;
   display: flex;
   align-items: center;
-  justify-content: center;
   color: var(--text-tertiary);
   pointer-events: none;
 }
 
 .apple-input {
   width: 100%;
-  height: 36px;
+  height: 34px;
   background: var(--apple-subcard);
   border: 1px solid var(--apple-border);
   border-radius: 10px;
@@ -323,23 +768,18 @@ header {
   transition: all 0.2s;
 }
 
-.apple-input::placeholder {
-  color: var(--text-tertiary);
-}
-
 .apple-input:focus {
   background: var(--apple-card);
   border-color: var(--color-blue);
   box-shadow: 0 0 0 3px var(--color-blue-bg);
 }
 
-/* 苹果 iOS 分段控制器 (Segmented Control) */
 .segmented-control {
   display: flex;
   background: var(--segmented-bg);
   padding: 3px;
   border-radius: 10px;
-  margin: 0 16px 12px 16px;
+  margin: 0 16px 10px 16px;
   gap: 2px;
 }
 
@@ -368,118 +808,37 @@ header {
   font-weight: 600;
 }
 
-/* ==========================================================================
-   3. 左侧栏：英雄精选 Spotlight 与网格
-   ========================================================================== */
-.hero-spotlight {
-  margin: 0 16px 12px 16px;
-  padding: 12px 14px;
-  background: var(--apple-card);
-  border: 1px solid var(--apple-border);
-  border-radius: 16px;
+.slot-header-actions {
   display: flex;
   align-items: center;
-  gap: 14px;
-  box-shadow: var(--card-shadow);
+  gap: 8px;
 }
 
-.spotlight-avatar {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  border: 2px solid var(--color-blue);
-  object-fit: cover;
-  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.25);
-}
-
-.spotlight-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.spotlight-title {
-  font-size: 11px;
-  color: var(--text-tertiary);
-}
-
-.spotlight-name {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-top: 1px;
-  letter-spacing: -0.01em;
-}
-
-.spotlight-lane-tag {
-  display: inline-block;
+.action-pill-btn {
+  padding: 3px 10px;
   font-size: 11px;
   font-weight: 600;
-  padding: 2px 8px;
   border-radius: 6px;
+  border: 1px solid var(--apple-border);
+  background: var(--apple-subcard);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-pill-btn:hover {
+  background: var(--apple-card-hover);
+  color: var(--text-primary);
+}
+
+.action-pill-btn.rec-btn {
   background: var(--color-blue-bg);
   color: var(--color-blue);
-  margin-top: 4px;
+  border-color: transparent;
 }
 
-.hero-scroll-area {
-  flex: 1;
-  overflow-y: auto;
-  padding: 4px 16px 16px 16px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.hero-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 4px;
-  border-radius: 14px;
-  border: 1px solid transparent;
-  background: var(--apple-card);
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: var(--card-shadow);
-}
-
-.hero-card:hover {
-  background: var(--apple-card-hover);
-  border-color: var(--apple-border-hover);
-  transform: translateY(-2px);
-  box-shadow: var(--card-shadow-hover);
-}
-
-.hero-card.selected {
-  background: var(--color-blue-bg);
-  border-color: var(--color-blue);
-  box-shadow: 0 0 0 2px var(--color-blue), 0 4px 12px rgba(0, 113, 227, 0.2);
-}
-
-.hero-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1.5px solid var(--apple-border);
-  transition: transform 0.25s;
-}
-
-.hero-card.selected .hero-avatar {
-  border-color: var(--color-blue);
-  transform: scale(1.05);
-}
-
-.hero-card-name {
-  font-size: 12px;
-  font-weight: 500;
-  margin-top: 6px;
-  color: var(--text-primary);
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
+.action-pill-btn.rec-btn:hover {
+  filter: brightness(1.1);
 }
 
 
@@ -2809,9 +3168,60 @@ html, body {
   .brand-titles p { display: none !important; }
   .header-actions { display: none !important; }
   .sandbox-grid { display: flex; flex-direction: column; height: auto; gap: 12px; }
+  .studio-workbench-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: auto !important;
+    gap: 12px !important;
+  }
+  .hero-hall-header-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 12px 14px !important;
+  }
+  .hero-hall-search {
+    width: 100% !important;
+  }
+  .hero-hall-segmented {
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    scrollbar-width: none !important;
+    margin-bottom: 12px !important;
+    display: flex !important;
+  }
+  .hero-hall-segmented::-webkit-scrollbar { display: none !important; }
+  .hero-hall-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 8px !important;
+  }
+  .studio-hero-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 12px 14px !important;
+  }
+  .studio-hero-left {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+  .studio-lane-select {
+    display: flex !important;
+    align-items: center !important;
+    overflow-x: auto !important;
+    padding-top: 8px !important;
+    border-top: 1px solid rgba(0,0,0,0.05) !important;
+  }
+  .studio-presets-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
   .hero-section-panel { order: 1; }
-  .slots-stats-section-panel { order: 2; display: flex; flex-direction: column; gap: 12px; background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; }
-  .shop-section-panel { order: 3; }
+  .slots-stats-section-panel { order: 1; display: flex; flex-direction: column; gap: 12px; background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; }
+  .shop-section-panel { order: 2; }
   .desktop-only { display: none !important; }
   .hero-section-panel {
     background: #ffffff !important; border: 1px solid rgba(0,0,0,0.06) !important;
@@ -3219,9 +3629,22 @@ html, body {
     <img class="brand-app-icon" src="assets/app_icon.png" alt="王者出装箱" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%230071e3%22 stroke-width=%222%22><path d=%22M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z%22/></svg>'">
     <div class="brand-titles">
       <h1>王者出装箱</h1>
-      <p>S45 赛季“月照长安” ｜ 局内六神装配装沙盒 ｜ 30颗全量铭文自由搭配 ｜ 属性实时演算</p>
+      <p id="headerSubtitle">S45 赛季“月照长安” ｜ 局内六神装配装沙盒 ｜ 30颗全量铭文自由搭配 ｜ 属性实时演算</p>
     </div>
   </div>
+
+  <!-- 多层级两段式导航 Stepper (先选英雄，再进专属方案推演室) -->
+  <div class="header-nav-stepper">
+    <button class="step-nav-btn active" id="navStepHero" onclick="switchView('hero_select')">
+      <span class="step-num">1</span> 选英雄大厅
+    </button>
+    <span class="step-divider">›</span>
+    <button class="step-nav-btn" id="navStepStudio" onclick="switchView('studio')">
+      <span class="step-num">2</span> 方案与推演室
+      <span class="step-hero-badge" id="navHeroBadge">廉颇</span>
+    </button>
+  </div>
+
   <div class="header-actions">
     <button class="theme-toggle-btn" onclick="toggleTheme()" title="切换浅色 / 深色外观" id="themeBtn"></button>
     <button class="apple-btn apple-btn-secondary" onclick="resetSlots()">清空配置</button>
@@ -3232,196 +3655,204 @@ html, body {
   </div>
 </header>
 
-<!-- 主体三栏交互容器 -->
-<main class="sandbox-grid">
-
-  <!-- 左栏：英雄库选择 (移动端展示顶部精选卡片与自选铭文胶囊，网格由抽屉接管) -->
-  <section class="apple-panel hero-section-panel">
-    <div class="panel-header desktop-only">
-      <div class="panel-title">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-        英雄基准属性
-      </div>
-      <span class="panel-badge">15级满级数值</span>
+<!-- ======================================================== -->
+<!-- 层级一：挑选英雄大厅 (Hero Selection View)                  -->
+<!-- ======================================================== -->
+<section class="view-container active" id="viewHeroSelect">
+  <div class="hero-hall-header-card">
+    <div class="hero-hall-title-wrap">
+      <div class="hero-hall-main-title">挑选演练英雄</div>
+      <div class="hero-hall-subtitle">支持双职业与官方分路检索 · 点击英雄即刻进入专属配装推演室</div>
     </div>
+    <div class="search-wrapper hero-hall-search">
+      <div class="apple-search">
+        <span class="search-icon">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </span>
+        <input type="text" id="heroSearch" class="apple-input" placeholder="搜索英雄（如：孙尚香 / 李白）" oninput="filterHeroes()">
+      </div>
+    </div>
+  </div>
 
-    <!-- 苹果精选英雄卡片 (100% 微信小程序 hero-bar 原生规范) -->
-    <div class="hero-spotlight" id="heroSpotlight" onclick="onHeroSpotlightClick(event)">
-      <img id="spotAvatar" class="spotlight-avatar" src="" alt="Hero">
-      <div class="spotlight-info">
-        <div class="spotlight-name-wrap">
-          <span class="spotlight-name" id="spotName">-</span>
-          <span class="spotlight-lane-tag" id="spotLane">-</span>
-          <span class="spotlight-role-tag" id="spotRole">-</span>
+  <!-- 7 大官方职业分类过滤控制器 -->
+  <div class="segmented-control hero-hall-segmented" id="heroTabs">
+    <div class="seg-item active" onclick="setHeroFilter('全部', this)">全部</div>
+    <div class="seg-item" onclick="setHeroFilter('坦克', this)">坦克</div>
+    <div class="seg-item" onclick="setHeroFilter('战士', this)">战士</div>
+    <div class="seg-item" onclick="setHeroFilter('刺客', this)">刺客</div>
+    <div class="seg-item" onclick="setHeroFilter('法师', this)">法师</div>
+    <div class="seg-item" onclick="setHeroFilter('射手', this)">射手</div>
+    <div class="seg-item" onclick="setHeroFilter('辅助', this)">辅助</div>
+  </div>
+
+  <!-- 英雄展示大网格 -->
+  <div class="hero-hall-grid" id="heroListContainer"></div>
+</section>
+
+<!-- ======================================================== -->
+<!-- 层级二：英雄专属方案与推演室 (Hero Studio View)             -->
+<!-- ======================================================== -->
+<section class="view-container" id="viewStudio">
+
+  <!-- 顶部状态栏：当前英雄档案 + 动态主玩分路选择 -->
+  <div class="studio-hero-bar">
+    <div class="studio-hero-left">
+      <button class="studio-back-btn" onclick="switchView('hero_select')" title="返回英雄选择大厅">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+        换英雄
+      </button>
+      <div class="studio-hero-info">
+        <img id="spotAvatar" class="studio-hero-avatar" src="" alt="Hero">
+        <div>
+          <div class="studio-hero-title-row">
+            <span class="studio-hero-name" id="spotName">-</span>
+            <span class="brand-badge" id="spotRole">-</span>
+            <span class="studio-hero-sub" id="spotTitle">-</span>
+          </div>
+          <div class="studio-hero-desc">15级满级基准数值 ｜ 点击下方分路查看官方专属推荐</div>
         </div>
-        <div class="spotlight-title" id="spotTitle">-</div>
       </div>
-      <button class="hero-change-btn" id="heroChangeBtn" onclick="openHeroModal(event)">换英雄</button>
     </div>
 
-    <!-- 局内实战分路快捷切换 (根据当前英雄官方推荐分路动态渲染，无推荐分路自动隐蔽) -->
-    <div class="hero-lane-switch-bar">
-      <span class="lane-switch-label">主玩分路：</span>
+    <!-- 动态主玩分路选择胶囊栏 (仅展示该英雄官方支持的分路) -->
+    <div class="studio-lane-select">
+      <span class="studio-lane-label">当前实战分路：</span>
       <div class="lane-switch-pills" id="heroLaneSwitchPills"></div>
     </div>
+  </div>
 
-    <!-- 30 颗满配铭文状态快捷栏 (含一键对齐官方推荐铭文) -->
-    <div class="hero-arcana-bar" title="点击自定义调整铭文搭配">
-      <div class="arcana-bar-header" onclick="openArcanaModal()">
-        <span class="arcana-bar-label">自选铭文：</span>
-        <div class="arcana-chips" id="arcanaChipsBar"></div>
+  <!-- 上半部：官方推荐3套套装方案大卡片展台 (充分横向空间，绝不再挤压) -->
+  <div class="studio-presets-showcase" id="officialPresetContainer">
+    <div class="studio-presets-header">
+      <div class="studio-presets-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0071e3" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+        官方权威推荐方案
+        <span class="studio-presets-subtitle">点击任意方案，六神装与150级专属铭文自动装配联动</span>
       </div>
-      <div class="arcana-bar-actions">
-        <button class="hero-align-arcana-btn" id="alignArcanaBtn" onclick="alignArcanaWithCurrentBuild(event)" title="一键将自选铭文对齐当前官方推荐出装铭文">对齐方案铭文</button>
-        <button class="hero-change-btn" onclick="openArcanaModal(event)">调整铭文</button>
-      </div>
+      <span class="studio-presets-badge" id="officialPresetTip">3套官方流派</span>
     </div>
+    <div class="studio-presets-grid" id="officialPresetCards"></div>
+  </div>
 
-    <!-- PC端常驻英雄浏览与选择网格 (手机端彻底隐藏，转由抽屉呈现；职业分类严格对齐游戏内规范) -->
-    <div class="desktop-only">
+  <!-- 下半部：自选微调与实战推演两栏工作台 (左商店 1fr ｜ 右卡槽与面板 420px) -->
+  <main class="studio-workbench-grid">
+
+    <!-- 左侧：局内装备商店 -->
+    <section class="apple-panel shop-section-panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          装备库备选 <span class="shop-count-tag" id="itemCountBadge">114件</span>
+        </div>
+        <span class="shop-tip-txt">含S45新赛季神装 · 点击添加入槽或替换</span>
+      </div>
+
       <div class="search-wrapper">
         <div class="apple-search">
           <span class="search-icon">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           </span>
-          <input type="text" id="heroSearch" class="apple-input" placeholder="搜索英雄（如：孙尚香 / 李白）" oninput="filterHeroes()">
+          <input type="text" id="itemSearch" class="apple-input" placeholder="搜索装备（如：无尽 / 暗影战斧）" oninput="filterItems()">
         </div>
       </div>
 
-      <div class="segmented-control" id="heroTabs">
-        <div class="seg-item active" onclick="setHeroFilter('全部', this)">全部</div>
-        <div class="seg-item" onclick="setHeroFilter('坦克', this)">坦克</div>
-        <div class="seg-item" onclick="setHeroFilter('战士', this)">战士</div>
-        <div class="seg-item" onclick="setHeroFilter('刺客', this)">刺客</div>
-        <div class="seg-item" onclick="setHeroFilter('法师', this)">法师</div>
-        <div class="seg-item" onclick="setHeroFilter('射手', this)">射手</div>
-        <div class="seg-item" onclick="setHeroFilter('辅助', this)">辅助</div>
+      <div class="segmented-control item-segmented-control" id="itemTabs">
+        <div class="seg-item active" onclick="setItemFilter('全部', this)">全部</div>
+        <div class="seg-item" onclick="setItemFilter('攻击装备', this)">攻击</div>
+        <div class="seg-item" onclick="setItemFilter('法术装备', this)">法术</div>
+        <div class="seg-item" onclick="setItemFilter('防御装备', this)">防御</div>
+        <div class="seg-item" onclick="setItemFilter('移动装备', this)">移动</div>
+        <div class="seg-item" onclick="setItemFilter('打野装备', this)">打野</div>
+        <div class="seg-item" onclick="setItemFilter('游走装备', this)">游走</div>
       </div>
 
-      <div class="hero-scroll-area" id="heroListContainer"></div>
-    </div>
-  </section>
+      <div class="item-scroll-area" id="itemListContainer"></div>
+    </section>
 
-  <!-- 中栏：局内装备商店 (手机端排列在后方自然流中) -->
-  <section class="apple-panel shop-section-panel">
-    <div class="panel-header">
-      <div class="panel-title">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-        装备库备选 <span class="shop-count-tag" id="itemCountBadge">114件</span>
-      </div>
-      <span class="shop-tip-txt">含S44无象神器与原初神装</span>
-    </div>
-
-    <div class="search-wrapper">
-      <div class="apple-search">
-        <span class="search-icon">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        </span>
-        <input type="text" id="itemSearch" class="apple-input" placeholder="搜索装备（如：无尽 / 暗影战斧）" oninput="filterItems()">
-      </div>
-    </div>
-
-    <div class="segmented-control item-segmented-control" id="itemTabs">
-      <div class="seg-item active" onclick="setItemFilter('全部', this)">全部</div>
-      <div class="seg-item" onclick="setItemFilter('攻击装备', this)">攻击</div>
-      <div class="seg-item" onclick="setItemFilter('法术装备', this)">法术</div>
-      <div class="seg-item" onclick="setItemFilter('防御装备', this)">防御</div>
-      <div class="seg-item" onclick="setItemFilter('移动装备', this)">移动</div>
-      <div class="seg-item" onclick="setItemFilter('打野装备', this)">打野</div>
-      <div class="seg-item" onclick="setItemFilter('游走装备', this)">游走</div>
-    </div>
-
-    <div class="item-scroll-area" id="itemListContainer"></div>
-  </section>
-
-  <!-- 右栏：六神装插槽、战术协同与实战面板 -->
-  <section class="apple-panel slots-stats-section-panel">
-    <div class="panel-header">
-      <div class="panel-title">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-        六神装插槽 <span id="slotCountDisplay">(0/6)</span>
-      </div>
-      <div class="slot-header-actions">
-        <span class="panel-badge" id="slotCount">已选 0 / 6 件</span>
-        <button class="action-pill-btn rec-btn" onclick="loadRecommendedEquips()" title="一键填入当前英雄权威经典配装">一键神装</button>
-        <button class="action-pill-btn clear-btn" onclick="resetSlots()" title="清空全部槽位">清空</button>
-      </div>
-    </div>
-
-    <!-- 官方推荐出装与铭文套组 (100% 对齐局内3套官方推荐：生存/输出/均衡 + 强绑定铭文联动) -->
-    <div class="official-preset-container" id="officialPresetContainer">
-      <div class="official-preset-header">
-        <div class="official-preset-title-wrap">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-          <span class="official-preset-title">官方权威推荐方案</span>
+    <!-- 右侧：六神装卡槽、自选铭文与全维演算面板 -->
+    <section class="apple-panel slots-stats-section-panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          六神装插槽 <span id="slotCountDisplay">(0/6)</span>
         </div>
-        <span class="official-preset-tip" id="officialPresetTip">点击一键装配神装与专属铭文</span>
-      </div>
-      <div class="official-preset-cards" id="officialPresetCards"></div>
-    </div>
-
-    <!-- 灵动槽位 Dock (手机端自适应呈现 3x2 网格，空槽 + 空槽 1~6) -->
-    <div class="slots-dock">
-      <div class="slots-header">
-        <span style="font-size: 12px; color: var(--text-secondary);">神装卡槽 (点击卸下)</span>
-        <div class="slots-cost">
-          <span>总造价</span>
-          <span id="totalGold" style="color: var(--color-amber);">0 G</span>
+        <div class="slot-header-actions">
+          <span class="panel-badge" id="slotCount">已选 0 / 6 件</span>
+          <button class="action-pill-btn rec-btn" onclick="loadRecommendedEquips()" title="一键填入当前英雄权威经典配装">一键神装</button>
+          <button class="action-pill-btn clear-btn" onclick="resetSlots()" title="清空全部槽位">清空</button>
         </div>
       </div>
-      <div class="slots-grid" id="slotsGrid"></div>
-      
-      <!-- 智能诊断与互斥检测通告条 -->
-      <div class="diag-panel">
-        <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 4px;">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-          智能诊断与互斥检测
-        </div>
-        <div id="diagnoseContainer"></div>
-      </div>
 
-      <div class="mobile-gold-bar">
-        <span class="mobile-gold-label">六神装总造价</span>
-        <span class="mobile-gold-val" id="mobileTotalGold">0 金币</span>
-      </div>
-    </div>
-
-    <!-- 方案对比与战术协同简报卡片 (对标王者官方推荐出装) -->
-    <div class="synergy-brief-card" id="synergyBriefCard" onclick="openSynergyModal()">
-      <div class="synergy-brief-header">
-        <div class="synergy-brief-title-wrap">
-          <span class="synergy-brief-title">自选方案 VS 王者推荐方案</span>
+      <!-- 灵动槽位 Dock -->
+      <div class="slots-dock">
+        <div class="slots-header">
+          <span style="font-size: 12px; color: var(--text-secondary);">神装卡槽 (点击卸下)</span>
+          <div class="slots-cost">
+            <span>总造价</span>
+            <span id="totalGold" style="color: var(--color-amber);">0 G</span>
+          </div>
         </div>
-        <div class="synergy-brief-right">
-          <span class="synergy-jump-txt">详细对比 ›</span>
+        <div class="slots-grid" id="slotsGrid"></div>
+        
+        <!-- 智能诊断与互斥检测通告条 -->
+        <div class="diag-panel">
+          <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 4px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            智能诊断与互斥检测
+          </div>
+          <div id="diagnoseContainer"></div>
         </div>
       </div>
-      <div class="synergy-brief-body" id="synergyBriefBody">
-        <div class="synergy-brief-summary" id="synergyBriefSummary">
-          暂未选配装备。点击“一键神装”或挑选装备入槽，实时演算方案对比。
+
+      <!-- 30 颗满配铭文状态快捷栏 (含一键对齐方案专属铭文) -->
+      <div class="hero-arcana-bar" title="点击自定义调整铭文搭配">
+        <div class="arcana-bar-header" onclick="openArcanaModal()">
+          <span class="arcana-bar-label">自选铭文：</span>
+          <div class="arcana-chips" id="arcanaChipsBar"></div>
         </div>
-        <div class="synergy-brief-highlights" id="synergyBriefHighlights"></div>
+        <div class="arcana-bar-actions">
+          <button class="hero-align-arcana-btn" id="alignArcanaBtn" onclick="alignArcanaWithCurrentBuild(event)" title="一键将自选铭文对齐当前官方推荐出装铭文">对齐方案铭文</button>
+          <button class="hero-change-btn" onclick="openArcanaModal(event)">调整铭文</button>
+        </div>
       </div>
-    </div>
 
-    <!-- 实时实战面板演算 (严格 2 列网格) -->
-    <div class="stats-panel-header">
-      <div class="panel-title">
-        实战面板演算 <span class="panel-subtitle">Lv15满级 + 铭文 + 神装综合加成</span>
+      <!-- 方案对比与战术协同简报卡片 (对标王者官方推荐出装) -->
+      <div class="synergy-brief-card" id="synergyBriefCard" onclick="openSynergyModal()">
+        <div class="synergy-brief-header">
+          <div class="synergy-brief-title-wrap">
+            <span class="synergy-brief-title">自选方案 VS 官方推荐</span>
+          </div>
+          <div class="synergy-brief-right">
+            <span class="synergy-jump-txt">详细对比报告 ›</span>
+          </div>
+        </div>
+        <div class="synergy-brief-body" id="synergyBriefBody">
+          <div class="synergy-brief-summary" id="synergyBriefSummary">
+            暂未选配装备。点击上方“官方推荐方案”或挑选装备入槽，实时演算方案对比。
+          </div>
+          <div class="synergy-brief-highlights" id="synergyBriefHighlights"></div>
+        </div>
       </div>
-    </div>
-    <div class="health-metrics-scroll" id="statsContainer"></div>
 
-    <!-- 底部导出方案卡片 (手机端触手可及) -->
-    <div class="mobile-footer-export">
-      <button class="mobile-export-btn" onclick="exportMarkdown()">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
-        复制完整出装方案
-      </button>
-    </div>
-  </section>
+      <!-- 实时实战面板演算 (严格 2 列网格) -->
+      <div class="stats-panel-header">
+        <div class="panel-title">
+          实战面板演算 <span class="panel-subtitle">Lv15满级 + 铭文 + 神装综合加成</span>
+        </div>
+      </div>
+      <div class="health-metrics-scroll" id="statsContainer"></div>
 
-</main>
+      <!-- 底部导出方案卡片 (移动端自适应) -->
+      <div class="mobile-footer-export">
+        <button class="mobile-export-btn" onclick="exportMarkdown()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+          复制完整出装方案
+        </button>
+      </div>
+    </section>
+
+  </main>
+</section>
 
 <!-- 二级页面：技能×出装深度联动分析模态框 (Synergy Modal Sheet) -->
 <div class="synergy-modal-overlay" id="synergyModalOverlay" onclick="closeSynergyModal(event)">
@@ -3442,7 +3873,6 @@ html, body {
         <button class="arcana-modal-close" id="synergyModalCloseBtn" onclick="closeSynergyModal()" title="关闭">✕</button>
       </div>
     </div>
-
     <div class="synergy-modal-scroll" id="synergyModalScroll"></div>
   </div>
 </div>
@@ -3460,30 +3890,7 @@ html, body {
         <button class="arcana-modal-close" id="arcanaModalCloseBtn" onclick="closeArcanaModal()" title="关闭">✕</button>
       </div>
     </div>
-
     <div class="arcana-modal-body" id="arcanaModalBody"></div>
-  </div>
-</div>
-
-<!-- 移动端英雄选择抽屉 (Hero Modal Bottom Sheet 100% 对齐图 4) -->
-<div class="hero-modal-overlay" id="heroModalOverlay" onclick="closeHeroModal(event)">
-  <div class="hero-modal-card" onclick="event.stopPropagation()">
-    <div class="hero-modal-header">
-      <div class="hero-modal-title">
-        选择演练英雄 (<span id="heroModalCountBadge">132位</span>)
-      </div>
-      <button class="arcana-modal-close" id="heroModalCloseBtn" onclick="closeHeroModal()" title="关闭">✕</button>
-    </div>
-    <div class="segmented-control" id="heroModalTabs">
-      <div class="seg-item active" onclick="setHeroModalFilter('全部', this)">全部</div>
-      <div class="seg-item" onclick="setHeroModalFilter('坦克', this)">坦克</div>
-      <div class="seg-item" onclick="setHeroModalFilter('战士', this)">战士</div>
-      <div class="seg-item" onclick="setHeroModalFilter('刺客', this)">刺客</div>
-      <div class="seg-item" onclick="setHeroModalFilter('法师', this)">法师</div>
-      <div class="seg-item" onclick="setHeroModalFilter('射手', this)">射手</div>
-      <div class="seg-item" onclick="setHeroModalFilter('辅助', this)">辅助</div>
-    </div>
-    <div class="hero-modal-scroll" id="heroModalListContainer"></div>
   </div>
 </div>
 
@@ -3562,10 +3969,40 @@ function updateSpotlight() {
   if (name) name.innerText = currentHero.cname || '未知英雄';
   const title = document.getElementById('spotTitle');
   if (title) title.innerText = currentHero.title || '正义爆轰';
-  const lane = document.getElementById('spotLane');
-  if (lane) lane.innerText = currentHero.lane || '对抗路';
   const role = document.getElementById('spotRole');
   if (role) role.innerText = currentHero.role || '坦克';
+  const navBadge = document.getElementById('navHeroBadge');
+  if (navBadge) navBadge.innerText = currentHero.cname || '英雄';
+}
+
+// === 多层级流转控制器 (Two-Stage View Flow) ===
+let currentView = 'hero_select';
+
+function switchView(viewName) {
+  currentView = viewName;
+  const viewHero = document.getElementById('viewHeroSelect');
+  const viewStudio = document.getElementById('viewStudio');
+  const btnHero = document.getElementById('navStepHero');
+  const btnStudio = document.getElementById('navStepStudio');
+  const navBadge = document.getElementById('navHeroBadge');
+
+  if (navBadge && currentHero) {
+    navBadge.innerText = currentHero.cname || '英雄';
+  }
+
+  if (viewName === 'hero_select') {
+    if (viewHero) viewHero.classList.add('active');
+    if (viewStudio) viewStudio.classList.remove('active');
+    if (btnHero) btnHero.classList.add('active');
+    if (btnStudio) btnStudio.classList.remove('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    if (viewHero) viewHero.classList.remove('active');
+    if (viewStudio) viewStudio.classList.add('active');
+    if (btnHero) btnHero.classList.remove('active');
+    if (btnStudio) btnStudio.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
 
 function setHeroFilter(lane, el) {
@@ -3588,6 +4025,7 @@ function filterItems() { renderItems(); }
 function renderHeroes() {
   const query = (document.getElementById('heroSearch').value || '').trim().toLowerCase();
   const container = document.getElementById('heroListContainer');
+  if (!container) return;
   container.innerHTML = '';
   
   const filtered = HEROES_DATA.filter(h => {
@@ -3603,6 +4041,7 @@ function renderHeroes() {
     card.innerHTML = `
       <img class="hero-avatar" alt="${h.cname}" src="https://game.gtimg.cn/images/yxzj/img201606/heroimg/${h.ename}/${h.ename}.jpg" onerror="this.src='https://game.gtimg.cn/images/yxzj/img201606/heroimg/105/105.jpg'">
       <div class="hero-card-name">${h.cname}</div>
+      <div class="hero-card-role-tag">${h.role || '英雄'}</div>
     `;
     container.appendChild(card);
   });
@@ -3642,6 +4081,9 @@ function selectHero(hero) {
   } else {
     recalculate();
   }
+
+  // 选定英雄后平滑进入方案推演室 (Level 2)
+  switchView('studio');
 }
 
 

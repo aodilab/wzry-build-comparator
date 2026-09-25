@@ -122,9 +122,60 @@ html, body {
   .brand-titles p { display: none !important; }
   .header-actions { display: none !important; }
   .sandbox-grid { display: flex; flex-direction: column; height: auto; gap: 12px; }
+  .studio-workbench-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: auto !important;
+    gap: 12px !important;
+  }
+  .hero-hall-header-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 12px 14px !important;
+  }
+  .hero-hall-search {
+    width: 100% !important;
+  }
+  .hero-hall-segmented {
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    scrollbar-width: none !important;
+    margin-bottom: 12px !important;
+    display: flex !important;
+  }
+  .hero-hall-segmented::-webkit-scrollbar { display: none !important; }
+  .hero-hall-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 8px !important;
+  }
+  .studio-hero-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 12px 14px !important;
+  }
+  .studio-hero-left {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+  .studio-lane-select {
+    display: flex !important;
+    align-items: center !important;
+    overflow-x: auto !important;
+    padding-top: 8px !important;
+    border-top: 1px solid rgba(0,0,0,0.05) !important;
+  }
+  .studio-presets-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
   .hero-section-panel { order: 1; }
-  .slots-stats-section-panel { order: 2; display: flex; flex-direction: column; gap: 12px; background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; }
-  .shop-section-panel { order: 3; }
+  .slots-stats-section-panel { order: 1; display: flex; flex-direction: column; gap: 12px; background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; }
+  .shop-section-panel { order: 2; }
   .desktop-only { display: none !important; }
   .hero-section-panel {
     background: #ffffff !important; border: 1px solid rgba(0,0,0,0.06) !important;
