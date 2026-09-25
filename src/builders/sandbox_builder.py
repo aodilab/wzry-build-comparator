@@ -73,16 +73,27 @@ def build_sandbox_html(output_file=None):
         if r1 in ROLE_MAP: roles.append(ROLE_MAP[r1])
         if r2 in ROLE_MAP and ROLE_MAP[r2] not in roles: roles.append(ROLE_MAP[r2])
         role_str = "/".join(roles) if roles else "战士"
-        lane = LANE_MAP.get(roles[0] if roles else "战士", "对抗路")
+        default_lane = LANE_MAP.get(roles[0] if roles else "战士", "对抗路")
         base = get_hero_base_stats(ename, cname, role_str)
         rec_arcana = HERO_RECOMMENDED_ARCANA.get(cname, {"red": "异变", "green": "鹰眼", "blue": "隐匿"})
+
+        # 关联官方真实推荐分路 (SSOT)
+        h_builds = OFFICIAL_HERO_BUILDS.get(cname, {})
+        supported_lanes = []
+        if isinstance(h_builds, dict):
+            supported_lanes = h_builds.get("supported_lanes", [])
+            if not supported_lanes and "lanes" in h_builds:
+                supported_lanes = list(h_builds["lanes"].keys())
+        if not supported_lanes:
+            supported_lanes = [default_lane]
 
         processed_heroes.append({
             "ename": ename,
             "cname": cname,
             "title": title,
             "role": role_str,
-            "lane": lane,
+            "lane": supported_lanes[0],
+            "supported_lanes": supported_lanes,
             "base_stats": base,
             "recommended_arcana": rec_arcana
         })

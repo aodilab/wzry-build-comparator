@@ -51,3 +51,10 @@ templates/miniprogram/
 .wrangler/
 dist_pages/
 
+# 赛季原始多媒体录屏（单文件数GB，严禁推送到 GitHub 触发100MB限额）
+raw_assets/
+*.mp4
+*.mkv
+*.mov
+
+

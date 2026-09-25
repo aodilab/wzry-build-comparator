@@ -5,29 +5,153 @@
 // ==============================================================================
 
 let currentHeroActiveLane = '对抗路';
+currentBenchmarkPresetId = 'preset_1';
+
+// === 动态渲染英雄支持的官方分路胶囊 ===
+function renderHeroLanePills(hero) {
+  const container = document.getElementById('heroLaneSwitchPills');
+  if (!container) return;
+  container.innerHTML = '';
+
+  // 获取英雄真实官方支持的分路
+  let supported = [];
+  const cname = hero ? hero.cname : '';
+  if (typeof OFFICIAL_HERO_BUILDS !== 'undefined' && OFFICIAL_HERO_BUILDS[cname]) {
+    const hData = OFFICIAL_HERO_BUILDS[cname];
+    if (hData.supported_lanes && hData.supported_lanes.length > 0) {
+      supported = hData.supported_lanes;
+    } else if (hData.lanes) {
+      supported = Object.keys(hData.lanes);
+    }
+  }
+  if (!supported || supported.length === 0) {
+    supported = hero && hero.lane ? [hero.lane] : ['对抗路'];
+  }
+
+  // 若当前分路不在支持名册中，重置为第一个有效分路
+  if (!supported.includes(currentHeroActiveLane)) {
+    currentHeroActiveLane = supported[0];
+  }
+
+  supported.forEach(lane => {
+    const btn = document.createElement('button');
+    btn.className = `lane-pill-btn ${lane === currentHeroActiveLane ? 'active' : ''}`;
+    btn.dataset.lane = lane;
+    btn.innerText = lane;
+    btn.onclick = () => changeHeroActiveLane(lane, btn);
+    container.appendChild(btn);
+  });
+}
 
 // === 主玩分路切换联动 ===
 function changeHeroActiveLane(lane, btn) {
   currentHeroActiveLane = lane;
-  document.querySelectorAll('#heroLaneSwitchPills .lane-pill-btn').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  else {
-    const targetBtn = document.querySelector(`#heroLaneSwitchPills .lane-pill-btn[data-lane="${lane}"]`);
-    if (targetBtn) targetBtn.classList.add('active');
-  }
-  // 联动一键神装与推荐出装
+  document.querySelectorAll('#heroLaneSwitchPills .lane-pill-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lane === lane);
+  });
+  // 切换分路时重置预设方案为第1套，并联动装配神装与铭文
+  currentBenchmarkPresetId = 'preset_1';
   loadRecommendedEquips();
+}
+
+// === 渲染官方3套推荐出装卡片 ===
+function renderOfficialPresetCards() {
+  const container = document.getElementById('officialPresetCards');
+  if (!container) return;
+  container.innerHTML = '';
+
+  const presets = (typeof getHeroOfficialPresets === 'function') ? getHeroOfficialPresets(currentHero, currentHeroActiveLane) : [];
+  if (!presets || presets.length === 0) {
+    container.innerHTML = '<div style="font-size:11px; color:var(--text-tertiary); padding:6px 0;">当前分路暂无官方套装推荐</div>';
+    return;
+  }
+
+  presets.forEach((p, idx) => {
+    const isAct = (p.id === currentBenchmarkPresetId) || (idx === 0 && !currentBenchmarkPresetId);
+    const tagClass = p.tag === '生存' ? 'tag-survival' : (p.tag === '输出' ? 'tag-output' : 'tag-balance');
+    const card = document.createElement('div');
+    card.className = `official-preset-card ${isAct ? 'active' : ''}`;
+    card.onclick = () => applyOfficialPreset(p.id);
+
+    // 迷你装备图标预览
+    let itemsHtml = '';
+    (p.items || []).slice(0, 6).forEach(it => {
+      itemsHtml += `<img class="preset-mini-item-icon" src="https://game.gtimg.cn/images/yxzj/img201606/itemimgo/${it.item_id}.png" onerror="this.src='https://game.gtimg.cn/images/yxzj/img201606/itemimg/${it.item_id}.jpg'" alt="${it.item_name}" title="${it.item_name}">`;
+    });
+
+    card.innerHTML = `
+      <div class="preset-meta-top">
+        <span class="preset-genre-name">${p.genre || `推荐${idx + 1}`}</span>
+        <span class="preset-tag-pill ${tagClass}">${p.tag || '推荐'}</span>
+      </div>
+      <div class="preset-desc-line" title="${p.desc || ''}">${p.desc || '官方实战经典方案'}</div>
+      <div class="preset-items-preview">${itemsHtml}</div>
+      <div class="preset-arcana-pill" title="推荐铭文：${p.arcana_desc || '标准属性'}">${p.arcana_desc || '官方铭文'}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// === 点击装配官方推荐套装方案（装备与推荐铭文联动强装配） ===
+function applyOfficialPreset(presetId) {
+  currentBenchmarkPresetId = presetId;
+  const presets = (typeof getHeroOfficialPresets === 'function') ? getHeroOfficialPresets(currentHero, currentHeroActiveLane) : [];
+  const chosen = presets.find(p => p.id === presetId) || presets[0];
+  if (!chosen) return;
+
+  // 1. 装载6件神装
+  currentSlots = [...(chosen.items || [])].slice(0, 6);
+
+  // 2. 联动装载强绑定的官方推荐铭文
+  if (chosen.arcana) {
+    currentArcana = JSON.parse(JSON.stringify(chosen.arcana));
+  } else if (currentHero && currentHero.recommended_arcana) {
+    initHeroArcana(currentHero);
+  }
+
+  renderSlots();
+  renderItems();
+  renderArcanaBar();
+  renderOfficialPresetCards();
+  recalculate();
+  if (typeof updateSynergyBrief === 'function') {
+    updateSynergyBrief();
+  }
+}
+
+// === 一键对齐当前方案绑定的官方铭文 ===
+function alignArcanaWithCurrentBuild(e) {
+  if (e && e.stopPropagation) e.stopPropagation();
+  const presets = (typeof getHeroOfficialPresets === 'function') ? getHeroOfficialPresets(currentHero, currentHeroActiveLane) : [];
+  const activePreset = presets.find(p => p.id === currentBenchmarkPresetId) || presets[0];
+
+  if (activePreset && activePreset.arcana) {
+    currentArcana = JSON.parse(JSON.stringify(activePreset.arcana));
+    renderArcanaBar();
+    recalculate();
+    if (typeof updateSynergyBrief === 'function') updateSynergyBrief();
+    alert(`已将铭文一键对齐【${activePreset.genre || activePreset.title}】官方推荐铭文！`);
+  } else if (currentHero && currentHero.recommended_arcana) {
+    initHeroArcana(currentHero);
+    renderArcanaBar();
+    recalculate();
+    if (typeof updateSynergyBrief === 'function') updateSynergyBrief();
+    alert(`已将铭文一键恢复为【${currentHero.cname}】基准推荐铭文！`);
+  }
 }
 
 // === 一键神装 (基于所选分路，优先装填王者官方对应推荐方案) ===
 function loadRecommendedEquips() {
   if (!currentHero) return;
-
   const presets = (typeof getHeroOfficialPresets === 'function') ? getHeroOfficialPresets(currentHero, currentHeroActiveLane) : [];
-  let chosenPreset = (presets && presets.length > 0) ? presets[0] : null;
+  let chosenPreset = presets.find(p => p.id === currentBenchmarkPresetId) || (presets.length > 0 ? presets[0] : null);
 
   if (chosenPreset && chosenPreset.items && chosenPreset.items.length > 0) {
+    currentBenchmarkPresetId = chosenPreset.id;
     currentSlots = [...chosenPreset.items].slice(0, 6);
+    if (chosenPreset.arcana) {
+      currentArcana = JSON.parse(JSON.stringify(chosenPreset.arcana));
+    }
   } else {
     // 通用 fallback
     const r = (currentHero.role || '') + (currentHero.lane || '');
@@ -47,6 +171,8 @@ function loadRecommendedEquips() {
 
   renderSlots();
   renderItems();
+  renderArcanaBar();
+  renderOfficialPresetCards();
   recalculate();
   if (typeof updateSynergyBrief === 'function') {
     updateSynergyBrief();
@@ -173,9 +299,9 @@ function renderModalHeroes() {
   container.innerHTML = '';
 
   const filtered = HEROES_DATA.filter(h => {
-    const matchLane = (currentHeroModalFilter === '全部') || (h.lane === currentHeroModalFilter) || (h.role && h.role.includes(currentHeroModalFilter));
+    const matchRole = (currentHeroModalFilter === '全部') || (h.role && h.role.includes(currentHeroModalFilter));
     const matchQuery = !query || h.cname.toLowerCase().includes(query) || (h.title && h.title.toLowerCase().includes(query));
-    return matchLane && matchQuery;
+    return matchRole && matchQuery;
   });
 
   const countBadge = document.getElementById('heroModalCountBadge');

@@ -336,3 +336,60 @@
 .arcana-chip-red { background: rgba(255, 59, 48, 0.08); color: #d32f2f; border-color: rgba(255, 59, 48, 0.2); }
 .arcana-chip-green { background: rgba(52, 199, 89, 0.08); color: #2e7d32; border-color: rgba(52, 199, 89, 0.2); }
 .arcana-chip-blue { background: rgba(0, 113, 227, 0.08); color: #0277bd; border-color: rgba(0, 113, 227, 0.2); }
+
+/* 铭文快捷对齐按钮 */
+.arcana-bar-actions { display: flex; align-items: center; gap: 6px; }
+.hero-align-arcana-btn {
+  font-size: 11px; color: var(--color-green); padding: 4px 10px; border-radius: 99px;
+  background: var(--color-green-bg); font-weight: 600; border: none; cursor: pointer; white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.hero-align-arcana-btn:hover { background: rgba(52, 199, 89, 0.22); transform: scale(1.02); }
+
+/* 官方权威推荐套装方案卡片 */
+.official-preset-container {
+  padding: 10px 14px;
+  background: var(--apple-subcard);
+  border-bottom: 1px solid var(--apple-border);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.official-preset-header { display: flex; justify-content: space-between; align-items: center; }
+.official-preset-title-wrap {
+  display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: var(--text-primary);
+}
+.official-preset-title-wrap svg { color: var(--color-blue); }
+.official-preset-tip { font-size: 11px; color: var(--text-tertiary); }
+.official-preset-cards {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+}
+.official-preset-card {
+  padding: 8px 9px; border-radius: 10px; background: var(--apple-card);
+  border: 1.5px solid var(--apple-border); cursor: pointer; transition: all 0.2s;
+  display: flex; flex-direction: column; gap: 4px; position: relative;
+}
+.official-preset-card:hover { border-color: var(--apple-border-hover); background: var(--apple-card-hover); }
+.official-preset-card.active {
+  border-color: var(--color-blue); background: var(--color-blue-bg);
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.12);
+}
+.preset-meta-top { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+.preset-genre-name { font-size: 12px; font-weight: 700; color: var(--text-primary); }
+.preset-tag-pill {
+  font-size: 10px; padding: 1px 5px; border-radius: 4px; font-weight: 600;
+}
+.tag-survival { background: rgba(52, 199, 89, 0.12); color: #2e7d32; }
+.tag-output { background: rgba(255, 59, 48, 0.12); color: #d32f2f; }
+.tag-balance { background: rgba(0, 113, 227, 0.12); color: #0277bd; }
+
+.preset-desc-line {
+  font-size: 10px; color: var(--text-secondary); line-height: 1.3;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.preset-items-preview { display: flex; align-items: center; gap: 2px; margin-top: 2px; }
+.preset-mini-item-icon {
+  width: 17px; height: 17px; border-radius: 50%; object-fit: cover; border: 1px solid var(--apple-border);
+}
+.preset-arcana-pill {
+  font-size: 9.5px; color: var(--text-tertiary); background: var(--apple-subcard);
+  padding: 1px 4px; border-radius: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
