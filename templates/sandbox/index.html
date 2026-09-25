@@ -59,6 +59,19 @@
     <div class="seg-item" onclick="setHeroFilter('辅助', this)">辅助</div>
   </div>
 
+  <!-- 层级 1 专属：已选英雄与分路直选栏 (支持用户直接在层级 1 选定分路) -->
+  <div class="hero-hall-lane-bar" id="heroHallLaneBar">
+    <div class="hall-lane-left">
+      <img id="hallSelectedAvatar" class="hall-lane-avatar" src="" alt="Hero">
+      <div class="hall-lane-meta">
+        <span class="hall-lane-name" id="hallSelectedName">廉颇</span>
+        <span class="brand-badge" id="hallSelectedRole">坦克</span>
+      </div>
+      <span class="hall-lane-guide">请选实战分路：</span>
+    </div>
+    <div class="hall-lane-pills" id="hallLanePills"></div>
+  </div>
+
   <!-- 英雄展示大网格 -->
   <div class="hero-hall-grid" id="heroListContainer"></div>
 </section>
@@ -265,5 +278,27 @@
       </div>
     </div>
     <div class="arcana-modal-body" id="arcanaModalBody"></div>
+  </div>
+</div>
+
+<!-- 层级 1 实战分路极速选择浮层 (Apple 毛玻璃 Sheet) -->
+<div class="lane-picker-overlay" id="lanePickerOverlay" onclick="closeLanePicker(event)">
+  <div class="lane-picker-card" onclick="event.stopPropagation()">
+    <div class="lane-picker-header">
+      <div class="lane-picker-hero">
+        <img class="lane-picker-avatar" id="pickerHeroAvatar" src="" alt="Hero">
+        <div>
+          <div class="lane-picker-title-row">
+            <span class="lane-picker-name" id="pickerHeroName">-</span>
+            <span class="brand-badge" id="pickerHeroRole">-</span>
+          </div>
+          <div class="lane-picker-sub">选择实战分路，即刻进入专属出装推演</div>
+        </div>
+      </div>
+      <button class="arcana-modal-close" onclick="closeLanePicker()">✕</button>
+    </div>
+    <div class="lane-picker-body">
+      <div class="lane-picker-options" id="pickerLaneOptions"></div>
+    </div>
   </div>
 </div>
