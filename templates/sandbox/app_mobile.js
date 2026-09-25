@@ -1,5 +1,5 @@
 // ==============================================================================
-// 王者出装箱 ｜ 移动端抽屉交互、一键权威神装与战术简报同步 (app_mobile.js)
+// 王者出装箱 ｜ 移动端抽屉交互、一键官方神装与战术简报同步 (app_mobile.js)
 // 专注：移动端换英雄抽屉、分路切换联动一键神装、主视图自选VS推荐简报渲染
 // 遵循 AGENTS.md 规范：模块单一职责，行数控制在 250 行以内
 // ==============================================================================
@@ -179,74 +179,131 @@ function loadRecommendedEquips() {
   }
 }
 
-// === 同步主视图【自选方案 VS 王者推荐方案】简报卡片 ===
+// === 切换对标的王者官方推荐方案 ===
+function cycleBenchmarkPreset() {
+  const presets = typeof getHeroOfficialPresets === 'function' ? getHeroOfficialPresets(currentHero, currentHeroActiveLane) : [];
+  if (!presets || presets.length === 0) return;
+  const curIdx = presets.findIndex(p => p.id === currentBenchmarkPresetId);
+  const nextIdx = (curIdx + 1) % presets.length;
+  currentBenchmarkPresetId = presets[nextIdx].id;
+  updateSynergyBrief();
+  renderOfficialPresetCards();
+}
+
+// === 同步主视图【自选方案 VS 王者推荐方案】实时全维对比看板 ===
 function updateSynergyBrief() {
-  const card = document.getElementById('synergyBriefCard');
-  if (!card) return;
-  const summary = document.getElementById('synergyBriefSummary');
-  const highlights = document.getElementById('synergyBriefHighlights');
+  const container = document.getElementById('compareGridCards');
+  const verdictBox = document.getElementById('compareVerdictText');
+  const benchNameEl = document.getElementById('compareBenchmarkName');
+
+  const officialPresets = typeof getHeroOfficialPresets === 'function' ? getHeroOfficialPresets(currentHero, currentHeroActiveLane) : [];
+  const activePreset = officialPresets.find(p => p.id === currentBenchmarkPresetId) || officialPresets[0] || { items: [] };
+
+  if (benchNameEl) {
+    benchNameEl.innerText = `${activePreset.genre || activePreset.title || '官方推荐'} ▾`;
+  }
 
   if (!currentSlots || currentSlots.length === 0) {
-    if (summary) {
-      summary.innerText = '暂未选配装备。点击“一键神装”或挑选装备入槽，实时演算方案对比。';
-      summary.className = 'synergy-brief-summary';
-    }
-    if (highlights) highlights.innerHTML = '';
+    if (container) container.innerHTML = '';
+    if (verdictBox) verdictBox.innerText = '暂未装配装备。挑选装备入槽或点击上方“王者官方推荐方案”，实时演算全维对比。';
     return;
   }
 
-  const effItems = currentSlots;
-  const officialPresets = typeof getHeroOfficialPresets === 'function' ? getHeroOfficialPresets(currentHero, currentHeroActiveLane) : [];
-  const activePreset = officialPresets.find(p => p.id === (typeof currentBenchmarkPresetId !== 'undefined' ? currentBenchmarkPresetId : 'official_1')) || officialPresets[0] || { items: [] };
-
   if (typeof compareUserBuildWithOfficial === 'function') {
-    const diff = compareUserBuildWithOfficial(effItems, activePreset, currentHero, typeof currentArcana !== 'undefined' ? currentArcana : {});
+    const diff = compareUserBuildWithOfficial(currentSlots, activePreset, currentHero, typeof currentArcana !== 'undefined' ? currentArcana : {});
+    const u = diff.uStat;
+    const b = diff.bStat;
     const cb = diff.comboResult;
 
-    if (summary) {
-      // 提取核心关键数值差
-      const adDiff = diff.uStat.ad - diff.bStat.ad;
-      const hpDiff = diff.uStat.hp - diff.bStat.hp;
-      const cdrDiff = diff.uStat.cdr - diff.bStat.cdr;
+    const isMag = (currentHero && (currentHero.role || '').includes('法师')) || (u.ap > u.ad);
+    const atkName = isMag ? '法术攻击' : '物理攻击';
+    const uAtk = isMag ? u.ap : u.ad;
+    const bAtk = isMag ? b.ap : b.ad;
+    const atkDiff = uAtk - bAtk;
 
-      const numTokens = [];
-      numTokens.push(`物理攻击 ${adDiff >= 0 ? '+' : ''}${adDiff}`);
-      if (hpDiff !== 0) numTokens.push(`额外生命 ${hpDiff >= 0 ? '+' : ''}${hpDiff}`);
-      numTokens.push(`冷却缩减 ${cdrDiff >= 0 ? '+' : ''}${cdrDiff}%`);
+    const penName = isMag ? '法术穿透' : '物理穿透';
+    const uPen = isMag ? u.mpen : u.pen;
+    const bPen = isMag ? b.mpen : b.pen;
+    const penDiff = uPen - bPen;
 
-      summary.innerText = `相较【${activePreset.title || '王者推荐'}】：${numTokens.join(' ｜ ')}`;
+    const hpDiff = u.hp - b.hp;
+    const cdrDiff = u.cdr - b.cdr;
+
+    function renderDiffBadge(val, suffix = '') {
+      if (val > 0) return `<span class="compare-diff-badge plus">+${val}${suffix} 领先</span>`;
+      if (val < 0) return `<span class="compare-diff-badge minus">${val}${suffix} 落后</span>`;
+      return `<span class="compare-diff-badge even">持平</span>`;
     }
 
-    if (highlights) {
-      let hlHtml = '';
-      // 1. 连招伤害对比
-      if (cb) {
-        const dmgDiff = cb.dmgDiff;
-        const dmgStr = dmgDiff > 0 ? `领先 +${dmgDiff} 爆发` : (dmgDiff < 0 ? `落后 ${dmgDiff}` : '持平');
-        hlHtml += `
-          <div class="synergy-highlight-row">
-            <span class="synergy-highlight-badge" style="background:#0071e3;">连招</span>
-            <span class="synergy-highlight-desc"><b>全套总伤害 ${cb.userCombat.totalDmg}</b> (${dmgStr}) · 回复 +${cb.userCombat.totalHeal} HP</span>
+    if (container) {
+      container.innerHTML = `
+        <!-- 核心攻击 -->
+        <div class="compare-stat-card">
+          <div class="compare-stat-name">
+            <span>${atkName}</span>
+            ${renderDiffBadge(atkDiff)}
           </div>
-        `;
-      }
-      // 2. 核心机制优势
+          <div class="compare-stat-values">
+            <span class="compare-user-val">${uAtk}</span>
+            <span class="compare-base-val">官方: ${bAtk}</span>
+          </div>
+        </div>
+
+        <!-- 连招总伤害 -->
+        <div class="compare-stat-card">
+          <div class="compare-stat-name">
+            <span>连招总爆发</span>
+            ${(cb && typeof cb.dmgDiff === 'number') ? renderDiffBadge(cb.dmgDiff) : '<span class="compare-diff-badge even">持平</span>'}
+          </div>
+          <div class="compare-stat-values">
+            <span class="compare-user-val">${(cb && cb.userCombat && typeof cb.userCombat.totalDmg !== 'undefined') ? cb.userCombat.totalDmg : '-'}</span>
+            <span class="compare-base-val">官方: ${(cb && cb.officialCombat && typeof cb.officialCombat.totalDmg !== 'undefined') ? cb.officialCombat.totalDmg : '-'}</span>
+          </div>
+        </div>
+
+        <!-- 生存生命 -->
+        <div class="compare-stat-card">
+          <div class="compare-stat-name">
+            <span>额外生命</span>
+            ${renderDiffBadge(hpDiff)}
+          </div>
+          <div class="compare-stat-values">
+            <span class="compare-user-val">+${u.hp}</span>
+            <span class="compare-base-val">官方: +${b.hp}</span>
+          </div>
+        </div>
+
+        <!-- 冷却缩减 -->
+        <div class="compare-stat-card">
+          <div class="compare-stat-name">
+            <span>冷却缩减</span>
+            ${renderDiffBadge(cdrDiff, '%')}
+          </div>
+          <div class="compare-stat-values">
+            <span class="compare-user-val">${u.cdr}%</span>
+            <span class="compare-base-val">官方: ${b.cdr}%</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // 智能战术结论
+    if (verdictBox) {
+      const tokens = [];
+      if (atkDiff > 20) tokens.push(`攻击高出 ${atkDiff}`);
+      if (cdrDiff > 4) tokens.push(`冷缩领先 ${cdrDiff}%`);
+      if (hpDiff < -400) tokens.push(`生命偏低 ${Math.abs(hpDiff)} 点`);
+      if (hpDiff > 400) tokens.push(`血量多出 ${hpDiff} 点`);
+
+      let text = `相较官方【${activePreset.genre || activePreset.title || '推荐方案'}】：`;
       if (diff.pros && diff.pros.length > 0) {
-        hlHtml += `
-          <div class="synergy-highlight-row">
-            <span class="synergy-highlight-badge" style="background:#16a34a;">优势</span>
-            <span class="synergy-highlight-desc"><b>${diff.pros[0].title}</b> · ${diff.pros[0].desc}</span>
-          </div>
-        `;
-      } else if (diff.cons && diff.cons.length > 0) {
-        hlHtml += `
-          <div class="synergy-highlight-row">
-            <span class="synergy-highlight-badge" style="background:#d97706;">提示</span>
-            <span class="synergy-highlight-desc"><b>${diff.cons[0].title}</b> · ${diff.cons[0].desc}</span>
-          </div>
-        `;
+        text += `自选方案${diff.pros[0].title}（${diff.pros[0].desc}）。`;
+      } else if (tokens.length > 0) {
+        text += `自选方案${tokens.join('，')}。`;
+      } else {
+        text += '自选出装与官方推荐数值基本相当。';
       }
-      highlights.innerHTML = hlHtml;
+      verdictBox.innerText = text;
     }
   }
 }
