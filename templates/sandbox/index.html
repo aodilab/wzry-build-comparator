@@ -158,32 +158,32 @@
 
     <!-- 右侧：六神装卡槽、自选铭文与全维演算面板 -->
     <section class="apple-panel slots-stats-section-panel">
-      <div class="panel-header">
-        <div class="panel-title">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-          六神装插槽 <span id="slotCountDisplay">(0/6)</span>
-        </div>
-        <div class="slot-header-actions">
-          <span class="panel-badge" id="slotCount">已选 0 / 6 件</span>
-          <button class="action-pill-btn rec-btn" onclick="loadRecommendedEquips()" title="一键填入当前英雄权威经典配装">一键神装</button>
-          <button class="action-pill-btn clear-btn" onclick="resetSlots()" title="清空全部槽位">清空</button>
-        </div>
-      </div>
-
-      <!-- 灵动槽位 Dock -->
+      <!-- 灵动槽位 Dock：集成标题、造价与操作 -->
       <div class="slots-dock">
-        <div class="slots-header">
-          <span style="font-size: 12px; color: var(--text-secondary);">神装卡槽 (点击卸下)</span>
-          <div class="slots-cost">
-            <span>总造价</span>
-            <span id="totalGold" style="color: var(--color-amber);">0 G</span>
+        <div class="slots-dock-header">
+          <div class="slots-dock-title-group">
+            <span class="slots-dock-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              六神装插槽
+            </span>
+            <span class="slots-gold-badge" title="当前神装总造价">
+              <span style="font-size: 11px;">总造价</span>
+              <strong id="totalGold" style="color: var(--color-amber); margin-left: 2px;">0 G</strong>
+            </span>
+          </div>
+          <div class="slots-dock-actions">
+            <span class="panel-badge" id="slotCount">0 / 6 件</span>
+            <button class="action-pill-btn rec-btn" onclick="loadRecommendedEquips()" title="一键填入当前英雄权威经典配装">一键神装</button>
+            <button class="action-pill-btn clear-btn" onclick="resetSlots()" title="清空全部槽位">清空</button>
           </div>
         </div>
+
+        <!-- 2 行 3 列绝不溢出经典卡槽网格 -->
         <div class="slots-grid" id="slotsGrid"></div>
         
         <!-- 智能诊断与互斥检测通告条 -->
-        <div class="diag-panel">
-          <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 4px;">
+        <div class="diag-panel" id="diagPanelBox">
+          <div class="diag-panel-title">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
             智能诊断与互斥检测
           </div>
@@ -191,16 +191,19 @@
         </div>
       </div>
 
-      <!-- 30 颗满配铭文状态快捷栏 (含一键对齐方案专属铭文) -->
+      <!-- 30 颗满配铭文状态快捷卡片 (严谨规范排版) -->
       <div class="hero-arcana-bar" title="点击自定义调整铭文搭配">
-        <div class="arcana-bar-header" onclick="openArcanaModal()">
-          <span class="arcana-bar-label">自选铭文：</span>
-          <div class="arcana-chips" id="arcanaChipsBar"></div>
+        <div class="arcana-card-header">
+          <div class="arcana-card-title-wrap">
+            <span class="arcana-card-title">自选铭文</span>
+            <span class="arcana-card-subtitle">30颗满配</span>
+          </div>
+          <div class="arcana-card-actions">
+            <button class="hero-align-arcana-btn" id="alignArcanaBtn" onclick="alignArcanaWithCurrentBuild(event)" title="一键将自选铭文对齐当前官方推荐出装铭文">对齐方案铭文</button>
+            <button class="hero-change-btn" onclick="openArcanaModal(event)">调整铭文</button>
+          </div>
         </div>
-        <div class="arcana-bar-actions">
-          <button class="hero-align-arcana-btn" id="alignArcanaBtn" onclick="alignArcanaWithCurrentBuild(event)" title="一键将自选铭文对齐当前官方推荐出装铭文">对齐方案铭文</button>
-          <button class="hero-change-btn" onclick="openArcanaModal(event)">调整铭文</button>
-        </div>
+        <div class="arcana-chips" id="arcanaChipsBar"></div>
       </div>
 
       <!-- 方案对比与战术协同简报卡片 (对标王者官方推荐出装) -->
