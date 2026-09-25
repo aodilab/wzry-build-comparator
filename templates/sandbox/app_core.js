@@ -72,10 +72,40 @@ function updateSpotlight() {
   if (name) name.innerText = currentHero.cname || '未知英雄';
   const title = document.getElementById('spotTitle');
   if (title) title.innerText = currentHero.title || '正义爆轰';
-  const lane = document.getElementById('spotLane');
-  if (lane) lane.innerText = currentHero.lane || '对抗路';
   const role = document.getElementById('spotRole');
   if (role) role.innerText = currentHero.role || '坦克';
+  const navBadge = document.getElementById('navHeroBadge');
+  if (navBadge) navBadge.innerText = currentHero.cname || '英雄';
+}
+
+// === 多层级流转控制器 (Two-Stage View Flow) ===
+let currentView = 'hero_select';
+
+function switchView(viewName) {
+  currentView = viewName;
+  const viewHero = document.getElementById('viewHeroSelect');
+  const viewStudio = document.getElementById('viewStudio');
+  const btnHero = document.getElementById('navStepHero');
+  const btnStudio = document.getElementById('navStepStudio');
+  const navBadge = document.getElementById('navHeroBadge');
+
+  if (navBadge && currentHero) {
+    navBadge.innerText = currentHero.cname || '英雄';
+  }
+
+  if (viewName === 'hero_select') {
+    if (viewHero) viewHero.classList.add('active');
+    if (viewStudio) viewStudio.classList.remove('active');
+    if (btnHero) btnHero.classList.add('active');
+    if (btnStudio) btnStudio.classList.remove('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    if (viewHero) viewHero.classList.remove('active');
+    if (viewStudio) viewStudio.classList.add('active');
+    if (btnHero) btnHero.classList.remove('active');
+    if (btnStudio) btnStudio.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
 
 function setHeroFilter(lane, el) {
@@ -98,6 +128,7 @@ function filterItems() { renderItems(); }
 function renderHeroes() {
   const query = (document.getElementById('heroSearch').value || '').trim().toLowerCase();
   const container = document.getElementById('heroListContainer');
+  if (!container) return;
   container.innerHTML = '';
   
   const filtered = HEROES_DATA.filter(h => {
@@ -113,6 +144,7 @@ function renderHeroes() {
     card.innerHTML = `
       <img class="hero-avatar" alt="${h.cname}" src="https://game.gtimg.cn/images/yxzj/img201606/heroimg/${h.ename}/${h.ename}.jpg" onerror="this.src='https://game.gtimg.cn/images/yxzj/img201606/heroimg/105/105.jpg'">
       <div class="hero-card-name">${h.cname}</div>
+      <div class="hero-card-role-tag">${h.role || '英雄'}</div>
     `;
     container.appendChild(card);
   });
@@ -152,6 +184,9 @@ function selectHero(hero) {
   } else {
     recalculate();
   }
+
+  // 选定英雄后平滑进入方案推演室 (Level 2)
+  switchView('studio');
 }
 
 
