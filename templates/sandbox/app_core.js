@@ -34,6 +34,9 @@ window.onload = () => {
   renderArcanaBar();
   renderHeroes();
   renderItems();
+  if (typeof renderHeroLanePills === 'function') {
+    renderHeroLanePills(currentHero);
+  }
   if (typeof loadRecommendedEquips === 'function') {
     loadRecommendedEquips();
   } else {
@@ -98,9 +101,9 @@ function renderHeroes() {
   container.innerHTML = '';
   
   const filtered = HEROES_DATA.filter(h => {
-    const matchLane = (currentHeroFilter === '全部') || (h.lane === currentHeroFilter);
+    const matchRole = (currentHeroFilter === '全部') || (h.role && h.role.includes(currentHeroFilter));
     const matchQuery = !query || h.cname.toLowerCase().includes(query) || (h.title && h.title.toLowerCase().includes(query));
-    return matchLane && matchQuery;
+    return matchRole && matchQuery;
   });
 
   filtered.forEach(h => {
@@ -139,12 +142,10 @@ function selectHero(hero) {
   renderArcanaBar();
   renderHeroes();
 
-  // 联动主玩分路胶囊按钮
-  const lane = hero.lane || '对抗路';
-  currentHeroActiveLane = lane;
-  document.querySelectorAll('#heroLaneSwitchPills .lane-pill-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.lane === lane);
-  });
+  // 动态渲染该英雄真实支持的官方推荐分路胶囊
+  if (typeof renderHeroLanePills === 'function') {
+    renderHeroLanePills(hero);
+  }
 
   if (typeof loadRecommendedEquips === 'function') {
     loadRecommendedEquips();

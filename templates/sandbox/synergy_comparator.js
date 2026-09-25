@@ -66,11 +66,42 @@ function getHeroOfficialPresets(hero, lane) {
     return list;
   }
 
-  // 1. 若分路为【打野】：必须包含打野刀体系！
+  // 1. 优先读取官方提取的真实分路出装与强绑定铭文 (SSOT 单一事实来源)
+  if (typeof OFFICIAL_HERO_BUILDS !== 'undefined' && OFFICIAL_HERO_BUILDS[cname]) {
+    const hData = OFFICIAL_HERO_BUILDS[cname];
+    let presets = [];
+    if (hData.lanes && hData.lanes[lane]) {
+      presets = hData.lanes[lane];
+    } else if (Array.isArray(hData)) {
+      presets = hData.filter(p => !p.lane || p.lane === lane);
+    }
+    if (presets && presets.length > 0) {
+      return presets.map((p, idx) => {
+        const items = resolveItems(p.item_names || p.items);
+        const tag = p.tag || '推荐';
+        const genre = p.genre || p.name || `推荐方案${idx + 1}`;
+        const title = p.title || `【${tag}】${genre}`;
+        return {
+          id: p.id || `preset_${idx + 1}`,
+          tag: tag,
+          genre: genre,
+          title: title,
+          desc: p.desc || '王者官方推荐出装与专属铭文。',
+          itemNames: p.item_names || p.items || [],
+          items: items,
+          arcana: p.arcana || null,
+          arcana_desc: p.arcana_desc || ''
+        };
+      });
+    }
+  }
+
+  // 2. 若分路为【打野】：必须包含打野刀体系！
   if (lane === '打野') {
-    // 检查官方预设中是否有真正携带打野刀的方案 (如韩信、李白、澜、镜等原生刺客打野，以及杨戬局内打野方案)
     if (typeof OFFICIAL_HERO_BUILDS !== 'undefined' && OFFICIAL_HERO_BUILDS[cname]) {
-      const jungleOfficial = OFFICIAL_HERO_BUILDS[cname].filter(p => p.lane === '打野' || hasJungleBlade(p.item_names));
+      const jungleOfficial = Array.isArray(OFFICIAL_HERO_BUILDS[cname]) 
+        ? OFFICIAL_HERO_BUILDS[cname].filter(p => p.lane === '打野' || hasJungleBlade(p.item_names))
+        : [];
       if (jungleOfficial.length > 0) {
         return jungleOfficial.map((p, idx) => {
           const items = resolveItems(p.item_names);
