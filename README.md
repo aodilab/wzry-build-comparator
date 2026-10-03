@@ -5,7 +5,7 @@
 从王者荣耀官方接口实时采集、清洗并拓扑关联全量英雄、装备合成路径、铭文搭配及最新赛季战场运营机制，生成高保真、零幻觉的 Markdown 知识库。
 
 > 📱 **官方配套微信小程序【王者出装箱】**：微信搜索「**王者出装箱**」即可在手机端随时畅享六神装沙盒演练与 Lv15 满级属性实时演算！  
-> 🌐 **Web 在线配装沙盒（独立 CDN 全球直开）**：[https://wzry.aodilab.com](https://wzry.aodilab.com) ｜ [GitHub Pages 备用镜像](https://13253374290.github.io/wzry-knowledge-base/)
+> 🌐 **官方 Web 在线推演沙盒**：[https://wzry.aodilab.com](https://wzry.aodilab.com)
 
 
 ---
