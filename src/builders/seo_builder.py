@@ -143,6 +143,8 @@ def build_semantic_directory_html(processed_heroes, official_builds) -> str:
     lines.append('      <div class="apple-footer-links">')
     lines.append('        <a href="/download">提货中心</a>')
     lines.append('        <span>·</span>')
+    lines.append('        <a href="https://github.com/aodilab/wzry-build-comparator" target="_blank" rel="noopener noreferrer">GitHub 开源仓库</a>')
+    lines.append('        <span>·</span>')
     lines.append('        <a href="https://pvp.qq.com/" target="_blank" rel="noopener noreferrer">王者荣耀官网公开数据</a>')
     lines.append('      </div>')
     lines.append('    </div>')
@@ -202,7 +204,33 @@ def generate_sitemap_xml(output_dirs=None):
         '    <changefreq>weekly</changefreq>',
         '    <priority>0.8</priority>',
         '  </url>',
+        '  <url>',
+        f'    <loc>{SITE_DOMAIN}/compare</loc>',
+        f'    <lastmod>{now_date}</lastmod>',
+        '    <changefreq>weekly</changefreq>',
+        '    <priority>0.8</priority>',
+        '  </url>',
     ]
+
+    # 收录 8 卷官方 RAG / NotebookLM 纯净 Markdown 核心知识库
+    md_files = [
+        "01_王者荣耀_全英雄技能数值与等级成长库.md",
+        "02_王者荣耀_英雄战术克制与搭档谱系.md",
+        "03_王者荣耀_五大分路定位与实战出装思路.md",
+        "04_王者荣耀_全装备属性与合成升级图谱.md",
+        "05_王者荣耀_全铭文图鉴与英雄搭配方案.md",
+        "06_王者荣耀_峡谷战场机制与宏观运营规则.md",
+        "07_王者荣耀_S45官方推荐全英雄全分路出装与铭文大全.md",
+        "08_王者荣耀_全英雄实战连招口诀大全.md",
+    ]
+    for mdf in md_files:
+        xml_lines.append('  <url>')
+        xml_lines.append(f'    <loc>{SITE_DOMAIN}/md/{mdf}</loc>')
+        xml_lines.append(f'    <lastmod>{now_date}</lastmod>')
+        xml_lines.append('    <changefreq>daily</changefreq>')
+        xml_lines.append('    <priority>0.85</priority>')
+        xml_lines.append('  </url>')
+
 
     for h in heroes:
         cname = h.get("cname", "")
