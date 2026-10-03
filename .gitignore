@@ -36,25 +36,79 @@ env/
 *.swp
 *.swo
 
-# Temporary scratch & logs
+# === 本地临时测试、草稿与日志（永久屏蔽，绝对不上云） ===
 scratch/
+test/
+temp/
+tmp/
+tests_local/
+_*
 *.log
 .cache/
+
+# 内部系统指令与机密
+AGENTS.md
 
 # 商业私有化资产与电商运营（严禁上传到公开 GitHub，防止数字资产与运营策略泄露）
 taobao/
 miniprogram/
-src/builders/miniprogram_builder.py
 templates/miniprogram/
+templates/xiaohongshu/
+templates/details/
+templates/pdf/
+templates/sandbox/
+src/builders/miniprogram_builder.py
+src/builders/xiaohongshu_apple_builder.py
+src/builders/details_builder.py
+src/builders/sku_builder.py
+src/builders/build_07_pdf.py
+src/builders/pdf_builder.py
+src/builders/main_images_*.py
+
+# 核心数据流水线与自动化提取（严禁公开）
+src/builders/build_s45_stream_pipeline.py
+src/builders/video_extractor.py
+src/core/stream_ocr_rules.py
+
+# 核心高价值出装与连招数据库（核心商业壁垒，严禁公开）
+output/07*
+output/08*
+output/pdf/
+config/hero_s45_official_builds.json
+config/hero_official_builds.py
+config/hero_combos.json
+config/hero_combos.py
+
+# 单文件前端沙盒编译成品（仅供线上 CDN 部署，不公开源码）
+sandbox.html
+index.html
 
 # 生产分发物料与 Cloudflare 账户凭证（仅由 Wrangler CLI 自动化推送）
 .wrangler/
 dist_pages/
 
-# 赛季原始多媒体录屏（单文件数GB，严禁推送到 GitHub 触发100MB限额）
+# 赛季原始多媒体录屏与废弃素材
 raw_assets/
 *.mp4
 *.mkv
 *.mov
+assets/icon_candidates/
+*.png
+!favicon.png
+!apple-touch-icon.png
+!assets/app_icon.png
+!assets/sponsor_wechat.jpg
+!assets/icon_dual_endless_cleaver.png
+!assets/icon_fuhuojia_resurrection.png
+!assets/icon_real_fuhuojia.png
 
+# 站长验证临时文件
+baidu_verify_*.html
+BingSiteAuth.xml
+
+# ˽��ά���ű���֪ͨ��Կ
+scripts/notify_wechat.py
+scripts/*_07*
+scripts/*compare*
+scripts/*official*
 
