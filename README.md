@@ -1,8 +1,7 @@
-# 王者荣耀双轨出装对比推演系统
+# 王者荣耀出装对比系统 ｜ 底层算法与战术知识库
 
-在线使用：[https://wzry.aodilab.com](https://wzry.aodilab.com)  
-微信小程序：微信搜索「**王者出装箱**」  
-离线版本：下载根目录的 `sandbox.html` 双击即可在浏览器离线运行。
+- **仓库核心交付**：开源王者荣耀底层物理算分引擎、装备合成拓扑与专供 NotebookLM / RAG 深度检索的 6 大战术知识库；
+- **推演实验室交付**：为保证极致体验与实时数据维护，可视化推演沙盒采用云端持续交付，无需配置本地环境，直接通过全球 CDN 访问：[https://wzry.aodilab.com](https://wzry.aodilab.com) ｜ 微信搜索「**王者出装箱**」小程序。
 
 ---
 
@@ -117,16 +116,16 @@
 
 ---
 
-## 四、 本地运行与构建
+## 四、 知识库构建与算法运行
 
-本项目网页为纯前端单文件架构，无需后端数据库即可运行：
+本项目核心算法与知识库构建脚本基于 Python 3.8+ 开发：
 
 ```bash
-# 方式一：直接双击根目录下的 sandbox.html 离线运行推演
+# 1. 安装环境依赖
+pip install -r requirements.txt
 
-# 方式二：通过 Python 调度构建脚本
-python build.py --sandbox   # 重新打包构建单文件沙盒
-python build.py --seo       # 更新站点地图与搜索引擎索引文件
+# 2. 重新编译生成专供 NotebookLM / RAG 的 6 大纯净战术知识库 (output/)
+python build.py --kb
 ```
 
 ---
