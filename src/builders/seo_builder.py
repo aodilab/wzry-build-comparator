@@ -66,8 +66,9 @@ def get_json_ld_schema_markup() -> str:
 
 def build_semantic_directory_html(processed_heroes, official_builds) -> str:
     """
-    生成专供搜索引擎爬虫（百度、谷歌、必应）全文索引的白帽预渲染 HTML 语义大典
-    包含国服 133 位全英雄六神装出装、分路定位与铭文搭配
+    生成符合 Apple 官网极简美学的页脚速查大典 (Footer Sitemap)
+    默认完全折叠为极简底栏（不打扰用户正常推演），点击可平滑展开 5 列分路速查
+    爬虫爬取时通过 DOM 树 100% 抓取全量 133 英雄出装与铭文
     """
     LANE_ORDER = ["对抗路", "中路", "发育路", "打野", "游走"]
     lane_heroes = {l: [] for l in LANE_ORDER}
@@ -82,37 +83,38 @@ def build_semantic_directory_html(processed_heroes, official_builds) -> str:
             lane_heroes[primary_lane].append(h)
 
     lines = [
-        '<section class="seo-directory-section" id="seoDirectorySection" aria-label="王者荣耀全英雄出装与铭文速查大典">',
-        '  <div class="seo-directory-container">',
+        '<footer class="apple-site-footer" id="siteFooter">',
+        '  <div class="apple-footer-inner">',
         '    <noscript>',
+        '      <style>.apple-footer-directory-content { display: block !important; }</style>',
         '      <div class="seo-noscript-banner">',
-        '        <strong>提示：</strong>当前浏览器未启用 JavaScript。以下为您呈现王者荣耀 S38/S45 赛季 133 位英雄官方推荐出装与铭文完整文本大典。如需进行动态装配属性实时推演与铭文自由混搭，请在浏览器中启用 JavaScript。',
+        '        <strong>文本速查大典：</strong>已为您直接呈现王者荣耀 133 位英雄官方推荐出装与铭文数据。',
         '      </div>',
         '    </noscript>',
-        '    <header class="seo-directory-header">',
-        '      <div class="seo-directory-title-wrap">',
-        '        <h2 class="seo-directory-title">王者荣耀全英雄出装与铭文速查大典 (S45/S38赛季)</h2>',
-        '        <p class="seo-directory-sub">国服 133 位英雄官方六神装推荐、实战分路配置与五级铭文搭配方案 · 点击任意英雄进入沙盒深度推演</p>',
+        '    <div class="apple-footer-top-bar">',
+        '      <div class="apple-footer-brand">',
+        '        <span class="apple-footer-title">王者出装箱</span>',
+        '        <span class="apple-footer-desc">· S38/S45 赛季局内六神装配装推演沙盒</span>',
         '      </div>',
-        '      <button class="seo-directory-toggle-btn" id="seoToggleBtn" onclick="toggleSeoDirectory()" type="button" aria-expanded="true">',
-        '        <span id="seoToggleText">收起大典</span>',
-        '        <svg id="seoToggleIcon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>',
+        '      <button class="apple-footer-directory-btn" id="seoToggleBtn" onclick="toggleSeoDirectory()" type="button" aria-expanded="false">',
+        '        <span id="seoToggleText">S45 全英雄出装与铭文速查索引 (133位)</span>',
+        '        <span class="apple-toggle-arrow" id="seoToggleIcon">›</span>',
         '      </button>',
-        '    </header>',
-        '    <div class="seo-directory-content" id="seoDirectoryContent">'
+        '    </div>',
+        '    <div class="apple-footer-directory-content" id="seoDirectoryContent">',
+        '      <div class="apple-footer-lanes-grid">'
     ]
 
     for lane in LANE_ORDER:
         heroes = lane_heroes.get(lane, [])
         if not heroes:
             continue
-        lines.append('      <div class="seo-lane-block">')
-        lines.append(f'        <h3 class="seo-lane-title"><span class="seo-lane-badge">{lane}</span> {lane}核心英雄官方六神装与铭文速查 ({len(heroes)}位)</h3>')
-        lines.append('        <div class="seo-hero-grid">')
+        lines.append('        <div class="apple-footer-lane-col">')
+        lines.append(f'          <div class="apple-footer-lane-title">{lane} ({len(heroes)})</div>')
+        lines.append('          <ul class="apple-footer-hero-list">')
         for h in heroes:
             cname = h.get("cname", "")
             ename = h.get("ename", "")
-            title = h.get("title", "")
             role = h.get("role", "")
 
             b_info = official_builds.get(cname, {})
@@ -127,24 +129,25 @@ def build_semantic_directory_html(processed_heroes, official_builds) -> str:
                 rec_a = h.get("recommended_arcana", {})
                 arcana_desc = f"10{rec_a.get('red', '异变')} 10{rec_a.get('green', '鹰眼')} 10{rec_a.get('blue', '隐匿')}"
 
-            lines.append(f'          <article class="seo-hero-card" id="seo-hero-{ename}">')
-            lines.append('            <div class="seo-card-head">')
-            lines.append(f'              <a class="seo-hero-link" href="?hero={ename}" onclick="if(window.selectHeroById){{selectHeroById(\'{ename}\');return false;}}" title="{cname}六神装推荐与铭文推演">{cname}</a>')
-            if title:
-                lines.append(f'              <span class="seo-hero-title-tag">{title}</span>')
-            lines.append(f'              <span class="seo-hero-role-tag">{role}</span>')
-            lines.append('            </div>')
-            lines.append('            <div class="seo-card-body">')
-            lines.append(f'              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">{items_str}</span></div>')
-            lines.append(f'              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">{arcana_desc}</span></div>')
-            lines.append('            </div>')
-            lines.append('          </article>')
+            lines.append('            <li class="apple-footer-hero-item">')
+            lines.append(f'              <a class="apple-footer-hero-link" href="?hero={ename}" onclick="if(window.selectHeroById){{selectHeroById(\'{ename}\');return false;}}" title="{cname} ({role}) 出装与铭文">{cname}</a>')
+            lines.append(f'              <div class="apple-footer-hero-brief" title="出装：{items_str} ｜ 铭文：{arcana_desc}">{items_str}</div>')
+            lines.append('            </li>')
+        lines.append('          </ul>')
         lines.append('        </div>')
-        lines.append('      </div>')
 
+    lines.append('      </div>')
+    lines.append('    </div>')
+    lines.append('    <div class="apple-footer-legal">')
+    lines.append('      <div class="apple-footer-copy">Copyright © 2026 王者出装箱 (wzry.aodilab.com). 保留所有权利。</div>')
+    lines.append('      <div class="apple-footer-links">')
+    lines.append('        <a href="/download">提货中心</a>')
+    lines.append('        <span>·</span>')
+    lines.append('        <a href="https://pvp.qq.com/" target="_blank" rel="noopener noreferrer">王者荣耀官网公开数据</a>')
+    lines.append('      </div>')
     lines.append('    </div>')
     lines.append('  </div>')
-    lines.append('</section>')
+    lines.append('</footer>')
     return "\n".join(lines)
 
 def generate_robots_txt(output_dirs=None):
