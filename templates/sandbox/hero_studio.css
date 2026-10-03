@@ -1,0 +1,309 @@
+   ========================================================================== */
+.studio-hero-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  background: var(--apple-panel);
+  border: 1px solid var(--apple-panel-border);
+  border-radius: 16px;
+  box-shadow: var(--panel-shadow);
+  margin-bottom: 14px;
+}
+
+.studio-hero-left { display: flex; align-items: center; gap: 14px; }
+.studio-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  background: var(--apple-subcard);
+  border: 1px solid var(--apple-border);
+  border-radius: 980px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.studio-back-btn:hover {
+  background: var(--apple-card-hover);
+  color: var(--color-blue);
+  border-color: var(--color-blue);
+}
+
+.studio-hero-info { display: flex; align-items: center; gap: 10px; }
+.studio-hero-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--color-blue);
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.2);
+}
+
+.studio-hero-title-row { display: flex; align-items: center; gap: 8px; }
+.studio-hero-name { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+.brand-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 6px;
+  background: var(--color-blue-bg);
+  color: var(--color-blue);
+}
+
+.studio-hero-sub { font-size: 12px; color: var(--text-tertiary); }
+.studio-hero-desc { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+
+/* 动态主玩分路胶囊选择栏 */
+.studio-lane-select { display: flex; align-items: center; gap: 8px; }
+.studio-lane-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+.lane-switch-pills { display: flex; gap: 6px; }
+.lane-pill-btn {
+  padding: 5px 14px;
+  border-radius: 980px;
+  border: 1.5px solid var(--apple-border);
+  background: var(--apple-subcard);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lane-pill-btn:hover { border-color: var(--apple-border-hover); color: var(--text-primary); }
+.lane-pill-btn.active {
+  background: var(--color-blue-bg);
+  color: var(--color-blue);
+  border-color: var(--color-blue);
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.15);
+}
+
+/* 官方 3 套推荐方案 Showcase 展台 */
+.studio-presets-showcase {
+  background: var(--apple-panel);
+  border: 1px solid var(--apple-panel-border);
+  border-radius: 18px;
+  padding: 12px 18px 14px 18px;
+  box-shadow: var(--panel-shadow);
+  margin-bottom: 16px;
+}
+
+.studio-presets-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.studio-presets-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.studio-presets-subtitle {
+  font-size: 11px;
+  font-weight: normal;
+  color: var(--text-tertiary);
+  margin-left: 6px;
+}
+
+.studio-presets-badge {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  background: var(--apple-subcard);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.studio-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.studio-presets-grid .official-preset-card {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--apple-card);
+  border: 1.5px solid var(--apple-border);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  box-shadow: var(--card-shadow);
+}
+
+.studio-presets-grid .official-preset-card:hover {
+  border-color: var(--apple-border-hover);
+  background: var(--apple-card-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.studio-presets-grid .official-preset-card.active {
+  border-color: var(--color-blue);
+  background: var(--color-blue-bg);
+  box-shadow: 0 0 0 2px var(--color-blue), 0 4px 12px rgba(0, 113, 227, 0.18);
+}
+
+.studio-presets-grid .preset-genre-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.studio-presets-grid .preset-desc-line {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.studio-presets-grid .preset-items-preview {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0;
+}
+
+.studio-presets-grid .preset-mini-item-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--apple-border);
+  transition: transform 0.2s;
+}
+
+.studio-presets-grid .preset-mini-item-icon:hover {
+  transform: scale(1.15);
+  border-color: var(--color-blue);
+}
+
+.studio-presets-grid .preset-arcana-pill {
+  font-size: 11px;
+  color: var(--color-blue);
+  background: var(--apple-subcard);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+/* 下半部：两栏推演工作台 (左商店 1fr ｜ 右卡槽与面板 420px) */
+.studio-workbench-grid {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 16px;
+  height: calc(100vh - 290px);
+  min-height: 520px;
+}
+
+.shop-section-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.apple-panel.slots-stats-section-panel,
+.slots-stats-section-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 14px 90px 14px;
+  gap: 12px;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior-y: contain;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.slots-stats-section-panel::-webkit-scrollbar {
+  width: 6px;
+}
+.slots-stats-section-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+.slots-stats-section-panel::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.16);
+  border-radius: 980px;
+}
+.slots-stats-section-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* 通用 Apple Panel 与基础组件 */
+.apple-panel {
+  background: var(--apple-panel);
+  border: 1px solid var(--apple-panel-border);
+  border-radius: 20px;
+  backdrop-filter: blur(25px) saturate(190%);
+  -webkit-backdrop-filter: blur(25px) saturate(190%);
+  box-shadow: var(--panel-shadow);
+  overflow: hidden;
+  position: relative;
+}
+
+.panel-header {
+  padding: 14px 18px 10px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.shop-count-tag {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--apple-subcard);
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+.shop-tip-txt { font-size: 11px; color: var(--text-tertiary); }
+.search-wrapper { padding: 0 16px 10px 16px; }
+.apple-search { position: relative; display: flex; align-items: center; width: 100%; }
+.search-icon { position: absolute; left: 12px; display: flex; align-items: center; color: var(--text-tertiary); pointer-events: none; }
+.apple-input {
+  width: 100%; height: 38px; background: var(--apple-subcard);
+  border: 1px solid var(--apple-border); border-radius: 980px;
+  padding: 0 14px 0 36px; color: var(--text-primary); font-size: 13px;
+  outline: none; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: inherit;
+}
+.apple-input:focus { background: #ffffff; border-color: var(--color-blue); box-shadow: 0 0 0 3px var(--color-blue-bg); }
+.segmented-control { display: flex; background: var(--segmented-bg); padding: 4px; border-radius: 980px; margin: 0 16px 12px 16px; gap: 3px; border: 1px solid rgba(0,0,0,0.04); }
+.seg-item {
+  flex: 1; text-align: center; padding: 6px 0; font-size: 13px; font-weight: 500;
+  color: var(--text-secondary); border-radius: 980px; cursor: pointer; user-select: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); white-space: nowrap;
+}
+.seg-item:hover { color: var(--text-primary); }
+.seg-item.active { background: var(--segmented-active); color: var(--text-primary); box-shadow: var(--segmented-shadow); font-weight: 600; }
+.slot-header-actions { display: flex; align-items: center; gap: 8px; }
+.action-pill-btn {
+  padding: 3px 10px; font-size: 11px; font-weight: 600; border-radius: 6px;
+  border: 1px solid var(--apple-border); background: var(--apple-subcard);
+  color: var(--text-secondary); cursor: pointer; transition: all 0.2s;
+}
+.action-pill-btn:hover { background: var(--apple-card-hover); color: var(--text-primary); }
+.action-pill-btn.rec-btn { background: var(--color-blue-bg); color: var(--color-blue); border-color: transparent; }
+.action-pill-btn.rec-btn:hover { filter: brightness(1.1); }

@@ -20,6 +20,7 @@ from config.sandbox_template import SANDBOX_HTML_TEMPLATE
 from src.core.http import fetch_json
 from src.core.hero_validator import get_validated_hero_list
 from src.core.item_calculator import parse_single_item_stats, BOOTS_SPEED_MAP, ACTIVE_SKILL_ITEMS, JUNGLE_ITEMS
+from src.builders.seo_builder import build_all_seo_assets, get_json_ld_schema_markup, build_semantic_directory_html
 
 def build_sandbox_html(output_file=None):
     """
@@ -104,7 +105,13 @@ def build_sandbox_html(output_file=None):
         if "skills" in patch:
             unified_skills_data[hero_name] = patch["skills"]
 
+    # 4. 生成规范化 JSON-LD 结构化数据与白帽 SSR 静态语义大典 (内功 SEO 增强)
+    json_ld_markup = get_json_ld_schema_markup()
+    seo_directory_html = build_semantic_directory_html(processed_heroes, OFFICIAL_HERO_BUILDS)
+
     html_content = SANDBOX_HTML_TEMPLATE
+    html_content = html_content.replace("__JSON_LD_SCHEMA_PLACEHOLDER__", json_ld_markup)
+    html_content = html_content.replace("__SEO_DIRECTORY_PLACEHOLDER__", seo_directory_html)
     html_content = html_content.replace("__HEROES_DATA_PLACEHOLDER__", json.dumps(processed_heroes, ensure_ascii=False))
     html_content = html_content.replace("__HERO_SKILLS_DATA_PLACEHOLDER__", json.dumps(unified_skills_data, ensure_ascii=False))
     html_content = html_content.replace("__ITEMS_DATA_PLACEHOLDER__", json.dumps(processed_items, ensure_ascii=False))
@@ -129,6 +136,9 @@ def build_sandbox_html(output_file=None):
     if os.path.exists(os.path.dirname(dist_target)):
         with open(dist_target, "w", encoding="utf-8") as f:
             f.write(html_content)
+
+    # 自动同步生成全站 SEO 资产 (robots.txt 与 sitemap.xml)
+    build_all_seo_assets()
 
     print(f"【成功】王者荣耀六神装配装沙盒单文件已生成：'{target}'、'{index_target}' 与 '{dist_target}'（包含 30 颗全量五级铭文库与全英雄推荐铭文）")
     return target
