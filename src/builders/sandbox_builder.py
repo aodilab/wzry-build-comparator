@@ -109,18 +109,13 @@ def build_sandbox_html(output_file=None):
     json_ld_markup = get_json_ld_schema_markup()
     seo_directory_html = build_semantic_directory_html(processed_heroes, OFFICIAL_HERO_BUILDS)
 
-    html_content = SANDBOX_HTML_TEMPLATE
-    html_content = html_content.replace("__JSON_LD_SCHEMA_PLACEHOLDER__", json_ld_markup)
-    html_content = html_content.replace("__SEO_DIRECTORY_PLACEHOLDER__", seo_directory_html)
-    html_content = html_content.replace("__HEROES_DATA_PLACEHOLDER__", json.dumps(processed_heroes, ensure_ascii=False))
-    html_content = html_content.replace("__HERO_SKILLS_DATA_PLACEHOLDER__", json.dumps(unified_skills_data, ensure_ascii=False))
-    html_content = html_content.replace("__ITEMS_DATA_PLACEHOLDER__", json.dumps(processed_items, ensure_ascii=False))
-    html_content = html_content.replace("__ARCANA_DATA_PLACEHOLDER__", json.dumps(ARCANA_LEVEL_5_DICT, ensure_ascii=False))
-    html_content = html_content.replace("__RECIPES_MAP_PLACEHOLDER__", json.dumps(COMPONENTS_MAP, ensure_ascii=False))
-    html_content = html_content.replace("__BOOTS_MAP_PLACEHOLDER__", json.dumps(BOOTS_SPEED_MAP, ensure_ascii=False))
-    html_content = html_content.replace("__ACTIVE_ITEMS_PLACEHOLDER__", json.dumps(ACTIVE_SKILL_ITEMS, ensure_ascii=False))
-    html_content = html_content.replace("__JUNGLE_ITEMS_PLACEHOLDER__", json.dumps(JUNGLE_ITEMS, ensure_ascii=False))
-    html_content = html_content.replace("__OFFICIAL_HERO_BUILDS_PLACEHOLDER__", json.dumps(OFFICIAL_HERO_BUILDS, ensure_ascii=False))
+    # 使用双轨实战对决推演实验室作为唯一真实源头 (SSOT)
+    compare_source = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "dist_pages", "compare", "index.html")
+    if os.path.exists(compare_source):
+        with open(compare_source, "r", encoding="utf-8") as f:
+            html_content = f.read()
+    else:
+        html_content = SANDBOX_HTML_TEMPLATE
 
     target = output_file or os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "sandbox.html")
     with open(target, "w", encoding="utf-8") as f:
@@ -140,7 +135,7 @@ def build_sandbox_html(output_file=None):
     # 自动同步生成全站 SEO 资产 (robots.txt 与 sitemap.xml)
     build_all_seo_assets()
 
-    print(f"【成功】王者荣耀六神装配装沙盒单文件已生成：'{target}'、'{index_target}' 与 '{dist_target}'（包含 30 颗全量五级铭文库与全英雄推荐铭文）")
+    print(f"【成功】王者荣耀双轨配装推演实验室单文件已同步：'{target}'、'{index_target}' 与 '{dist_target}'")
     return target
 
 if __name__ == "__main__":
