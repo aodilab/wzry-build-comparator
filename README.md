@@ -1,5 +1,14 @@
 # 王者荣耀出装对比系统 ｜ 底层算法与战术知识库
 
+<p align="left">
+  <a href="https://github.com/aodilab/wzry-build-comparator/releases"><img src="https://img.shields.io/badge/Release-v1.0.0-0071e3.svg" alt="Release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-34c759.svg" alt="License"></a>
+  <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Web%20App-Online-0071e3.svg" alt="Web App"></a>
+  <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Heroes-133-ff9500.svg" alt="Heroes"></a>
+  <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Official%20Builds-505-ff2d55.svg" alt="Official Builds"></a>
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.8+-5856d6.svg" alt="Python"></a>
+</p>
+
 - **仓库核心交付**：开源王者荣耀底层物理算分引擎、装备合成拓扑与专供 NotebookLM / RAG 深度检索的 6 大战术知识库；
 - **推演实验室交付**：为保证极致体验与实时数据维护，可视化推演沙盒采用云端持续交付，无需配置本地环境，直接通过全球 CDN 访问：[https://wzry.aodilab.com](https://wzry.aodilab.com) ｜ 微信搜索「**王者出装箱**」小程序。
 
