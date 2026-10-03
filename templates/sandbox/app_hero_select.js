@@ -263,18 +263,15 @@ window.selectHeroById = function(ename) {
 window.toggleSeoDirectory = function() {
   const content = document.getElementById('seoDirectoryContent');
   const btn = document.getElementById('seoToggleBtn');
-  const txt = document.getElementById('seoToggleText');
   if (!content || !btn) return;
-  const isCollapsed = content.classList.contains('collapsed');
-  if (isCollapsed) {
-    content.classList.remove('collapsed');
-    btn.classList.remove('collapsed');
-    btn.setAttribute('aria-expanded', 'true');
-    if (txt) txt.innerText = '收起大典';
-  } else {
-    content.classList.add('collapsed');
-    btn.classList.add('collapsed');
+  const isExpanded = content.classList.contains('active');
+  if (isExpanded) {
+    content.classList.remove('active');
+    btn.classList.remove('expanded');
     btn.setAttribute('aria-expanded', 'false');
-    if (txt) txt.innerText = '展开大典';
+  } else {
+    content.classList.add('active');
+    btn.classList.add('expanded');
+    btn.setAttribute('aria-expanded', 'true');
   }
 };

@@ -4113,266 +4113,276 @@ html, body {
 @keyframes appleBottomSheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
 /* ==============================================================================
-   王者荣耀全英雄出装与铭文速查大典 (SEO Semantic Directory) 样式表
-   Apple 极简设计美学，支持响应式网格与暗色模式适配 (符合 AGENTS.md 规范)
+   Apple 官网级极简页脚目录 (Apple Minimalist Footer Directory)
+   默认折叠为极简底栏（不打扰正常沙盒推演），点击可展开 5 列分路速查
+   符合 AGENTS.md 规范 (≤ 400 行)
    ============================================================================== */
 
-.seo-directory-section {
-  max-width: 1360px;
-  margin: 32px auto 48px auto;
-  padding: 0 20px;
-  color: var(--apple-text-primary, #1d1d1f);
+.apple-site-footer {
+  width: 100%;
+  margin-top: 56px;
+  background: var(--apple-bg-secondary, #f5f5f7);
+  border-top: 1px solid var(--apple-border, rgba(0, 0, 0, 0.08));
+  color: var(--apple-text-secondary, #86868b);
+  font-size: 12px;
+  line-height: 1.6;
 }
 
-.seo-directory-container {
-  background: var(--apple-bg-card, #ffffff);
-  border: 1px solid var(--apple-border, rgba(0, 0, 0, 0.08));
-  border-radius: 18px;
-  padding: 24px 28px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+.apple-footer-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 24px 20px 32px 20px;
+  box-sizing: border-box;
 }
 
-.seo-directory-header {
+/* 顶部紧凑栏：品牌说明与折叠触发器 */
+.apple-footer-top-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding-bottom: 18px;
-  border-bottom: 1px solid var(--apple-border, rgba(0, 0, 0, 0.08));
-  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--apple-border, rgba(0, 0, 0, 0.06));
 }
 
-.seo-directory-title {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.015em;
+.apple-footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.apple-footer-title {
+  font-size: 13px;
+  font-weight: 600;
   color: var(--apple-text-primary, #1d1d1f);
 }
 
-.seo-directory-sub {
-  margin: 6px 0 0 0;
-  font-size: 13px;
+.apple-footer-desc {
+  font-size: 12px;
   color: var(--apple-text-secondary, #86868b);
-  line-height: 1.5;
 }
 
-.seo-directory-toggle-btn {
+.apple-footer-directory-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 14px;
-  background: var(--apple-bg-secondary, #f5f5f7);
-  color: var(--apple-text-primary, #1d1d1f);
+  background: #ffffff;
   border: 1px solid var(--apple-border, rgba(0, 0, 0, 0.1));
-  border-radius: 20px;
+  padding: 6px 14px;
+  border-radius: 980px;
   font-size: 12px;
   font-weight: 500;
+  color: var(--apple-text-secondary, #515154);
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
 }
 
-.seo-directory-toggle-btn:hover {
+.apple-footer-directory-btn:hover {
   background: rgba(0, 113, 227, 0.08);
   color: #0071e3;
-  border-color: rgba(0, 113, 227, 0.2);
+  border-color: rgba(0, 113, 227, 0.25);
 }
 
-.seo-directory-toggle-btn svg {
-  transition: transform 0.25s ease;
-}
-
-.seo-directory-toggle-btn.collapsed svg {
-  transform: rotate(180deg);
-}
-
-.seo-directory-content {
-  display: block;
-}
-
-.seo-directory-content.collapsed {
-  display: none;
-}
-
-/* 无脚本环境醒目提示 (Noscript) */
-.seo-noscript-banner {
-  background: #fff9e6;
-  border: 1px solid #ffe58f;
-  border-radius: 10px;
-  padding: 12px 16px;
-  margin-bottom: 20px;
+.apple-footer-directory-btn .apple-toggle-arrow {
   font-size: 13px;
-  color: #d46b08;
-  line-height: 1.6;
+  font-weight: 700;
+  transition: transform 0.25s ease;
+  display: inline-block;
 }
 
-/* 分路组块 */
-.seo-lane-block {
-  margin-bottom: 28px;
+.apple-footer-directory-btn.expanded .apple-toggle-arrow {
+  transform: rotate(90deg);
 }
 
-.seo-lane-block:last-child {
-  margin-bottom: 0;
+/* 折叠区域：默认完全收起 (0 高度，不影响主屏视觉) */
+.apple-footer-directory-content {
+  display: none;
+  padding: 24px 0 16px 0;
+  border-bottom: 1px solid var(--apple-border, rgba(0, 0, 0, 0.06));
 }
 
-.seo-lane-title {
-  margin: 0 0 14px 0;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--apple-text-primary, #1d1d1f);
+.apple-footer-directory-content.active {
+  display: block;
+  animation: footerFadeIn 0.25s ease;
+}
+
+@keyframes footerFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 5 列分路速查目录 (纯净 Apple 官方 Sitemap 排版) */
+.apple-footer-lanes-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+
+.apple-footer-lane-col {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 8px;
 }
 
-.seo-lane-badge {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: 6px;
-  background: rgba(0, 113, 227, 0.09);
-  color: #0071e3;
+.apple-footer-lane-title {
+  margin: 0 0 6px 0;
   font-size: 12px;
   font-weight: 600;
+  color: var(--apple-text-primary, #1d1d1f);
+  letter-spacing: -0.01em;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--apple-border, rgba(0, 0, 0, 0.06));
 }
 
-/* 英雄卡片栅格 */
-.seo-hero-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 12px;
+.apple-footer-hero-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.seo-hero-card {
-  background: var(--apple-bg-secondary, #fbfbfd);
-  border: 1px solid var(--apple-border, rgba(0, 0, 0, 0.06));
-  border-radius: 12px;
-  padding: 12px 14px;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+.apple-footer-hero-item {
+  font-size: 11px;
+  line-height: 1.4;
 }
 
-.seo-hero-card:hover {
-  transform: translateY(-1px);
-  border-color: rgba(0, 113, 227, 0.25);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+.apple-footer-hero-link {
+  color: var(--apple-text-secondary, #424245);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.15s ease;
 }
 
-.seo-card-head {
+.apple-footer-hero-link:hover {
+  color: #0071e3;
+  text-decoration: underline;
+}
+
+.apple-footer-hero-brief {
+  color: #86868b;
+  font-size: 10px;
+  margin-top: 2px;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 底部声明栏 */
+.apple-footer-legal {
+  padding-top: 16px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 11px;
+  color: #86868b;
 }
 
-.seo-hero-link {
-  color: #0071e3;
-  font-size: 14px;
-  font-weight: 600;
+.apple-footer-copy {
+  color: #86868b;
+}
+
+.apple-footer-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.apple-footer-links a {
+  color: #86868b;
   text-decoration: none;
   transition: color 0.15s ease;
 }
 
-.seo-hero-link:hover {
-  color: #0077ed;
-  text-decoration: underline;
+.apple-footer-links a:hover {
+  color: #0071e3;
 }
 
-.seo-hero-title-tag {
-  font-size: 11px;
-  color: var(--apple-text-secondary, #86868b);
-}
-
-.seo-hero-role-tag {
-  margin-left: auto;
-  font-size: 11px;
-  padding: 2px 7px;
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.04);
-  color: var(--apple-text-secondary, #86868b);
-}
-
-.seo-card-body {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+/* 无脚本环境回退 */
+.seo-noscript-banner {
+  background: #fff9e6;
+  border: 1px solid #ffe58f;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
   font-size: 12px;
+  color: #d46b08;
   line-height: 1.5;
-  color: var(--apple-text-secondary, #515154);
-}
-
-.seo-info-line strong {
-  color: var(--apple-text-primary, #1d1d1f);
-  font-weight: 600;
-}
-
-.seo-items-str {
-  color: #1d1d1f;
-  font-weight: 500;
-}
-
-.seo-arcana-str {
-  color: var(--apple-text-secondary, #6e6e73);
 }
 
 /* 暗色主题适配 */
-[data-theme="dark"] .seo-directory-container {
-  background: #1c1c1e;
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+[data-theme="dark"] .apple-site-footer {
+  background: #161617;
+  border-top-color: rgba(255, 255, 255, 0.08);
 }
 
-[data-theme="dark"] .seo-directory-header {
-  border-bottom-color: rgba(255, 255, 255, 0.08);
+[data-theme="dark"] .apple-footer-top-bar,
+[data-theme="dark"] .apple-footer-directory-content {
+  border-bottom-color: rgba(255, 255, 255, 0.06);
 }
 
-[data-theme="dark"] .seo-directory-toggle-btn {
-  background: #2c2c2e;
-  border-color: rgba(255, 255, 255, 0.12);
+[data-theme="dark"] .apple-footer-title {
   color: #f5f5f7;
 }
 
-[data-theme="dark"] .seo-hero-card {
+[data-theme="dark"] .apple-footer-directory-btn {
   background: #242426;
-  border-color: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #d2d2d7;
 }
 
-[data-theme="dark"] .seo-hero-card:hover {
-  border-color: rgba(0, 113, 227, 0.4);
-}
-
-[data-theme="dark"] .seo-items-str {
+[data-theme="dark"] .apple-footer-lane-title {
   color: #f5f5f7;
+  border-bottom-color: rgba(255, 255, 255, 0.06);
 }
 
-[data-theme="dark"] .seo-hero-role-tag {
-  background: rgba(255, 255, 255, 0.08);
+[data-theme="dark"] .apple-footer-hero-link {
   color: #a1a1a6;
 }
 
-[data-theme="dark"] .seo-noscript-banner {
-  background: #2c2000;
-  border-color: #594200;
-  color: #ffd666;
+[data-theme="dark"] .apple-footer-hero-link:hover {
+  color: #2997ff;
 }
 
-@media (max-width: 768px) {
-  .seo-directory-section {
-    padding: 0 12px;
-    margin: 20px auto 36px auto;
+[data-theme="dark"] .apple-footer-hero-brief {
+  color: #6e6e73;
+}
+
+[data-theme="dark"] .apple-footer-legal,
+[data-theme="dark"] .apple-footer-copy {
+  color: #6e6e73;
+}
+
+@media (max-width: 900px) {
+  .apple-footer-lanes-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
   }
-  .seo-directory-container {
-    padding: 16px 14px;
-    border-radius: 14px;
+}
+
+@media (max-width: 600px) {
+  .apple-footer-inner {
+    padding: 18px 14px 24px 14px;
   }
-  .seo-directory-header {
+  .apple-footer-top-bar {
     flex-direction: column;
     align-items: flex-start;
+    gap: 10px;
   }
-  .seo-directory-toggle-btn {
-    align-self: flex-start;
+  .apple-footer-lanes-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
   }
-  .seo-hero-grid {
-    grid-template-columns: 1fr;
+  .apple-footer-legal {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 }
 
@@ -4721,1515 +4731,595 @@ var _hmt = _hmt || [];
 
 
 <!-- 搜索引擎爬虫白帽 SSR 静态语义大典 -->
-<section class="seo-directory-section" id="seoDirectorySection" aria-label="王者荣耀全英雄出装与铭文速查大典">
-  <div class="seo-directory-container">
+<footer class="apple-site-footer" id="siteFooter">
+  <div class="apple-footer-inner">
     <noscript>
+      <style>.apple-footer-directory-content { display: block !important; }</style>
       <div class="seo-noscript-banner">
-        <strong>提示：</strong>当前浏览器未启用 JavaScript。以下为您呈现王者荣耀 S38/S45 赛季 133 位英雄官方推荐出装与铭文完整文本大典。如需进行动态装配属性实时推演与铭文自由混搭，请在浏览器中启用 JavaScript。
+        <strong>文本速查大典：</strong>已为您直接呈现王者荣耀 133 位英雄官方推荐出装与铭文数据。
       </div>
     </noscript>
-    <header class="seo-directory-header">
-      <div class="seo-directory-title-wrap">
-        <h2 class="seo-directory-title">王者荣耀全英雄出装与铭文速查大典 (S45/S38赛季)</h2>
-        <p class="seo-directory-sub">国服 133 位英雄官方六神装推荐、实战分路配置与五级铭文搭配方案 · 点击任意英雄进入沙盒深度推演</p>
+    <div class="apple-footer-top-bar">
+      <div class="apple-footer-brand">
+        <span class="apple-footer-title">王者出装箱</span>
+        <span class="apple-footer-desc">· S38/S45 赛季局内六神装配装推演沙盒</span>
       </div>
-      <button class="seo-directory-toggle-btn" id="seoToggleBtn" onclick="toggleSeoDirectory()" type="button" aria-expanded="true">
-        <span id="seoToggleText">收起大典</span>
-        <svg id="seoToggleIcon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+      <button class="apple-footer-directory-btn" id="seoToggleBtn" onclick="toggleSeoDirectory()" type="button" aria-expanded="false">
+        <span id="seoToggleText">S45 全英雄出装与铭文速查索引 (133位)</span>
+        <span class="apple-toggle-arrow" id="seoToggleIcon">›</span>
       </button>
-    </header>
-    <div class="seo-directory-content" id="seoDirectoryContent">
-      <div class="seo-lane-block">
-        <h3 class="seo-lane-title"><span class="seo-lane-badge">对抗路</span> 对抗路核心英雄官方六神装与铭文速查 (27位)</h3>
-        <div class="seo-hero-grid">
-          <article class="seo-hero-card" id="seo-hero-105">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=105" onclick="if(window.selectHeroById){selectHeroById('105');return false;}" title="廉颇六神装推荐与铭文推演">廉颇</a>
-              <span class="seo-hero-title-tag">正义爆轰</span>
-              <span class="seo-hero-role-tag">坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">影忍之足 · 血魔之怒 · 怒龙剑盾 · 冰霜冲击 · 暗影战斧 · 暴烈之甲</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">7异变 3宿命 7隐匿 3狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-117">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=117" onclick="if(window.selectHeroById){selectHeroById('117');return false;}" title="钟无艳六神装推荐与铭文推演">钟无艳</a>
-              <span class="seo-hero-title-tag">野蛮之锤</span>
-              <span class="seo-hero-role-tag">战士/坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">影忍之足 · 暗影战斧 · 怒龙剑盾 · 暴烈之甲 · 魔女斗篷 · 强者破军</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-120">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=120" onclick="if(window.selectHeroById){selectHeroById('120');return false;}" title="白起六神装推荐与铭文推演">白起</a>
-              <span class="seo-hero-title-tag">最终兵器</span>
-              <span class="seo-hero-role-tag">坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">抵抗之靴 · 红莲斗篷 · 怒龙剑盾 · 永夜守护 · 霸者重装 · 不死鸟之眼</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10隐匿 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-121">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=121" onclick="if(window.selectHeroById){selectHeroById('121');return false;}" title="芈月六神装推荐与铭文推演">芈月</a>
-              <span class="seo-hero-title-tag">永恒之月</span>
-              <span class="seo-hero-role-tag">法师/战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">急速战靴 · 金色圣剑 · 噬神之书 · 日暮之流 · 时之预言 · 博学者之怒</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">9宿命 1红月 6狩猎 4贪婪 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-123">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=123" onclick="if(window.selectHeroById){selectHeroById('123');return false;}" title="吕布六神装推荐与铭文推演">吕布</a>
-              <span class="seo-hero-title-tag">无双之魔</span>
-              <span class="seo-hero-role-tag">战士/坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">抵抗之靴 · 名刀·司命 · 强者破军 · 纯净苍穹 · 无尽战刃 · 影刃</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">9传承 1红月 9隐匿 1狩猎 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-126">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=126" onclick="if(window.selectHeroById){selectHeroById('126');return false;}" title="夏侯惇六神装推荐与铭文推演">夏侯惇</a>
-              <span class="seo-hero-title-tag">不羁之风</span>
-              <span class="seo-hero-role-tag">坦克/战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">急速战靴 · 红莲斗篷 · 冰霜冲击 · 不死鸟之眼 · 旭日初光 · 霸者重装</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-134">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=134" onclick="if(window.selectHeroById){selectHeroById('134');return false;}" title="达摩六神装推荐与铭文推演">达摩</a>
-              <span class="seo-hero-title-tag">拳僧</span>
-              <span class="seo-hero-role-tag">战士/坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">冷静之靴 · 暗影战斧 · 宗师之力 · 强者破军 · 碎星锤 · 暴烈之甲</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-135">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=135" onclick="if(window.selectHeroById){selectHeroById('135');return false;}" title="项羽六神装推荐与铭文推演">项羽</a>
-              <span class="seo-hero-title-tag">霸王</span>
-              <span class="seo-hero-role-tag">坦克/战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">冷静之靴 · 暗影战斧 · 冰霜冲击 · 强者破军 · 破魔刀 · 碎星锤</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-139">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=139" onclick="if(window.selectHeroById){selectHeroById('139');return false;}" title="老夫子六神装推荐与铭文推演">老夫子</a>
-              <span class="seo-hero-title-tag">万古长明</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">抵抗之靴 · 闪电匕首 · 冰霜冲击 · 纯净苍穹 · 旭日初光 · 魔女斗篷</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 7狩猎 3夺萃 6鹰眼 2虚空 2回声</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-144">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=144" onclick="if(window.selectHeroById){selectHeroById('144');return false;}" title="程咬金六神装推荐与铭文推演">程咬金</a>
-              <span class="seo-hero-title-tag">热烈之斧</span>
-              <span class="seo-hero-role-tag">坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">抵抗之靴 · 怒龙剑盾 · 不死鸟之眼 · 红莲斗篷 · 极寒风暴 · 霸者重装</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10隐匿 10霸者</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-154">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=154" onclick="if(window.selectHeroById){selectHeroById('154');return false;}" title="花木兰六神装推荐与铭文推演">花木兰</a>
-              <span class="seo-hero-title-tag">传说之刃</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">影忍之足 · 暗影战斧 · 暴烈之甲 · 泣血之刃 · 碎星锤 · 强者破军</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">9异变 1祸源 6隐匿 4调和 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-166">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=166" onclick="if(window.selectHeroById){selectHeroById('166');return false;}" title="亚瑟六神装推荐与铭文推演">亚瑟</a>
-              <span class="seo-hero-title-tag">圣骑之力</span>
-              <span class="seo-hero-role-tag">战士/坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">冷静之靴 · 红莲斗篷 · 怒龙剑盾 · 永夜守护 · 旭日初光 · 霸者重装</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-178">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=178" onclick="if(window.selectHeroById){selectHeroById('178');return false;}" title="杨戬六神装推荐与铭文推演">杨戬</a>
-              <span class="seo-hero-title-tag">根源之目</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">影忍之足 · 暗影战斧 · 怒龙剑盾 · 强者破军 · 不死鸟之眼 · 极寒风暴</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">9异变 1红月 10狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-180">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=180" onclick="if(window.selectHeroById){selectHeroById('180');return false;}" title="哪吒六神装推荐与铭文推演">哪吒</a>
-              <span class="seo-hero-title-tag">桀骜炎枪</span>
-              <span class="seo-hero-role-tag">战士/坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">抵抗之靴 · 纯净苍穹 · 红莲斗篷 · 冰痕之握 · 反伤刺甲 · 强者破军</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10隐匿 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-194">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=194" onclick="if(window.selectHeroById){selectHeroById('194');return false;}" title="苏烈六神装推荐与铭文推演">苏烈</a>
-              <span class="seo-hero-title-tag">不屈铁壁</span>
-              <span class="seo-hero-role-tag">坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">抵抗之靴 · 逐日之弓 · 旭日初光 · 不死鸟之眼 · 暴烈之甲 · 霸者重装</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">9异变 1红月 7调和 3狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-503">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=503" onclick="if(window.selectHeroById){selectHeroById('503');return false;}" title="狂铁六神装推荐与铭文推演">狂铁</a>
-              <span class="seo-hero-title-tag">战车意志</span>
-              <span class="seo-hero-role-tag">战士/坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">抵抗之靴 · 纯净苍穹 · 极寒风暴 · 不死鸟之眼 · 冰霜冲击 · 红莲斗篷</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-125">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=125" onclick="if(window.selectHeroById){selectHeroById('125');return false;}" title="元歌六神装推荐与铭文推演">元歌</a>
-              <span class="seo-hero-title-tag">无间傀儡</span>
-              <span class="seo-hero-role-tag">刺客</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">暗影战斧 · 冷静之靴 · 强者破军 · 碎星锤 · 宗师之力 · 名刀·司命</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-510">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=510" onclick="if(window.selectHeroById){selectHeroById('510');return false;}" title="孙策六神装推荐与铭文推演">孙策</a>
-              <span class="seo-hero-title-tag">光明之海</span>
-              <span class="seo-hero-role-tag">坦克/战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">抵抗之靴 · 暗影战斧 · 怒龙剑盾 · 冰霜冲击 · 旭日初光 · 血魔之怒</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 9狩猎 1隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-507">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=507" onclick="if(window.selectHeroById){selectHeroById('507');return false;}" title="李信六神装推荐与铭文推演">李信</a>
-              <span class="seo-hero-title-tag">谋世之战</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">冷静之靴 · 暗影战斧 · 强者破军 · 碎星锤 · 纯净苍穹 · 名刀·司命</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">9异变 1红月 7隐匿 3狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-511">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=511" onclick="if(window.selectHeroById){selectHeroById('511');return false;}" title="猪八戒六神装推荐与铭文推演">猪八戒</a>
-              <span class="seo-hero-title-tag">无忧猛士</span>
-              <span class="seo-hero-role-tag">坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">影忍之足 · 红莲斗篷 · 怒龙剑盾 · 不死鸟之眼 · 永夜守护 · 霸者重装</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10霸者</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-527">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=527" onclick="if(window.selectHeroById){selectHeroById('527');return false;}" title="蒙恬六神装推荐与铭文推演">蒙恬</a>
-              <span class="seo-hero-title-tag">秩序统将</span>
-              <span class="seo-hero-role-tag">坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">影忍之足 · 暗影战斧 · 无尽战刃 · 宗师之力 · 怒龙剑盾 · 碎星锤</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">5异变 3无双 2祸源 5兽痕 5狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-536">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=536" onclick="if(window.selectHeroById){selectHeroById('536');return false;}" title="夏洛特六神装推荐与铭文推演">夏洛特</a>
-              <span class="seo-hero-title-tag">玫瑰剑士</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">抵抗之靴 · 纯净苍穹 · 暗影战斧 · 冰痕之握 · 不死鸟之眼 · 强者破军</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">9异变 1红月 9调和 1狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-537">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=537" onclick="if(window.selectHeroById){selectHeroById('537');return false;}" title="司空震六神装推荐与铭文推演">司空震</a>
-              <span class="seo-hero-title-tag">雷霆之王</span>
-              <span class="seo-hero-role-tag">战士/法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">急速战靴 · 闪电匕首 · 末世 · 寒霜袭侵 · 仁者破晓 · 逐日之弓</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-544">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=544" onclick="if(window.selectHeroById){selectHeroById('544');return false;}" title="赵怀真六神装推荐与铭文推演">赵怀真</a>
-              <span class="seo-hero-title-tag">自在之心</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">影忍之足 · 暗影战斧 · 怒龙剑盾 · 纯净苍穹 · 暴烈之甲 · 强者破军</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-564">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=564" onclick="if(window.selectHeroById){selectHeroById('564');return false;}" title="姬小满六神装推荐与铭文推演">姬小满</a>
-              <span class="seo-hero-title-tag">武道奇才</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">冷静之靴 · 暗影战斧 · 纯净苍穹 · 暴烈之甲 · 碎星锤 · 强者破军</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">9异变 1祸源 10隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-514">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=514" onclick="if(window.selectHeroById){selectHeroById('514');return false;}" title="亚连六神装推荐与铭文推演">亚连</a>
-              <span class="seo-hero-title-tag">追忆之刃</span>
-              <span class="seo-hero-role-tag">战士/坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">影忍之足 · 闪电匕首 · 极寒风暴 · 血魔之怒 · 纯净苍穹 · 不死鸟之眼</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10隐匿 10霸者</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-581">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=581" onclick="if(window.selectHeroById){selectHeroById('581');return false;}" title="元流之子(坦克)六神装推荐与铭文推演">元流之子(坦克)</a>
-              <span class="seo-hero-title-tag">止戈之道</span>
-              <span class="seo-hero-role-tag">坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">抵抗之靴 · 暗影战斧 · 冰霜冲击 · 纯净苍穹 · 破魔刀 · 碎星锤</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10调和 10鹰眼</span></div>
-            </div>
-          </article>
+    </div>
+    <div class="apple-footer-directory-content" id="seoDirectoryContent">
+      <div class="apple-footer-lanes-grid">
+        <div class="apple-footer-lane-col">
+          <div class="apple-footer-lane-title">对抗路 (27)</div>
+          <ul class="apple-footer-hero-list">
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=105" onclick="if(window.selectHeroById){selectHeroById('105');return false;}" title="廉颇 (坦克) 出装与铭文">廉颇</a>
+              <div class="apple-footer-hero-brief" title="出装：影忍之足 · 血魔之怒 · 怒龙剑盾 · 冰霜冲击 · 暗影战斧 · 暴烈之甲 ｜ 铭文：7异变 3宿命 7隐匿 3狩猎 10鹰眼">影忍之足 · 血魔之怒 · 怒龙剑盾 · 冰霜冲击 · 暗影战斧 · 暴烈之甲</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=117" onclick="if(window.selectHeroById){selectHeroById('117');return false;}" title="钟无艳 (战士/坦克) 出装与铭文">钟无艳</a>
+              <div class="apple-footer-hero-brief" title="出装：影忍之足 · 暗影战斧 · 怒龙剑盾 · 暴烈之甲 · 魔女斗篷 · 强者破军 ｜ 铭文：10宿命 10调和 10虚空">影忍之足 · 暗影战斧 · 怒龙剑盾 · 暴烈之甲 · 魔女斗篷 · 强者破军</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=120" onclick="if(window.selectHeroById){selectHeroById('120');return false;}" title="白起 (坦克) 出装与铭文">白起</a>
+              <div class="apple-footer-hero-brief" title="出装：抵抗之靴 · 红莲斗篷 · 怒龙剑盾 · 永夜守护 · 霸者重装 · 不死鸟之眼 ｜ 铭文：10宿命 10隐匿 10虚空">抵抗之靴 · 红莲斗篷 · 怒龙剑盾 · 永夜守护 · 霸者重装 · 不死鸟之眼</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=121" onclick="if(window.selectHeroById){selectHeroById('121');return false;}" title="芈月 (法师/战士) 出装与铭文">芈月</a>
+              <div class="apple-footer-hero-brief" title="出装：急速战靴 · 金色圣剑 · 噬神之书 · 日暮之流 · 时之预言 · 博学者之怒 ｜ 铭文：9宿命 1红月 6狩猎 4贪婪 10心眼">急速战靴 · 金色圣剑 · 噬神之书 · 日暮之流 · 时之预言 · 博学者之怒</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=123" onclick="if(window.selectHeroById){selectHeroById('123');return false;}" title="吕布 (战士/坦克) 出装与铭文">吕布</a>
+              <div class="apple-footer-hero-brief" title="出装：抵抗之靴 · 名刀·司命 · 强者破军 · 纯净苍穹 · 无尽战刃 · 影刃 ｜ 铭文：9传承 1红月 9隐匿 1狩猎 10虚空">抵抗之靴 · 名刀·司命 · 强者破军 · 纯净苍穹 · 无尽战刃 · 影刃</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=126" onclick="if(window.selectHeroById){selectHeroById('126');return false;}" title="夏侯惇 (坦克/战士) 出装与铭文">夏侯惇</a>
+              <div class="apple-footer-hero-brief" title="出装：急速战靴 · 红莲斗篷 · 冰霜冲击 · 不死鸟之眼 · 旭日初光 · 霸者重装 ｜ 铭文：10宿命 10调和 10虚空">急速战靴 · 红莲斗篷 · 冰霜冲击 · 不死鸟之眼 · 旭日初光 · 霸者重装</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=134" onclick="if(window.selectHeroById){selectHeroById('134');return false;}" title="达摩 (战士/坦克) 出装与铭文">达摩</a>
+              <div class="apple-footer-hero-brief" title="出装：冷静之靴 · 暗影战斧 · 宗师之力 · 强者破军 · 碎星锤 · 暴烈之甲 ｜ 铭文：10异变 10隐匿 10鹰眼">冷静之靴 · 暗影战斧 · 宗师之力 · 强者破军 · 碎星锤 · 暴烈之甲</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=135" onclick="if(window.selectHeroById){selectHeroById('135');return false;}" title="项羽 (坦克/战士) 出装与铭文">项羽</a>
+              <div class="apple-footer-hero-brief" title="出装：冷静之靴 · 暗影战斧 · 冰霜冲击 · 强者破军 · 破魔刀 · 碎星锤 ｜ 铭文：10异变 10隐匿 10鹰眼">冷静之靴 · 暗影战斧 · 冰霜冲击 · 强者破军 · 破魔刀 · 碎星锤</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=139" onclick="if(window.selectHeroById){selectHeroById('139');return false;}" title="老夫子 (战士) 出装与铭文">老夫子</a>
+              <div class="apple-footer-hero-brief" title="出装：抵抗之靴 · 闪电匕首 · 冰霜冲击 · 纯净苍穹 · 旭日初光 · 魔女斗篷 ｜ 铭文：10宿命 7狩猎 3夺萃 6鹰眼 2虚空 2回声">抵抗之靴 · 闪电匕首 · 冰霜冲击 · 纯净苍穹 · 旭日初光 · 魔女斗篷</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=144" onclick="if(window.selectHeroById){selectHeroById('144');return false;}" title="程咬金 (坦克) 出装与铭文">程咬金</a>
+              <div class="apple-footer-hero-brief" title="出装：抵抗之靴 · 怒龙剑盾 · 不死鸟之眼 · 红莲斗篷 · 极寒风暴 · 霸者重装 ｜ 铭文：10宿命 10隐匿 10霸者">抵抗之靴 · 怒龙剑盾 · 不死鸟之眼 · 红莲斗篷 · 极寒风暴 · 霸者重装</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=154" onclick="if(window.selectHeroById){selectHeroById('154');return false;}" title="花木兰 (战士) 出装与铭文">花木兰</a>
+              <div class="apple-footer-hero-brief" title="出装：影忍之足 · 暗影战斧 · 暴烈之甲 · 泣血之刃 · 碎星锤 · 强者破军 ｜ 铭文：9异变 1祸源 6隐匿 4调和 10鹰眼">影忍之足 · 暗影战斧 · 暴烈之甲 · 泣血之刃 · 碎星锤 · 强者破军</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=166" onclick="if(window.selectHeroById){selectHeroById('166');return false;}" title="亚瑟 (战士/坦克) 出装与铭文">亚瑟</a>
+              <div class="apple-footer-hero-brief" title="出装：冷静之靴 · 红莲斗篷 · 怒龙剑盾 · 永夜守护 · 旭日初光 · 霸者重装 ｜ 铭文：10宿命 10狩猎 10鹰眼">冷静之靴 · 红莲斗篷 · 怒龙剑盾 · 永夜守护 · 旭日初光 · 霸者重装</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=178" onclick="if(window.selectHeroById){selectHeroById('178');return false;}" title="杨戬 (战士) 出装与铭文">杨戬</a>
+              <div class="apple-footer-hero-brief" title="出装：影忍之足 · 暗影战斧 · 怒龙剑盾 · 强者破军 · 不死鸟之眼 · 极寒风暴 ｜ 铭文：9异变 1红月 10狩猎 10鹰眼">影忍之足 · 暗影战斧 · 怒龙剑盾 · 强者破军 · 不死鸟之眼 · 极寒风暴</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=180" onclick="if(window.selectHeroById){selectHeroById('180');return false;}" title="哪吒 (战士/坦克) 出装与铭文">哪吒</a>
+              <div class="apple-footer-hero-brief" title="出装：抵抗之靴 · 纯净苍穹 · 红莲斗篷 · 冰痕之握 · 反伤刺甲 · 强者破军 ｜ 铭文：10异变 10隐匿 10虚空">抵抗之靴 · 纯净苍穹 · 红莲斗篷 · 冰痕之握 · 反伤刺甲 · 强者破军</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=194" onclick="if(window.selectHeroById){selectHeroById('194');return false;}" title="苏烈 (坦克) 出装与铭文">苏烈</a>
+              <div class="apple-footer-hero-brief" title="出装：抵抗之靴 · 逐日之弓 · 旭日初光 · 不死鸟之眼 · 暴烈之甲 · 霸者重装 ｜ 铭文：9异变 1红月 7调和 3狩猎 10鹰眼">抵抗之靴 · 逐日之弓 · 旭日初光 · 不死鸟之眼 · 暴烈之甲 · 霸者重装</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=503" onclick="if(window.selectHeroById){selectHeroById('503');return false;}" title="狂铁 (战士/坦克) 出装与铭文">狂铁</a>
+              <div class="apple-footer-hero-brief" title="出装：抵抗之靴 · 纯净苍穹 · 极寒风暴 · 不死鸟之眼 · 冰霜冲击 · 红莲斗篷 ｜ 铭文：10异变 10隐匿 10鹰眼">抵抗之靴 · 纯净苍穹 · 极寒风暴 · 不死鸟之眼 · 冰霜冲击 · 红莲斗篷</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=125" onclick="if(window.selectHeroById){selectHeroById('125');return false;}" title="元歌 (刺客) 出装与铭文">元歌</a>
+              <div class="apple-footer-hero-brief" title="出装：暗影战斧 · 冷静之靴 · 强者破军 · 碎星锤 · 宗师之力 · 名刀·司命 ｜ 铭文：10异变 10隐匿 10鹰眼">暗影战斧 · 冷静之靴 · 强者破军 · 碎星锤 · 宗师之力 · 名刀·司命</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=510" onclick="if(window.selectHeroById){selectHeroById('510');return false;}" title="孙策 (坦克/战士) 出装与铭文">孙策</a>
+              <div class="apple-footer-hero-brief" title="出装：抵抗之靴 · 暗影战斧 · 怒龙剑盾 · 冰霜冲击 · 旭日初光 · 血魔之怒 ｜ 铭文：10异变 9狩猎 1隐匿 10鹰眼">抵抗之靴 · 暗影战斧 · 怒龙剑盾 · 冰霜冲击 · 旭日初光 · 血魔之怒</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=507" onclick="if(window.selectHeroById){selectHeroById('507');return false;}" title="李信 (战士) 出装与铭文">李信</a>
+              <div class="apple-footer-hero-brief" title="出装：冷静之靴 · 暗影战斧 · 强者破军 · 碎星锤 · 纯净苍穹 · 名刀·司命 ｜ 铭文：9异变 1红月 7隐匿 3狩猎 10鹰眼">冷静之靴 · 暗影战斧 · 强者破军 · 碎星锤 · 纯净苍穹 · 名刀·司命</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=511" onclick="if(window.selectHeroById){selectHeroById('511');return false;}" title="猪八戒 (坦克) 出装与铭文">猪八戒</a>
+              <div class="apple-footer-hero-brief" title="出装：影忍之足 · 红莲斗篷 · 怒龙剑盾 · 不死鸟之眼 · 永夜守护 · 霸者重装 ｜ 铭文：10宿命 10调和 10霸者">影忍之足 · 红莲斗篷 · 怒龙剑盾 · 不死鸟之眼 · 永夜守护 · 霸者重装</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=527" onclick="if(window.selectHeroById){selectHeroById('527');return false;}" title="蒙恬 (坦克) 出装与铭文">蒙恬</a>
+              <div class="apple-footer-hero-brief" title="出装：影忍之足 · 暗影战斧 · 无尽战刃 · 宗师之力 · 怒龙剑盾 · 碎星锤 ｜ 铭文：5异变 3无双 2祸源 5兽痕 5狩猎 10鹰眼">影忍之足 · 暗影战斧 · 无尽战刃 · 宗师之力 · 怒龙剑盾 · 碎星锤</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=536" onclick="if(window.selectHeroById){selectHeroById('536');return false;}" title="夏洛特 (战士) 出装与铭文">夏洛特</a>
+              <div class="apple-footer-hero-brief" title="出装：抵抗之靴 · 纯净苍穹 · 暗影战斧 · 冰痕之握 · 不死鸟之眼 · 强者破军 ｜ 铭文：9异变 1红月 9调和 1狩猎 10鹰眼">抵抗之靴 · 纯净苍穹 · 暗影战斧 · 冰痕之握 · 不死鸟之眼 · 强者破军</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=537" onclick="if(window.selectHeroById){selectHeroById('537');return false;}" title="司空震 (战士/法师) 出装与铭文">司空震</a>
+              <div class="apple-footer-hero-brief" title="出装：急速战靴 · 闪电匕首 · 末世 · 寒霜袭侵 · 仁者破晓 · 逐日之弓 ｜ 铭文：10宿命 10狩猎 10心眼">急速战靴 · 闪电匕首 · 末世 · 寒霜袭侵 · 仁者破晓 · 逐日之弓</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=544" onclick="if(window.selectHeroById){selectHeroById('544');return false;}" title="赵怀真 (战士) 出装与铭文">赵怀真</a>
+              <div class="apple-footer-hero-brief" title="出装：影忍之足 · 暗影战斧 · 怒龙剑盾 · 纯净苍穹 · 暴烈之甲 · 强者破军 ｜ 铭文：10异变 10隐匿 10鹰眼">影忍之足 · 暗影战斧 · 怒龙剑盾 · 纯净苍穹 · 暴烈之甲 · 强者破军</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=564" onclick="if(window.selectHeroById){selectHeroById('564');return false;}" title="姬小满 (战士) 出装与铭文">姬小满</a>
+              <div class="apple-footer-hero-brief" title="出装：冷静之靴 · 暗影战斧 · 纯净苍穹 · 暴烈之甲 · 碎星锤 · 强者破军 ｜ 铭文：9异变 1祸源 10隐匿 10鹰眼">冷静之靴 · 暗影战斧 · 纯净苍穹 · 暴烈之甲 · 碎星锤 · 强者破军</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=514" onclick="if(window.selectHeroById){selectHeroById('514');return false;}" title="亚连 (战士/坦克) 出装与铭文">亚连</a>
+              <div class="apple-footer-hero-brief" title="出装：影忍之足 · 闪电匕首 · 极寒风暴 · 血魔之怒 · 纯净苍穹 · 不死鸟之眼 ｜ 铭文：10宿命 10隐匿 10霸者">影忍之足 · 闪电匕首 · 极寒风暴 · 血魔之怒 · 纯净苍穹 · 不死鸟之眼</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=581" onclick="if(window.selectHeroById){selectHeroById('581');return false;}" title="元流之子(坦克) (坦克) 出装与铭文">元流之子(坦克)</a>
+              <div class="apple-footer-hero-brief" title="出装：抵抗之靴 · 暗影战斧 · 冰霜冲击 · 纯净苍穹 · 破魔刀 · 碎星锤 ｜ 铭文：10异变 10调和 10鹰眼">抵抗之靴 · 暗影战斧 · 冰霜冲击 · 纯净苍穹 · 破魔刀 · 碎星锤</div>
+            </li>
+          </ul>
         </div>
-      </div>
-      <div class="seo-lane-block">
-        <h3 class="seo-lane-title"><span class="seo-lane-badge">中路</span> 中路核心英雄官方六神装与铭文速查 (29位)</h3>
-        <div class="seo-hero-grid">
-          <article class="seo-hero-card" id="seo-hero-106">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=106" onclick="if(window.selectHeroById){selectHeroById('106');return false;}" title="小乔六神装推荐与铭文推演">小乔</a>
-              <span class="seo-hero-title-tag">恋之微风</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">秘法之靴 · 回响之杖 · 博学者之怒 · 虚无法杖 · 噬神之书 · 贤者之书</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-108">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=108" onclick="if(window.selectHeroById){selectHeroById('108');return false;}" title="墨子六神装推荐与铭文推演">墨子</a>
-              <span class="seo-hero-title-tag">和平守望</span>
-              <span class="seo-hero-role-tag">法师/战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">抵抗之靴 · 圣杯 · 回响之杖 · 日暮之流 · 辉月 · 巫术法杖</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10红月 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-109">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=109" onclick="if(window.selectHeroById){selectHeroById('109');return false;}" title="妲己六神装推荐与铭文推演">妲己</a>
-              <span class="seo-hero-title-tag">魅力之狐</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">疾步之靴 · 炽热支配 · 梦魇之牙 · 博学者之怒 · 虚无法杖 · 辉月</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-110">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=110" onclick="if(window.selectHeroById){selectHeroById('110');return false;}" title="嬴政六神装推荐与铭文推演">嬴政</a>
-              <span class="seo-hero-title-tag">王者独尊</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">秘法之靴 · 回响之杖 · 博学者之怒 · 虚无法杖 · 炽热支配 · 贤者之书</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-115">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=115" onclick="if(window.selectHeroById){selectHeroById('115');return false;}" title="高渐离六神装推荐与铭文推演">高渐离</a>
-              <span class="seo-hero-title-tag">叛逆吟游</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">秘法之靴 · 噬神之书 · 回响之杖 · 博学者之怒 · 虚无法杖 · 辉月</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">9梦魇 1凶兆 7狩猎 3贪婪 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-119">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=119" onclick="if(window.selectHeroById){selectHeroById('119');return false;}" title="扁鹊六神装推荐与铭文推演">扁鹊</a>
-              <span class="seo-hero-title-tag">善恶怪医</span>
-              <span class="seo-hero-role-tag">法师/战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">疾步之靴 · 圣杯 · 时之预言 · 日暮之流 · 博学者之怒 · 虚无法杖</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-124">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=124" onclick="if(window.selectHeroById){selectHeroById('124');return false;}" title="周瑜六神装推荐与铭文推演">周瑜</a>
-              <span class="seo-hero-title-tag">铁血都督</span>
-              <span class="seo-hero-role-tag">法师/战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">抵抗之靴 · 凝冰之息 · 时之预言 · 痛苦面具 · 日暮之流 · 虚无法杖</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10调和 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-127">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=127" onclick="if(window.selectHeroById){selectHeroById('127');return false;}" title="甄姬六神装推荐与铭文推演">甄姬</a>
-              <span class="seo-hero-title-tag">洛神降临</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">秘法之靴 · 梦魇之牙 · 日暮之流 · 噬神之书 · 炽热支配 · 博学者之怒</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-136">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=136" onclick="if(window.selectHeroById){selectHeroById('136');return false;}" title="武则天六神装推荐与铭文推演">武则天</a>
-              <span class="seo-hero-title-tag">女帝</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">冷静之靴 · 梦魇之牙 · 噬神之书 · 破茧之衣 · 时之预言 · 博学者之怒</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10调和 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-141">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=141" onclick="if(window.selectHeroById){selectHeroById('141');return false;}" title="貂蝉六神装推荐与铭文推演">貂蝉</a>
-              <span class="seo-hero-title-tag">绝世舞姬</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">抵抗之靴 · 圣杯 · 噬神之书 · 博学者之怒 · 炽热支配 · 贤者之书</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10调和 10怜悯</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-142">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=142" onclick="if(window.selectHeroById){selectHeroById('142');return false;}" title="安琪拉六神装推荐与铭文推演">安琪拉</a>
-              <span class="seo-hero-title-tag">暗夜萝莉</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">秘法之靴 · 回响之杖 · 博学者之怒 · 贤者之书 · 虚无法杖 · 噬神之书</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-148">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=148" onclick="if(window.selectHeroById){selectHeroById('148');return false;}" title="姜子牙六神装推荐与铭文推演">姜子牙</a>
-              <span class="seo-hero-title-tag">封神者</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">疾步之靴 · 梦魇之牙 · 痛苦面具 · 日暮之流 · 博学者之怒 · 炽热支配</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-152">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=152" onclick="if(window.selectHeroById){selectHeroById('152');return false;}" title="王昭君六神装推荐与铭文推演">王昭君</a>
-              <span class="seo-hero-title-tag">冰雪之华</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">秘法之靴 · 凝冰之息 · 回响之杖 · 博学者之怒 · 虚无法杖 · 贤者之书</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-157">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=157" onclick="if(window.selectHeroById){selectHeroById('157');return false;}" title="不知火舞六神装推荐与铭文推演">不知火舞</a>
-              <span class="seo-hero-title-tag">明媚烈焰</span>
-              <span class="seo-hero-role-tag">刺客/法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">回响之杖 · 抵抗之靴 · 博学者之怒 · 噬神之书 · 虚无法杖 · 贤者之书</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10轮回 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-190">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=190" onclick="if(window.selectHeroById){selectHeroById('190');return false;}" title="诸葛亮六神装推荐与铭文推演">诸葛亮</a>
-              <span class="seo-hero-title-tag">绝代智谋</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">秘法之靴 · 噬神之书 · 炽热支配 · 贤者之书 · 博学者之怒 · 虚无法杖</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-182">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=182" onclick="if(window.selectHeroById){selectHeroById('182');return false;}" title="干将莫邪六神装推荐与铭文推演">干将莫邪</a>
-              <span class="seo-hero-title-tag">淬命双剑</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">秘法之靴 · 回响之杖 · 贤者之书 · 博学者之怒 · 虚无法杖 · 辉月</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">6梦魇 4圣人 6狩猎 4轮回 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-179">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=179" onclick="if(window.selectHeroById){selectHeroById('179');return false;}" title="女娲六神装推荐与铭文推演">女娲</a>
-              <span class="seo-hero-title-tag">至高创世</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">秘法之靴 · 梦魇之牙 · 痛苦面具 · 日暮之流 · 博学者之怒 · 贤者之书</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-176">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=176" onclick="if(window.selectHeroById){selectHeroById('176');return false;}" title="杨玉环六神装推荐与铭文推演">杨玉环</a>
-              <span class="seo-hero-title-tag">霓裳风华</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">冷静之靴 · 圣杯 · 巫术法杖 · 博学者之怒 · 虚无法杖 · 辉月</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-197">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=197" onclick="if(window.selectHeroById){selectHeroById('197');return false;}" title="弈星六神装推荐与铭文推演">弈星</a>
-              <span class="seo-hero-title-tag">天元之弈</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">疾步之靴 · 梦魇之牙 · 噬神之书 · 日暮之流 · 凝冰之息 · 辉月</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-504">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=504" onclick="if(window.selectHeroById){selectHeroById('504');return false;}" title="米莱狄六神装推荐与铭文推演">米莱狄</a>
-              <span class="seo-hero-title-tag">筑城者</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">秘法之靴 · 梦魇之牙 · 痛苦面具 · 博学者之怒 · 虚无法杖 · 辉月</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10献祭</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-312">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=312" onclick="if(window.selectHeroById){selectHeroById('312');return false;}" title="沈梦溪六神装推荐与铭文推演">沈梦溪</a>
-              <span class="seo-hero-title-tag">爆弹怪猫</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">冷静之靴 · 梦魇之牙 · 博学者之怒 · 虚无法杖 · 噬神之书 · 贤者之书</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-513">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=513" onclick="if(window.selectHeroById){selectHeroById('513');return false;}" title="上官婉儿六神装推荐与铭文推演">上官婉儿</a>
-              <span class="seo-hero-title-tag">惊鸿之笔</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">疾步之靴 · 回响之杖 · 日暮之流 · 博学者之怒 · 炽热支配 · 贤者之书</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-515">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=515" onclick="if(window.selectHeroById){selectHeroById('515');return false;}" title="嫦娥六神装推荐与铭文推演">嫦娥</a>
-              <span class="seo-hero-title-tag">寒月公主</span>
-              <span class="seo-hero-role-tag">法师/战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">巫术法杖 · 冷静之靴 · 噬神之书 · 炽热支配 · 虚无法杖 · 博学者之怒</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10怜悯</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-523">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=523" onclick="if(window.selectHeroById){selectHeroById('523');return false;}" title="西施六神装推荐与铭文推演">西施</a>
-              <span class="seo-hero-title-tag">幻纱之灵</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">疾步之靴 · 凝冰之息 · 痛苦面具 · 破茧之衣 · 炽热支配 · 梦魇之牙</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10怜悯</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-540">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=540" onclick="if(window.selectHeroById){selectHeroById('540');return false;}" title="金蝉六神装推荐与铭文推演">金蝉</a>
-              <span class="seo-hero-title-tag">渡世行者</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">疾步之靴 · 梦魇之牙 · 贤者之书 · 博学者之怒 · 虚无法杖 · 辉月</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-521">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=521" onclick="if(window.selectHeroById){selectHeroById('521');return false;}" title="海月六神装推荐与铭文推演">海月</a>
-              <span class="seo-hero-title-tag">永夜之心</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">秘法之靴 · 回响之杖 · 噬神之书 · 博学者之怒 · 贤者之书 · 虚无法杖</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10圣人 9调和 1轮回 10献祭</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-563">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=563" onclick="if(window.selectHeroById){selectHeroById('563');return false;}" title="海诺六神装推荐与铭文推演">海诺</a>
-              <span class="seo-hero-title-tag">命运之引</span>
-              <span class="seo-hero-role-tag">战士/法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">冷静之靴 · 圣杯 · 噬神之书 · 博学者之怒 · 虚无法杖 · 贤者之书</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10贪婪 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-582">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=582" onclick="if(window.selectHeroById){selectHeroById('582');return false;}" title="元流之子(法师)六神装推荐与铭文推演">元流之子(法师)</a>
-              <span class="seo-hero-title-tag">万妙之心</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">秘法之靴 · 回响之杖 · 博学者之怒 · 虚无法杖 · 噬神之书 · 贤者之书</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-138">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=138" onclick="if(window.selectHeroById){selectHeroById('138');return false;}" title="王维六神装推荐与铭文推演">王维</a>
-              <span class="seo-hero-title-tag">空山遗客</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">秘法之靴 · 回响之杖 · 博学者之怒 · 噬神之书 · 贤者之书 · 虚无法杖</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10梦魇 10狩猎 10心眼</span></div>
-            </div>
-          </article>
+        <div class="apple-footer-lane-col">
+          <div class="apple-footer-lane-title">中路 (29)</div>
+          <ul class="apple-footer-hero-list">
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=106" onclick="if(window.selectHeroById){selectHeroById('106');return false;}" title="小乔 (法师) 出装与铭文">小乔</a>
+              <div class="apple-footer-hero-brief" title="出装：秘法之靴 · 回响之杖 · 博学者之怒 · 虚无法杖 · 噬神之书 · 贤者之书 ｜ 铭文：10梦魇 10狩猎 10心眼">秘法之靴 · 回响之杖 · 博学者之怒 · 虚无法杖 · 噬神之书 · 贤者之书</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=108" onclick="if(window.selectHeroById){selectHeroById('108');return false;}" title="墨子 (法师/战士) 出装与铭文">墨子</a>
+              <div class="apple-footer-hero-brief" title="出装：抵抗之靴 · 圣杯 · 回响之杖 · 日暮之流 · 辉月 · 巫术法杖 ｜ 铭文：10红月 10狩猎 10心眼">抵抗之靴 · 圣杯 · 回响之杖 · 日暮之流 · 辉月 · 巫术法杖</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=109" onclick="if(window.selectHeroById){selectHeroById('109');return false;}" title="妲己 (法师) 出装与铭文">妲己</a>
+              <div class="apple-footer-hero-brief" title="出装：疾步之靴 · 炽热支配 · 梦魇之牙 · 博学者之怒 · 虚无法杖 · 辉月 ｜ 铭文：10梦魇 10狩猎 10心眼">疾步之靴 · 炽热支配 · 梦魇之牙 · 博学者之怒 · 虚无法杖 · 辉月</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=110" onclick="if(window.selectHeroById){selectHeroById('110');return false;}" title="嬴政 (法师) 出装与铭文">嬴政</a>
+              <div class="apple-footer-hero-brief" title="出装：秘法之靴 · 回响之杖 · 博学者之怒 · 虚无法杖 · 炽热支配 · 贤者之书 ｜ 铭文：10梦魇 10狩猎 10心眼">秘法之靴 · 回响之杖 · 博学者之怒 · 虚无法杖 · 炽热支配 · 贤者之书</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=115" onclick="if(window.selectHeroById){selectHeroById('115');return false;}" title="高渐离 (法师) 出装与铭文">高渐离</a>
+              <div class="apple-footer-hero-brief" title="出装：秘法之靴 · 噬神之书 · 回响之杖 · 博学者之怒 · 虚无法杖 · 辉月 ｜ 铭文：9梦魇 1凶兆 7狩猎 3贪婪 10心眼">秘法之靴 · 噬神之书 · 回响之杖 · 博学者之怒 · 虚无法杖 · 辉月</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=119" onclick="if(window.selectHeroById){selectHeroById('119');return false;}" title="扁鹊 (法师/战士) 出装与铭文">扁鹊</a>
+              <div class="apple-footer-hero-brief" title="出装：疾步之靴 · 圣杯 · 时之预言 · 日暮之流 · 博学者之怒 · 虚无法杖 ｜ 铭文：10梦魇 10狩猎 10心眼">疾步之靴 · 圣杯 · 时之预言 · 日暮之流 · 博学者之怒 · 虚无法杖</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=124" onclick="if(window.selectHeroById){selectHeroById('124');return false;}" title="周瑜 (法师/战士) 出装与铭文">周瑜</a>
+              <div class="apple-footer-hero-brief" title="出装：抵抗之靴 · 凝冰之息 · 时之预言 · 痛苦面具 · 日暮之流 · 虚无法杖 ｜ 铭文：10梦魇 10调和 10心眼">抵抗之靴 · 凝冰之息 · 时之预言 · 痛苦面具 · 日暮之流 · 虚无法杖</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=127" onclick="if(window.selectHeroById){selectHeroById('127');return false;}" title="甄姬 (法师) 出装与铭文">甄姬</a>
+              <div class="apple-footer-hero-brief" title="出装：秘法之靴 · 梦魇之牙 · 日暮之流 · 噬神之书 · 炽热支配 · 博学者之怒 ｜ 铭文：10梦魇 10狩猎 10心眼">秘法之靴 · 梦魇之牙 · 日暮之流 · 噬神之书 · 炽热支配 · 博学者之怒</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=136" onclick="if(window.selectHeroById){selectHeroById('136');return false;}" title="武则天 (法师) 出装与铭文">武则天</a>
+              <div class="apple-footer-hero-brief" title="出装：冷静之靴 · 梦魇之牙 · 噬神之书 · 破茧之衣 · 时之预言 · 博学者之怒 ｜ 铭文：10梦魇 10调和 10心眼">冷静之靴 · 梦魇之牙 · 噬神之书 · 破茧之衣 · 时之预言 · 博学者之怒</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=141" onclick="if(window.selectHeroById){selectHeroById('141');return false;}" title="貂蝉 (法师) 出装与铭文">貂蝉</a>
+              <div class="apple-footer-hero-brief" title="出装：抵抗之靴 · 圣杯 · 噬神之书 · 博学者之怒 · 炽热支配 · 贤者之书 ｜ 铭文：10梦魇 10调和 10怜悯">抵抗之靴 · 圣杯 · 噬神之书 · 博学者之怒 · 炽热支配 · 贤者之书</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=142" onclick="if(window.selectHeroById){selectHeroById('142');return false;}" title="安琪拉 (法师) 出装与铭文">安琪拉</a>
+              <div class="apple-footer-hero-brief" title="出装：秘法之靴 · 回响之杖 · 博学者之怒 · 贤者之书 · 虚无法杖 · 噬神之书 ｜ 铭文：10梦魇 10狩猎 10心眼">秘法之靴 · 回响之杖 · 博学者之怒 · 贤者之书 · 虚无法杖 · 噬神之书</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=148" onclick="if(window.selectHeroById){selectHeroById('148');return false;}" title="姜子牙 (法师) 出装与铭文">姜子牙</a>
+              <div class="apple-footer-hero-brief" title="出装：疾步之靴 · 梦魇之牙 · 痛苦面具 · 日暮之流 · 博学者之怒 · 炽热支配 ｜ 铭文：10梦魇 10狩猎 10心眼">疾步之靴 · 梦魇之牙 · 痛苦面具 · 日暮之流 · 博学者之怒 · 炽热支配</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=152" onclick="if(window.selectHeroById){selectHeroById('152');return false;}" title="王昭君 (法师) 出装与铭文">王昭君</a>
+              <div class="apple-footer-hero-brief" title="出装：秘法之靴 · 凝冰之息 · 回响之杖 · 博学者之怒 · 虚无法杖 · 贤者之书 ｜ 铭文：10梦魇 10狩猎 10心眼">秘法之靴 · 凝冰之息 · 回响之杖 · 博学者之怒 · 虚无法杖 · 贤者之书</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=157" onclick="if(window.selectHeroById){selectHeroById('157');return false;}" title="不知火舞 (刺客/法师) 出装与铭文">不知火舞</a>
+              <div class="apple-footer-hero-brief" title="出装：回响之杖 · 抵抗之靴 · 博学者之怒 · 噬神之书 · 虚无法杖 · 贤者之书 ｜ 铭文：10梦魇 10轮回 10心眼">回响之杖 · 抵抗之靴 · 博学者之怒 · 噬神之书 · 虚无法杖 · 贤者之书</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=190" onclick="if(window.selectHeroById){selectHeroById('190');return false;}" title="诸葛亮 (法师) 出装与铭文">诸葛亮</a>
+              <div class="apple-footer-hero-brief" title="出装：秘法之靴 · 噬神之书 · 炽热支配 · 贤者之书 · 博学者之怒 · 虚无法杖 ｜ 铭文：10梦魇 10狩猎 10心眼">秘法之靴 · 噬神之书 · 炽热支配 · 贤者之书 · 博学者之怒 · 虚无法杖</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=182" onclick="if(window.selectHeroById){selectHeroById('182');return false;}" title="干将莫邪 (法师) 出装与铭文">干将莫邪</a>
+              <div class="apple-footer-hero-brief" title="出装：秘法之靴 · 回响之杖 · 贤者之书 · 博学者之怒 · 虚无法杖 · 辉月 ｜ 铭文：6梦魇 4圣人 6狩猎 4轮回 10心眼">秘法之靴 · 回响之杖 · 贤者之书 · 博学者之怒 · 虚无法杖 · 辉月</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=179" onclick="if(window.selectHeroById){selectHeroById('179');return false;}" title="女娲 (法师) 出装与铭文">女娲</a>
+              <div class="apple-footer-hero-brief" title="出装：秘法之靴 · 梦魇之牙 · 痛苦面具 · 日暮之流 · 博学者之怒 · 贤者之书 ｜ 铭文：10梦魇 10狩猎 10心眼">秘法之靴 · 梦魇之牙 · 痛苦面具 · 日暮之流 · 博学者之怒 · 贤者之书</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=176" onclick="if(window.selectHeroById){selectHeroById('176');return false;}" title="杨玉环 (法师) 出装与铭文">杨玉环</a>
+              <div class="apple-footer-hero-brief" title="出装：冷静之靴 · 圣杯 · 巫术法杖 · 博学者之怒 · 虚无法杖 · 辉月 ｜ 铭文：10梦魇 10狩猎 10心眼">冷静之靴 · 圣杯 · 巫术法杖 · 博学者之怒 · 虚无法杖 · 辉月</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=197" onclick="if(window.selectHeroById){selectHeroById('197');return false;}" title="弈星 (法师) 出装与铭文">弈星</a>
+              <div class="apple-footer-hero-brief" title="出装：疾步之靴 · 梦魇之牙 · 噬神之书 · 日暮之流 · 凝冰之息 · 辉月 ｜ 铭文：10梦魇 10狩猎 10心眼">疾步之靴 · 梦魇之牙 · 噬神之书 · 日暮之流 · 凝冰之息 · 辉月</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=504" onclick="if(window.selectHeroById){selectHeroById('504');return false;}" title="米莱狄 (法师) 出装与铭文">米莱狄</a>
+              <div class="apple-footer-hero-brief" title="出装：秘法之靴 · 梦魇之牙 · 痛苦面具 · 博学者之怒 · 虚无法杖 · 辉月 ｜ 铭文：10梦魇 10狩猎 10献祭">秘法之靴 · 梦魇之牙 · 痛苦面具 · 博学者之怒 · 虚无法杖 · 辉月</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=312" onclick="if(window.selectHeroById){selectHeroById('312');return false;}" title="沈梦溪 (法师) 出装与铭文">沈梦溪</a>
+              <div class="apple-footer-hero-brief" title="出装：冷静之靴 · 梦魇之牙 · 博学者之怒 · 虚无法杖 · 噬神之书 · 贤者之书 ｜ 铭文：10梦魇 10狩猎 10心眼">冷静之靴 · 梦魇之牙 · 博学者之怒 · 虚无法杖 · 噬神之书 · 贤者之书</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=513" onclick="if(window.selectHeroById){selectHeroById('513');return false;}" title="上官婉儿 (法师) 出装与铭文">上官婉儿</a>
+              <div class="apple-footer-hero-brief" title="出装：疾步之靴 · 回响之杖 · 日暮之流 · 博学者之怒 · 炽热支配 · 贤者之书 ｜ 铭文：10梦魇 10狩猎 10心眼">疾步之靴 · 回响之杖 · 日暮之流 · 博学者之怒 · 炽热支配 · 贤者之书</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=515" onclick="if(window.selectHeroById){selectHeroById('515');return false;}" title="嫦娥 (法师/战士) 出装与铭文">嫦娥</a>
+              <div class="apple-footer-hero-brief" title="出装：巫术法杖 · 冷静之靴 · 噬神之书 · 炽热支配 · 虚无法杖 · 博学者之怒 ｜ 铭文：10梦魇 10狩猎 10怜悯">巫术法杖 · 冷静之靴 · 噬神之书 · 炽热支配 · 虚无法杖 · 博学者之怒</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=523" onclick="if(window.selectHeroById){selectHeroById('523');return false;}" title="西施 (法师) 出装与铭文">西施</a>
+              <div class="apple-footer-hero-brief" title="出装：疾步之靴 · 凝冰之息 · 痛苦面具 · 破茧之衣 · 炽热支配 · 梦魇之牙 ｜ 铭文：10梦魇 10狩猎 10怜悯">疾步之靴 · 凝冰之息 · 痛苦面具 · 破茧之衣 · 炽热支配 · 梦魇之牙</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=540" onclick="if(window.selectHeroById){selectHeroById('540');return false;}" title="金蝉 (法师) 出装与铭文">金蝉</a>
+              <div class="apple-footer-hero-brief" title="出装：疾步之靴 · 梦魇之牙 · 贤者之书 · 博学者之怒 · 虚无法杖 · 辉月 ｜ 铭文：10梦魇 10狩猎 10心眼">疾步之靴 · 梦魇之牙 · 贤者之书 · 博学者之怒 · 虚无法杖 · 辉月</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=521" onclick="if(window.selectHeroById){selectHeroById('521');return false;}" title="海月 (法师) 出装与铭文">海月</a>
+              <div class="apple-footer-hero-brief" title="出装：秘法之靴 · 回响之杖 · 噬神之书 · 博学者之怒 · 贤者之书 · 虚无法杖 ｜ 铭文：10圣人 9调和 1轮回 10献祭">秘法之靴 · 回响之杖 · 噬神之书 · 博学者之怒 · 贤者之书 · 虚无法杖</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=563" onclick="if(window.selectHeroById){selectHeroById('563');return false;}" title="海诺 (战士/法师) 出装与铭文">海诺</a>
+              <div class="apple-footer-hero-brief" title="出装：冷静之靴 · 圣杯 · 噬神之书 · 博学者之怒 · 虚无法杖 · 贤者之书 ｜ 铭文：10梦魇 10贪婪 10心眼">冷静之靴 · 圣杯 · 噬神之书 · 博学者之怒 · 虚无法杖 · 贤者之书</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=582" onclick="if(window.selectHeroById){selectHeroById('582');return false;}" title="元流之子(法师) (法师) 出装与铭文">元流之子(法师)</a>
+              <div class="apple-footer-hero-brief" title="出装：秘法之靴 · 回响之杖 · 博学者之怒 · 虚无法杖 · 噬神之书 · 贤者之书 ｜ 铭文：10梦魇 10狩猎 10心眼">秘法之靴 · 回响之杖 · 博学者之怒 · 虚无法杖 · 噬神之书 · 贤者之书</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=138" onclick="if(window.selectHeroById){selectHeroById('138');return false;}" title="王维 (法师) 出装与铭文">王维</a>
+              <div class="apple-footer-hero-brief" title="出装：秘法之靴 · 回响之杖 · 博学者之怒 · 噬神之书 · 贤者之书 · 虚无法杖 ｜ 铭文：10梦魇 10狩猎 10心眼">秘法之靴 · 回响之杖 · 博学者之怒 · 噬神之书 · 贤者之书 · 虚无法杖</div>
+            </li>
+          </ul>
         </div>
-      </div>
-      <div class="seo-lane-block">
-        <h3 class="seo-lane-title"><span class="seo-lane-badge">发育路</span> 发育路核心英雄官方六神装与铭文速查 (21位)</h3>
-        <div class="seo-hero-grid">
-          <article class="seo-hero-card" id="seo-hero-111">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=111" onclick="if(window.selectHeroById){selectHeroById('111');return false;}" title="孙尚香六神装推荐与铭文推演">孙尚香</a>
-              <span class="seo-hero-title-tag">千金重弩</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">无尽战刃 · 急速战靴 · 宗师之力 · 仁者破晓 · 泣血之刃 · 影刃</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">7祸源 3红月 8隐匿 2繁荣 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-112">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=112" onclick="if(window.selectHeroById){selectHeroById('112');return false;}" title="鲁班七号六神装推荐与铭文推演">鲁班七号</a>
-              <span class="seo-hero-title-tag">机关造物</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">影刃 · 抵抗之靴 · 无尽战刃 · 仁者破晓 · 末世 · 纯净苍穹</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">7祸源 3红月 5繁荣 5狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-132">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=132" onclick="if(window.selectHeroById){selectHeroById('132');return false;}" title="马可波罗六神装推荐与铭文推演">马可波罗</a>
-              <span class="seo-hero-title-tag">远游之枪</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">急速战靴 · 闪电匕首 · 末世 · 仁者破晓 · 冰霜冲击 · 寒霜袭侵</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-133">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=133" onclick="if(window.selectHeroById){selectHeroById('133');return false;}" title="狄仁杰六神装推荐与铭文推演">狄仁杰</a>
-              <span class="seo-hero-title-tag">断案大师</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">急速战靴 · 影刃 · 无尽战刃 · 仁者破晓 · 末世 · 逐日之弓</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">7祸源 3红月 5狩猎 5繁荣 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-169">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=169" onclick="if(window.selectHeroById){selectHeroById('169');return false;}" title="后羿六神装推荐与铭文推演">后羿</a>
-              <span class="seo-hero-title-tag">半神之弓</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">抵抗之靴 · 影刃 · 无尽战刃 · 仁者破晓 · 幽影袖箭 · 泣血之刃</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10祸源 5狩猎 5夺萃 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-173">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=173" onclick="if(window.selectHeroById){selectHeroById('173');return false;}" title="李元芳六神装推荐与铭文推演">李元芳</a>
-              <span class="seo-hero-title-tag">王都密探</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">急速战靴 · 暗影战斧 · 无尽战刃 · 影刃 · 泣血之刃 · 仁者破晓</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">7祸源 3红月 8隐匿 2夺萃 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-174">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=174" onclick="if(window.selectHeroById){selectHeroById('174');return false;}" title="虞姬六神装推荐与铭文推演">虞姬</a>
-              <span class="seo-hero-title-tag">森之风灵</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">抵抗之靴 · 逐风 · 末世 · 碎星锤 · 幽影袖箭 · 贤者的庇护</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">6异变 4纷争 5繁荣 5狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-192">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=192" onclick="if(window.selectHeroById){selectHeroById('192');return false;}" title="黄忠六神装推荐与铭文推演">黄忠</a>
-              <span class="seo-hero-title-tag">燃魂重炮</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">急速战靴 · 影刃 · 无尽战刃 · 仁者破晓 · 泣血之刃 · 逐日之弓</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">7祸源 3红月 7繁荣 3狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-196">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=196" onclick="if(window.selectHeroById){selectHeroById('196');return false;}" title="百里守约六神装推荐与铭文推演">百里守约</a>
-              <span class="seo-hero-title-tag">静谧之眼</span>
-              <span class="seo-hero-role-tag">射手/刺客</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">急速战靴 · 无尽战刃 · 影刃 · 仁者破晓 · 幽影袖箭 · 泣血之刃</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">7祸源 3红月 5狩猎 5繁荣 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-199">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=199" onclick="if(window.selectHeroById){selectHeroById('199');return false;}" title="公孙离六神装推荐与铭文推演">公孙离</a>
-              <span class="seo-hero-title-tag">幻舞玲珑</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">末世 · 抵抗之靴 · 影刃 · 无尽战刃 · 仁者破晓 · 逐日之弓</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10祸源 5狩猎 5繁荣 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-508">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=508" onclick="if(window.selectHeroById){selectHeroById('508');return false;}" title="伽罗六神装推荐与铭文推演">伽罗</a>
-              <span class="seo-hero-title-tag">破魔之箭</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">急速战靴 · 影刃 · 无尽战刃 · 仁者破晓 · 泣血之刃 · 逐日之弓</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">7祸源 3红月 5狩猎 5繁荣 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-524">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=524" onclick="if(window.selectHeroById){selectHeroById('524');return false;}" title="蒙犽六神装推荐与铭文推演">蒙犽</a>
-              <span class="seo-hero-title-tag">烈炮小子</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">抵抗之靴 · 闪电匕首 · 影刃 · 仁者破晓 · 末世 · 逐日之弓</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-155">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=155" onclick="if(window.selectHeroById){selectHeroById('155');return false;}" title="艾琳六神装推荐与铭文推演">艾琳</a>
-              <span class="seo-hero-title-tag">精灵之舞</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">闪电匕首 · 秘法之靴 · 末世 · 金色圣剑 · 虚无法杖 · 血魔之怒</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10夺萃 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-548">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=548" onclick="if(window.selectHeroById){selectHeroById('548');return false;}" title="戈娅六神装推荐与铭文推演">戈娅</a>
-              <span class="seo-hero-title-tag">沙海飞舟</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">影忍之足 · 闪电匕首 · 末世 · 逐风 · 暴烈之甲 · 血魔之怒</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 7狩猎 3夺萃 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-545">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=545" onclick="if(window.selectHeroById){selectHeroById('545');return false;}" title="莱西奥六神装推荐与铭文推演">莱西奥</a>
-              <span class="seo-hero-title-tag">火鹰船长</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">急速战靴 · 影刃 · 无尽战刃 · 仁者破晓 · 泣血之刃 · 逐日之弓</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10祸源 7狩猎 3夺萃 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-519">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=519" onclick="if(window.selectHeroById){selectHeroById('519');return false;}" title="敖隐六神装推荐与铭文推演">敖隐</a>
-              <span class="seo-hero-title-tag">凌霄真龙</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">急速战靴 · 无尽战刃 · 宗师之力 · 仁者破晓 · 末世 · 强者破军</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10祸源 5隐匿 5繁荣 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-177">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=177" onclick="if(window.selectHeroById){selectHeroById('177');return false;}" title="苍六神装推荐与铭文推演">苍</a>
-              <span class="seo-hero-title-tag">苍狼末裔</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">急速战靴 · 无尽战刃 · 影刃 · 仁者破晓 · 泣血之刃 · 逐日之弓</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">7祸源 3红月 6隐匿 4繁荣 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-584">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=584" onclick="if(window.selectHeroById){selectHeroById('584');return false;}" title="元流之子(射手)六神装推荐与铭文推演">元流之子(射手)</a>
-              <span class="seo-hero-title-tag">沉舟之志</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">抵抗之靴 · 无尽战刃 · 影刃 · 仁者破晓 · 逐日之弓 · 末世</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10祸源 5繁荣 5狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-151">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=151" onclick="if(window.selectHeroById){selectHeroById('151');return false;}" title="孙权六神装推荐与铭文推演">孙权</a>
-              <span class="seo-hero-title-tag">定旌之谋</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">抵抗之靴 · 闪电匕首 · 末世 · 仁者破晓 · 冰霜冲击 · 不祥征兆</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10祸源 7狩猎 3夺萃 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-172">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=172" onclick="if(window.selectHeroById){selectHeroById('172');return false;}" title="蚩奼六神装推荐与铭文推演">蚩奼</a>
-              <span class="seo-hero-title-tag">五兵之主</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">急速战靴 · 影刃 · 无尽战刃 · 末世 · 仁者破晓 · 名刀·司命</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10祸源 10兽痕 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-547">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=547" onclick="if(window.selectHeroById){selectHeroById('547');return false;}" title="卢雅那六神装推荐与铭文推演">卢雅那</a>
-              <span class="seo-hero-title-tag">蛇焰使者</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">急速战靴 · 影刃 · 无尽战刃 · 仁者破晓 · 末世 · 逐日之弓</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10祸源 5狩猎 5夺萃 10鹰眼</span></div>
-            </div>
-          </article>
+        <div class="apple-footer-lane-col">
+          <div class="apple-footer-lane-title">发育路 (21)</div>
+          <ul class="apple-footer-hero-list">
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=111" onclick="if(window.selectHeroById){selectHeroById('111');return false;}" title="孙尚香 (射手) 出装与铭文">孙尚香</a>
+              <div class="apple-footer-hero-brief" title="出装：无尽战刃 · 急速战靴 · 宗师之力 · 仁者破晓 · 泣血之刃 · 影刃 ｜ 铭文：7祸源 3红月 8隐匿 2繁荣 10鹰眼">无尽战刃 · 急速战靴 · 宗师之力 · 仁者破晓 · 泣血之刃 · 影刃</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=112" onclick="if(window.selectHeroById){selectHeroById('112');return false;}" title="鲁班七号 (射手) 出装与铭文">鲁班七号</a>
+              <div class="apple-footer-hero-brief" title="出装：影刃 · 抵抗之靴 · 无尽战刃 · 仁者破晓 · 末世 · 纯净苍穹 ｜ 铭文：7祸源 3红月 5繁荣 5狩猎 10鹰眼">影刃 · 抵抗之靴 · 无尽战刃 · 仁者破晓 · 末世 · 纯净苍穹</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=132" onclick="if(window.selectHeroById){selectHeroById('132');return false;}" title="马可波罗 (射手) 出装与铭文">马可波罗</a>
+              <div class="apple-footer-hero-brief" title="出装：急速战靴 · 闪电匕首 · 末世 · 仁者破晓 · 冰霜冲击 · 寒霜袭侵 ｜ 铭文：10宿命 10狩猎 10鹰眼">急速战靴 · 闪电匕首 · 末世 · 仁者破晓 · 冰霜冲击 · 寒霜袭侵</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=133" onclick="if(window.selectHeroById){selectHeroById('133');return false;}" title="狄仁杰 (射手) 出装与铭文">狄仁杰</a>
+              <div class="apple-footer-hero-brief" title="出装：急速战靴 · 影刃 · 无尽战刃 · 仁者破晓 · 末世 · 逐日之弓 ｜ 铭文：7祸源 3红月 5狩猎 5繁荣 10鹰眼">急速战靴 · 影刃 · 无尽战刃 · 仁者破晓 · 末世 · 逐日之弓</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=169" onclick="if(window.selectHeroById){selectHeroById('169');return false;}" title="后羿 (射手) 出装与铭文">后羿</a>
+              <div class="apple-footer-hero-brief" title="出装：抵抗之靴 · 影刃 · 无尽战刃 · 仁者破晓 · 幽影袖箭 · 泣血之刃 ｜ 铭文：10祸源 5狩猎 5夺萃 10鹰眼">抵抗之靴 · 影刃 · 无尽战刃 · 仁者破晓 · 幽影袖箭 · 泣血之刃</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=173" onclick="if(window.selectHeroById){selectHeroById('173');return false;}" title="李元芳 (射手) 出装与铭文">李元芳</a>
+              <div class="apple-footer-hero-brief" title="出装：急速战靴 · 暗影战斧 · 无尽战刃 · 影刃 · 泣血之刃 · 仁者破晓 ｜ 铭文：7祸源 3红月 8隐匿 2夺萃 10鹰眼">急速战靴 · 暗影战斧 · 无尽战刃 · 影刃 · 泣血之刃 · 仁者破晓</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=174" onclick="if(window.selectHeroById){selectHeroById('174');return false;}" title="虞姬 (射手) 出装与铭文">虞姬</a>
+              <div class="apple-footer-hero-brief" title="出装：抵抗之靴 · 逐风 · 末世 · 碎星锤 · 幽影袖箭 · 贤者的庇护 ｜ 铭文：6异变 4纷争 5繁荣 5狩猎 10鹰眼">抵抗之靴 · 逐风 · 末世 · 碎星锤 · 幽影袖箭 · 贤者的庇护</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=192" onclick="if(window.selectHeroById){selectHeroById('192');return false;}" title="黄忠 (射手) 出装与铭文">黄忠</a>
+              <div class="apple-footer-hero-brief" title="出装：急速战靴 · 影刃 · 无尽战刃 · 仁者破晓 · 泣血之刃 · 逐日之弓 ｜ 铭文：7祸源 3红月 7繁荣 3狩猎 10鹰眼">急速战靴 · 影刃 · 无尽战刃 · 仁者破晓 · 泣血之刃 · 逐日之弓</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=196" onclick="if(window.selectHeroById){selectHeroById('196');return false;}" title="百里守约 (射手/刺客) 出装与铭文">百里守约</a>
+              <div class="apple-footer-hero-brief" title="出装：急速战靴 · 无尽战刃 · 影刃 · 仁者破晓 · 幽影袖箭 · 泣血之刃 ｜ 铭文：7祸源 3红月 5狩猎 5繁荣 10鹰眼">急速战靴 · 无尽战刃 · 影刃 · 仁者破晓 · 幽影袖箭 · 泣血之刃</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=199" onclick="if(window.selectHeroById){selectHeroById('199');return false;}" title="公孙离 (射手) 出装与铭文">公孙离</a>
+              <div class="apple-footer-hero-brief" title="出装：末世 · 抵抗之靴 · 影刃 · 无尽战刃 · 仁者破晓 · 逐日之弓 ｜ 铭文：10祸源 5狩猎 5繁荣 10鹰眼">末世 · 抵抗之靴 · 影刃 · 无尽战刃 · 仁者破晓 · 逐日之弓</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=508" onclick="if(window.selectHeroById){selectHeroById('508');return false;}" title="伽罗 (射手) 出装与铭文">伽罗</a>
+              <div class="apple-footer-hero-brief" title="出装：急速战靴 · 影刃 · 无尽战刃 · 仁者破晓 · 泣血之刃 · 逐日之弓 ｜ 铭文：7祸源 3红月 5狩猎 5繁荣 10鹰眼">急速战靴 · 影刃 · 无尽战刃 · 仁者破晓 · 泣血之刃 · 逐日之弓</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=524" onclick="if(window.selectHeroById){selectHeroById('524');return false;}" title="蒙犽 (射手) 出装与铭文">蒙犽</a>
+              <div class="apple-footer-hero-brief" title="出装：抵抗之靴 · 闪电匕首 · 影刃 · 仁者破晓 · 末世 · 逐日之弓 ｜ 铭文：10异变 10狩猎 10鹰眼">抵抗之靴 · 闪电匕首 · 影刃 · 仁者破晓 · 末世 · 逐日之弓</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=155" onclick="if(window.selectHeroById){selectHeroById('155');return false;}" title="艾琳 (射手) 出装与铭文">艾琳</a>
+              <div class="apple-footer-hero-brief" title="出装：闪电匕首 · 秘法之靴 · 末世 · 金色圣剑 · 虚无法杖 · 血魔之怒 ｜ 铭文：10宿命 10夺萃 10心眼">闪电匕首 · 秘法之靴 · 末世 · 金色圣剑 · 虚无法杖 · 血魔之怒</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=548" onclick="if(window.selectHeroById){selectHeroById('548');return false;}" title="戈娅 (射手) 出装与铭文">戈娅</a>
+              <div class="apple-footer-hero-brief" title="出装：影忍之足 · 闪电匕首 · 末世 · 逐风 · 暴烈之甲 · 血魔之怒 ｜ 铭文：10异变 7狩猎 3夺萃 10鹰眼">影忍之足 · 闪电匕首 · 末世 · 逐风 · 暴烈之甲 · 血魔之怒</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=545" onclick="if(window.selectHeroById){selectHeroById('545');return false;}" title="莱西奥 (射手) 出装与铭文">莱西奥</a>
+              <div class="apple-footer-hero-brief" title="出装：急速战靴 · 影刃 · 无尽战刃 · 仁者破晓 · 泣血之刃 · 逐日之弓 ｜ 铭文：10祸源 7狩猎 3夺萃 10鹰眼">急速战靴 · 影刃 · 无尽战刃 · 仁者破晓 · 泣血之刃 · 逐日之弓</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=519" onclick="if(window.selectHeroById){selectHeroById('519');return false;}" title="敖隐 (射手) 出装与铭文">敖隐</a>
+              <div class="apple-footer-hero-brief" title="出装：急速战靴 · 无尽战刃 · 宗师之力 · 仁者破晓 · 末世 · 强者破军 ｜ 铭文：10祸源 5隐匿 5繁荣 10鹰眼">急速战靴 · 无尽战刃 · 宗师之力 · 仁者破晓 · 末世 · 强者破军</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=177" onclick="if(window.selectHeroById){selectHeroById('177');return false;}" title="苍 (射手) 出装与铭文">苍</a>
+              <div class="apple-footer-hero-brief" title="出装：急速战靴 · 无尽战刃 · 影刃 · 仁者破晓 · 泣血之刃 · 逐日之弓 ｜ 铭文：7祸源 3红月 6隐匿 4繁荣 10鹰眼">急速战靴 · 无尽战刃 · 影刃 · 仁者破晓 · 泣血之刃 · 逐日之弓</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=584" onclick="if(window.selectHeroById){selectHeroById('584');return false;}" title="元流之子(射手) (射手) 出装与铭文">元流之子(射手)</a>
+              <div class="apple-footer-hero-brief" title="出装：抵抗之靴 · 无尽战刃 · 影刃 · 仁者破晓 · 逐日之弓 · 末世 ｜ 铭文：10祸源 5繁荣 5狩猎 10鹰眼">抵抗之靴 · 无尽战刃 · 影刃 · 仁者破晓 · 逐日之弓 · 末世</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=151" onclick="if(window.selectHeroById){selectHeroById('151');return false;}" title="孙权 (射手) 出装与铭文">孙权</a>
+              <div class="apple-footer-hero-brief" title="出装：抵抗之靴 · 闪电匕首 · 末世 · 仁者破晓 · 冰霜冲击 · 不祥征兆 ｜ 铭文：10祸源 7狩猎 3夺萃 10鹰眼">抵抗之靴 · 闪电匕首 · 末世 · 仁者破晓 · 冰霜冲击 · 不祥征兆</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=172" onclick="if(window.selectHeroById){selectHeroById('172');return false;}" title="蚩奼 (战士) 出装与铭文">蚩奼</a>
+              <div class="apple-footer-hero-brief" title="出装：急速战靴 · 影刃 · 无尽战刃 · 末世 · 仁者破晓 · 名刀·司命 ｜ 铭文：10祸源 10兽痕 10鹰眼">急速战靴 · 影刃 · 无尽战刃 · 末世 · 仁者破晓 · 名刀·司命</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=547" onclick="if(window.selectHeroById){selectHeroById('547');return false;}" title="卢雅那 (射手) 出装与铭文">卢雅那</a>
+              <div class="apple-footer-hero-brief" title="出装：急速战靴 · 影刃 · 无尽战刃 · 仁者破晓 · 末世 · 逐日之弓 ｜ 铭文：10祸源 5狩猎 5夺萃 10鹰眼">急速战靴 · 影刃 · 无尽战刃 · 仁者破晓 · 末世 · 逐日之弓</div>
+            </li>
+          </ul>
         </div>
-      </div>
-      <div class="seo-lane-block">
-        <h3 class="seo-lane-title"><span class="seo-lane-badge">打野</span> 打野核心英雄官方六神装与铭文速查 (32位)</h3>
-        <div class="seo-hero-grid">
-          <article class="seo-hero-card" id="seo-hero-107">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=107" onclick="if(window.selectHeroById){selectHeroById('107');return false;}" title="赵云六神装推荐与铭文推演">赵云</a>
-              <span class="seo-hero-title-tag">苍天翔龙</span>
-              <span class="seo-hero-role-tag">战士/刺客</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 抵抗之靴 · 怒龙剑盾 · 暗影战斧 · 冰痕之握 · 暴烈之甲</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-116">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=116" onclick="if(window.selectHeroById){selectHeroById('116');return false;}" title="阿轲六神装推荐与铭文推演">阿轲</a>
-              <span class="seo-hero-title-tag">信念之刃</span>
-              <span class="seo-hero-role-tag">刺客</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 冷静之靴 · 暗影战斧 · 无尽战刃 · 宗师之力 · 碎星锤</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10无双 10狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-167">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=167" onclick="if(window.selectHeroById){selectHeroById('167');return false;}" title="孙悟空六神装推荐与铭文推演">孙悟空</a>
-              <span class="seo-hero-title-tag">齐天大圣</span>
-              <span class="seo-hero-role-tag">刺客</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 急速战靴 · 无尽战刃 · 影刃 · 碎星锤 · 泣血之刃</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10无双 10繁荣 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-549">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=549" onclick="if(window.selectHeroById){selectHeroById('549');return false;}" title="心魔六耳六神装推荐与铭文推演">心魔六耳</a>
-              <span class="seo-hero-title-tag">孙悟空命格</span>
-              <span class="seo-hero-role-tag">刺客/战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 急速战靴 · 无尽战刃 · 影刃 · 暗影战斧 · 名刀·司命</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10无双 10夺萃 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-128">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=128" onclick="if(window.selectHeroById){selectHeroById('128');return false;}" title="曹操六神装推荐与铭文推演">曹操</a>
-              <span class="seo-hero-title-tag">鲜血枭雄</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 抵抗之靴 · 暗影战斧 · 不死鸟之眼 · 纯净苍穹 · 末世</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-129">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=129" onclick="if(window.selectHeroById){selectHeroById('129');return false;}" title="典韦六神装推荐与铭文推演">典韦</a>
-              <span class="seo-hero-title-tag">狂战士</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 影忍之足 · 暗影战斧 · 反伤刺甲 · 宗师之力 · 名刀·司命</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">8祸源 2异变 10隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-130">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=130" onclick="if(window.selectHeroById){selectHeroById('130');return false;}" title="宫本武藏六神装推荐与铭文推演">宫本武藏</a>
-              <span class="seo-hero-title-tag">剑圣</span>
-              <span class="seo-hero-role-tag">战士/刺客</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 冷静之靴 · 暗影战斧 · 血魔之怒 · 强者破军 · 泣血之刃</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-131">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=131" onclick="if(window.selectHeroById){selectHeroById('131');return false;}" title="李白六神装推荐与铭文推演">李白</a>
-              <span class="seo-hero-title-tag">青莲剑仙</span>
-              <span class="seo-hero-role-tag">刺客</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 急速战靴 · 暗影战斧 · 泣血之刃 · 宗师之力 · 强者破军</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">6异变 4红月 10狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-146">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=146" onclick="if(window.selectHeroById){selectHeroById('146');return false;}" title="露娜六神装推荐与铭文推演">露娜</a>
-              <span class="seo-hero-title-tag">月光之女</span>
-              <span class="seo-hero-role-tag">刺客/法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">符文大剑 · 抵抗之靴 · 时之预言 · 噬神之书 · 破茧之衣 · 博学者之怒</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10红月 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-150">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=150" onclick="if(window.selectHeroById){selectHeroById('150');return false;}" title="韩信六神装推荐与铭文推演">韩信</a>
-              <span class="seo-hero-title-tag">国士无双</span>
-              <span class="seo-hero-role-tag">刺客</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 抵抗之靴 · 暗影战斧 · 宗师之力 · 强者破军 · 泣血之刃</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">7祸源 3红月 10夺萃 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-153">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=153" onclick="if(window.selectHeroById){selectHeroById('153');return false;}" title="兰陵王六神装推荐与铭文推演">兰陵王</a>
-              <span class="seo-hero-title-tag">暗影刀锋</span>
-              <span class="seo-hero-role-tag">刺客</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 抵抗之靴 · 暗影战斧 · 强者破军 · 碎星锤 · 泣血之刃</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-162">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=162" onclick="if(window.selectHeroById){selectHeroById('162');return false;}" title="娜可露露六神装推荐与铭文推演">娜可露露</a>
-              <span class="seo-hero-title-tag">鹰之守护</span>
-              <span class="seo-hero-role-tag">刺客</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 冷静之靴 · 暗影战斧 · 强者破军 · 碎星锤 · 名刀·司命</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 8隐匿 2夺萃 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-163">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=163" onclick="if(window.selectHeroById){selectHeroById('163');return false;}" title="橘右京六神装推荐与铭文推演">橘右京</a>
-              <span class="seo-hero-title-tag">神梦一刀</span>
-              <span class="seo-hero-role-tag">刺客/战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 影忍之足 · 暗影战斧 · 强者破军 · 碎星锤 · 破魔刀</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 8隐匿 2夺萃 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-170">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=170" onclick="if(window.selectHeroById){selectHeroById('170');return false;}" title="刘备六神装推荐与铭文推演">刘备</a>
-              <span class="seo-hero-title-tag">仁德义枪</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 急速战靴 · 暗影战斧 · 宗师之力 · 强者破军 · 末世</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">5红月 3纷争 2异变 10狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-183">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=183" onclick="if(window.selectHeroById){selectHeroById('183');return false;}" title="雅典娜六神装推荐与铭文推演">雅典娜</a>
-              <span class="seo-hero-title-tag">圣域余晖</span>
-              <span class="seo-hero-role-tag">战士/刺客</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 抵抗之靴 · 暗影战斧 · 末世 · 冰痕之握 · 纯净苍穹</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10纷争 10狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-193">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=193" onclick="if(window.selectHeroById){selectHeroById('193');return false;}" title="铠六神装推荐与铭文推演">铠</a>
-              <span class="seo-hero-title-tag">破灭刃锋</span>
-              <span class="seo-hero-role-tag">战士/坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 抵抗之靴 · 暗影战斧 · 宗师之力 · 强者破军 · 无尽战刃</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10祸源 10狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-195">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=195" onclick="if(window.selectHeroById){selectHeroById('195');return false;}" title="百里玄策六神装推荐与铭文推演">百里玄策</a>
-              <span class="seo-hero-title-tag">嚣狂之镰</span>
-              <span class="seo-hero-role-tag">刺客</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 急速战靴 · 暗影战斧 · 宗师之力 · 泣血之刃 · 名刀·司命</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">7红月 3异变 8夺萃 2狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-198">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=198" onclick="if(window.selectHeroById){selectHeroById('198');return false;}" title="梦奇六神装推荐与铭文推演">梦奇</a>
-              <span class="seo-hero-title-tag">入梦之灵</span>
-              <span class="seo-hero-role-tag">坦克/法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 急速战靴 · 影刃 · 纯净苍穹 · 宗师之力 · 无尽战刃</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">8红月 2纷争 7狩猎 3夺萃 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-502">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=502" onclick="if(window.selectHeroById){selectHeroById('502');return false;}" title="裴擒虎六神装推荐与铭文推演">裴擒虎</a>
-              <span class="seo-hero-title-tag">六合虎拳</span>
-              <span class="seo-hero-role-tag">刺客</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 急速战靴 · 暗影战斧 · 宗师之力 · 强者破军 · 末世</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-137">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=137" onclick="if(window.selectHeroById){selectHeroById('137');return false;}" title="司马懿六神装推荐与铭文推演">司马懿</a>
-              <span class="seo-hero-title-tag">寂灭之心</span>
-              <span class="seo-hero-role-tag">刺客/法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">符文大剑 · 秘法之靴 · 噬神之书 · 巫术法杖 · 博学者之怒 · 虚无法杖</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">9凶兆 1梦魇 10狩猎 10心眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-529">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=529" onclick="if(window.selectHeroById){selectHeroById('529');return false;}" title="盘古六神装推荐与铭文推演">盘古</a>
-              <span class="seo-hero-title-tag">破晓之神</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 急速战靴 · 暗影战斧 · 纯净苍穹 · 逐风 · 强者破军</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">8红月 2宿命 10狩猎 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-506">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=506" onclick="if(window.selectHeroById){selectHeroById('506');return false;}" title="云中君六神装推荐与铭文推演">云中君</a>
-              <span class="seo-hero-title-tag">流云之翼</span>
-              <span class="seo-hero-role-tag">刺客</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 急速战靴 · 暗影战斧 · 泣血之刃 · 强者破军 · 影刃</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">9红月 1异变 5狩猎 5隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-522">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=522" onclick="if(window.selectHeroById){selectHeroById('522');return false;}" title="曜六神装推荐与铭文推演">曜</a>
-              <span class="seo-hero-title-tag">星辰之子</span>
-              <span class="seo-hero-role-tag">战士/刺客</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">巨人之握 · 抵抗之靴 · 红莲斗篷 · 怒龙剑盾 · 冰痕之握 · 血魔之怒</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-518">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=518" onclick="if(window.selectHeroById){selectHeroById('518');return false;}" title="马超六神装推荐与铭文推演">马超</a>
-              <span class="seo-hero-title-tag">冷晖之枪</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 冷静之靴 · 暗影战斧 · 纯净苍穹 · 强者破军 · 寒霜袭侵</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">9异变 1祸源 10狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-531">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=531" onclick="if(window.selectHeroById){selectHeroById('531');return false;}" title="镜六神装推荐与铭文推演">镜</a>
-              <span class="seo-hero-title-tag">破镜之刃</span>
-              <span class="seo-hero-role-tag">刺客</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 抵抗之靴 · 暗影战斧 · 宗师之力 · 强者破军 · 碎星锤</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-533">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=533" onclick="if(window.selectHeroById){selectHeroById('533');return false;}" title="阿古朵六神装推荐与铭文推演">阿古朵</a>
-              <span class="seo-hero-title-tag">山林之子</span>
-              <span class="seo-hero-role-tag">射手</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 抵抗之靴 · 暗影战斧 · 逐风 · 不祥征兆 · 泣血之刃</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10祸源 5狩猎 5兽痕 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-528">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=528" onclick="if(window.selectHeroById){selectHeroById('528');return false;}" title="澜六神装推荐与铭文推演">澜</a>
-              <span class="seo-hero-title-tag">鲨之猎刃</span>
-              <span class="seo-hero-role-tag">刺客/战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 冷静之靴 · 暗影战斧 · 纯净苍穹 · 暴烈之甲 · 强者破军</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">9异变 1红月 10隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-538">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=538" onclick="if(window.selectHeroById){selectHeroById('538');return false;}" title="云缨六神装推荐与铭文推演">云缨</a>
-              <span class="seo-hero-title-tag">燎原之心</span>
-              <span class="seo-hero-role-tag">战士/刺客</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 冷静之靴 · 暗影战斧 · 宗师之力 · 纯净苍穹 · 强者破军</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-542">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=542" onclick="if(window.selectHeroById){selectHeroById('542');return false;}" title="暃六神装推荐与铭文推演">暃</a>
-              <span class="seo-hero-title-tag">玉城之子</span>
-              <span class="seo-hero-role-tag">刺客</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 急速战靴 · 暗影战斧 · 宗师之力 · 泣血之刃 · 强者破军</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">9异变 1红月 10隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-517">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=517" onclick="if(window.selectHeroById){selectHeroById('517');return false;}" title="大司命六神装推荐与铭文推演">大司命</a>
-              <span class="seo-hero-title-tag">肃归之戈</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 急速战靴 · 影刃 · 末世 · 纯净苍穹 · 强者破军</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10祸源 10狩猎 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-558">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=558" onclick="if(window.selectHeroById){selectHeroById('558');return false;}" title="影六神装推荐与铭文推演">影</a>
-              <span class="seo-hero-title-tag">黯羽东君</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 急速战靴 · 暗影战斧 · 宗师之力 · 泣血之刃 · 强者破军</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-583">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=583" onclick="if(window.selectHeroById){selectHeroById('583');return false;}" title="元流之子(刺客)六神装推荐与铭文推演">元流之子(刺客)</a>
-              <span class="seo-hero-title-tag">守望之诺</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">贪婪之噬 · 抵抗之靴 · 暗影战斧 · 怒龙剑盾 · 强者破军 · 名刀·司命</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10隐匿 10鹰眼</span></div>
-            </div>
-          </article>
+        <div class="apple-footer-lane-col">
+          <div class="apple-footer-lane-title">打野 (32)</div>
+          <ul class="apple-footer-hero-list">
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=107" onclick="if(window.selectHeroById){selectHeroById('107');return false;}" title="赵云 (战士/刺客) 出装与铭文">赵云</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 抵抗之靴 · 怒龙剑盾 · 暗影战斧 · 冰痕之握 · 暴烈之甲 ｜ 铭文：10异变 10隐匿 10鹰眼">贪婪之噬 · 抵抗之靴 · 怒龙剑盾 · 暗影战斧 · 冰痕之握 · 暴烈之甲</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=116" onclick="if(window.selectHeroById){selectHeroById('116');return false;}" title="阿轲 (刺客) 出装与铭文">阿轲</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 冷静之靴 · 暗影战斧 · 无尽战刃 · 宗师之力 · 碎星锤 ｜ 铭文：10无双 10狩猎 10鹰眼">贪婪之噬 · 冷静之靴 · 暗影战斧 · 无尽战刃 · 宗师之力 · 碎星锤</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=167" onclick="if(window.selectHeroById){selectHeroById('167');return false;}" title="孙悟空 (刺客) 出装与铭文">孙悟空</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 急速战靴 · 无尽战刃 · 影刃 · 碎星锤 · 泣血之刃 ｜ 铭文：10无双 10繁荣 10鹰眼">贪婪之噬 · 急速战靴 · 无尽战刃 · 影刃 · 碎星锤 · 泣血之刃</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=549" onclick="if(window.selectHeroById){selectHeroById('549');return false;}" title="心魔六耳 (刺客/战士) 出装与铭文">心魔六耳</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 急速战靴 · 无尽战刃 · 影刃 · 暗影战斧 · 名刀·司命 ｜ 铭文：10无双 10夺萃 10鹰眼">贪婪之噬 · 急速战靴 · 无尽战刃 · 影刃 · 暗影战斧 · 名刀·司命</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=128" onclick="if(window.selectHeroById){selectHeroById('128');return false;}" title="曹操 (战士) 出装与铭文">曹操</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 抵抗之靴 · 暗影战斧 · 不死鸟之眼 · 纯净苍穹 · 末世 ｜ 铭文：10异变 10狩猎 10鹰眼">贪婪之噬 · 抵抗之靴 · 暗影战斧 · 不死鸟之眼 · 纯净苍穹 · 末世</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=129" onclick="if(window.selectHeroById){selectHeroById('129');return false;}" title="典韦 (战士) 出装与铭文">典韦</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 影忍之足 · 暗影战斧 · 反伤刺甲 · 宗师之力 · 名刀·司命 ｜ 铭文：8祸源 2异变 10隐匿 10鹰眼">贪婪之噬 · 影忍之足 · 暗影战斧 · 反伤刺甲 · 宗师之力 · 名刀·司命</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=130" onclick="if(window.selectHeroById){selectHeroById('130');return false;}" title="宫本武藏 (战士/刺客) 出装与铭文">宫本武藏</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 冷静之靴 · 暗影战斧 · 血魔之怒 · 强者破军 · 泣血之刃 ｜ 铭文：10异变 10隐匿 10鹰眼">贪婪之噬 · 冷静之靴 · 暗影战斧 · 血魔之怒 · 强者破军 · 泣血之刃</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=131" onclick="if(window.selectHeroById){selectHeroById('131');return false;}" title="李白 (刺客) 出装与铭文">李白</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 急速战靴 · 暗影战斧 · 泣血之刃 · 宗师之力 · 强者破军 ｜ 铭文：6异变 4红月 10狩猎 10鹰眼">贪婪之噬 · 急速战靴 · 暗影战斧 · 泣血之刃 · 宗师之力 · 强者破军</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=146" onclick="if(window.selectHeroById){selectHeroById('146');return false;}" title="露娜 (刺客/法师) 出装与铭文">露娜</a>
+              <div class="apple-footer-hero-brief" title="出装：符文大剑 · 抵抗之靴 · 时之预言 · 噬神之书 · 破茧之衣 · 博学者之怒 ｜ 铭文：10红月 10狩猎 10心眼">符文大剑 · 抵抗之靴 · 时之预言 · 噬神之书 · 破茧之衣 · 博学者之怒</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=150" onclick="if(window.selectHeroById){selectHeroById('150');return false;}" title="韩信 (刺客) 出装与铭文">韩信</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 抵抗之靴 · 暗影战斧 · 宗师之力 · 强者破军 · 泣血之刃 ｜ 铭文：7祸源 3红月 10夺萃 10鹰眼">贪婪之噬 · 抵抗之靴 · 暗影战斧 · 宗师之力 · 强者破军 · 泣血之刃</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=153" onclick="if(window.selectHeroById){selectHeroById('153');return false;}" title="兰陵王 (刺客) 出装与铭文">兰陵王</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 抵抗之靴 · 暗影战斧 · 强者破军 · 碎星锤 · 泣血之刃 ｜ 铭文：10异变 10隐匿 10鹰眼">贪婪之噬 · 抵抗之靴 · 暗影战斧 · 强者破军 · 碎星锤 · 泣血之刃</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=162" onclick="if(window.selectHeroById){selectHeroById('162');return false;}" title="娜可露露 (刺客) 出装与铭文">娜可露露</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 冷静之靴 · 暗影战斧 · 强者破军 · 碎星锤 · 名刀·司命 ｜ 铭文：10异变 8隐匿 2夺萃 10鹰眼">贪婪之噬 · 冷静之靴 · 暗影战斧 · 强者破军 · 碎星锤 · 名刀·司命</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=163" onclick="if(window.selectHeroById){selectHeroById('163');return false;}" title="橘右京 (刺客/战士) 出装与铭文">橘右京</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 影忍之足 · 暗影战斧 · 强者破军 · 碎星锤 · 破魔刀 ｜ 铭文：10异变 8隐匿 2夺萃 10鹰眼">贪婪之噬 · 影忍之足 · 暗影战斧 · 强者破军 · 碎星锤 · 破魔刀</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=170" onclick="if(window.selectHeroById){selectHeroById('170');return false;}" title="刘备 (战士) 出装与铭文">刘备</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 急速战靴 · 暗影战斧 · 宗师之力 · 强者破军 · 末世 ｜ 铭文：5红月 3纷争 2异变 10狩猎 10鹰眼">贪婪之噬 · 急速战靴 · 暗影战斧 · 宗师之力 · 强者破军 · 末世</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=183" onclick="if(window.selectHeroById){selectHeroById('183');return false;}" title="雅典娜 (战士/刺客) 出装与铭文">雅典娜</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 抵抗之靴 · 暗影战斧 · 末世 · 冰痕之握 · 纯净苍穹 ｜ 铭文：10纷争 10狩猎 10鹰眼">贪婪之噬 · 抵抗之靴 · 暗影战斧 · 末世 · 冰痕之握 · 纯净苍穹</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=193" onclick="if(window.selectHeroById){selectHeroById('193');return false;}" title="铠 (战士/坦克) 出装与铭文">铠</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 抵抗之靴 · 暗影战斧 · 宗师之力 · 强者破军 · 无尽战刃 ｜ 铭文：10祸源 10狩猎 10鹰眼">贪婪之噬 · 抵抗之靴 · 暗影战斧 · 宗师之力 · 强者破军 · 无尽战刃</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=195" onclick="if(window.selectHeroById){selectHeroById('195');return false;}" title="百里玄策 (刺客) 出装与铭文">百里玄策</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 急速战靴 · 暗影战斧 · 宗师之力 · 泣血之刃 · 名刀·司命 ｜ 铭文：7红月 3异变 8夺萃 2狩猎 10鹰眼">贪婪之噬 · 急速战靴 · 暗影战斧 · 宗师之力 · 泣血之刃 · 名刀·司命</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=198" onclick="if(window.selectHeroById){selectHeroById('198');return false;}" title="梦奇 (坦克/法师) 出装与铭文">梦奇</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 急速战靴 · 影刃 · 纯净苍穹 · 宗师之力 · 无尽战刃 ｜ 铭文：8红月 2纷争 7狩猎 3夺萃 10鹰眼">贪婪之噬 · 急速战靴 · 影刃 · 纯净苍穹 · 宗师之力 · 无尽战刃</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=502" onclick="if(window.selectHeroById){selectHeroById('502');return false;}" title="裴擒虎 (刺客) 出装与铭文">裴擒虎</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 急速战靴 · 暗影战斧 · 宗师之力 · 强者破军 · 末世 ｜ 铭文：10异变 10狩猎 10鹰眼">贪婪之噬 · 急速战靴 · 暗影战斧 · 宗师之力 · 强者破军 · 末世</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=137" onclick="if(window.selectHeroById){selectHeroById('137');return false;}" title="司马懿 (刺客/法师) 出装与铭文">司马懿</a>
+              <div class="apple-footer-hero-brief" title="出装：符文大剑 · 秘法之靴 · 噬神之书 · 巫术法杖 · 博学者之怒 · 虚无法杖 ｜ 铭文：9凶兆 1梦魇 10狩猎 10心眼">符文大剑 · 秘法之靴 · 噬神之书 · 巫术法杖 · 博学者之怒 · 虚无法杖</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=529" onclick="if(window.selectHeroById){selectHeroById('529');return false;}" title="盘古 (战士) 出装与铭文">盘古</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 急速战靴 · 暗影战斧 · 纯净苍穹 · 逐风 · 强者破军 ｜ 铭文：8红月 2宿命 10狩猎 10虚空">贪婪之噬 · 急速战靴 · 暗影战斧 · 纯净苍穹 · 逐风 · 强者破军</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=506" onclick="if(window.selectHeroById){selectHeroById('506');return false;}" title="云中君 (刺客) 出装与铭文">云中君</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 急速战靴 · 暗影战斧 · 泣血之刃 · 强者破军 · 影刃 ｜ 铭文：9红月 1异变 5狩猎 5隐匿 10鹰眼">贪婪之噬 · 急速战靴 · 暗影战斧 · 泣血之刃 · 强者破军 · 影刃</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=522" onclick="if(window.selectHeroById){selectHeroById('522');return false;}" title="曜 (战士/刺客) 出装与铭文">曜</a>
+              <div class="apple-footer-hero-brief" title="出装：巨人之握 · 抵抗之靴 · 红莲斗篷 · 怒龙剑盾 · 冰痕之握 · 血魔之怒 ｜ 铭文：10异变 10隐匿 10鹰眼">巨人之握 · 抵抗之靴 · 红莲斗篷 · 怒龙剑盾 · 冰痕之握 · 血魔之怒</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=518" onclick="if(window.selectHeroById){selectHeroById('518');return false;}" title="马超 (战士) 出装与铭文">马超</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 冷静之靴 · 暗影战斧 · 纯净苍穹 · 强者破军 · 寒霜袭侵 ｜ 铭文：9异变 1祸源 10狩猎 10鹰眼">贪婪之噬 · 冷静之靴 · 暗影战斧 · 纯净苍穹 · 强者破军 · 寒霜袭侵</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=531" onclick="if(window.selectHeroById){selectHeroById('531');return false;}" title="镜 (刺客) 出装与铭文">镜</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 抵抗之靴 · 暗影战斧 · 宗师之力 · 强者破军 · 碎星锤 ｜ 铭文：10异变 10隐匿 10鹰眼">贪婪之噬 · 抵抗之靴 · 暗影战斧 · 宗师之力 · 强者破军 · 碎星锤</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=533" onclick="if(window.selectHeroById){selectHeroById('533');return false;}" title="阿古朵 (射手) 出装与铭文">阿古朵</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 抵抗之靴 · 暗影战斧 · 逐风 · 不祥征兆 · 泣血之刃 ｜ 铭文：10祸源 5狩猎 5兽痕 10鹰眼">贪婪之噬 · 抵抗之靴 · 暗影战斧 · 逐风 · 不祥征兆 · 泣血之刃</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=528" onclick="if(window.selectHeroById){selectHeroById('528');return false;}" title="澜 (刺客/战士) 出装与铭文">澜</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 冷静之靴 · 暗影战斧 · 纯净苍穹 · 暴烈之甲 · 强者破军 ｜ 铭文：9异变 1红月 10隐匿 10鹰眼">贪婪之噬 · 冷静之靴 · 暗影战斧 · 纯净苍穹 · 暴烈之甲 · 强者破军</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=538" onclick="if(window.selectHeroById){selectHeroById('538');return false;}" title="云缨 (战士/刺客) 出装与铭文">云缨</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 冷静之靴 · 暗影战斧 · 宗师之力 · 纯净苍穹 · 强者破军 ｜ 铭文：10异变 10隐匿 10鹰眼">贪婪之噬 · 冷静之靴 · 暗影战斧 · 宗师之力 · 纯净苍穹 · 强者破军</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=542" onclick="if(window.selectHeroById){selectHeroById('542');return false;}" title="暃 (刺客) 出装与铭文">暃</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 急速战靴 · 暗影战斧 · 宗师之力 · 泣血之刃 · 强者破军 ｜ 铭文：9异变 1红月 10隐匿 10鹰眼">贪婪之噬 · 急速战靴 · 暗影战斧 · 宗师之力 · 泣血之刃 · 强者破军</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=517" onclick="if(window.selectHeroById){selectHeroById('517');return false;}" title="大司命 (战士) 出装与铭文">大司命</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 急速战靴 · 影刃 · 末世 · 纯净苍穹 · 强者破军 ｜ 铭文：10祸源 10狩猎 10鹰眼">贪婪之噬 · 急速战靴 · 影刃 · 末世 · 纯净苍穹 · 强者破军</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=558" onclick="if(window.selectHeroById){selectHeroById('558');return false;}" title="影 (战士) 出装与铭文">影</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 急速战靴 · 暗影战斧 · 宗师之力 · 泣血之刃 · 强者破军 ｜ 铭文：10异变 10隐匿 10鹰眼">贪婪之噬 · 急速战靴 · 暗影战斧 · 宗师之力 · 泣血之刃 · 强者破军</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=583" onclick="if(window.selectHeroById){selectHeroById('583');return false;}" title="元流之子(刺客) (战士) 出装与铭文">元流之子(刺客)</a>
+              <div class="apple-footer-hero-brief" title="出装：贪婪之噬 · 抵抗之靴 · 暗影战斧 · 怒龙剑盾 · 强者破军 · 名刀·司命 ｜ 铭文：10异变 10隐匿 10鹰眼">贪婪之噬 · 抵抗之靴 · 暗影战斧 · 怒龙剑盾 · 强者破军 · 名刀·司命</div>
+            </li>
+          </ul>
         </div>
-      </div>
-      <div class="seo-lane-block">
-        <h3 class="seo-lane-title"><span class="seo-lane-badge">游走</span> 游走核心英雄官方六神装与铭文速查 (24位)</h3>
-        <div class="seo-hero-grid">
-          <article class="seo-hero-card" id="seo-hero-113">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=113" onclick="if(window.selectHeroById){selectHeroById('113');return false;}" title="庄周六神装推荐与铭文推演">庄周</a>
-              <span class="seo-hero-title-tag">逍遥梦幻</span>
-              <span class="seo-hero-role-tag">坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">近卫·救赎 · 影忍之足 · 旭日初光 · 极寒风暴 · 魔女斗篷 · 霸者重装</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-114">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=114" onclick="if(window.selectHeroById){selectHeroById('114');return false;}" title="刘禅六神装推荐与铭文推演">刘禅</a>
-              <span class="seo-hero-title-tag">暴走机关</span>
-              <span class="seo-hero-role-tag">坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">极影·形昭 · 影忍之足 · 旭日初光 · 魔女斗篷 · 不祥征兆 · 霸者重装</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10隐匿 10回声</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-118">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=118" onclick="if(window.selectHeroById){selectHeroById('118');return false;}" title="孙膑六神装推荐与铭文推演">孙膑</a>
-              <span class="seo-hero-title-tag">逆流之时</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">极影·星泉 · 抵抗之靴 · 凝冰之息 · 魔女斗篷 · 不祥征兆 · 梦魇之牙</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-140">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=140" onclick="if(window.selectHeroById){selectHeroById('140');return false;}" title="关羽六神装推荐与铭文推演">关羽</a>
-              <span class="seo-hero-title-tag">一骑当千</span>
-              <span class="seo-hero-role-tag">战士/坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">近卫·形昭 · 抵抗之靴 · 冰霜冲击 · 永夜守护 · 红莲斗篷 · 怒龙剑盾</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10异变 10隐匿 10鹰眼</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-149">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=149" onclick="if(window.selectHeroById){selectHeroById('149');return false;}" title="刘邦六神装推荐与铭文推演">刘邦</a>
-              <span class="seo-hero-title-tag">双面君主</span>
-              <span class="seo-hero-role-tag">坦克/法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">极影·救赎 · 冷静之靴 · 不祥征兆 · 魔女斗篷 · 红莲斗篷 · 霸者重装</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-156">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=156" onclick="if(window.selectHeroById){selectHeroById('156');return false;}" title="张良六神装推荐与铭文推演">张良</a>
-              <span class="seo-hero-title-tag">言灵之书</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">极影·形昭 · 疾步之靴 · 旭日初光 · 永夜守护 · 冰霜冲击 · 霸者重装</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10狩猎 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-168">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=168" onclick="if(window.selectHeroById){selectHeroById('168');return false;}" title="牛魔六神装推荐与铭文推演">牛魔</a>
-              <span class="seo-hero-title-tag">精英酋长</span>
-              <span class="seo-hero-role-tag">坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">近卫·形昭 · 冷静之靴 · 旭日初光 · 魔女斗篷 · 极寒风暴 · 霸者重装</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-171">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=171" onclick="if(window.selectHeroById){selectHeroById('171');return false;}" title="张飞六神装推荐与铭文推演">张飞</a>
-              <span class="seo-hero-title-tag">禁血狂兽</span>
-              <span class="seo-hero-role-tag">坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">近卫·救赎 · 抵抗之靴 · 旭日初光 · 极寒风暴 · 永夜守护 · 霸者重装</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-175">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=175" onclick="if(window.selectHeroById){selectHeroById('175');return false;}" title="钟馗六神装推荐与铭文推演">钟馗</a>
-              <span class="seo-hero-title-tag">虚灵城判</span>
-              <span class="seo-hero-role-tag">坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">极影·形昭 · 疾步之靴 · 冰霜冲击 · 旭日初光 · 永夜守护 · 霸者重装</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-184">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=184" onclick="if(window.selectHeroById){selectHeroById('184');return false;}" title="蔡文姬六神装推荐与铭文推演">蔡文姬</a>
-              <span class="seo-hero-title-tag">天籁弦音</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">极影·救赎 · 抵抗之靴 · 圣杯 · 贤者之书 · 时之预言 · 炽热支配</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10圣人 10调和 10献祭</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-186">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=186" onclick="if(window.selectHeroById){selectHeroById('186');return false;}" title="太乙真人六神装推荐与铭文推演">太乙真人</a>
-              <span class="seo-hero-title-tag">炼金大师</span>
-              <span class="seo-hero-role-tag">坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">近卫·形昭 · 秘法之靴 · 旭日初光 · 破茧之衣 · 红莲斗篷 · 炽热支配</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-191">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=191" onclick="if(window.selectHeroById){selectHeroById('191');return false;}" title="大乔六神装推荐与铭文推演">大乔</a>
-              <span class="seo-hero-title-tag">沧海之曜</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">极影·形昭 · 抵抗之靴 · 凝冰之息 · 破茧之衣 · 旭日初光 · 魔女斗篷</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-187">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=187" onclick="if(window.selectHeroById){selectHeroById('187');return false;}" title="东皇太一六神装推荐与铭文推演">东皇太一</a>
-              <span class="seo-hero-title-tag">噬灭日蚀</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">极影·形昭 · 秘法之靴 · 破茧之衣 · 时之预言 · 不祥征兆 · 永夜守护</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-189">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=189" onclick="if(window.selectHeroById){selectHeroById('189');return false;}" title="鬼谷子六神装推荐与铭文推演">鬼谷子</a>
-              <span class="seo-hero-title-tag">万物有灵</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">极影·形昭 · 疾步之靴 · 冰霜冲击 · 永夜守护 · 极寒风暴 · 霸者重装</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10狩猎 10怜悯</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-501">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=501" onclick="if(window.selectHeroById){selectHeroById('501');return false;}" title="明世隐六神装推荐与铭文推演">明世隐</a>
-              <span class="seo-hero-title-tag">灵魂劫卜</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">近卫·救赎 · 抵抗之靴 · 时之预言 · 博学者之怒 · 贤者之书 · 炽热支配</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10圣人 10调和 10均衡</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-509">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=509" onclick="if(window.selectHeroById){selectHeroById('509');return false;}" title="盾山六神装推荐与铭文推演">盾山</a>
-              <span class="seo-hero-title-tag">无尽之盾</span>
-              <span class="seo-hero-role-tag">坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">极影·救赎 · 抵抗之靴 · 霸者重装 · 不祥征兆 · 魔女斗篷 · 旭日初光</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-505">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=505" onclick="if(window.selectHeroById){selectHeroById('505');return false;}" title="瑶六神装推荐与铭文推演">瑶</a>
-              <span class="seo-hero-title-tag">鹿灵守心</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">极影·形昭 · 冷静之靴 · 凝冰之息 · 旭日初光 · 霸者重装 · 永夜守护</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-525">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=525" onclick="if(window.selectHeroById){selectHeroById('525');return false;}" title="鲁班大师六神装推荐与铭文推演">鲁班大师</a>
-              <span class="seo-hero-title-tag">神匠</span>
-              <span class="seo-hero-role-tag">坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">极影·形昭 · 抵抗之靴 · 旭日初光 · 魔女斗篷 · 极寒风暴 · 霸者重装</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 5狩猎 5调和 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-534">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=534" onclick="if(window.selectHeroById){selectHeroById('534');return false;}" title="桑启六神装推荐与铭文推演">桑启</a>
-              <span class="seo-hero-title-tag">萤火之旅</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">近卫·形昭 · 抵抗之靴 · 不死鸟之眼 · 旭日初光 · 永夜守护 · 霸者重装</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">5宿命 5梦魇 5调和 5长生 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-159">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=159" onclick="if(window.selectHeroById){selectHeroById('159');return false;}" title="朵莉亚六神装推荐与铭文推演">朵莉亚</a>
-              <span class="seo-hero-title-tag">人鱼之歌</span>
-              <span class="seo-hero-role-tag">法师</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">极影·形昭 · 秘法之靴 · 旭日初光 · 凝冰之息 · 永夜守护 · 不祥征兆</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-577">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=577" onclick="if(window.selectHeroById){selectHeroById('577');return false;}" title="少司缘六神装推荐与铭文推演">少司缘</a>
-              <span class="seo-hero-title-tag">聆愿之祝</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">极影·救赎 · 秘法之靴 · 梦魇之牙 · 破茧之衣 · 博学者之怒 · 炽热支配</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-550">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=550" onclick="if(window.selectHeroById){selectHeroById('550');return false;}" title="空空儿六神装推荐与铭文推演">空空儿</a>
-              <span class="seo-hero-title-tag">笑面诡手</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">近卫·星泉 · 抵抗之靴 · 冰痕之握 · 永夜守护 · 寒霜袭侵 · 霸者重装</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-585">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=585" onclick="if(window.selectHeroById){selectHeroById('585');return false;}" title="元流之子(辅助)六神装推荐与铭文推演">元流之子(辅助)</a>
-              <span class="seo-hero-title-tag">守望之诺</span>
-              <span class="seo-hero-role-tag">战士</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">极影·形昭 · 秘法之靴 · 凝冰之息 · 梦魇之牙 · 破茧之衣 · 时之预言</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10虚空</span></div>
-            </div>
-          </article>
-          <article class="seo-hero-card" id="seo-hero-188">
-            <div class="seo-card-head">
-              <a class="seo-hero-link" href="?hero=188" onclick="if(window.selectHeroById){selectHeroById('188');return false;}" title="大禹六神装推荐与铭文推演">大禹</a>
-              <span class="seo-hero-title-tag">鼎镇山河</span>
-              <span class="seo-hero-role-tag">坦克</span>
-            </div>
-            <div class="seo-card-body">
-              <div class="seo-info-line"><strong>推荐出装：</strong><span class="seo-items-str">近卫·救赎 · 抵抗之靴 · 旭日初光 · 魔女斗篷 · 不祥征兆 · 霸者重装</span></div>
-              <div class="seo-info-line"><strong>推荐铭文：</strong><span class="seo-arcana-str">10宿命 10调和 10虚空</span></div>
-            </div>
-          </article>
+        <div class="apple-footer-lane-col">
+          <div class="apple-footer-lane-title">游走 (24)</div>
+          <ul class="apple-footer-hero-list">
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=113" onclick="if(window.selectHeroById){selectHeroById('113');return false;}" title="庄周 (坦克) 出装与铭文">庄周</a>
+              <div class="apple-footer-hero-brief" title="出装：近卫·救赎 · 影忍之足 · 旭日初光 · 极寒风暴 · 魔女斗篷 · 霸者重装 ｜ 铭文：10宿命 10调和 10虚空">近卫·救赎 · 影忍之足 · 旭日初光 · 极寒风暴 · 魔女斗篷 · 霸者重装</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=114" onclick="if(window.selectHeroById){selectHeroById('114');return false;}" title="刘禅 (坦克) 出装与铭文">刘禅</a>
+              <div class="apple-footer-hero-brief" title="出装：极影·形昭 · 影忍之足 · 旭日初光 · 魔女斗篷 · 不祥征兆 · 霸者重装 ｜ 铭文：10宿命 10隐匿 10回声">极影·形昭 · 影忍之足 · 旭日初光 · 魔女斗篷 · 不祥征兆 · 霸者重装</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=118" onclick="if(window.selectHeroById){selectHeroById('118');return false;}" title="孙膑 (法师) 出装与铭文">孙膑</a>
+              <div class="apple-footer-hero-brief" title="出装：极影·星泉 · 抵抗之靴 · 凝冰之息 · 魔女斗篷 · 不祥征兆 · 梦魇之牙 ｜ 铭文：10宿命 10调和 10虚空">极影·星泉 · 抵抗之靴 · 凝冰之息 · 魔女斗篷 · 不祥征兆 · 梦魇之牙</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=140" onclick="if(window.selectHeroById){selectHeroById('140');return false;}" title="关羽 (战士/坦克) 出装与铭文">关羽</a>
+              <div class="apple-footer-hero-brief" title="出装：近卫·形昭 · 抵抗之靴 · 冰霜冲击 · 永夜守护 · 红莲斗篷 · 怒龙剑盾 ｜ 铭文：10异变 10隐匿 10鹰眼">近卫·形昭 · 抵抗之靴 · 冰霜冲击 · 永夜守护 · 红莲斗篷 · 怒龙剑盾</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=149" onclick="if(window.selectHeroById){selectHeroById('149');return false;}" title="刘邦 (坦克/法师) 出装与铭文">刘邦</a>
+              <div class="apple-footer-hero-brief" title="出装：极影·救赎 · 冷静之靴 · 不祥征兆 · 魔女斗篷 · 红莲斗篷 · 霸者重装 ｜ 铭文：10宿命 10调和 10虚空">极影·救赎 · 冷静之靴 · 不祥征兆 · 魔女斗篷 · 红莲斗篷 · 霸者重装</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=156" onclick="if(window.selectHeroById){selectHeroById('156');return false;}" title="张良 (法师) 出装与铭文">张良</a>
+              <div class="apple-footer-hero-brief" title="出装：极影·形昭 · 疾步之靴 · 旭日初光 · 永夜守护 · 冰霜冲击 · 霸者重装 ｜ 铭文：10宿命 10狩猎 10虚空">极影·形昭 · 疾步之靴 · 旭日初光 · 永夜守护 · 冰霜冲击 · 霸者重装</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=168" onclick="if(window.selectHeroById){selectHeroById('168');return false;}" title="牛魔 (坦克) 出装与铭文">牛魔</a>
+              <div class="apple-footer-hero-brief" title="出装：近卫·形昭 · 冷静之靴 · 旭日初光 · 魔女斗篷 · 极寒风暴 · 霸者重装 ｜ 铭文：10宿命 10调和 10虚空">近卫·形昭 · 冷静之靴 · 旭日初光 · 魔女斗篷 · 极寒风暴 · 霸者重装</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=171" onclick="if(window.selectHeroById){selectHeroById('171');return false;}" title="张飞 (坦克) 出装与铭文">张飞</a>
+              <div class="apple-footer-hero-brief" title="出装：近卫·救赎 · 抵抗之靴 · 旭日初光 · 极寒风暴 · 永夜守护 · 霸者重装 ｜ 铭文：10宿命 10调和 10虚空">近卫·救赎 · 抵抗之靴 · 旭日初光 · 极寒风暴 · 永夜守护 · 霸者重装</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=175" onclick="if(window.selectHeroById){selectHeroById('175');return false;}" title="钟馗 (坦克) 出装与铭文">钟馗</a>
+              <div class="apple-footer-hero-brief" title="出装：极影·形昭 · 疾步之靴 · 冰霜冲击 · 旭日初光 · 永夜守护 · 霸者重装 ｜ 铭文：10宿命 10调和 10虚空">极影·形昭 · 疾步之靴 · 冰霜冲击 · 旭日初光 · 永夜守护 · 霸者重装</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=184" onclick="if(window.selectHeroById){selectHeroById('184');return false;}" title="蔡文姬 (法师) 出装与铭文">蔡文姬</a>
+              <div class="apple-footer-hero-brief" title="出装：极影·救赎 · 抵抗之靴 · 圣杯 · 贤者之书 · 时之预言 · 炽热支配 ｜ 铭文：10圣人 10调和 10献祭">极影·救赎 · 抵抗之靴 · 圣杯 · 贤者之书 · 时之预言 · 炽热支配</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=186" onclick="if(window.selectHeroById){selectHeroById('186');return false;}" title="太乙真人 (坦克) 出装与铭文">太乙真人</a>
+              <div class="apple-footer-hero-brief" title="出装：近卫·形昭 · 秘法之靴 · 旭日初光 · 破茧之衣 · 红莲斗篷 · 炽热支配 ｜ 铭文：10宿命 10调和 10虚空">近卫·形昭 · 秘法之靴 · 旭日初光 · 破茧之衣 · 红莲斗篷 · 炽热支配</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=191" onclick="if(window.selectHeroById){selectHeroById('191');return false;}" title="大乔 (法师) 出装与铭文">大乔</a>
+              <div class="apple-footer-hero-brief" title="出装：极影·形昭 · 抵抗之靴 · 凝冰之息 · 破茧之衣 · 旭日初光 · 魔女斗篷 ｜ 铭文：10宿命 10调和 10虚空">极影·形昭 · 抵抗之靴 · 凝冰之息 · 破茧之衣 · 旭日初光 · 魔女斗篷</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=187" onclick="if(window.selectHeroById){selectHeroById('187');return false;}" title="东皇太一 (法师) 出装与铭文">东皇太一</a>
+              <div class="apple-footer-hero-brief" title="出装：极影·形昭 · 秘法之靴 · 破茧之衣 · 时之预言 · 不祥征兆 · 永夜守护 ｜ 铭文：10宿命 10调和 10虚空">极影·形昭 · 秘法之靴 · 破茧之衣 · 时之预言 · 不祥征兆 · 永夜守护</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=189" onclick="if(window.selectHeroById){selectHeroById('189');return false;}" title="鬼谷子 (法师) 出装与铭文">鬼谷子</a>
+              <div class="apple-footer-hero-brief" title="出装：极影·形昭 · 疾步之靴 · 冰霜冲击 · 永夜守护 · 极寒风暴 · 霸者重装 ｜ 铭文：10宿命 10狩猎 10怜悯">极影·形昭 · 疾步之靴 · 冰霜冲击 · 永夜守护 · 极寒风暴 · 霸者重装</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=501" onclick="if(window.selectHeroById){selectHeroById('501');return false;}" title="明世隐 (战士) 出装与铭文">明世隐</a>
+              <div class="apple-footer-hero-brief" title="出装：近卫·救赎 · 抵抗之靴 · 时之预言 · 博学者之怒 · 贤者之书 · 炽热支配 ｜ 铭文：10圣人 10调和 10均衡">近卫·救赎 · 抵抗之靴 · 时之预言 · 博学者之怒 · 贤者之书 · 炽热支配</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=509" onclick="if(window.selectHeroById){selectHeroById('509');return false;}" title="盾山 (坦克) 出装与铭文">盾山</a>
+              <div class="apple-footer-hero-brief" title="出装：极影·救赎 · 抵抗之靴 · 霸者重装 · 不祥征兆 · 魔女斗篷 · 旭日初光 ｜ 铭文：10宿命 10调和 10虚空">极影·救赎 · 抵抗之靴 · 霸者重装 · 不祥征兆 · 魔女斗篷 · 旭日初光</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=505" onclick="if(window.selectHeroById){selectHeroById('505');return false;}" title="瑶 (法师) 出装与铭文">瑶</a>
+              <div class="apple-footer-hero-brief" title="出装：极影·形昭 · 冷静之靴 · 凝冰之息 · 旭日初光 · 霸者重装 · 永夜守护 ｜ 铭文：10宿命 10调和 10虚空">极影·形昭 · 冷静之靴 · 凝冰之息 · 旭日初光 · 霸者重装 · 永夜守护</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=525" onclick="if(window.selectHeroById){selectHeroById('525');return false;}" title="鲁班大师 (坦克) 出装与铭文">鲁班大师</a>
+              <div class="apple-footer-hero-brief" title="出装：极影·形昭 · 抵抗之靴 · 旭日初光 · 魔女斗篷 · 极寒风暴 · 霸者重装 ｜ 铭文：10宿命 5狩猎 5调和 10虚空">极影·形昭 · 抵抗之靴 · 旭日初光 · 魔女斗篷 · 极寒风暴 · 霸者重装</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=534" onclick="if(window.selectHeroById){selectHeroById('534');return false;}" title="桑启 (法师) 出装与铭文">桑启</a>
+              <div class="apple-footer-hero-brief" title="出装：近卫·形昭 · 抵抗之靴 · 不死鸟之眼 · 旭日初光 · 永夜守护 · 霸者重装 ｜ 铭文：5宿命 5梦魇 5调和 5长生 10虚空">近卫·形昭 · 抵抗之靴 · 不死鸟之眼 · 旭日初光 · 永夜守护 · 霸者重装</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=159" onclick="if(window.selectHeroById){selectHeroById('159');return false;}" title="朵莉亚 (法师) 出装与铭文">朵莉亚</a>
+              <div class="apple-footer-hero-brief" title="出装：极影·形昭 · 秘法之靴 · 旭日初光 · 凝冰之息 · 永夜守护 · 不祥征兆 ｜ 铭文：10宿命 10调和 10虚空">极影·形昭 · 秘法之靴 · 旭日初光 · 凝冰之息 · 永夜守护 · 不祥征兆</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=577" onclick="if(window.selectHeroById){selectHeroById('577');return false;}" title="少司缘 (战士) 出装与铭文">少司缘</a>
+              <div class="apple-footer-hero-brief" title="出装：极影·救赎 · 秘法之靴 · 梦魇之牙 · 破茧之衣 · 博学者之怒 · 炽热支配 ｜ 铭文：10宿命 10调和 10虚空">极影·救赎 · 秘法之靴 · 梦魇之牙 · 破茧之衣 · 博学者之怒 · 炽热支配</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=550" onclick="if(window.selectHeroById){selectHeroById('550');return false;}" title="空空儿 (战士) 出装与铭文">空空儿</a>
+              <div class="apple-footer-hero-brief" title="出装：近卫·星泉 · 抵抗之靴 · 冰痕之握 · 永夜守护 · 寒霜袭侵 · 霸者重装 ｜ 铭文：10宿命 10调和 10虚空">近卫·星泉 · 抵抗之靴 · 冰痕之握 · 永夜守护 · 寒霜袭侵 · 霸者重装</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=585" onclick="if(window.selectHeroById){selectHeroById('585');return false;}" title="元流之子(辅助) (战士) 出装与铭文">元流之子(辅助)</a>
+              <div class="apple-footer-hero-brief" title="出装：极影·形昭 · 秘法之靴 · 凝冰之息 · 梦魇之牙 · 破茧之衣 · 时之预言 ｜ 铭文：10宿命 10调和 10虚空">极影·形昭 · 秘法之靴 · 凝冰之息 · 梦魇之牙 · 破茧之衣 · 时之预言</div>
+            </li>
+            <li class="apple-footer-hero-item">
+              <a class="apple-footer-hero-link" href="?hero=188" onclick="if(window.selectHeroById){selectHeroById('188');return false;}" title="大禹 (坦克) 出装与铭文">大禹</a>
+              <div class="apple-footer-hero-brief" title="出装：近卫·救赎 · 抵抗之靴 · 旭日初光 · 魔女斗篷 · 不祥征兆 · 霸者重装 ｜ 铭文：10宿命 10调和 10虚空">近卫·救赎 · 抵抗之靴 · 旭日初光 · 魔女斗篷 · 不祥征兆 · 霸者重装</div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
+    <div class="apple-footer-legal">
+      <div class="apple-footer-copy">Copyright © 2026 王者出装箱 (wzry.aodilab.com). 保留所有权利。</div>
+      <div class="apple-footer-links">
+        <a href="/download">提货中心</a>
+        <span>·</span>
+        <a href="https://pvp.qq.com/" target="_blank" rel="noopener noreferrer">王者荣耀官网公开数据</a>
+      </div>
+    </div>
   </div>
-</section>
+</footer>
 
 <script>
 // === 静态内嵌数据 ===
@@ -6771,19 +5861,16 @@ window.selectHeroById = function(ename) {
 window.toggleSeoDirectory = function() {
   const content = document.getElementById('seoDirectoryContent');
   const btn = document.getElementById('seoToggleBtn');
-  const txt = document.getElementById('seoToggleText');
   if (!content || !btn) return;
-  const isCollapsed = content.classList.contains('collapsed');
-  if (isCollapsed) {
-    content.classList.remove('collapsed');
-    btn.classList.remove('collapsed');
-    btn.setAttribute('aria-expanded', 'true');
-    if (txt) txt.innerText = '收起大典';
-  } else {
-    content.classList.add('collapsed');
-    btn.classList.add('collapsed');
+  const isExpanded = content.classList.contains('active');
+  if (isExpanded) {
+    content.classList.remove('active');
+    btn.classList.remove('expanded');
     btn.setAttribute('aria-expanded', 'false');
-    if (txt) txt.innerText = '展开大典';
+  } else {
+    content.classList.add('active');
+    btn.classList.add('expanded');
+    btn.setAttribute('aria-expanded', 'true');
   }
 };
 
