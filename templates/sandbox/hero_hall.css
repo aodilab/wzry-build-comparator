@@ -1,0 +1,325 @@
+/* ==========================================================================
+   2. 多层级工作台与面板架构 (Apple Silver-White HIG)
+   层级 1: 选英雄大厅 + 分路决策 ➔ 层级 2: 方案与推演室
+   ========================================================================== */
+
+/* 视图容器流转切换 (严格对齐第二页 compare.html 居中定宽 1180px 与黄金呼吸空间) */
+.view-container {
+  display: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 1180px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.view-container.active {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 顶部 Stepper 导航 */
+.header-nav-stepper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--apple-subcard);
+  border: 1px solid var(--apple-border);
+  padding: 3px 6px;
+  border-radius: 980px;
+}
+
+.step-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: transparent;
+  padding: 6px 14px;
+  border-radius: 980px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.step-nav-btn:hover { color: var(--text-primary); }
+.step-nav-btn.active {
+  background: #ffffff;
+  color: var(--color-blue);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  font-weight: 600;
+}
+
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-blue-bg);
+  color: var(--color-blue);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.step-divider { color: var(--text-tertiary); font-size: 14px; user-select: none; }
+.step-hero-badge {
+  background: var(--color-blue);
+  color: #ffffff;
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 980px;
+  margin-left: 2px;
+}
+
+/* ==========================================================================
+   层级一：选英雄大厅 (Hero Selection Hall)
+   纯正 Apple Card 质感，与第二页 (compare.html) 完全对齐
+   ========================================================================== */
+.hero-hall-header-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 28px;
+  background: #ffffff;
+  border: 1px solid var(--apple-border);
+  border-radius: 22px;
+  box-shadow: var(--panel-shadow);
+  margin-bottom: 18px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hero-hall-header-card:hover {
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.hero-hall-title-wrap { display: flex; flex-direction: column; gap: 4px; }
+.hero-hall-main-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+.hero-hall-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+.hero-hall-search { width: 300px; padding: 0; }
+
+.hero-hall-segmented {
+  max-width: 640px;
+  margin: 0 auto 18px auto;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 4px;
+  border-radius: 980px;
+  display: flex;
+  gap: 4px;
+}
+.hero-hall-segmented .seg-item {
+  flex: 1;
+  text-align: center;
+  padding: 7px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: 980px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+.hero-hall-segmented .seg-item:hover {
+  color: var(--text-primary);
+}
+.hero-hall-segmented .seg-item.active {
+  background: #ffffff;
+  color: var(--text-primary);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* 层级 1 顶部已选英雄与分路快捷栏 */
+.hero-hall-lane-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: #ffffff;
+  border: 1px solid var(--apple-border);
+  border-radius: 20px;
+  box-shadow: var(--panel-shadow);
+  margin-bottom: 22px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hero-hall-lane-bar:hover {
+  border-color: rgba(0, 0, 0, 0.10);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.hall-lane-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hall-lane-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+
+.hall-lane-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hall-lane-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+}
+
+.hall-lane-guide {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-left: 6px;
+}
+
+.hall-lane-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hall-lane-pill-btn {
+  padding: 6px 20px;
+  border-radius: 980px;
+  border: 1px solid var(--color-blue-bg);
+  background: var(--color-blue-bg);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-blue);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.hall-lane-pill-btn:hover {
+  background: var(--color-blue);
+  color: #ffffff;
+  border-color: var(--color-blue);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+}
+
+.hall-lane-pill-btn.active {
+  background: var(--color-blue);
+  color: #ffffff;
+  border-color: var(--color-blue);
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+}
+
+/* 英雄画廊大网格 (舒适间距与大网格卡片呼吸感) */
+.hero-hall-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: 14px;
+  padding-bottom: 40px;
+}
+
+.hero-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px 8px 14px 8px;
+  border-radius: 20px;
+  border: 1px solid var(--apple-border);
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--card-shadow);
+  position: relative;
+  user-select: none;
+}
+
+.hero-card:hover {
+  border-color: rgba(0, 113, 227, 0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px -2px rgba(0, 113, 227, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.hero-card.selected {
+  background: #ffffff;
+  border: 2px solid var(--color-blue);
+  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.16), 0 2px 6px rgba(0, 113, 227, 0.1);
+  transform: translateY(-2px);
+}
+
+.hero-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-card:hover .hero-avatar { transform: scale(1.05); }
+.hero-card.selected .hero-avatar {
+  box-shadow: 0 0 0 2px var(--color-blue), 0 3px 10px rgba(0, 113, 227, 0.25);
+}
+
+.hero-card-name {
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 10px;
+  color: var(--text-primary);
+  text-align: center;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+}
+
+.hero-card-role-tag {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--apple-subcard);
+  border: 1px solid var(--apple-border);
+  padding: 2px 8px;
+  border-radius: 980px;
+  margin-top: 6px;
+  line-height: 1.3;
+  transition: all 0.2s ease;
+}
+
+.hero-card:hover .hero-card-role-tag {
+  color: var(--color-blue);
+  background: var(--color-blue-bg);
+  border-color: transparent;
+}
+
+.hero-card.selected .hero-card-role-tag {
+  background: var(--color-blue);
+  color: #ffffff;
+  border-color: var(--color-blue);
+  font-weight: 600;
+}
+
+/* ==========================================================================

@@ -1,0 +1,263 @@
+/* ==============================================================================
+   王者荣耀全英雄出装与铭文速查大典 (SEO Semantic Directory) 样式表
+   Apple 极简设计美学，支持响应式网格与暗色模式适配 (符合 AGENTS.md 规范)
+   ============================================================================== */
+
+.seo-directory-section {
+  max-width: 1360px;
+  margin: 32px auto 48px auto;
+  padding: 0 20px;
+  color: var(--apple-text-primary, #1d1d1f);
+}
+
+.seo-directory-container {
+  background: var(--apple-bg-card, #ffffff);
+  border: 1px solid var(--apple-border, rgba(0, 0, 0, 0.08));
+  border-radius: 18px;
+  padding: 24px 28px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+.seo-directory-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--apple-border, rgba(0, 0, 0, 0.08));
+  margin-bottom: 24px;
+}
+
+.seo-directory-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--apple-text-primary, #1d1d1f);
+}
+
+.seo-directory-sub {
+  margin: 6px 0 0 0;
+  font-size: 13px;
+  color: var(--apple-text-secondary, #86868b);
+  line-height: 1.5;
+}
+
+.seo-directory-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: var(--apple-bg-secondary, #f5f5f7);
+  color: var(--apple-text-primary, #1d1d1f);
+  border: 1px solid var(--apple-border, rgba(0, 0, 0, 0.1));
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.seo-directory-toggle-btn:hover {
+  background: rgba(0, 113, 227, 0.08);
+  color: #0071e3;
+  border-color: rgba(0, 113, 227, 0.2);
+}
+
+.seo-directory-toggle-btn svg {
+  transition: transform 0.25s ease;
+}
+
+.seo-directory-toggle-btn.collapsed svg {
+  transform: rotate(180deg);
+}
+
+.seo-directory-content {
+  display: block;
+}
+
+.seo-directory-content.collapsed {
+  display: none;
+}
+
+/* 无脚本环境醒目提示 (Noscript) */
+.seo-noscript-banner {
+  background: #fff9e6;
+  border: 1px solid #ffe58f;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #d46b08;
+  line-height: 1.6;
+}
+
+/* 分路组块 */
+.seo-lane-block {
+  margin-bottom: 28px;
+}
+
+.seo-lane-block:last-child {
+  margin-bottom: 0;
+}
+
+.seo-lane-title {
+  margin: 0 0 14px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--apple-text-primary, #1d1d1f);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.seo-lane-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: rgba(0, 113, 227, 0.09);
+  color: #0071e3;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* 英雄卡片栅格 */
+.seo-hero-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.seo-hero-card {
+  background: var(--apple-bg-secondary, #fbfbfd);
+  border: 1px solid var(--apple-border, rgba(0, 0, 0, 0.06));
+  border-radius: 12px;
+  padding: 12px 14px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.seo-hero-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(0, 113, 227, 0.25);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+}
+
+.seo-card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.seo-hero-link {
+  color: #0071e3;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.seo-hero-link:hover {
+  color: #0077ed;
+  text-decoration: underline;
+}
+
+.seo-hero-title-tag {
+  font-size: 11px;
+  color: var(--apple-text-secondary, #86868b);
+}
+
+.seo-hero-role-tag {
+  margin-left: auto;
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--apple-text-secondary, #86868b);
+}
+
+.seo-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--apple-text-secondary, #515154);
+}
+
+.seo-info-line strong {
+  color: var(--apple-text-primary, #1d1d1f);
+  font-weight: 600;
+}
+
+.seo-items-str {
+  color: #1d1d1f;
+  font-weight: 500;
+}
+
+.seo-arcana-str {
+  color: var(--apple-text-secondary, #6e6e73);
+}
+
+/* 暗色主题适配 */
+[data-theme="dark"] .seo-directory-container {
+  background: #1c1c1e;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .seo-directory-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .seo-directory-toggle-btn {
+  background: #2c2c2e;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f5f5f7;
+}
+
+[data-theme="dark"] .seo-hero-card {
+  background: #242426;
+  border-color: rgba(255, 255, 255, 0.07);
+}
+
+[data-theme="dark"] .seo-hero-card:hover {
+  border-color: rgba(0, 113, 227, 0.4);
+}
+
+[data-theme="dark"] .seo-items-str {
+  color: #f5f5f7;
+}
+
+[data-theme="dark"] .seo-hero-role-tag {
+  background: rgba(255, 255, 255, 0.08);
+  color: #a1a1a6;
+}
+
+[data-theme="dark"] .seo-noscript-banner {
+  background: #2c2000;
+  border-color: #594200;
+  color: #ffd666;
+}
+
+@media (max-width: 768px) {
+  .seo-directory-section {
+    padding: 0 12px;
+    margin: 20px auto 36px auto;
+  }
+  .seo-directory-container {
+    padding: 16px 14px;
+    border-radius: 14px;
+  }
+  .seo-directory-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .seo-directory-toggle-btn {
+    align-self: flex-start;
+  }
+  .seo-hero-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,31 +1,33 @@
 <header>
-  <div class="brand-wrapper">
-    <img class="brand-app-icon" src="assets/app_icon.png" alt="王者出装箱" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%230071e3%22 stroke-width=%222%22><path d=%22M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z%22/></svg>'">
-    <div class="brand-titles">
-      <h1>王者出装箱</h1>
-      <p id="headerSubtitle">S45 赛季“月照长安” ｜ 局内六神装配装沙盒 ｜ 30颗全量铭文自由搭配 ｜ 属性实时演算</p>
+  <div class="header-inner">
+    <div class="brand-wrapper">
+      <img class="brand-app-icon" src="assets/app_icon.png" alt="王者出装箱" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%230071e3%22 stroke-width=%222%22><path d=%22M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z%22/></svg>'">
+      <div class="brand-titles">
+        <h1>王者出装箱</h1>
+        <p id="headerSubtitle">S45 赛季“月照长安” ｜ 局内六神装配装沙盒 ｜ 30颗全量铭文自由搭配 ｜ 属性实时演算</p>
+      </div>
     </div>
-  </div>
 
-  <!-- 多层级两段式导航 Stepper (先选英雄，再进专属方案推演室) -->
-  <div class="header-nav-stepper">
-    <button class="step-nav-btn active" id="navStepHero" onclick="switchView('hero_select')">
-      <span class="step-num">1</span> 选英雄大厅
-    </button>
-    <span class="step-divider">›</span>
-    <button class="step-nav-btn" id="navStepStudio" onclick="switchView('studio')">
-      <span class="step-num">2</span> 方案与推演室
-      <span class="step-hero-badge" id="navHeroBadge">廉颇</span>
-    </button>
-  </div>
+    <!-- 多层级两段式导航 Stepper (先选英雄，再进专属方案推演室) -->
+    <div class="header-nav-stepper">
+      <button class="step-nav-btn active" id="navStepHero" onclick="switchView('hero_select')">
+        <span class="step-num">1</span> 选英雄大厅
+      </button>
+      <span class="step-divider">›</span>
+      <button class="step-nav-btn" id="navStepStudio" onclick="switchView('studio')">
+        <span class="step-num">2</span> 方案与推演室
+        <span class="step-hero-badge" id="navHeroBadge">廉颇</span>
+      </button>
+    </div>
 
-  <div class="header-actions">
-    <button class="theme-toggle-btn" onclick="toggleTheme()" title="切换浅色 / 深色外观" id="themeBtn"></button>
-    <button class="apple-btn apple-btn-secondary" onclick="resetSlots()">清空配置</button>
-    <button class="apple-btn apple-btn-primary" onclick="exportMarkdown()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
-      导出方案
-    </button>
+    <div class="header-actions">
+      <button class="theme-toggle-btn" onclick="toggleTheme()" title="切换浅色 / 深色外观" id="themeBtn"></button>
+      <button class="apple-btn apple-btn-secondary" onclick="resetSlots()">清空配置</button>
+      <button class="apple-btn apple-btn-primary" onclick="exportMarkdown()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+        导出方案
+      </button>
+    </div>
   </div>
 </header>
 
@@ -48,7 +50,7 @@
     </div>
   </div>
 
-  <!-- 7 大官方职业分类过滤控制器 -->
+  <!-- 5 大游戏内真实职业分类过滤控制器 -->
   <div class="segmented-control hero-hall-segmented" id="heroTabs">
     <div class="seg-item active" onclick="setHeroFilter('全部', this)">全部</div>
     <div class="seg-item" onclick="setHeroFilter('坦克', this)">坦克</div>
@@ -56,7 +58,6 @@
     <div class="seg-item" onclick="setHeroFilter('刺客', this)">刺客</div>
     <div class="seg-item" onclick="setHeroFilter('法师', this)">法师</div>
     <div class="seg-item" onclick="setHeroFilter('射手', this)">射手</div>
-    <div class="seg-item" onclick="setHeroFilter('辅助', this)">辅助</div>
   </div>
 
   <!-- 层级 1 专属：已选英雄与分路直选栏 (支持用户直接在层级 1 选定分路) -->

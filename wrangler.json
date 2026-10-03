@@ -3,6 +3,8 @@
   "name": "wzry-tactics",
   "compatibility_date": "2026-09-21",
   "assets": {
-    "directory": "./dist_pages"
+    "directory": "./dist_pages",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "single-page-application"
   }
 }

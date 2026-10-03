@@ -26,6 +26,8 @@ from src.builders.arcana_builder import build_arcana
 from src.builders.rules_builder import build_rules
 from src.builders.sandbox_builder import build_sandbox_html
 from src.builders.pdf_builder import build_all_rich_pdfs
+from src.builders.build_07_pdf import render_07_pdf
+from src.builders.seo_builder import build_all_seo_assets
 
 try:
     from src.builders.miniprogram_builder import generate_miniprogram_project
@@ -62,18 +64,19 @@ def main():
     parser.add_argument("--miniprogram", action="store_true", help="生成微信原生小程序完整工程 (miniprogram/)")
     parser.add_argument("--xiaohongshu", action="store_true", help="生成小红书 3:4 Apple 风格营销图文")
     parser.add_argument("--details", action="store_true", help="生成淘宝 800x1000 详情页切片及无缝总览")
+    parser.add_argument("--seo", action="store_true", help="生成搜索引擎标准 robots.txt 与 sitemap.xml 索引资产")
     parser.add_argument("--output-dir", default=OUTPUT_DIR, help="自定义生成 Markdown 的输出目录")
     parser.add_argument("--workers", type=int, default=10, help="并发网络请求线程数 (默认10)")
 
     args = parser.parse_args()
 
     # 如果没有任何构建参数，默认打印帮助并退出
-    if not (args.all or args.skills or args.relations or args.builds or args.item or args.arcana or args.rules or args.sandbox or args.pdf or args.miniprogram or args.xiaohongshu or args.details):
+    if not (args.all or args.skills or args.relations or args.builds or args.item or args.arcana or args.rules or args.sandbox or args.pdf or args.miniprogram or args.xiaohongshu or args.details or args.seo):
         parser.print_help()
         print("\n常用快捷命令：")
         print("  python build.py --all            # 一键全量构建知识库、沙盒网页与微信原生小程序")
-        print("  python build.py --miniprogram    # 生成微信原生小程序完整工程 (miniprogram/)")
-        print("  python build.py --sandbox        # 生成本地可视化配装沙盒网页 (sandbox.html)")
+        print("  python build.py --sandbox        # 生成本地可视化配装沙盒网页 (sandbox.html) 与全站 SEO 资产")
+        print("  python build.py --seo            # 仅生成与更新 robots.txt 与 sitemap.xml")
         print("  python build.py --skills         # 仅更新技能数值与等级成长")
         print("  python build.py --relations      # 仅更新战术克制与搭档")
         print("  python build.py --builds         # 仅更新分路出装思路")
@@ -138,6 +141,8 @@ def main():
     if args.all or args.pdf:
         print("[出版物PDF] 开始生成王者荣耀 6 册全彩出版级矢量 PDF 手册...")
         build_all_rich_pdfs()
+        print("[出版物PDF] 开始生成王者荣耀 S45 全英雄全分路出装与铭文大全 PDF...")
+        render_07_pdf()
         print()
 
     # 9. 微信原生小程序完整工程
@@ -163,6 +168,12 @@ def main():
             print("[淘宝详情页] 开始生成淘宝 800x1000 详情页切片及无缝总览...")
             build_details_slices()
             print()
+
+    # 12. 搜索引擎规范资产 (robots.txt 与 sitemap.xml)
+    if args.seo:
+        print("[SEO 资产] 开始自动化生成搜索引擎标准 robots.txt 与 sitemap.xml...")
+        build_all_seo_assets()
+        print()
 
     print("=== 全部指定构建任务顺利完成！知识库、沙盒与物料已就绪 ===")
 
