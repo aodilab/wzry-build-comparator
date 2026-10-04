@@ -34,8 +34,7 @@ try:
     from src.builders.kb_builder import (
         build_07_s45_builds_markdown,
         build_08_combos_markdown,
-        rebuild_official_builds_data,
-        sync_markdown_to_dist
+        rebuild_official_builds_data
     )
     HAS_KB_BUILDER = True
 except ImportError:
@@ -43,7 +42,6 @@ except ImportError:
     build_07_s45_builds_markdown = None
     build_08_combos_markdown = None
     rebuild_official_builds_data = None
-    sync_markdown_to_dist = None
 
 try:
     from src.builders.pdf_builder import build_all_rich_pdfs
@@ -186,11 +184,6 @@ def main():
             print("[提示] 当前开源环境未包含私有连招构建器，已跳过。")
             print()
 
-    # 如果更新了任何 Markdown 知识库，自动同步至 dist_pages/md/
-    if HAS_KB_BUILDER and sync_markdown_to_dist:
-        if args.all or args.kb or args.skills or args.relations or args.builds or args.item or args.arcana or args.rules or args.s45_builds or args.combos:
-            sync_markdown_to_dist(out_dir)
-            print()
 
     # 可视化配装沙盒网页
     if args.all or args.sandbox:
