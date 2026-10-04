@@ -212,30 +212,6 @@ def generate_sitemap_xml(output_dirs=None):
         '  </url>',
     ]
 
-    # 收录 8 卷官方 RAG / NotebookLM 纯净 Markdown 核心知识库
-    root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    dist_md_dir = os.path.join(root_dir, "dist_pages", "md")
-    if os.path.exists(dist_md_dir):
-        md_files = sorted([f for f in os.listdir(dist_md_dir) if f.endswith(".md")])
-    else:
-        md_files = [
-            "01_王者荣耀_全英雄技能数值与等级成长库.md",
-            "02_王者荣耀_英雄战术克制与阵容搭档拓扑.md",
-            "03_王者荣耀_五大分路定位与实战出装思路.md",
-            "04_王者荣耀_全装备属性与合成升级图谱.md",
-            "05_王者荣耀_全铭文图鉴与英雄搭配方案.md",
-            "06_王者荣耀_峡谷战场机制与宏观运营规则.md",
-            "07_王者荣耀_S45官方推荐全英雄全分路出装与铭文大全.md",
-            "08_王者荣耀_全英雄实战连招口诀大全.md",
-        ]
-    for mdf in md_files:
-        xml_lines.append('  <url>')
-        xml_lines.append(f'    <loc>{SITE_DOMAIN}/md/{mdf}</loc>')
-        xml_lines.append(f'    <lastmod>{now_date}</lastmod>')
-        xml_lines.append('    <changefreq>daily</changefreq>')
-        xml_lines.append('    <priority>0.85</priority>')
-        xml_lines.append('  </url>')
-
 
     for h in heroes:
         cname = h.get("cname", "")
