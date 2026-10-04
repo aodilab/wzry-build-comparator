@@ -29,12 +29,7 @@ from src.builders.pdf_builder import build_all_rich_pdfs
 from src.builders.build_07_pdf import render_07_pdf
 from src.builders.seo_builder import build_all_seo_assets
 
-try:
-    from src.builders.miniprogram_builder import generate_miniprogram_project
-    HAS_MINIPROGRAM = True
-except ImportError:
-    HAS_MINIPROGRAM = False
-    generate_miniprogram_project = None
+
 
 try:
     from src.builders.xiaohongshu_apple_builder import build_all_xiaohongshu_slides
@@ -52,7 +47,7 @@ except ImportError:
 
 def main():
     parser = argparse.ArgumentParser(description="王者荣耀 6 大战术对局知识库构建流水线 (Gemini NotebookLM 专属)")
-    parser.add_argument("--all", action="store_true", help="一键全量构建所有 6 大对局知识库、配装沙盒网页与微信原生小程序")
+    parser.add_argument("--all", action="store_true", help="一键全量构建所有 6 大对局知识库与配装沙盒网页")
     parser.add_argument("--skills", action="store_true", help="构建[01]全英雄技能数值与等级成长库")
     parser.add_argument("--relations", action="store_true", help="构建[02]英雄战术克制与阵容搭档拓扑")
     parser.add_argument("--builds", action="store_true", help="构建[03]五大分路定位与实战出装思路")
@@ -61,7 +56,6 @@ def main():
     parser.add_argument("--rules", action="store_true", help="构建[06]峡谷战场机制与宏观运营规则")
     parser.add_argument("--sandbox", action="store_true", help="生成独立可视化配装沙盒网页 (sandbox.html)")
     parser.add_argument("--pdf", action="store_true", help="生成 6 册高清图文出版级矢量 PDF 手册")
-    parser.add_argument("--miniprogram", action="store_true", help="生成微信原生小程序完整工程 (miniprogram/)")
     parser.add_argument("--xiaohongshu", action="store_true", help="生成小红书 3:4 Apple 风格营销图文")
     parser.add_argument("--details", action="store_true", help="生成淘宝 800x1000 详情页切片及无缝总览")
     parser.add_argument("--seo", action="store_true", help="生成搜索引擎标准 robots.txt 与 sitemap.xml 索引资产")
@@ -145,15 +139,7 @@ def main():
         render_07_pdf()
         print()
 
-    # 9. 微信原生小程序完整工程
-    if args.all or args.miniprogram:
-        if HAS_MINIPROGRAM and generate_miniprogram_project:
-            print("[原生小程序] 开始生成王者配装箱原生小程序工程 (miniprogram/)...")
-            generate_miniprogram_project()
-            print()
-        elif args.miniprogram:
-            print("[提示] 当前环境未检测到私有化小程序构建器 (src/builders/miniprogram_builder.py)，已跳过。")
-            print()
+
 
     # 10. 小红书 3:4 Apple 风格营销图文
     if args.xiaohongshu:
