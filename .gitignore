@@ -70,7 +70,8 @@ src/builders/build_s45_stream_pipeline.py
 src/builders/video_extractor.py
 src/core/stream_ocr_rules.py
 
-# 核心高价值出装与连招数据库（核心商业壁垒，严禁公开）
+# 核心高价值出装与连招数据库与出版物PDF（严禁公开）
+*.pdf
 output/07*
 output/08*
 output/pdf/
