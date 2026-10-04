@@ -78,6 +78,7 @@ config/hero_s45_official_builds.json
 config/hero_official_builds.py
 config/hero_combos.json
 config/hero_combos.py
+src/builders/kb_builder.py
 
 # 单文件前端沙盒编译成品（仅供线上 CDN 部署，不公开源码）
 sandbox.html
@@ -106,9 +107,9 @@ assets/icon_candidates/
 baidu_verify_*.html
 BingSiteAuth.xml
 
-# ˽��ά���ű���֪ͨ��Կ
+# 私有化维护脚本与通知密钥
 scripts/notify_wechat.py
 scripts/*_07*
 scripts/*compare*
 scripts/*official*
-
+

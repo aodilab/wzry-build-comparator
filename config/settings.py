@@ -9,13 +9,15 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT_DIR = os.path.join(BASE_DIR, "output")
 
-# Gemini NotebookLM 6 大战术核心交付物命名 (带序号严格排序)
+# Gemini NotebookLM 8 大战术核心交付物命名 (带序号严格排序)
 DOC_HERO_SKILLS_NAME = "01_王者荣耀_全英雄技能数值与等级成长库.md"
 DOC_HERO_RELATIONS_NAME = "02_王者荣耀_英雄战术克制与阵容搭档拓扑.md"
 DOC_HERO_BUILDS_NAME = "03_王者荣耀_五大分路定位与实战出装思路.md"
 DOC_ITEMS_NAME = "04_王者荣耀_全装备属性与合成升级图谱.md"
 DOC_ARCANA_NAME = "05_王者荣耀_全铭文图鉴与英雄搭配方案.md"
 DOC_RULES_NAME = "06_王者荣耀_峡谷战场机制与宏观运营规则.md"
+DOC_S45_BUILDS_NAME = "07_王者荣耀_S45官方推荐全英雄全分路出装与铭文大全.md"
+DOC_COMBOS_NAME = "08_王者荣耀_全英雄实战连招口诀大全.md"
 
 # 官方 API 接口地址
 URL_HERO_LIST = "https://pvp.qq.com/web201605/js/herolist.json"
