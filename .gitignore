@@ -58,6 +58,7 @@ templates/details/
 templates/pdf/
 templates/sandbox/
 src/builders/miniprogram_builder.py
+scripts/build_preview_miniprogram.py
 src/builders/xiaohongshu_apple_builder.py
 src/builders/details_builder.py
 src/builders/sku_builder.py
@@ -86,6 +87,7 @@ src/builders/kb_builder.py
 # 单文件前端沙盒编译成品（仅供线上 CDN 部署，不公开源码）
 sandbox.html
 index.html
+preview_miniprogram.html
 
 # 生产分发物料与 Cloudflare 账户凭证（仅由 Wrangler CLI 自动化推送）
 .wrangler/

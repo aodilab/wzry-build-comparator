@@ -67,6 +67,13 @@ except ImportError:
     HAS_DETAILS = False
     build_details_slices = None
 
+try:
+    from src.builders.miniprogram_builder import generate_miniprogram_project
+    HAS_MINIPROGRAM = True
+except ImportError:
+    HAS_MINIPROGRAM = False
+    generate_miniprogram_project = None
+
 def main():
     parser = argparse.ArgumentParser(description="王者荣耀战术对局知识库构建流水线 (Gemini NotebookLM 专属)")
     parser.add_argument("--all", action="store_true", help="一键全量构建战术知识库与配装推演沙盒")
@@ -84,6 +91,7 @@ def main():
     parser.add_argument("--pdf", action="store_true", help="生成出版级全彩矢量 PDF 手册")
     parser.add_argument("--xiaohongshu", action="store_true", help="生成小红书 3:4 Apple 风格营销图文")
     parser.add_argument("--details", action="store_true", help="生成电商 800x1000 详情页切片及无缝总览")
+    parser.add_argument("--miniprogram", action="store_true", help="生成微信原生小程序完整工程 (miniprogram/)")
     parser.add_argument("--seo", action="store_true", help="生成搜索引擎标准 robots.txt 与 sitemap.xml 索引资产")
     parser.add_argument("--push-baidu", action="store_true", help="调用百度搜索资源平台 API 主动推送今日 URL 配额")
     parser.add_argument("--output-dir", default=OUTPUT_DIR, help="自定义生成 Markdown 的输出目录")
@@ -96,7 +104,7 @@ def main():
         args.all or args.kb or args.skills or args.relations or args.builds or 
         args.item or args.arcana or args.rules or args.s45_builds or args.combos or 
         args.sync_builds or args.sandbox or args.pdf or args.xiaohongshu or 
-        args.details or args.seo or args.push_baidu
+        args.details or args.miniprogram or args.seo or args.push_baidu
     )
     if not has_action:
         parser.print_help()
@@ -104,6 +112,7 @@ def main():
         print("  python build.py --kb             # 重新编译生成全部 Markdown 战术知识库并同步交付")
         print("  python build.py --all            # 一键全量构建知识库与配装沙盒网页")
         print("  python build.py --sandbox        # 生成本地可视化配装沙盒网页 (sandbox.html) 与全站 SEO 资产")
+        print("  python build.py --miniprogram    # 编译生成微信原生小程序完整工程")
         print("  python build.py --sync-builds    # 重新编译官方出装数据至 SSOT 并同步推演室")
         print("  python build.py --seo            # 仅生成与更新 robots.txt 与 sitemap.xml")
         return
@@ -216,6 +225,16 @@ def main():
         if HAS_DETAILS and build_details_slices:
             print("[电商详情页] 开始生成电商 800x1000 详情页切片及无缝总览...")
             build_details_slices()
+            print()
+
+    # 微信原生小程序完整工程 (双页面演练大厅与对决推演)
+    if args.all or args.miniprogram:
+        if HAS_MINIPROGRAM and generate_miniprogram_project:
+            print("[原生小程序] 开始生成王者出装箱原生小程序工程 (miniprogram/)...")
+            generate_miniprogram_project()
+            print()
+        elif args.miniprogram:
+            print("[提示] 当前环境未检测到小程序构建器，已跳过。")
             print()
 
     # 搜索引擎规范资产 (robots.txt 与 sitemap.xml)
