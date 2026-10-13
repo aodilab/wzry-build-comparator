@@ -28,6 +28,7 @@ from src.builders.arcana_builder import build_arcana
 from src.builders.rules_builder import build_rules
 from src.builders.sandbox_builder import build_sandbox_html
 from src.builders.seo_builder import build_all_seo_assets
+from src.core.baidu_pusher import push_urls_to_baidu
 
 # 私有化商业高阶流水线（受控加载，公开开源环境优雅 fallback）
 try:
@@ -84,6 +85,7 @@ def main():
     parser.add_argument("--xiaohongshu", action="store_true", help="生成小红书 3:4 Apple 风格营销图文")
     parser.add_argument("--details", action="store_true", help="生成电商 800x1000 详情页切片及无缝总览")
     parser.add_argument("--seo", action="store_true", help="生成搜索引擎标准 robots.txt 与 sitemap.xml 索引资产")
+    parser.add_argument("--push-baidu", action="store_true", help="调用百度搜索资源平台 API 主动推送今日 URL 配额")
     parser.add_argument("--output-dir", default=OUTPUT_DIR, help="自定义生成 Markdown 的输出目录")
     parser.add_argument("--workers", type=int, default=10, help="并发网络请求线程数 (默认10)")
 
@@ -94,7 +96,7 @@ def main():
         args.all or args.kb or args.skills or args.relations or args.builds or 
         args.item or args.arcana or args.rules or args.s45_builds or args.combos or 
         args.sync_builds or args.sandbox or args.pdf or args.xiaohongshu or 
-        args.details or args.seo
+        args.details or args.seo or args.push_baidu
     )
     if not has_action:
         parser.print_help()
@@ -220,6 +222,12 @@ def main():
     if args.seo:
         print("[SEO 资产] 开始自动化生成搜索引擎标准 robots.txt 与 sitemap.xml...")
         build_all_seo_assets()
+        print()
+
+    # 百度主动推送 API
+    if args.push_baidu:
+        print("[百度推送] 开始主动向百度搜索资源平台提交最新 URL 配额...")
+        push_urls_to_baidu(limit=10)
         print()
 
     print("=== 全部指定构建任务顺利完成！知识库、沙盒与物料已就绪 ===")
