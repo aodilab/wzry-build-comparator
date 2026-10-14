@@ -3,30 +3,133 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# C extensions & packages
+# C extensions
 *.so
+
+# Distribution / packaging
 .Python
 build/
+develop-eggs/
 dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
 *.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
 venv/
 .venv/
+ENV/
+env/
 
-# IDE
+# IDE & Editors
 .idea/
 .vscode/
+*.swp
+*.swo
 
 # 本地临时测试、草稿与日志
 scratch/
 test/
 temp/
 tmp/
+tests_local/
+_*
 *.log
 .cache/
 
-# 赛季原始超大多媒体录屏（体积数GB，保持本地）
+# 内部系统指令与机密
+AGENTS.md
+.agents/
+
+# 商业私有化资产与电商运营（严禁公开）
+taobao/
+miniprogram/
+templates/
+scripts/
+src/builders/miniprogram_builder.py
+src/builders/miniprogram_dataset.py
+src/builders/xiaohongshu_apple_builder.py
+src/builders/details_builder.py
+src/builders/sku_builder.py
+src/builders/build_07_pdf.py
+src/builders/pdf_builder.py
+src/builders/pdf_enrichers.py
+src/builders/pdf_07_helpers.py
+src/builders/build_lane_pdfs.py
+src/builders/lane_pdf_helpers.py
+src/builders/main_images_*.py
+src/core/build_analyzer.py
+
+# 核心数据流水线与自动化提取（严禁公开）
+src/builders/build_s45_stream_pipeline.py
+src/builders/s45_stream_worker.py
+src/builders/video_cv_helpers.py
+src/builders/video_extractor.py
+src/core/stream_ocr_rules.py
+
+# 核心高价值出装与连招数据库与出版物PDF（严禁公开）
+*.pdf
+output/07*
+output/08*
+output/pdf/
+config/hero_s45_official_builds.json
+config/hero_official_builds.py
+config/hero_combos.json
+config/hero_combos.py
+config/official_builds_data.json
+config/lane_pdf_config.py
+src/builders/kb_builder.py
+
+# 单文件前端沙盒编译成品（仅供线上 CDN 部署，不公开源码）
+sandbox.html
+index.html
+preview_miniprogram.html
+
+# 生产分发物料与 Cloudflare 账户凭证
+.wrangler/
+dist_pages/
+wrangler.json
+sitemap.xml
+robots.txt
+
+# 网站部署、内部SEO与私有构建工具（严禁公开）
+config/baidu_pushed_urls.json
+src/core/baidu_pusher.py
+src/builders/sandbox_builder.py
+src/builders/seo_builder.py
+config/sandbox_template.py
+
+# 核心精调补丁包与专属数据（商业私有）
+config/patches/
+
+# 赛季原始多媒体录屏与废弃素材
 raw_assets/
 *.mp4
 *.mkv
 *.mov
-.wrangler/
+assets/icon_candidates/
+*.png
+!favicon.png
+!apple-touch-icon.png
+!assets/app_icon.png
+!assets/sponsor_wechat.jpg
+!assets/icon_dual_endless_cleaver.png
+!assets/icon_fuhuojia_resurrection.png
+!assets/icon_real_fuhuojia.png
+!favicon-48x48.png
+!favicon-192x192.png
+!social_preview.png
+
+# 站长验证临时文件
+baidu_verify_*.html
+BingSiteAuth.xml
+CHANGELOG.md
