@@ -2,16 +2,16 @@
   <defs>
     <style>
       /* 全局统一白色卡片风格 */
-      .box { fill: #ffffff; stroke: #d0d7de; stroke-width: 1.2; rx: 6px; }
+      .box { fill: #ffffff; stroke: #d0d7de; stroke-width: 1.1; rx: 6px; }
       
-      /* 流程线专属蓝色 */
-      .conn-line { stroke: #0969da; stroke-width: 1.4; fill: none; }
-      .arrow { fill: #0969da; }
+      /* 流程线：变细 (1.0px)、颜色变浅清透 (#58a6ff) */
+      .conn-line { stroke: #58a6ff; stroke-width: 1.0; fill: none; }
+      .arrow { fill: #58a6ff; }
       
       /* 分隔线 */
       .divider { stroke: #d0d7de; stroke-width: 1; }
       
-      /* 文字仅保留两种层级色彩：主要黑灰 (#1f2328) 与 次要说明灰 (#656d76) */
+      /* 文字两档层级色彩 */
       .txt-bold { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", ui-monospace, SFMono-Regular, Consolas, sans-serif; font-size: 13.5px; font-weight: bold; fill: #1f2328; }
       .txt-main { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", ui-monospace, SFMono-Regular, Consolas, sans-serif; font-size: 13px; fill: #1f2328; }
       .txt-dim { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", ui-monospace, SFMono-Regular, Consolas, sans-serif; font-size: 12px; fill: #656d76; }
@@ -24,13 +24,13 @@
   <text x="420" y="44" text-anchor="middle" class="txt-bold">挑选英雄与分路 (133位国服正式服英雄全收录)</text>
   <text x="420" y="62" text-anchor="middle" class="txt-dim">(内置 133 位英雄全分路共 505 套王者官方推荐出装)</text>
 
-  <!-- 顶下连线 (唯一蓝色) -->
+  <!-- 顶下连线 (细线 1.0px，轻盈浅蓝 #58a6ff，小巧箭头) -->
   <line x1="420" y1="75" x2="420" y2="95" class="conn-line"/>
   <line x1="225" y1="95" x2="615" y2="95" class="conn-line"/>
-  <line x1="225" y1="95" x2="225" y2="115" class="conn-line"/>
-  <line x1="615" y1="95" x2="615" y2="115" class="conn-line"/>
-  <polygon points="221,115 229,115 225,121" class="arrow"/>
-  <polygon points="611,115 619,115 615,121" class="arrow"/>
+  <line x1="225" y1="95" x2="225" y2="117" class="conn-line"/>
+  <line x1="615" y1="95" x2="615" y2="117" class="conn-line"/>
+  <polygon points="222,117 228,117 225,122" class="arrow"/>
+  <polygon points="612,117 618,117 615,122" class="arrow"/>
 
   <!-- 模式一与模式二 -->
   <rect x="65" y="125" width="320" height="75" class="box"/>
@@ -45,14 +45,14 @@
   <text x="615" y="180" text-anchor="middle" class="txt-bold" font-size="11">VS</text>
   <text x="615" y="193" text-anchor="middle" class="txt-dim">玩家完全自由装配「方案 B」</text>
 
-  <!-- 中汇聚连线 (唯一蓝色) -->
+  <!-- 中汇聚连线 (细线 1.0px，轻盈浅蓝 #58a6ff，小巧箭头) -->
   <line x1="225" y1="200" x2="225" y2="218" class="conn-line"/>
   <line x1="615" y1="200" x2="615" y2="218" class="conn-line"/>
   <line x1="225" y1="218" x2="615" y2="218" class="conn-line"/>
-  <line x1="420" y1="218" x2="420" y2="238" class="conn-line"/>
-  <polygon points="416,238 424,238 420,244" class="arrow"/>
+  <line x1="420" y1="218" x2="420" y2="240" class="conn-line"/>
+  <polygon points="417,240 423,240 420,245" class="arrow"/>
 
-  <!-- 底框：主面板看板 (颜色与上面完全一致) -->
+  <!-- 底框：主面板看板 -->
   <rect x="35" y="248" width="770" height="255" class="box"/>
   <text x="420" y="272" text-anchor="middle" class="txt-bold" font-size="14">主面板：多维度数据对决看板</text>
   <line x1="35" y1="284" x2="805" y2="284" class="divider"/>
