@@ -30,6 +30,9 @@ from src.builders.sandbox_builder import build_sandbox_html
 from src.builders.seo_builder import build_all_seo_assets
 from src.core.baidu_pusher import push_urls_to_baidu
 
+HAS_SANDBOX = True
+HAS_SEO = True
+
 # 私有化商业高阶流水线（受控加载，公开开源环境优雅 fallback）
 try:
     from src.builders.kb_builder import (
