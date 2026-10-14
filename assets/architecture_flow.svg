@@ -1,42 +1,30 @@
 <svg width="840" height="520" viewBox="0 0 840 520" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
-      /* 默认浅色模式 (GitHub Light Theme 官方调色板) */
-      .box-bg { fill: #f6f8fa; stroke: #d0d7de; stroke-width: 1.2; rx: 6px; }
-      .main-box-bg { fill: #f6f8fa; stroke: #0969da; stroke-width: 1.4; rx: 6px; }
+      /* 全局统一白色卡片风格 */
+      .box { fill: #ffffff; stroke: #d0d7de; stroke-width: 1.2; rx: 6px; }
+      
+      /* 流程线专属蓝色 */
       .conn-line { stroke: #0969da; stroke-width: 1.4; fill: none; }
       .arrow { fill: #0969da; }
+      
+      /* 分隔线 */
       .divider { stroke: #d0d7de; stroke-width: 1; }
+      
+      /* 文字仅保留两种层级色彩：主要黑灰 (#1f2328) 与 次要说明灰 (#656d76) */
+      .txt-bold { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", ui-monospace, SFMono-Regular, Consolas, sans-serif; font-size: 13.5px; font-weight: bold; fill: #1f2328; }
       .txt-main { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", ui-monospace, SFMono-Regular, Consolas, sans-serif; font-size: 13px; fill: #1f2328; }
       .txt-dim { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", ui-monospace, SFMono-Regular, Consolas, sans-serif; font-size: 12px; fill: #656d76; }
-      .txt-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", ui-monospace, SFMono-Regular, Consolas, sans-serif; font-size: 14px; font-weight: bold; fill: #0969da; }
-      .txt-sub { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", ui-monospace, SFMono-Regular, Consolas, sans-serif; font-size: 12.5px; font-weight: bold; fill: #0969da; }
-      .txt-sub-red { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", ui-monospace, SFMono-Regular, Consolas, sans-serif; font-size: 12.5px; font-weight: bold; fill: #cf222e; }
-      .txt-vs { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", ui-monospace, SFMono-Regular, Consolas, sans-serif; font-size: 11px; font-weight: bold; fill: #cf222e; }
-
-      /* 深色模式自适应 (GitHub Dark Theme 官方调色板) */
-      @media (prefers-color-scheme: dark) {
-        .box-bg { fill: #161b22; stroke: #30363d; }
-        .main-box-bg { fill: #161b22; stroke: #388bfd; }
-        .conn-line { stroke: #58a6ff; }
-        .arrow { fill: #58a6ff; }
-        .divider { stroke: #21262d; }
-        .txt-main { fill: #e6edf3; }
-        .txt-dim { fill: #8b949e; }
-        .txt-title { fill: #58a6ff; }
-        .txt-sub { fill: #79c0ff; }
-        .txt-sub-red { fill: #ff7b72; }
-        .txt-vs { fill: #ff7b72; }
-      }
+      .txt-sub-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", ui-monospace, SFMono-Regular, Consolas, sans-serif; font-size: 12.5px; font-weight: bold; fill: #1f2328; }
     </style>
   </defs>
 
   <!-- 顶框：挑选英雄与分路 -->
-  <rect x="210" y="20" width="420" height="55" class="box-bg"/>
-  <text x="420" y="44" text-anchor="middle" class="txt-main" font-weight="bold">挑选英雄与分路 (133位国服正式服英雄全收录)</text>
+  <rect x="210" y="20" width="420" height="55" class="box"/>
+  <text x="420" y="44" text-anchor="middle" class="txt-bold">挑选英雄与分路 (133位国服正式服英雄全收录)</text>
   <text x="420" y="62" text-anchor="middle" class="txt-dim">(内置 133 位英雄全分路共 505 套王者官方推荐出装)</text>
 
-  <!-- 顶下连线 -->
+  <!-- 顶下连线 (唯一蓝色) -->
   <line x1="420" y1="75" x2="420" y2="95" class="conn-line"/>
   <line x1="225" y1="95" x2="615" y2="95" class="conn-line"/>
   <line x1="225" y1="95" x2="225" y2="115" class="conn-line"/>
@@ -45,32 +33,32 @@
   <polygon points="611,115 619,115 615,121" class="arrow"/>
 
   <!-- 模式一与模式二 -->
-  <rect x="65" y="125" width="320" height="75" class="box-bg"/>
-  <text x="225" y="146" text-anchor="middle" class="txt-sub">【模式一：官方推荐基准探索】</text>
+  <rect x="65" y="125" width="320" height="75" class="box"/>
+  <text x="225" y="146" text-anchor="middle" class="txt-sub-title">【模式一：官方推荐基准探索】</text>
   <text x="225" y="165" text-anchor="middle" class="txt-dim">一键选用 505 套官方推荐出装为「方案 A」</text>
-  <text x="225" y="180" text-anchor="middle" class="txt-vs">VS</text>
+  <text x="225" y="180" text-anchor="middle" class="txt-bold" font-size="11">VS</text>
   <text x="225" y="193" text-anchor="middle" class="txt-dim">玩家自主调整魔改的「方案 B」</text>
 
-  <rect x="455" y="125" width="320" height="75" class="box-bg"/>
-  <text x="615" y="146" text-anchor="middle" class="txt-sub">【模式二：双方案自由对比】</text>
+  <rect x="455" y="125" width="320" height="75" class="box"/>
+  <text x="615" y="146" text-anchor="middle" class="txt-sub-title">【模式二：双方案自由对比】</text>
   <text x="615" y="165" text-anchor="middle" class="txt-dim">玩家完全自由装配「方案 A」</text>
-  <text x="615" y="180" text-anchor="middle" class="txt-vs">VS</text>
+  <text x="615" y="180" text-anchor="middle" class="txt-bold" font-size="11">VS</text>
   <text x="615" y="193" text-anchor="middle" class="txt-dim">玩家完全自由装配「方案 B」</text>
 
-  <!-- 中汇聚连线 -->
+  <!-- 中汇聚连线 (唯一蓝色) -->
   <line x1="225" y1="200" x2="225" y2="218" class="conn-line"/>
   <line x1="615" y1="200" x2="615" y2="218" class="conn-line"/>
   <line x1="225" y1="218" x2="615" y2="218" class="conn-line"/>
   <line x1="420" y1="218" x2="420" y2="238" class="conn-line"/>
   <polygon points="416,238 424,238 420,244" class="arrow"/>
 
-  <!-- 底框：主面板看板 -->
-  <rect x="35" y="248" width="770" height="255" class="main-box-bg"/>
-  <text x="420" y="272" text-anchor="middle" class="txt-title">主面板：多维度数据对决看板</text>
+  <!-- 底框：主面板看板 (颜色与上面完全一致) -->
+  <rect x="35" y="248" width="770" height="255" class="box"/>
+  <text x="420" y="272" text-anchor="middle" class="txt-bold" font-size="14">主面板：多维度数据对决看板</text>
   <line x1="35" y1="284" x2="805" y2="284" class="divider"/>
 
   <!-- 基础通用维度 -->
-  <text x="55" y="304" class="txt-sub">【基础通用维度】</text>
+  <text x="55" y="304" class="txt-sub-title">【基础通用维度】</text>
   <text x="70" y="324" class="txt-main">• 板块一：实战连招与伤害对决 (带入双靶抗性与穿透，算连招总爆发与总控制)</text>
   <text x="100" y="342" class="txt-dim">└──► [专属下钻视窗] 各技能详细物理拆解 (普攻/1/2/3技能单发净伤与CD)</text>
   <text x="70" y="360" class="txt-main">• 板块二：实战生存与多维续航 (有效生命 EHP + 满血/半血/残血三档动态回复)</text>
@@ -81,7 +69,7 @@
   <line x1="35" y1="426" x2="805" y2="426" class="divider"/>
 
   <!-- 分路专属维度 -->
-  <text x="55" y="446" class="txt-sub-red">【分路专属维度】</text>
+  <text x="55" y="446" class="txt-sub-title">【分路专属维度】</text>
   <text x="70" y="466" class="txt-main">• 打野专属：野区清理与控龙耗时 (对比两套出装刷野速率、红蓝BUFF与大龙斩杀线)</text>
   <text x="70" y="484" class="txt-main">• 辅助专属：团队协同与增益效果 (对比两套出装团队光环加成与主动装护盾/加速)</text>
 </svg>
