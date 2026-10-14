@@ -1,17 +1,19 @@
 # 王者荣耀出装对比系统 ｜ 底层算法与战术知识库
 
 <p align="left">
-  <a href="https://github.com/aodilab/wzry-build-comparator/releases"><img src="https://img.shields.io/badge/Release-v1.0.0-0071e3.svg" alt="Release"></a>
+  <a href="https://github.com/aodilab/wzry-build-comparator/releases"><img src="https://img.shields.io/badge/Release-v2.0.0-0071e3.svg" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-34c759.svg" alt="License"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Web%20App-Online-0071e3.svg" alt="Web App"></a>
   <a href="#"><img src="https://img.shields.io/badge/微信小程序-王者出装箱-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序"></a>
+  <a href="https://github.com/aodilab/wzry-build-comparator/releases/tag/v2.0.0"><img src="https://img.shields.io/badge/Demo%20Video-26s-ff3b30.svg?logo=youtube&logoColor=white" alt="Demo Video"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Heroes-133-ff9500.svg" alt="Heroes"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Official%20Builds-505-ff2d55.svg" alt="Official Builds"></a>
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.8+-5856d6.svg" alt="Python"></a>
 </p>
 
 - 🖥️ **电脑大屏端**：[https://wzry.aodilab.com](https://wzry.aodilab.com)（双轨横向对比、双靶抗性打靶、方案导出）
-- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（对局选人秒查，即开即用）
+- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（新版本预计 10 月 16 日上线，对局选人秒查，即开即用）
+- 🎬 **真机实操演示**：[前往 Release v2.0.0 观看操作演示 (26s) »](https://github.com/aodilab/wzry-build-comparator/releases/tag/v2.0.0)
 - 📚 **开源算法库**：王者荣耀底层物理算分引擎与 6 卷战术知识库
 
 ---
@@ -87,14 +89,14 @@
 
 本项目内置 6 大纯净 Markdown 战术知识库，收录于 [`output/`](output/) 目录，完全开源可直接在 GitHub 查看与全文检索：
 
-| 卷号 | 知识库模块 | 文件直链 | 核心内容提要 |
-| :---: | :--- | :--- | :--- |
-| **01** | 全英雄技能数值库 | [`01_王者荣耀_全英雄技能数值与等级成长库.md`](output/01_王者荣耀_全英雄技能数值与等级成长库.md) | 133位国服英雄被动与全技能1~15级物理/法术基础加成与成长数值 |
-| **02** | 战术克制与搭档谱系 | [`02_王者荣耀_英雄战术克制与阵容搭档拓扑.md`](output/02_王者荣耀_英雄战术克制与阵容搭档拓扑.md) | 133位英雄官方正向克制、被克制关系与最佳开黑搭档拓扑矩阵 |
-| **03** | 五大分路战术指南 | [`03_王者荣耀_五大分路定位与战术流派指南.md`](output/03_王者荣耀_五大分路定位与战术流派指南.md) | 对抗路/打野/中路/发育路/游走五大分路战术定位、流派演进与攻防节奏 |
-| **04** | 全装备属性升级图谱 | [`04_王者荣耀_全装备属性与合成升级图谱.md`](output/04_王者荣耀_全装备属性与合成升级图谱.md) | 121件物理/法术/防御/移动/打野/游走全装备属性、唯一被动与合成拓扑 |
-| **05** | 全铭文图鉴搭配方案 | [`05_王者荣耀_全铭文图鉴与英雄搭配方案.md`](output/05_王者荣耀_全铭文图鉴与英雄搭配方案.md) | 30颗五级铭文属性明细与各大职业英雄标准百穿/攻速/暴击/吸血配装 |
-| **06** | 峡谷底层机制与运营 | [`06_王者荣耀_峡谷战场机制与宏观运营规则.md`](output/06_王者荣耀_峡谷战场机制与宏观运营规则.md) | 兵线与防御塔抗性、野区主宰暴君刷新周期与底层伤害减免公式 |
+| 卷&nbsp;号 | 知识库模块（点击直达） | 核心内容提要 |
+| :---: | :--- | :--- |
+| **`01`** | [**全英雄技能数值与成长库**](output/01_王者荣耀_全英雄技能数值与等级成长库.md) | 133 位国服英雄被动与全技能 1~15 级物理/法术基础加成与成长数值 |
+| **`02`** | [**战术克制与阵容搭档谱系**](output/02_王者荣耀_英雄战术克制与阵容搭档拓扑.md) | 133 位英雄官方正向克制、被克制关系与最佳开黑搭档拓扑矩阵 |
+| **`03`** | [**五大分路定位与战术指南**](output/03_王者荣耀_五大分路定位与战术流派指南.md) | 对抗 / 打野 / 中路 / 发育 / 游走五大分路定位、流派演进与攻防节奏 |
+| **`04`** | [**全装备属性与合成图谱**](output/04_王者荣耀_全装备属性与合成升级图谱.md) | 121 件六大类装备基础属性、唯一被动机制与合成升级拓扑 |
+| **`05`** | [**全铭文图鉴与搭配方案**](output/05_王者荣耀_全铭文图鉴与英雄搭配方案.md) | 30 颗五级铭文属性明细与各职业标准百穿 / 攻速 / 暴击 / 吸血配装 |
+| **`06`** | [**峡谷战场机制与运营规则**](output/06_王者荣耀_峡谷战场机制与宏观运营规则.md) | 兵线与防御塔抗性、野区主宰暴君刷新周期与底层伤害减免公式 |
 
 > 📌 **提示**：以上 6 卷 Markdown 知识库支持直接导入 NotebookLM 或本地知识库检索问答。
 
