@@ -87,34 +87,34 @@ if(window.LA)LA.init({id:"3RHV2P1v28aZF1yy",ck:"3RHV2P1v28aZF1yy",autoTrack:true
 <title>王者出装箱 ｜ 王者荣耀出装推荐与实战伤害推演模拟器_全英雄六神装对比</title>
 <style>
 :root {
-  /* 苹果官方极简色彩规范 */
-  --bg-page: #f5f5f7;
+  /* 苹果官方极简通透色彩规范 (Apple Luminous Porcelain & Ice-Blue Palette) */
+  --bg-page: #f4f7fb;
   --bg-card: #ffffff;
-  --bg-sub: #fbfbfd;
-  --bg-pill: rgba(0, 0, 0, 0.04);
-  --bg-pill-hover: rgba(0, 0, 0, 0.08);
+  --bg-sub: #f6f9fe;
+  --bg-pill: #eef4fc;
+  --bg-pill-hover: #e1ecfa;
   
-  --border-card: rgba(0, 0, 0, 0.06);
-  --border-light: rgba(0, 0, 0, 0.04);
+  --border-card: #e3ebf6;
+  --border-light: #ecf1f9;
   
   --color-blue: #0071e3;
   --color-blue-bg: rgba(0, 113, 227, 0.08);
   --color-blue-hover: #0077ed;
   --color-green: #34c759;
-  --color-green-dark: #248a3d;
-  --color-green-bg: rgba(52, 199, 89, 0.12);
+  --color-green-dark: #1b6d2f;
+  --color-green-bg: rgba(27, 109, 47, 0.09);
   --color-orange: #ff9500;
   --color-orange-bg: rgba(255, 149, 0, 0.12);
   --color-red: #ff3b30;
   --color-red-bg: rgba(255, 59, 48, 0.08);
   
   --text-primary: #1d1d1f;
-  --text-secondary: #86868b;
-  --text-tertiary: #a1a1a6;
+  --text-secondary: #516074;
+  --text-tertiary: #76869b;
   
-  /* 苹果微质感投影与弹性曲线 */
-  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.03), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
-  --shadow-hover: 0 12px 32px -4px rgba(0, 0, 0, 0.06), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+  /* 苹果微质感冷光投影与弹性曲线 */
+  --shadow-card: 0 6px 24px -4px rgba(15, 38, 74, 0.045), 0 2px 8px -1px rgba(15, 38, 74, 0.025);
+  --shadow-hover: 0 14px 34px -4px rgba(0, 113, 227, 0.08), 0 4px 12px -2px rgba(15, 38, 74, 0.04);
   
   --radius-card: 22px;
   --radius-pill: 980px;
@@ -256,34 +256,34 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* 右侧返回更换英雄按钮 (极简轻盈药丸) */
+/* 右侧返回更换英雄按钮 (极简冰蓝轻盈药丸) */
 .btn-apple-return {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 6px 14px;
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: #eef4fc;
+  border: 1px solid #d7e5f8;
   border-radius: var(--radius-pill);
-  color: var(--text-primary);
+  color: #0066cc;
   font-size: 12.5px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   font-family: inherit;
 }
 .btn-apple-return:hover {
-  background: rgba(0, 0, 0, 0.08);
-  border-color: rgba(0, 0, 0, 0.12);
+  background: #e0ecfc;
+  border-color: #b8d3f6;
   transform: translateY(-0.5px);
 }
 .btn-apple-return svg {
-  color: var(--text-secondary);
+  color: #0066cc;
   transition: transform 0.2s ease;
 }
 .btn-apple-return:hover svg {
   transform: translateX(-2px);
-  color: var(--text-primary);
+  color: #0051a8;
 }
 .btn-hall-trigger {
   display: inline-flex;
@@ -342,11 +342,12 @@ body {
 }
 .hero-role-tag {
   font-size: 11px;
-  font-weight: 500;
-  padding: 2px 8px;
+  font-weight: 600;
+  padding: 2px 9px;
   border-radius: var(--radius-pill);
-  background: var(--bg-pill);
-  color: var(--text-secondary);
+  background: #edf4fc;
+  border: 1px solid #dce8f8;
+  color: #2b548e;
 }
 .hero-sub {
   font-size: 12px;
@@ -422,7 +423,7 @@ body {
   transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease;
 }
 .apple-card:hover {
-  border-color: rgba(0, 0, 0, 0.10);
+  border-color: #cddbf0;
   transform: translateY(-2px);
   box-shadow: var(--shadow-hover);
 }
@@ -507,7 +508,7 @@ body {
 }
 
 /* ========================================================
-   苹果官方风对比 Spec Card Grid (两列/三列栅格，彻底消除两侧空虚感)
+   苹果官方风对比 Spec Card Grid (纯白瓷感卡片 + 蓝绿方案色锚点)
    ======================================================== */
 .apple-spec-group {
   display: grid;
@@ -518,22 +519,23 @@ body {
   grid-template-columns: repeat(3, 1fr);
 }
 .apple-spec-card {
-  background: var(--bg-sub);
-  border: 1px solid var(--border-card);
+  background: #ffffff;
+  border: 1px solid #e1eaf5;
   border-radius: 16px;
   padding: 22px 24px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 16px;
+  box-shadow: 0 3px 14px rgba(15, 38, 74, 0.03);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   box-sizing: border-box;
 }
 .apple-spec-card:hover {
   background: #ffffff;
-  border-color: rgba(0, 0, 0, 0.12);
+  border-color: rgba(0, 113, 227, 0.32);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 26px rgba(0, 113, 227, 0.07);
 }
 .spec-card-header {
   text-align: center;
@@ -564,10 +566,19 @@ body {
 }
 .spec-col-label {
   font-size: 11px;
-  font-weight: 600;
-  color: var(--text-tertiary);
-  margin-bottom: 4px;
-  letter-spacing: 0.02em;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  letter-spacing: 0.01em;
+}
+.col-left .spec-col-label {
+  color: #0071e3;
+  background: rgba(0, 113, 227, 0.08);
+}
+.col-right .spec-col-label {
+  color: #1b6d2f;
+  background: rgba(27, 109, 47, 0.09);
 }
 .spec-card-num {
   font-size: 32px;
@@ -606,9 +617,9 @@ body {
   white-space: nowrap;
 }
 .apple-diff-pill.pill-even {
-  background: var(--bg-pill);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-card);
+  background: #f0f5fd;
+  color: #3f587c;
+  border: 1px solid #dce7f7;
 }
 .apple-diff-pill.pill-a-better {
   background: rgba(0, 113, 227, 0.08);
@@ -821,20 +832,21 @@ body {
 }
 
 .action-btn-pill {
-  border: 1px solid var(--border-card);
-  background: var(--bg-sub);
+  border: 1px solid #d7e5f8;
+  background: #f2f7fe;
   padding: 4px 10px;
   font-size: 11px;
-  font-weight: 500;
-  color: var(--text-secondary);
+  font-weight: 600;
+  color: #365686;
   border-radius: var(--radius-pill);
   cursor: pointer;
   transition: all 0.2s;
   font-family: inherit;
 }
 .action-btn-pill:hover {
-  background: var(--bg-pill-hover);
-  color: var(--text-primary);
+  background: #e2edfc;
+  border-color: #b7d2f6;
+  color: #0066cc;
 }
 
 .slots-grid {
@@ -845,8 +857,8 @@ body {
 }
 .slot-item {
   aspect-ratio: 1;
-  background: var(--bg-sub);
-  border: 1px solid var(--border-light);
+  background: #f5f9fe;
+  border: 1px dashed #cdddf2;
   border-radius: 14px;
   display: flex;
   flex-direction: column;
@@ -859,15 +871,16 @@ body {
   transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 .slot-item.filled {
-  border-color: rgba(0, 0, 0, 0.05);
+  border: 1px solid #e1eaf5;
   background: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 2px 8px rgba(15, 38, 74, 0.035);
 }
 .slot-item:hover {
-  border-color: rgba(0, 113, 227, 0.35);
+  border-style: solid;
+  border-color: rgba(0, 113, 227, 0.42);
   background: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 16px rgba(0, 113, 227, 0.08);
 }
 
 /* 装备独立删除按钮：默认隐藏，悬停渐显的深灰毛玻璃微圆钮 */
@@ -929,8 +942,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--bg-sub);
-  border: 1px solid var(--border-light);
+  background: #f5f9fe;
+  border: 1px solid #e1ebf7;
   border-radius: 12px;
   padding: 9px 14px;
   font-size: 12px;
@@ -952,15 +965,15 @@ body {
   transition: background 0.18s ease;
 }
 .arcana-tag:hover {
-  background: rgba(0, 0, 0, 0.04);
+  background: rgba(0, 113, 227, 0.06);
 }
 .arc-red, .arc-blue, .arc-green { color: var(--text-primary); }
 .btn-edit-arcana {
-  border: 1px solid var(--border-card);
+  border: 1px solid #d5e4f7;
   background: #ffffff;
-  color: var(--text-secondary);
+  color: #0066cc;
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   padding: 4px 10px;
   border-radius: var(--radius-pill);
@@ -969,12 +982,13 @@ body {
   white-space: nowrap;
 }
 .btn-edit-arcana:hover {
-  background: var(--bg-pill-hover);
-  color: var(--text-primary);
+  background: #e6f0fd;
+  border-color: #b5d0f5;
+  color: #0051a8;
 }
 
 /* ========================================================
-   冷却时间 Spec 展示区
+   冷却时间 Spec 展示区 (纯白瓷感卡片 + 蓝绿方案色锚点)
    ======================================================== */
 .cd-specs-grid {
   display: grid;
@@ -982,47 +996,71 @@ body {
   gap: 16px;
 }
 .cd-spec-card {
-  background: var(--bg-sub);
-  border: 1px solid var(--border-light);
+  background: #ffffff;
+  border: 1px solid #e1eaf5;
   border-radius: 16px;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   text-align: center;
-  transition: all 0.2s;
+  box-shadow: 0 3px 14px rgba(15, 38, 74, 0.03);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .cd-spec-card:hover {
   background: #ffffff;
-  border-color: var(--border-card);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  border-color: rgba(0, 113, 227, 0.32);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(0, 113, 227, 0.07);
 }
 .cd-spec-name {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
 }
 .cd-spec-vals {
   display: flex;
-  align-items: baseline;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-around;
   gap: 8px;
-  margin-top: 4px;
+  margin-top: 2px;
+}
+.cd-col-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.cd-col-tag {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 1.5px 7px;
+  border-radius: 5px;
+}
+.cd-col-tag.tag-a {
+  color: #0071e3;
+  background: rgba(0, 113, 227, 0.08);
+}
+.cd-col-tag.tag-b {
+  color: #1b6d2f;
+  background: rgba(27, 109, 47, 0.09);
 }
 .cd-big-num {
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 700;
   color: var(--text-primary);
-  line-height: 1;
+  line-height: 1.1;
   font-variant-numeric: tabular-nums;
 }
 .cd-vs-label {
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-tertiary);
 }
 .cd-spec-footer {
-  margin-top: 4px;
+  margin-top: 2px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-light);
   display: flex;
   justify-content: center;
 }
@@ -1074,11 +1112,10 @@ body {
   border-bottom: none;
 }
 .stats-apple-row.stats-header-row {
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 600;
   color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   padding-bottom: 10px;
 }
 .stat-prop-name {
@@ -1100,7 +1137,7 @@ body {
 }
 
 /* ========================================================
-   装备专属被动协同 (彻底消除大括号式粗边框，与上方卡片风格完全对齐)
+   装备专属被动协同 (纯白瓷感卡片，与上方卡片风格完全对齐)
    ======================================================== */
 .passives-deck {
   display: grid;
@@ -1130,21 +1167,22 @@ body {
   gap: 10px;
 }
 
-/* 纯正 Apple 卡片造型：去掉粗侧边框，改为优雅圆角微边框卡片 */
+/* 纯正 Apple 瓷白卡片造型 */
 .passive-badge {
-  background: var(--bg-sub);
-  border: 1px solid var(--border-light);
+  background: #ffffff;
+  border: 1px solid #e1eaf5;
   border-radius: 16px;
   padding: 16px 20px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  box-shadow: 0 3px 12px rgba(15, 38, 74, 0.025);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .passive-badge:hover {
   background: #ffffff;
-  border-color: rgba(0, 0, 0, 0.08);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 113, 227, 0.28);
+  box-shadow: 0 8px 20px rgba(0, 113, 227, 0.06);
   transform: translateY(-1px);
 }
 .passive-header-row {
@@ -2318,33 +2356,31 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #ffffff;
-  border: 1px solid var(--border-card);
+  background: #eef4fc;
+  border: 1px solid #d7e5f8;
   padding: 7px 16px;
   border-radius: var(--radius-pill);
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #0066cc;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
   font-family: inherit;
 }
 .btn-back-to-hall:hover {
-  background: var(--color-blue-bg);
-  color: var(--color-blue);
-  border-color: rgba(0, 113, 227, 0.3);
+  background: #e0ecfc;
+  color: #0051a8;
+  border-color: #b8d3f6;
   transform: translateY(-1px);
 }
 .hall-count-pill {
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-secondary);
-  background: #ffffff;
+  color: #365686;
+  background: #f2f7fe;
   padding: 6px 14px;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--border-card);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  border: 1px solid #dce8f8;
 }
 
 /* ======================================================== */
@@ -2408,8 +2444,8 @@ body {
   height: 46px;
   padding: 0 38px 0 44px;
   border-radius: var(--radius-pill);
-  border: 1px solid rgba(0, 0, 0, 0.09);
-  background: var(--bg-page);
+  border: 1px solid #dce7f6;
+  background: #f5f9fe;
   font-size: 14px;
   font-weight: 500;
   color: var(--text-primary);
@@ -2467,12 +2503,12 @@ body {
   color: var(--text-primary);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 1px 4px rgba(15, 38, 74, 0.025);
   white-space: nowrap;
   font-family: inherit;
 }
 .hall-tab-btn:hover {
-  border-color: rgba(0, 0, 0, 0.15);
+  border-color: rgba(0, 113, 227, 0.35);
   transform: translateY(-1px);
 }
 .hall-tab-btn.active {
@@ -2486,8 +2522,8 @@ body {
   font-weight: 700;
   padding: 1px 7px;
   border-radius: var(--radius-pill);
-  background: rgba(0, 0, 0, 0.05);
-  color: var(--text-secondary);
+  background: #edf4fc;
+  color: #365686;
 }
 .hall-tab-btn.active .tab-count {
   background: rgba(255, 255, 255, 0.25);
@@ -4210,7 +4246,7 @@ function renderSlots() {
       } else {
         return `
           <div class="slot-item" onclick="openItemModal('${side}', ${i})" title="点击添加装备">
-            <span style="font-size:20px; color:#aeaeb2; font-weight:300; line-height:1;">+</span>
+            <span style="font-size:20px; color:#6b8ab8; font-weight:300; line-height:1;">+</span>
           </div>
         `;
       }
@@ -4632,7 +4668,7 @@ function formatAppleDiff(valA, valB, unit = "", lowerIsBetter = false) {
   const countB = rightBuildItems.filter(Boolean).length;
 
   if (countA === 0 && countB === 0) {
-    return `<span class="apple-diff-pill pill-even">双方均为 15级 裸装基础值 (无装备增幅)</span>`;
+    return `<span class="apple-diff-pill pill-even">15级 裸装基准持平</span>`;
   }
 
   const diff = valB - valA;
@@ -4650,7 +4686,7 @@ function formatAppleDiff(valA, valB, unit = "", lowerIsBetter = false) {
   }
 }
 
-// 辅助渲染苹果 Spec 卡片 (独立圆角卡片，栅格双列分布)
+// 辅助渲染苹果 Spec 卡片 (独立纯白瓷感卡片，栅格双列分布)
 function renderSpecRow(title, sub, valA, valB, unit = "", lowerIsBetter = false) {
   const pillHtml = formatAppleDiff(valA, valB, unit, lowerIsBetter);
   const formattedA = typeof valA === 'number' ? valA.toLocaleString() : valA;
@@ -4658,9 +4694,10 @@ function renderSpecRow(title, sub, valA, valB, unit = "", lowerIsBetter = false)
 
   const countA = leftBuildItems.filter(Boolean).length;
   const countB = rightBuildItems.filter(Boolean).length;
+  const onlyOneEmpty = (countA === 0) !== (countB === 0);
 
-  const hintA = countA === 0 ? `<div style="font-size:11px; color:var(--text-tertiary); font-weight:normal; margin-top:2px;">(15级裸装基础)</div>` : '';
-  const hintB = countB === 0 ? `<div style="font-size:11px; color:var(--text-tertiary); font-weight:normal; margin-top:2px;">(15级裸装基础)</div>` : '';
+  const hintA = (onlyOneEmpty && countA === 0) ? `<div style="font-size:11px; color:var(--text-tertiary); font-weight:normal; margin-top:2px;">(15级裸装)</div>` : '';
+  const hintB = (onlyOneEmpty && countB === 0) ? `<div style="font-size:11px; color:var(--text-tertiary); font-weight:normal; margin-top:2px;">(15级裸装)</div>` : '';
 
   return `
     <div class="apple-spec-card">
@@ -4810,9 +4847,15 @@ function renderCdCard() {
           <span>${sname} 实际冷却</span>
         </div>
         <div class="cd-spec-vals">
-          <div class="cd-big-num">${cdA}s</div>
+          <div class="cd-col-box">
+            <span class="cd-col-tag tag-a">方案 A</span>
+            <div class="cd-big-num">${cdA}s</div>
+          </div>
           <span class="cd-vs-label">vs</span>
-          <div class="cd-big-num">${cdB}s</div>
+          <div class="cd-col-box">
+            <span class="cd-col-tag tag-b">方案 B</span>
+            <div class="cd-big-num">${cdB}s</div>
+          </div>
         </div>
         <div class="cd-spec-footer">
           ${pillHtml}
@@ -4874,8 +4917,8 @@ function renderStatsTable() {
     <div class="stats-apple-list">
       <div class="stats-apple-row stats-header-row">
         <div>属性维度</div>
-        <div>方案 A (基准)</div>
-        <div>方案 B (对比)</div>
+        <div><span style="color:#0071e3; background:rgba(0,113,227,0.08); padding:2px 8px; border-radius:6px; font-weight:700;">方案 A (基准)</span></div>
+        <div><span style="color:#1b6d2f; background:rgba(27,109,47,0.09); padding:2px 8px; border-radius:6px; font-weight:700;">方案 B (对比)</span></div>
         <div style="text-align:right;">差异对比</div>
       </div>
       ${displayRows.map(r => {
