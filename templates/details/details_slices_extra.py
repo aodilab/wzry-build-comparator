@@ -114,53 +114,73 @@ DETAILS_SLICES_EXTRA = [
         """
     ),
 
-    # 05_详情页：发货流程与全平台畅读
+    # 05_详情页：双端协同实战体验 (微信小程序 + 电脑宽屏沙盒)
     (
         "05_详情页_秒级发货全端畅读.png",
-        "24 小时无人值守 · 拍下旺旺秒级自动发货",
-        "秒级发货 · 全端畅读",
-        '<span class="subtitle-badge" style="background:#34c759;">自动发卡</span> <span>手机平板随开随查 ｜ 极客专属 AI 知识库原生包</span>',
+        "双端协同 · 随时随地随心查",
+        "手机随身查 ｜ 电脑大屏推演",
+        '<span class="subtitle-badge" style="background:#07c160;">全端覆盖</span> <span>微信搜一搜即开 ｜ 电脑浏览器免安装直达</span>',
         """
-        <div class="pro-card">
-            <div style="background:#fbfbfd; border-radius:18px; padding:18px 20px; border:1px solid #f0f0f4; display:flex; align-items:center; justify-content:space-between;">
-                <div style="display:flex; align-items:center; gap:16px;">
-                    <div style="width:48px; height:48px; border-radius:14px; background:rgba(0,113,227,0.08); display:flex; align-items:center; justify-content:center; font-size:24px;">📱</div>
-                    <div>
-                        <div style="font-size:19px; font-weight:800; color:#1d1d1f;">手机 / 平板端 · 高清战术手册</div>
-                        <div style="font-size:13px; color:#86868b; margin-top:2px;">全彩矢量排版，对局排位随手翻阅，无广告不卡壳</div>
+        <div class="pro-card" style="gap:20px; padding:32px 28px;">
+            <!-- 模块 1：微信小程序 -->
+            <div style="background:#ffffff; border-radius:20px; padding:22px 24px; border:1.5px solid rgba(7,193,96,0.22); box-shadow:0 8px 24px rgba(7,193,96,0.06); display:flex; flex-direction:column; gap:14px;">
+                <div style="display:flex; align-items:center; justify-content:space-between;">
+                    <div style="display:flex; align-items:center; gap:16px;">
+                        <div style="width:52px; height:52px; border-radius:16px; background:linear-gradient(135deg, #07c160 0%, #05a04e 100%); display:flex; align-items:center; justify-content:center; color:#ffffff; font-size:26px; box-shadow:0 6px 16px rgba(7,193,96,0.3);">
+                            📱
+                        </div>
+                        <div>
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <div style="font-size:21px; font-weight:850; color:#1d1d1f; letter-spacing:-0.02em;">微信小程序 · 王者出装箱</div>
+                                <span style="background:rgba(7,193,96,0.12); color:#07c160; font-size:12px; font-weight:800; padding:2px 8px; border-radius:6px;">即开即用</span>
+                            </div>
+                            <div style="font-size:13.5px; color:#86868b; margin-top:3px;">对局选人随时秒开 · 英雄战术克制 · 官方推荐出装与物理打靶</div>
+                        </div>
+                    </div>
+                    <div style="background:#07c160; color:#ffffff; font-size:13px; font-weight:800; padding:8px 16px; border-radius:980px; box-shadow:0 4px 12px rgba(7,193,96,0.25); white-space:nowrap;">
+                        🔍 搜「王者出装箱」
                     </div>
                 </div>
-                <span style="background:rgba(52,199,89,0.12); color:#248a3d; border:1px solid rgba(52,199,89,0.3); font-size:13px; font-weight:800; padding:6px 14px; border-radius:14px;">秒开即读</span>
+                <div style="display:flex; gap:8px; padding-top:4px; border-top:1px dashed #f0f0f4;">
+                    <span style="background:#f5f5f7; color:#515154; font-size:12px; font-weight:600; padding:4px 12px; border-radius:8px;">零安装开局秒查</span>
+                    <span style="background:#f5f5f7; color:#515154; font-size:12px; font-weight:600; padding:4px 12px; border-radius:8px;">手机随身掌上推演</span>
+                    <span style="background:#f5f5f7; color:#515154; font-size:12px; font-weight:600; padding:4px 12px; border-radius:8px;">S45 133位全英雄全分路</span>
+                </div>
             </div>
 
-            <div style="background:#fbfbfd; border-radius:18px; padding:18px 20px; border:1px solid #f0f0f4; display:flex; align-items:center; justify-content:space-between;">
-                <div style="display:flex; align-items:center; gap:16px;">
-                    <div style="width:48px; height:48px; border-radius:14px; background:rgba(0,113,227,0.08); display:flex; align-items:center; justify-content:center; font-size:24px;">💻</div>
-                    <div>
-                        <div style="font-size:19px; font-weight:800; color:#1d1d1f;">电脑宽屏端 · 在线推演沙盒</div>
-                        <div style="font-size:13px; color:#86868b; margin-top:2px;">独家配装动态算分，铭文混搭模拟，阵容协同诊断</div>
+            <!-- 模块 2：电脑宽屏推演沙盒 -->
+            <div style="background:#ffffff; border-radius:20px; padding:22px 24px; border:1.5px solid rgba(0,113,227,0.22); box-shadow:0 8px 24px rgba(0,113,227,0.06); display:flex; flex-direction:column; gap:14px;">
+                <div style="display:flex; align-items:center; justify-content:space-between;">
+                    <div style="display:flex; align-items:center; gap:16px;">
+                        <div style="width:52px; height:52px; border-radius:16px; background:linear-gradient(135deg, #0071e3 0%, #0056b3 100%); display:flex; align-items:center; justify-content:center; color:#ffffff; font-size:26px; box-shadow:0 6px 16px rgba(0,113,227,0.3);">
+                            💻
+                        </div>
+                        <div>
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <div style="font-size:21px; font-weight:850; color:#1d1d1f; letter-spacing:-0.02em;">电脑宽屏端 · 在线推演实验室</div>
+                                <span style="background:rgba(0,113,227,0.1); color:#0071e3; font-size:12px; font-weight:800; padding:2px 8px; border-radius:6px;">大屏对决</span>
+                            </div>
+                            <div style="font-size:13.5px; color:#86868b; margin-top:3px;">双轨方案横向对比 · 脆皮/坦克双靶抗性折算 · 六神装与铭文自由魔改</div>
+                        </div>
+                    </div>
+                    <div style="background:#0071e3; color:#ffffff; font-size:13px; font-weight:800; padding:8px 16px; border-radius:980px; box-shadow:0 4px 12px rgba(0,113,227,0.25); white-space:nowrap;">
+                        🌐 wzry.aodilab.com
                     </div>
                 </div>
-                <span style="background:rgba(0,113,227,0.1); color:#0071e3; border:1px solid rgba(0,113,227,0.25); font-size:13px; font-weight:800; padding:6px 14px; border-radius:14px;">送专属网址</span>
-            </div>
-
-            <div style="background:#fbfbfd; border-radius:18px; padding:18px 20px; border:1px solid #f0f0f4; display:flex; align-items:center; justify-content:space-between;">
-                <div style="display:flex; align-items:center; gap:16px;">
-                    <div style="width:48px; height:48px; border-radius:14px; background:rgba(175,82,222,0.1); display:flex; align-items:center; justify-content:center; font-size:24px;">🤖</div>
-                    <div>
-                        <div style="font-size:19px; font-weight:800; color:#1d1d1f;">AI 极客专享 · 原生数据包</div>
-                        <div style="font-size:13px; color:#86868b; margin-top:2px;">纯净 Markdown 格式，一键投喂 NotebookLM / DeepSeek 打造私人教练</div>
-                    </div>
+                <div style="display:flex; gap:8px; padding-top:4px; border-top:1px dashed #f0f0f4;">
+                    <span style="background:#f5f5f7; color:#515154; font-size:12px; font-weight:600; padding:4px 12px; border-radius:8px;">602 底层抗性减免模型</span>
+                    <span style="background:#f5f5f7; color:#515154; font-size:12px; font-weight:600; padding:4px 12px; border-radius:8px;">6 大定向对比分析看板</span>
+                    <span style="background:#f5f5f7; color:#515154; font-size:12px; font-weight:600; padding:4px 12px; border-radius:8px;">方案一键导出分享</span>
                 </div>
-                <span style="background:rgba(175,82,222,0.12); color:#9933cc; border:1px solid rgba(175,82,222,0.3); font-size:13px; font-weight:800; padding:6px 14px; border-radius:14px;">随包附赠</span>
             </div>
 
             <!-- 卡片内置微注 -->
-            <div class="card-footer-tip">
-                <span>⚡ 拍下后旺旺聊天窗口 1 秒自动推送网盘链接 · <strong>永久享受更新</strong></span>
-                <span style="color:#0071e3;">自动发货 ›</span>
+            <div class="card-footer-tip" style="padding-top:14px; margin-top:2px;">
+                <span>⚡ <strong>数据云端实时同步</strong> · 手机随身对局秒查 ｜ 电脑大屏深度对比</span>
+                <span style="color:#0071e3; font-weight:700;">双端即开即用 ›</span>
             </div>
         </div>
         """
     ),
+
 ]
