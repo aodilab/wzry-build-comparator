@@ -1,28 +1,34 @@
 # 王者荣耀出装对比系统 ｜ 底层算法与战术知识库
 
+<p align="center">
+  <img src="social_preview.png" alt="王者出装箱系统全景" width="100%">
+</p>
+
 <p align="left">
   <a href="https://github.com/aodilab/wzry-build-comparator/releases"><img src="https://img.shields.io/badge/Release-v1.0.0-0071e3.svg" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-34c759.svg" alt="License"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Web%20App-Online-0071e3.svg" alt="Web App"></a>
+  <a href="#"><img src="https://img.shields.io/badge/微信小程序-王者出装箱-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Heroes-133-ff9500.svg" alt="Heroes"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Official%20Builds-505-ff2d55.svg" alt="Official Builds"></a>
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.8+-5856d6.svg" alt="Python"></a>
 </p>
 
-- **仓库核心交付**：开源王者荣耀底层物理算分引擎、装备合成拓扑与专供 NotebookLM / RAG 深度检索的 6 大战术知识库；
-- **推演实验室交付**：为保证极致体验与实时数据维护，可视化推演沙盒采用云端持续交付，无需配置本地环境，直接通过全球 CDN 访问：[https://wzry.aodilab.com](https://wzry.aodilab.com)。
+- 🖥️ **电脑大屏端**：[https://wzry.aodilab.com](https://wzry.aodilab.com)（双轨横向对比、双靶抗性打靶、方案导出）
+- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（对局选人秒查，即开即用）
+- 📚 **开源算法库**：王者荣耀底层物理算分引擎与 6 卷战术知识库（专供 NotebookLM / RAG 检索）
 
 ---
 
-## 一、 我们做这个网站要解决什么问题？
+## 一、 为什么要做这套推演系统？
 
-很多玩家在备战或实战中，常常遇到出装二选一的纠结：
+很多玩家在备战或实战中，常常面临方案抉择：
 - *“这把逆风，我最后一件到底补碎星锤还是补破军？”*
-- *“打野走半肉穿透流伤害够不够秒后排？还是直接走全肉流抗伤更稳？”*
+- *“打野走半肉穿透伤害够不够秒后排？还是走全肉抗伤更稳？”*
 - *“辅助是出近卫+救赎保后排，还是出极影+奔狼打强开？”*
 
-传统助手通常只给出一套静态出装，玩家在面临不同方案时，往往**无法全方位评估出装的实际优劣**。  
-这个网站本质上是一个**出装对比平台**。我们引入 133 位英雄全分路共 505 套王者官方推荐出装作为参照基准，支持将任意两套出装（含 30 颗自选铭文）并排横向对比，通过实战伤害、野区清理、多维续航、技能冷却、面板属性与机制差异 6 个维度的定向分析，为玩家提供评估出装优劣的直观物理数据。
+传统助手只给静态推荐，无法横向评估优劣。  
+本系统收录 133 位国服英雄、505 套官方推荐基准，支持将任意两套出装（含 30 颗自选铭文）并排对决，通过**实战伤害、野区清理、多维续航、技能冷却、面板属性、机制差异** 6 大维度，直接给出底层打靶物理数据。
 
 ---
 
@@ -156,7 +162,7 @@ python build.py --kb
 
 ---
 
-## 五、 附录：全英雄与全分路对比检索索引矩阵 (SEO)
+## 六、 附录：全英雄与全分路对比检索索引矩阵 (SEO)
 
 <details>
 <summary><b>🔍 点击展开 133 位国服英雄与全分路定向对比检索索引库</b></summary>
