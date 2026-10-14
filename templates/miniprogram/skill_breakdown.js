@@ -68,13 +68,13 @@ function createRowBuilder() {
   let pendingRow = null;
   const rows = [];
 
-  const pushDual = (title, sqA, sqB, tkA, tkB, unit = '') => {
+  const pushDual = (title, sqA, sqB, tkA, tkB, unit = '', sub = '中射 / 坦克') => {
     const resSq = renderDiffBadge(sqA, sqB, unit, false);
     const resTk = { aWins: false, bWins: false, badgeA: '', badgeB: '' };
     rows.push({
       isDual: true,
       title,
-      sub: '中射 / 坦克',
+      sub,
       sqA: fmtVal(sqA, unit),
       sqB: fmtVal(sqB, unit),
       tkA: fmtVal(tkA, unit),
@@ -107,6 +107,8 @@ function createRowBuilder() {
     } else if (mainTitle.includes('(坦克)')) {
       mainTitle = mainTitle.replace('(坦克)', '').trim();
       subTitle = '对坦克 · 1000物防';
+    } else if (mainTitle === '核心机制效果' || mainTitle === '核心机制特性') {
+      subTitle = '技能专属战术机制';
     } else {
       for (const [k, m, s] of SUBTITLE_MAP) {
         if (mainTitle.includes(k)) {
@@ -136,14 +138,20 @@ function createRowBuilder() {
   };
 
   const add = (name, valA, valB, unit = '', lowerIsBetter = false) => {
-    const isSq = name.includes('(中射)') || name.includes('（中射）');
-    const isTk = name.includes('(坦克)') || name.includes('（坦克）');
+    const isSq = name.includes('(中射)') || name.includes('（中射）') || name.includes('(物理EHP)');
+    const isTk = name.includes('(坦克)') || name.includes('（坦克）') || name.includes('(法术EHP)');
     if (isSq) {
       flush();
-      pendingRow = { name, valA, valB, unit, lowerIsBetter };
+      pendingRow = { name, valA, valB, unit, lowerIsBetter, isEhp: name.includes('(物理EHP)') };
       return;
     }
     if (isTk && pendingRow) {
+      if (pendingRow.isEhp && name.includes('(法术EHP)')) {
+        const prev = pendingRow;
+        pendingRow = null;
+        pushDual('自身承伤极限', prev.valA, prev.valB, valA, valB, unit, '物理EHP / 法术EHP');
+        return;
+      }
       const baseName = name.replace(/[(（]坦克[)）]/g, '').trim();
       const prevBase = pendingRow.name.replace(/[(（]中射[)）]/g, '').trim();
       if (baseName === prevBase) {

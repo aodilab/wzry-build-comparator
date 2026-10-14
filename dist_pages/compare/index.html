@@ -1958,44 +1958,63 @@ body {
 }
 
 .detail-modal-content {
-  max-width: 960px;
+  max-width: 1120px;
   width: 100%;
   margin: 0 auto;
-  padding: 24px 20px 80px 20px;
+  padding: 20px 28px 64px 28px;
   box-sizing: border-box;
 }
 .detail-intro-bar {
-  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-card);
+}
+.detail-intro-text {
+  flex: 1;
+  min-width: 280px;
 }
 .detail-intro-bar h2 {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.02em;
-  margin-bottom: 6px;
+  margin: 0 0 4px 0;
   color: var(--text-primary);
 }
 .detail-intro-bar p {
-  font-size: 13px;
+  font-size: 12.5px;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.45;
   margin: 0;
 }
 .detail-benchmark-hint {
   font-size: 12px;
   color: var(--color-blue);
-  background: rgba(0, 113, 227, 0.06);
-  border: 1px solid rgba(0, 113, 227, 0.16);
-  border-radius: 8px;
+  background: rgba(0, 113, 227, 0.07);
+  border: 1px solid rgba(0, 113, 227, 0.18);
+  border-radius: 999px;
   padding: 6px 14px;
-  display: inline-block;
-  margin-top: 8px;
-  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .skill-cards-deck {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
+  align-items: stretch;
+}
+@media (max-width: 860px) {
+  .skill-cards-deck {
+    grid-template-columns: 1fr;
+  }
 }
 .skill-detail-card {
   background: var(--bg-card);
@@ -2003,6 +2022,8 @@ body {
   border-radius: 16px;
   padding: 16px 20px 12px 20px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
 }
 .skill-card-top {
   display: flex;
@@ -2178,10 +2199,16 @@ body {
   text-align: center;
   word-break: break-word;
 }
+.val-primary.win-a, .val-single.win-a {
+  color: #0071e3;
+}
+.val-primary.win-b, .val-single.win-b {
+  color: #1b6d2f;
+}
 .win-diff-pill {
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 700;
-  padding: 1px 4px;
+  padding: 1px 5px;
   border-radius: 4px;
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
@@ -3358,8 +3385,11 @@ body {
   </div>
   <div class="detail-modal-content">
     <div class="detail-intro-bar">
-      <h2>各技能详细物理拆解与效果对决</h2>
-      <p>拆解普攻与各个技能在当前出装与铭文配置下的单发实际伤害（经中射/坦克双轨抗性折算后的物理/法术净掉血）、控制时长、生命回复量与实战冷却对比。</p>
+      <div class="detail-intro-text">
+        <h2>各技能详细物理拆解与效果对决</h2>
+        <p>拆解普攻与各个技能在当前出装与铭文配置下的单发实际净伤害、控制机制、护盾回复与实战冷却对比。</p>
+      </div>
+      <div class="detail-benchmark-hint" id="detailBenchmarkHint">基准防御：后排 350 物防 ｜ 前排 1000 物防</div>
     </div>
     <div class="skill-cards-deck" id="skillCardsDeck">
       <!-- 动态注入普攻、1技能、2技能、3技能卡片 -->
@@ -4146,7 +4176,9 @@ function switchCombo(idx) {
 
 function findItem(name) {
   if (!name) return null;
-  return ITEMS_DATA.find(i => i.item_name === name || i.item_name.includes(name) || name.includes(i.item_name));
+  return ITEMS_DATA.find(i => i.item_name === name)
+    || ITEMS_DATA.find(i => i.item_name.includes(name))
+    || ITEMS_DATA.find(i => name.includes(i.item_name));
 }
 
 function getItemImgSrc(itemId) {
@@ -4239,6 +4271,7 @@ function calcBuildStats(items, arcana) {
   let mLifesteal = 0;
   let hasMaster = false;
   let hasIce = false;
+  let hasWushu = false;
   let hasDragon = false;
   let hasFenghuang = false;
   let hasDoomsdayArmor = false;
@@ -4338,6 +4371,7 @@ function calcBuildStats(items, arcana) {
     const n = it.item_name || "";
     if (n.includes("宗师之力")) hasMaster = true;
     if (n.includes("冰痕之握")) hasIce = true;
+    if (n.includes("巫术法杖")) hasWushu = true;
     if (n.includes("怒龙剑盾") || n.includes("红莲斗篷")) hasDragon = true;
     if (n.includes("破军")) hasFenghuang = true;
     if (n.includes("暴烈之甲")) hasDoomsdayArmor = true;
@@ -4391,6 +4425,7 @@ function calcBuildStats(items, arcana) {
     mLifesteal,
     hasMaster,
     hasIce,
+    hasWushu,
     hasDragon,
     hasFenghuang,
     hasDoomsdayArmor,
@@ -5359,41 +5394,556 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
-function formatSkillDiffPill(valA, valB, unit = "", lowerIsBetter = false) {
-  if (typeof valA === "number" && typeof valB === "number") {
-    const diff = valB - valA;
-    if (Math.abs(diff) < 0.01) {
-      return `<span class="apple-diff-pill pill-even" style="padding:2px 8px; font-size:11px;">持平</span>`;
+function buildCustomHeroCards(h, sA, sB, multA, multB, drSqPA, drSqPB, drTkPA, drTkPB, normSqA, normSqB, normTkA, normTkB, sheenA, sheenB, effectA, effectB, attackIconUrl, skUrl, addCard) {
+  if (h.cname === '孙尚香') {
+    const hpsA = 1 + sA.aspeed / 100, hpsB = 1 + sB.aspeed / 100;
+    const cmA = 1 + (sA.critRate / 100) * ((sA.critEff - 100) / 100), cmB = 1 + (sB.critRate / 100) * ((sB.critEff - 100) / 100);
+    const cSqA = Math.round(normSqA * cmA), cSqB = Math.round(normSqB * cmB);
+    const cTkA = Math.round(normTkA * cmA), cTkB = Math.round(normTkB * cmB);
+    const vampA = Math.round(normSqA * (sA.pLifesteal / 100)), vampB = Math.round(normSqB * (sB.pLifesteal / 100));
+    addCard(attackIconUrl, true, '普攻 · 普攻秒伤与暴击期望', '持续输出', (add) => {
+      add('常规平A (中射)', normSqA, normSqB);
+      add('常规平A (坦克)', normTkA, normTkB);
+      add('暴击期望单发 (中射)', cSqA, cSqB);
+      add('暴击期望单发 (坦克)', cTkA, cTkB);
+      add('持续秒伤 DPS (中射)', Math.round(cSqA * hpsA), Math.round(cSqB * hpsB));
+      add('持续秒伤 DPS (坦克)', Math.round(cTkA * hpsA), Math.round(cTkB * hpsB));
+      add('普攻频次 (攻速折算)', `${hpsA.toFixed(2)} 次/s`, `${hpsB.toFixed(2)} 次/s`);
+      if (vampA > 0 || vampB > 0) add('单发普攻吸血', vampA, vampB, ' 点');
+    });
+    const cd1A = +(5.0 * (1 - sA.cdr / 100)).toFixed(1), cd1B = +(5.0 * (1 - sB.cdr / 100)).toFixed(1);
+    addCard(skUrl('10'), false, '1技能 · 翻滚突袭', formatSkillBadge(5.0, '翻滚强化'), (add) => {
+      add('翻滚重炮强化 (中射)', Math.round((370 + sA.atk * 1.0 + sheenA) * multA * drSqPA), Math.round((370 + sB.atk * 1.0 + sheenB) * multB * drSqPB));
+      add('翻滚重炮强化 (坦克)', Math.round((370 + sA.atk * 1.0 + sheenA) * multA * drTkPA), Math.round((370 + sB.atk * 1.0 + sheenB) * multB * drTkPB));
+      add('核心机制特性', '80%移速 · 强化射程', '80%移速 · 强化射程');
+      add('实战技能冷却', cd1A, cd1B, 's', true);
+    });
+    const cd2A = +(6.0 * (1 - sA.cdr / 100)).toFixed(1), cd2B = +(6.0 * (1 - sB.cdr / 100)).toFixed(1);
+    addCard(skUrl('20'), false, '2技能 · 红莲爆弹', formatSkillBadge(6.0, '+25%破甲'), (add) => {
+      add('爆弹范围伤害 (中射)', Math.round((250 + sA.atk * 1.0) * multA * drSqPA), Math.round((250 + sB.atk * 1.0) * multB * drSqPB));
+      add('爆弹范围伤害 (坦克)', Math.round((250 + sA.atk * 1.0) * multA * drTkPA), Math.round((250 + sB.atk * 1.0) * multB * drTkPB));
+      add('核心机制特性', '25%破甲 · 50%减速', '25%破甲 · 50%减速');
+      add('实战技能冷却', cd2A, cd2B, 's', true);
+    });
+    const cd3A = +(15.0 * (1 - sA.cdr / 100)).toFixed(1), cd3B = +(15.0 * (1 - sB.cdr / 100)).toFixed(1);
+    addCard(skUrl('30'), false, '3技能 · 究极弩炮', formatSkillBadge(15.0, '远程AOE'), (add) => {
+      add('究极弩炮命中 (中射)', Math.round((1000 + sA.atk * 1.85) * multA * drSqPA), Math.round((1000 + sB.atk * 1.85) * multB * drSqPB));
+      add('究极弩炮命中 (坦克)', Math.round((1000 + sA.atk * 1.85) * multA * drTkPA), Math.round((1000 + sB.atk * 1.85) * multB * drTkPB));
+      add('核心机制特性', '超远冲击 · 范围溅射', '超远冲击 · 范围溅射');
+      add('实战技能冷却', cd3A, cd3B, 's', true);
+    });
+  } else if (h.cname === '李白') {
+    const hpsA = 1 + sA.aspeed / 100, hpsB = 1 + sB.aspeed / 100;
+    const vampA = Math.round(normSqA * (sA.pLifesteal / 100)), vampB = Math.round(normSqB * (sB.pLifesteal / 100));
+    addCard(attackIconUrl, true, '普攻 · 普通攻击与剑气解锁', '4A解封大招', (add) => {
+      add('常规平A (中射)', normSqA, normSqB);
+      add('常规平A (坦克)', normTkA, normTkB);
+      add('普攻频次 (攻速折算)', `${hpsA.toFixed(2)} 次/s`, `${hpsB.toFixed(2)} 次/s`);
+      if (vampA > 0 || vampB > 0) add('单发普攻吸血', vampA, vampB, ' 点');
+      if (effectA !== '常规平A' || effectB !== '常规平A') add('强击与特效机制', effectA, effectB);
+    });
+    const cd1A = +(8.0 * (1 - sA.cdr / 100)).toFixed(1), cd1B = +(8.0 * (1 - sB.cdr / 100)).toFixed(1);
+    addCard(skUrl('10'), false, '1技能 · 将进酒', formatSkillBadge(8.0, '两段眩晕'), (add) => {
+      add('两段突进满伤 (中射)', Math.round(2 * (575 + sA.atk * 1.1) * multA * drSqPA), Math.round(2 * (575 + sB.atk * 1.1) * multB * drSqPB));
+      add('两段突进满伤 (坦克)', Math.round(2 * (575 + sA.atk * 1.1) * multA * drTkPA), Math.round(2 * (575 + sB.atk * 1.1) * multB * drTkPB));
+      add('核心机制特性', '两段眩晕 · 残影折返', '两段眩晕 · 残影折返');
+      add('实战技能冷却', cd1A, cd1B, 's', true);
+    });
+    const cd2A = +(10.0 * (1 - sA.cdr / 100)).toFixed(1), cd2B = +(10.0 * (1 - sB.cdr / 100)).toFixed(1);
+    addCard(skUrl('20'), false, '2技能 · 神来之笔', formatSkillBadge(10.0, '破甲·免控'), (add) => {
+      add('神来之笔剑圈 (中射)', Math.round((680 + sA.atk * 1.6) * multA * drSqPA), Math.round((680 + sB.atk * 1.6) * multB * drSqPB));
+      add('神来之笔剑圈 (坦克)', Math.round((680 + sA.atk * 1.6) * multA * drTkPA), Math.round((680 + sB.atk * 1.6) * multB * drTkPB));
+      add('核心机制特性', '不可选中 · 剑圈破甲', '不可选中 · 剑圈破甲');
+      add('实战技能冷却', cd2A, cd2B, 's', true);
+    });
+    const cd3A = +(12.0 * (1 - sA.cdr / 100)).toFixed(1), cd3B = +(12.0 * (1 - sB.cdr / 100)).toFixed(1);
+    addCard(skUrl('30'), false, '3技能 · 青莲剑歌', formatSkillBadge(12.0, '不可选中'), (add) => {
+      add('5段剑气斩击 (中射)', Math.round(5 * (320 + sA.atk * 0.5) * multA * drSqPA), Math.round(5 * (320 + sB.atk * 0.5) * multB * drSqPB));
+      add('5段剑气斩击 (坦克)', Math.round(5 * (320 + sA.atk * 0.5) * multA * drTkPA), Math.round(5 * (320 + sB.atk * 0.5) * multB * drTkPB));
+      add('核心机制特性', '全程不可选中 · 5段斩', '全程不可选中 · 5段斩');
+      add('实战技能冷却', cd3A, cd3B, 's', true);
+    });
+  } else if (h.cname === '吕布') {
+    const tA = Math.round(sA.atk * multA), tB = Math.round(sB.atk * multB);
+    const hpsA = 1 + sA.aspeed / 100, hpsB = 1 + sB.aspeed / 100;
+    const vampA = Math.round(sA.atk * (sA.pLifesteal / 100)), vampB = Math.round(sB.atk * (sB.pLifesteal / 100));
+    addCard(attackIconUrl, true, '普攻 · 附魔真实伤害与吸血', '附魔真伤', (add) => {
+      add('常规平A (中射)', normSqA, normSqB);
+      add('常规平A (坦克)', normTkA, normTkB);
+      add('附魔真伤普攻 (中射)', tA, tB);
+      add('附魔真伤普攻 (坦克)', tA, tB);
+      add('普攻频次 (攻速折算)', `${hpsA.toFixed(2)} 次/s`, `${hpsB.toFixed(2)} 次/s`);
+      if (vampA > 0 || vampB > 0) add('单发普攻吸血', vampA, vampB, ' 点');
+    });
+    const cd1A = +(5.0 * (1 - sA.cdr / 100)).toFixed(1), cd1B = +(5.0 * (1 - sB.cdr / 100)).toFixed(1);
+    const s1A = Math.round((1200 + sA.atk * 1.9) * multA), s1B = Math.round((1200 + sB.atk * 1.9) * multB);
+    addCard(skUrl('10'), false, '1技能 · 方天画斩', formatSkillBadge(5.0, '附魔真伤'), (add) => {
+      add('方天画斩 (真实伤害)', s1A, s1B);
+      add('核心机制特性', '命中附魔 · 真伤转化', '命中附魔 · 真伤转化');
+      add('实战技能冷却', cd1A, cd1B, 's', true);
+    });
+    const cd2A = +(8.0 * (1 - sA.cdr / 100)).toFixed(1), cd2B = +(8.0 * (1 - sB.cdr / 100)).toFixed(1);
+    const shA = Math.round(1050 + sA.atk * 0.6), shB = Math.round(1050 + sB.atk * 0.6);
+    const hlA = Math.round(shA * 0.5), hlB = Math.round(shB * 0.5);
+    addCard(skUrl('20'), false, '2技能 · 贪婪之握', formatSkillBadge(8.0, '护盾转血'), (add) => {
+      add('抽取护盾吸收上限', shA, shB, ' 点');
+      add('护盾转化生命回复', hlA, hlB, ' 点');
+      if (sA.hasPhoenixEye || sB.hasPhoenixEye) {
+        add('绝境急救(≤30%血)', sA.hasPhoenixEye ? Math.round(hlA * 1.42) : hlA, sB.hasPhoenixEye ? Math.round(hlB * 1.42) : hlB, ' 点');
+      }
+      add('实战技能冷却', cd2A, cd2B, 's', true);
+    });
+    const cd3A = +(50.0 * (1 - sA.cdr / 100)).toFixed(1), cd3B = +(50.0 * (1 - sB.cdr / 100)).toFixed(1);
+    addCard(skUrl('30'), false, '3技能 · 魔神降世', formatSkillBadge(50.0, '击飞·双抗'), (add) => {
+      add('天降挥斩 (真实伤害)', Math.round((800 + sA.atk * 1.2) * multA), Math.round((800 + sB.atk * 1.2) * multB));
+      add('核心机制特性', '1.0s击飞 · 结界双抗', '1.0s击飞 · 结界双抗');
+      add('实战技能冷却', cd3A, cd3B, 's', true);
+    });
+  }
+}
+
+function buildGeneralHeroCards(h, isMarksman, isMage, isSupport, sA, sB, multA, multB, drSqPA, drSqPB, drTkPA, drTkPB, drSqMA, drSqMB, drTkMA, drTkMB, normSqA, normSqB, normTkA, normTkB, effectA, effectB, heroSkills, attackIconUrl, skUrl, addCard) {
+  if (isMarksman) {
+    const hpsA = 1 + sA.aspeed / 100, hpsB = 1 + sB.aspeed / 100;
+    const cmA = 1 + (sA.critRate / 100) * ((sA.critEff - 100) / 100), cmB = 1 + (sB.critRate / 100) * ((sB.critEff - 100) / 100);
+    const cSqA = Math.round(normSqA * cmA), cSqB = Math.round(normSqB * cmB);
+    const cTkA = Math.round(normTkA * cmA), cTkB = Math.round(normTkB * cmB);
+    const vampA = Math.round(normSqA * (sA.pLifesteal / 100)), vampB = Math.round(normSqB * (sB.pLifesteal / 100));
+    addCard(attackIconUrl, true, '普攻 · 普攻秒伤与暴击期望', '持续输出', (add) => {
+      add('常规平A (中射)', normSqA, normSqB);
+      add('常规平A (坦克)', normTkA, normTkB);
+      add('暴击期望单发 (中射)', cSqA, cSqB);
+      add('暴击期望单发 (坦克)', cTkA, cTkB);
+      add('持续秒伤 DPS (中射)', Math.round(cSqA * hpsA), Math.round(cSqB * hpsB));
+      add('持续秒伤 DPS (坦克)', Math.round(cTkA * hpsA), Math.round(cTkB * hpsB));
+      add('普攻频次 (攻速折算)', `${hpsA.toFixed(2)} 次/s`, `${hpsB.toFixed(2)} 次/s`);
+      if (vampA > 0 || vampB > 0) add('单发普攻吸血', vampA, vampB, ' 点');
+    });
+  } else if (isMage) {
+    const vMageA = Math.round(sA.ap * 0.4 * (sA.mLifesteal / 100));
+    const vMageB = Math.round(sB.ap * 0.4 * (sB.mLifesteal / 100));
+    addCard(attackIconUrl, true, '普攻 · 基础普攻与法术衔接', '普攻·法术', (add) => {
+      add('常规平A (中射)', normSqA, normSqB);
+      add('常规平A (坦克)', normTkA, normTkB);
+      if (vMageA > 0 || vMageB > 0) add('单发技能法术吸血', vMageA, vMageB, ' 点');
+      add('强击与法术特效', effectA, effectB);
+    });
+  } else if (isSupport) {
+    const fmtAct = (n) => (!n || n.includes('无主动')) ? '无主动' : (n.includes('救赎') ? '救赎护盾' : (n.includes('奔狼') ? '奔狼冲锋' : (n.includes('形昭') ? '形昭探草' : (n.includes('星泉') ? '星泉续航' : n.split('(')[0].trim()))));
+    const fmtAu = (d) => (!d || d.includes('无团队') || d.includes('无光环')) ? '无光环' : (d.includes('近卫') ? '近卫双抗' : (d.includes('极影') ? '极影攻速' : d.split('(')[0].trim()));
+    addCard(attackIconUrl, true, '普攻 · 普通攻击与辅助协同', '游走协同', (add) => {
+      add('常规平A (中射)', normSqA, normSqB);
+      add('常规平A (坦克)', normTkA, normTkB);
+      add('辅助装主动技能', fmtAct(sA.supportActiveName), fmtAct(sB.supportActiveName));
+      add('团队常驻防御光环', fmtAu(sA.supportAuraDesc), fmtAu(sB.supportAuraDesc));
+      add('移动速度 (转线支援)', sA.moveSpeed, sB.moveSpeed, ' 点');
+    });
+  } else {
+    const vampA = Math.round(sA.atk * (sA.pLifesteal / 100));
+    const vampB = Math.round(sB.atk * (sB.pLifesteal / 100));
+    addCard(attackIconUrl, true, '普攻 · 普通攻击与强击特效', '普通攻击', (add) => {
+      add('常规平A (中射)', normSqA, normSqB);
+      add('常规平A (坦克)', normTkA, normTkB);
+      if (vampA > 0 || vampB > 0) add('单发普攻吸血', vampA, vampB, ' 点');
+      add('强击与特效机制', effectA, effectB);
+    });
+  }
+
+  const activeSkills = (heroSkills || []).slice(1);
+  const skillList = activeSkills.length > 0 ? activeSkills : [
+    { type: '1技能', name: '战术技能', desc: '物理爆发突进', cd_sec: 6.0, tags: ['物理输出'] },
+    { type: '2技能', name: '核心技能', desc: '机制控制技能', cd_sec: 8.0, tags: ['控制'] },
+    { type: '3技能', name: '终极奥义', desc: '决胜团战大招', cd_sec: 30.0, tags: ['爆发'] }
+  ];
+
+  skillList.forEach((sk, idx) => {
+    const cleanSkName = (sk.name || '').split('(')[0].split('（')[0].trim() || sk.name;
+    const baseCd = sk.cd_sec || (idx === 2 ? (isSupport ? 40.0 : 30.0) : (idx === 1 ? (isSupport ? 10.0 : 8.0) : (isSupport ? 8.0 : 6.0)));
+    const cdA = +(baseCd * (1 - sA.cdr / 100)).toFixed(1), cdB = +(baseCd * (1 - sB.cdr / 100)).toFixed(1);
+    const desc = sk.desc || '', tags = sk.tags || [], tagsStr = tags.join(' ');
+    const hasShield = tagsStr.includes('护盾') || desc.includes('护盾') || desc.includes('吸收');
+    const hasHeal = tagsStr.includes('回血') || tagsStr.includes('回复') || desc.includes('回复') || desc.includes('治疗') || desc.includes('回血');
+    const skType = sk.type || '';
+    const isUlt = skType.includes('3') || skType.includes('4') || idx >= 2;
+
+    let ccText = isSupport ? '团队协同' : (tags.length > 0 ? tags[0] : '战术机制');
+    const kwList = isSupport
+      ? [['压制','绝对压制'],['复活','濒死复活'],['刷新','大招刷新'],['击飞','范围击飞'],['眩晕','眩晕打断'],['晕眩','眩晕打断'],['击退','击退控场'],['嘲讽','范围嘲讽'],['沉默','沉默限制'],['隐身','团队隐身'],['回城','空间法阵'],['减速','减速牵制']]
+      : [['真实伤害','真实伤害'],['击飞','范围击飞'],['眩晕','眩晕硬控'],['晕眩','眩晕硬控'],['沉默','沉默限制'],['减速','减速牵制'],['不可选中','不可选中'],['霸体','霸体免控']];
+    for (const [kw, lb] of kwList) {
+      if (desc.includes(kw)) { ccText = lb; break; }
     }
+    const t0 = (tags && tags[0] && tags[0] !== ccText) ? tags[0] : (isSupport ? '团队增益' : '战术核心');
+    const mechSummary = `${ccText} · ${t0}`;
+
+    addCard(skUrl((idx + 1) * 10), false, `${sk.type || `技能 ${idx + 1}`} · ${cleanSkName}`, formatSkillBadge(baseCd, ccText), (add) => {
+      if (isSupport) {
+        let rowCount = 0;
+        const hasDmgKw = ['物理伤害', '法术伤害', '真实伤害', '对敌人造成', '范围内的敌人', '敌方造成'].some(k => desc.includes(k));
+        const isPureProt = (hasShield || hasHeal || desc.includes('回城') || desc.includes('刷新') || desc.includes('复活') || desc.includes('附身')) &&
+          ['为己方', '为友方', '为友军', '自身获得', '为自身', '队友', '附身', '传送', '刷新'].some(p => desc.includes(p)) &&
+          !['横劈', '砸地', '冲锋', '飞斧', '机械爪'].some(a => desc.includes(a));
+        const hasRealDamage = hasDmgKw && !isPureProt;
+        if (hasRealDamage) {
+          const isMagic = isMage || desc.includes('法术伤害') || tags.includes('法术伤害') || sA.ap > sA.atk;
+          const bV = isUlt ? 600 : (idx === 0 ? 350 : 450);
+          if (isMagic) {
+            add(`${cleanSkName}伤害 (中射)`, Math.round((bV + sA.ap * 0.6 + sA.hp * 0.03) * multA * drSqMA), Math.round((bV + sB.ap * 0.6 + sB.hp * 0.03) * multB * drSqMB));
+            add(`${cleanSkName}伤害 (坦克)`, Math.round((bV + sA.ap * 0.6 + sA.hp * 0.03) * multA * drTkMA), Math.round((bV + sB.ap * 0.6 + sB.hp * 0.03) * multB * drTkMB));
+          } else {
+            add(`${cleanSkName}伤害 (中射)`, Math.round((bV + sA.atk * 0.8 + sA.hp * 0.02) * multA * drSqPA), Math.round((bV + sB.atk * 0.8 + sB.hp * 0.02) * multB * drSqPB));
+            add(`${cleanSkName}伤害 (坦克)`, Math.round((bV + sA.atk * 0.8 + sA.hp * 0.02) * multA * drTkPA), Math.round((bV + sB.atk * 0.8 + sB.hp * 0.02) * multB * drTkPB));
+          }
+          rowCount++;
+        }
+        if (hasShield) {
+          const shA = (isUlt && desc.includes('最大生命')) ? Math.round(sA.hp * 0.40) : ((sA.ap > sA.atk || isMage) ? Math.round(1000 + sA.ap * 0.45 + sA.hp * 0.08) : Math.round(900 + sA.hp * 0.08 + sA.atk * 0.4));
+          const shB = (isUlt && desc.includes('最大生命')) ? Math.round(sB.hp * 0.40) : ((sB.ap > sB.atk || isMage) ? Math.round(1000 + sB.ap * 0.45 + sB.hp * 0.08) : Math.round(900 + sB.hp * 0.08 + sB.atk * 0.4));
+          add(isUlt ? '终极真血护盾吸收量' : `${cleanSkName}护盾庇护吸收量`, shA, shB, ' 点');
+          rowCount++;
+        }
+        if (hasHeal) {
+          const hlA = (sA.ap > sA.atk || isMage) ? Math.round(700 + sA.ap * 0.40 + sA.hp * 0.03) : Math.round(500 + sA.hp * 0.06);
+          const hlB = (sB.ap > sB.atk || isMage) ? Math.round(700 + sB.ap * 0.40 + sB.hp * 0.03) : Math.round(500 + sB.hp * 0.06);
+          add(`${cleanSkName}生命回复总量`, hlA, hlB, ' 点');
+          rowCount++;
+          if (sA.hasPhoenixEye || sB.hasPhoenixEye) {
+            add('绝境急救(≤30%血)', sA.hasPhoenixEye ? Math.round(hlA * 1.42) : hlA, sB.hasPhoenixEye ? Math.round(hlB * 1.42) : hlB, ' 点');
+            rowCount++;
+          }
+        }
+        if (isUlt || (!hasRealDamage && !hasShield && !hasHeal)) {
+          add('自身承伤极限 (物理EHP)', Math.round(sA.hp * (1 + sA.pdef / 602)), Math.round(sB.hp * (1 + sB.pdef / 602)), ' 点');
+          add('自身承伤极限 (法术EHP)', Math.round(sA.hp * (1 + sA.mdef / 602)), Math.round(sB.hp * (1 + sB.mdef / 602)), ' 点');
+          rowCount++;
+        }
+        if (rowCount < 2) {
+          add('核心机制特性', mechSummary, mechSummary);
+        }
+        add('实战技能冷却', cdA, cdB, 's', true);
+      } else {
+        let rowCount = 1;
+        const isTrue = desc.includes('真实伤害') || tags.includes('真实伤害');
+        const isMag = isMage || desc.includes('法术伤害') || tags.includes('法术伤害');
+        const isMulti = desc.includes('段') || desc.includes('次') || desc.includes('持续');
+        const bR = idx === 2 ? 1.5 : (idx === 1 ? 1.0 : 0.8), bV = idx === 2 ? 750 : (idx === 1 ? 480 : 350);
+        if (isTrue) {
+          const dA = Math.round((bV + sA.atk * bR) * multA), dB = Math.round((bV + sB.atk * bR) * multB);
+          add(`${cleanSkName} (真实伤害)`, dA, dB);
+        } else {
+          const rawA = isMag ? Math.round(bV + sA.ap * (bR * 0.7)) : Math.round(bV + sA.atk * bR);
+          const rawB = isMag ? Math.round(bV + sB.ap * (bR * 0.7)) : Math.round(bV + sB.atk * bR);
+          const sqA = Math.round(rawA * multA * (isMag ? drSqMA : drSqPA)), sqB = Math.round(rawB * multB * (isMag ? drSqMB : drSqPB));
+          const tkA = Math.round(rawA * multA * (isMag ? drTkMA : drTkPA)), tkB = Math.round(rawB * multB * (isMag ? drTkMB : drTkPB));
+          add(isMulti ? `${cleanSkName}多段满额 (中射)` : `${cleanSkName}单发净伤 (中射)`, sqA, sqB);
+          add(isMulti ? `${cleanSkName}多段满额 (坦克)` : `${cleanSkName}单发净伤 (坦克)`, tkA, tkB);
+        }
+        if (hasHeal) {
+          const hlA = Math.round(sA.hp * 0.05 + sA.atk * 0.2 + sA.ap * 0.25), hlB = Math.round(sB.hp * 0.05 + sB.atk * 0.2 + sB.ap * 0.25);
+          add(`${cleanSkName}生命回复总量`, hlA, hlB, ' 点');
+          rowCount++;
+          if (sA.hasPhoenixEye || sB.hasPhoenixEye) {
+            add('绝境急救(≤30%血)', sA.hasPhoenixEye ? Math.round(hlA * 1.42) : hlA, sB.hasPhoenixEye ? Math.round(hlB * 1.42) : hlB, ' 点');
+            rowCount++;
+          }
+        }
+        if (hasShield) {
+          add(`${cleanSkName}护盾庇护吸收量`, Math.round(500 + sA.hp * 0.08 + sA.ap * 0.3 + sA.atk * 0.2), Math.round(500 + sB.hp * 0.08 + sB.ap * 0.3 + sB.atk * 0.2), ' 点');
+          rowCount++;
+        }
+        if (rowCount < 2) {
+          add('核心机制特性', mechSummary, mechSummary);
+        }
+        add('实战技能冷却', cdA, cdB, 's', true);
+      }
+    });
+  });
+}
+
+// 王者出装推演 ｜ 各技能全维物理拆解二级视窗引擎 (1:1 复刻 preview_miniprogram.html)
+
+const SUBTITLE_MAP = [
+  ['物理承伤上限', '极限物理承伤', '物理EHP (防具折算)'],
+  ['法术承伤上限', '极限法术承伤', '法术EHP (防具折算)'],
+  ['终极真血护盾吸收量', '终极大招护盾', '40%最大生命值吸收'],
+  ['绝境急救', '绝境急救回复', '血量≤30% · 不死鸟增幅'],
+  ['最大生命值上限', '最大生命上限', '基础体质+装备铭文'],
+  ['辅助装主动技能', '辅助装主动', '局内主动技能'],
+  ['团队常驻防御光环', '团队防御光环', '全队常驻增益'],
+  ['移动速度', '实战移动速度', '转线支援跑图'],
+  ['普攻频次', '实际普攻频次', '攻速档位折算'],
+  ['强击与法术特效', '强击法术特效', '被动机制协同'],
+  ['强化与法术特效', '强击法术特效', '被动机制协同'],
+  ['强击与特效机制', '强击被动特效', '装备机制协同'],
+  ['单发普攻吸血', '普攻物理吸血', '单发吸血回复'],
+  ['单次普攻吸血', '普攻物理吸血', '单发吸血回复'],
+  ['单发技能法术吸血', '技能法术吸血', '单发吸血回复'],
+  ['附带减速软控', '减速留人软控', '技能+冰痕被动'],
+  ['抽取护盾', '抽取护盾上限', '最大护盾吸收量'],
+  ['护盾转化', '护盾转化回复', '护盾转生命值']
+];
+
+function fmtVal(v, unit = '') {
+  if (typeof v === 'number') {
+    const numStr = (v % 1 === 0) ? String(Math.round(v)) : v.toFixed(1);
+    return (unit === 's' ? v.toFixed(1) : numStr) + unit;
+  }
+  return v;
+}
+
+function renderDiffBadge(valA, valB, unit = '', lowerIsBetter = false) {
+  if (typeof valA === 'number' && typeof valB === 'number') {
+    const diff = valB - valA;
+    if (Math.abs(diff) < 0.01) return { aWins: false, bWins: false, badgeA: '', badgeB: '' };
     const isBetterB = lowerIsBetter ? (diff < 0) : (diff > 0);
     const diffAbs = Math.abs(diff).toFixed(diff % 1 === 0 ? 0 : 1);
-    const pct = Math.abs((diff / (valA || 1)) * 100).toFixed(1);
+    const prefix = lowerIsBetter ? '-' : '+';
     if (isBetterB) {
-      return `<span class="apple-diff-pill pill-b-better" style="padding:2px 8px; font-size:11px;" title="方案B优于方案A ${diffAbs}${unit} (${diff > 0 ? '+' : '-'}${pct}%)">B优 ${diffAbs}${unit}</span>`;
+      return { aWins: false, bWins: true, badgeA: '', badgeB: `${prefix}${diffAbs}${unit}` };
     } else {
-      return `<span class="apple-diff-pill pill-a-better" style="padding:2px 8px; font-size:11px;" title="方案A优于方案B ${diffAbs}${unit} (${diff < 0 ? '+' : '-'}${pct}%)">A优 ${diffAbs}${unit}</span>`;
+      return { aWins: true, bWins: false, badgeA: `${prefix}${diffAbs}${unit}`, badgeB: '' };
     }
   }
-  if (valA === valB) {
-    return `<span class="apple-diff-pill pill-even" style="padding:2px 8px; font-size:11px;">一致</span>`;
+  return { aWins: false, bWins: false, badgeA: '', badgeB: '' };
+}
+
+function formatSkillBadge(base, mechTag = '') {
+  const bStr = typeof base === 'number' ? base.toFixed(1).replace(/\.0$/, '') : String(base).replace(/\.0$/, '');
+  return mechTag ? `${mechTag} · 初CD ${bStr}s` : `初始CD ${bStr}s`;
+}
+
+function formatEffectLabel(s) {
+  if (s.hasDragon) {
+    if (s.hasMaster) return '宗师 + 怒龙';
+    if (s.hasIce) return '冰痕 + 怒龙';
+    if (s.hasWushu) return '巫术 + 怒龙';
+    return '平A + 怒龙';
   }
-  return `<span class="apple-diff-pill pill-b-better" style="padding:2px 8px; font-size:11px;">机制差异</span>`;
+  if (s.hasMaster) return '宗师强击';
+  if (s.hasIce) return '冰痕强击';
+  if (s.hasWushu) return '巫术强击';
+  return '常规平A';
+}
+
+function createRowBuilder() {
+  let pendingRow = null;
+  const rows = [];
+
+  const pushDual = (title, sqA, sqB, tkA, tkB, unit = '', sub = '中射 / 坦克') => {
+    const resSq = renderDiffBadge(sqA, sqB, unit, false);
+    const resTk = { aWins: false, bWins: false, badgeA: '', badgeB: '' };
+    rows.push({
+      isDual: true,
+      title,
+      sub,
+      sqA: fmtVal(sqA, unit),
+      sqB: fmtVal(sqB, unit),
+      tkA: fmtVal(tkA, unit),
+      tkB: fmtVal(tkB, unit),
+      resSq,
+      resTk
+    });
+  };
+
+  const pushSingle = (name, valA, valB, unit = '', lowerIsBetter = false) => {
+    let mainTitle = name;
+    let subTitle = '';
+    if (mainTitle.includes('(真实伤害)')) {
+      mainTitle = mainTitle.replace('(真实伤害)', '').trim();
+      subTitle = '真实伤害 · 穿透护甲';
+    } else if (mainTitle.includes('(无视坦克护甲)')) {
+      mainTitle = mainTitle.replace('(无视坦克护甲)', '').trim();
+      subTitle = '对坦克 · 真实伤害';
+    } else if (mainTitle.includes('护盾庇护吸收量') && !mainTitle.includes('终极真血')) {
+      const p = mainTitle.replace('护盾庇护吸收量', '').trim();
+      mainTitle = p ? `${p}护盾` : '护盾庇护量';
+      subTitle = '实战吸收总量';
+    } else if (mainTitle.includes('生命回复总量')) {
+      const p = mainTitle.replace('生命回复总量', '').trim();
+      mainTitle = p ? `${p}回复` : '生命回复量';
+      subTitle = '实战治疗总量';
+    } else if (mainTitle.includes('(中射)')) {
+      mainTitle = mainTitle.replace('(中射)', '').trim();
+      subTitle = '对中射 · 350物防';
+    } else if (mainTitle.includes('(坦克)')) {
+      mainTitle = mainTitle.replace('(坦克)', '').trim();
+      subTitle = '对坦克 · 1000物防';
+    } else if (mainTitle === '核心机制效果' || mainTitle === '核心机制特性') {
+      subTitle = '技能专属战术机制';
+    } else {
+      for (const [k, m, s] of SUBTITLE_MAP) {
+        if (mainTitle.includes(k)) {
+          mainTitle = m;
+          subTitle = s;
+          break;
+        }
+      }
+    }
+    const res = renderDiffBadge(valA, valB, unit, lowerIsBetter);
+    rows.push({
+      isDual: false,
+      mainTitle,
+      subTitle,
+      valA: fmtVal(valA, unit),
+      valB: fmtVal(valB, unit),
+      res
+    });
+  };
+
+  const flush = () => {
+    if (pendingRow) {
+      const r = pendingRow;
+      pendingRow = null;
+      pushSingle(r.name, r.valA, r.valB, r.unit, r.lowerIsBetter);
+    }
+  };
+
+  const add = (name, valA, valB, unit = '', lowerIsBetter = false) => {
+    const isSq = name.includes('(中射)') || name.includes('（中射）') || name.includes('(物理EHP)');
+    const isTk = name.includes('(坦克)') || name.includes('（坦克）') || name.includes('(法术EHP)');
+    if (isSq) {
+      flush();
+      pendingRow = { name, valA, valB, unit, lowerIsBetter, isEhp: name.includes('(物理EHP)') };
+      return;
+    }
+    if (isTk && pendingRow) {
+      if (pendingRow.isEhp && name.includes('(法术EHP)')) {
+        const prev = pendingRow;
+        pendingRow = null;
+        pushDual('自身承伤极限', prev.valA, prev.valB, valA, valB, unit, '物理EHP / 法术EHP');
+        return;
+      }
+      const baseName = name.replace(/[(（]坦克[)）]/g, '').trim();
+      const prevBase = pendingRow.name.replace(/[(（]中射[)）]/g, '').trim();
+      if (baseName === prevBase) {
+        const prev = pendingRow;
+        pendingRow = null;
+        pushDual(baseName, prev.valA, prev.valB, valA, valB, unit);
+        return;
+      }
+    }
+    flush();
+    pushSingle(name, valA, valB, unit, lowerIsBetter);
+  };
+
+  const finish = () => {
+    flush();
+    return rows;
+  };
+
+  return { add, finish };
+}
+
+function buildSkillDetailData(h, currentLane, sA, sB, heroSkills, attackIconUrl) {
+  const isSupport = currentLane === '游走' || (h.role && h.role.includes('辅助'));
+  const isMarksman = !isSupport && (currentLane === '发育路' || (h.role && h.role.includes('射手')));
+  const isMage = !isSupport && !isMarksman && (currentLane === '中路' || (h.role && h.role.includes('法师')));
+
+  const benchmarkHint = isMage
+    ? '基准防御：后排 180 法抗 ｜ 前排 500 法抗'
+    : (isSupport ? '基准对决：团队光环 ｜ 护盾治疗 ｜ 承伤极限' : '基准防御：后排 350 物防 ｜ 前排 1000 物防');
+
+  const drSqPA = 602 / (602 + Math.max(0, (350 - sA.flatPen) * (1 - sA.percentPen)));
+  const drSqPB = 602 / (602 + Math.max(0, (350 - sB.flatPen) * (1 - sB.percentPen)));
+  const drTkPA = 602 / (602 + Math.max(0, (1000 - sA.flatPen) * (1 - sA.percentPen)));
+  const drTkPB = 602 / (602 + Math.max(0, (1000 - sB.flatPen) * (1 - sB.percentPen)));
+
+  const drSqMA = 602 / (602 + Math.max(0, (180 - sA.mFlatPen) * (1 - sA.mPercentPen)));
+  const drSqMB = 602 / (602 + Math.max(0, (180 - sB.mFlatPen) * (1 - sB.mPercentPen)));
+  const drTkMA = 602 / (602 + Math.max(0, (500 - sA.mFlatPen) * (1 - sA.mPercentPen)));
+  const drTkMB = 602 / (602 + Math.max(0, (500 - sB.mFlatPen) * (1 - sB.mPercentPen)));
+
+  let multA = 1.0;
+  if (sA.hasDoomsdayArmor) multA *= 1.10;
+  if (sA.hasFenghuang) multA *= 1.15;
+  let multB = 1.0;
+  if (sB.hasDoomsdayArmor) multB *= 1.10;
+  if (sB.hasFenghuang) multB *= 1.15;
+
+  const sheenA = sA.hasMaster ? (sA.atk * 0.8) : (sA.hasIce ? 440 : (sA.hasWushu ? sA.ap * 0.7 : 0));
+  const dragonA = sA.hasDragon ? (50 + sA.hp * 0.04) : 0;
+  const sheenB = sB.hasMaster ? (sB.atk * 0.8) : (sB.hasIce ? 440 : (sB.hasWushu ? sB.ap * 0.7 : 0));
+  const dragonB = sB.hasDragon ? (50 + sB.hp * 0.04) : 0;
+
+  const effectA = formatEffectLabel(sA);
+  const effectB = formatEffectLabel(sB);
+
+  const normSqA = Math.round(sA.atk * multA * drSqPA);
+  const normSqB = Math.round(sB.atk * multB * drSqPB);
+  const normTkA = Math.round(sA.atk * multA * drTkPA);
+  const normTkB = Math.round(sB.atk * multB * drTkPB);
+
+  const skUrl = (suffix) => `https://game.gtimg.cn/images/yxzj/img201606/heroimg/${h.ename}/${h.ename}${suffix}.png`;
+  const cards = [];
+
+  const addCard = (icon, isAttack, title, badge, builderFn) => {
+    const rb = createRowBuilder();
+    builderFn(rb.add);
+    cards.push({ icon, isAttack, title, badge, rows: rb.finish() });
+  };
+
+  if (h.cname === '赵云') {
+    const rawSwA = 110 + sA.atk * 1.35 + sheenA + dragonA;
+    const rawSwB = 110 + sB.atk * 1.35 + sheenB + dragonB;
+    const vampA = Math.round(sA.atk * (sA.pLifesteal / 100));
+    const vampB = Math.round(sB.atk * (sB.pLifesteal / 100));
+    addCard(attackIconUrl, true, '普攻 · 基础平A与横扫强化', '强击·横扫', (add) => {
+      add('常规平A (中射)', normSqA, normSqB);
+      add('常规平A (坦克)', normTkA, normTkB);
+      add('强化横扫 (中射)', Math.round(rawSwA * multA * drSqPA), Math.round(rawSwB * multB * drSqPB));
+      add('强化横扫 (坦克)', Math.round(rawSwA * multA * drTkPA), Math.round(rawSwB * multB * drTkPB));
+      if (vampA > 0 || vampB > 0) add('单次普攻吸血', vampA, vampB, ' 点');
+      add('强击与特效机制', effectA, effectB);
+    });
+    const cd1A = +(5.0 * (1 - sA.cdr / 100)).toFixed(1), cd1B = +(5.0 * (1 - sB.cdr / 100)).toFixed(1);
+    addCard(skUrl('10'), false, '1技能 · 惊雷之龙', formatSkillBadge(5.0, '重置普攻'), (add) => {
+      add('冲锋突进 (中射)', Math.round((315 + sA.atk * 1.0) * multA * drSqPA), Math.round((315 + sB.atk * 1.0) * multB * drSqPB));
+      add('冲锋突进 (坦克)', Math.round((315 + sA.atk * 1.0) * multA * drTkPA), Math.round((315 + sB.atk * 1.0) * multB * drTkPB));
+      if (sA.hasIce || sB.hasIce) {
+        add('附带减速软控', sA.hasIce ? '50%减速 + 冰痕' : '50%减速', sB.hasIce ? '50%减速 + 冰痕' : '50%减速');
+      }
+      add('实战技能冷却', cd1A, cd1B, 's', true);
+    });
+    const cd2A = +(4.0 * (1 - sA.cdr / 100)).toFixed(1), cd2B = +(4.0 * (1 - sB.cdr / 100)).toFixed(1);
+    const hNA = Math.round(4 * (120 + sA.atk * 0.15 + sA.hp * 0.02)), hNB = Math.round(4 * (120 + sB.atk * 0.15 + sB.hp * 0.02));
+    addCard(skUrl('20'), false, '2技能 · 破云之龙', formatSkillBadge(4.0, '4段回血'), (add) => {
+      add('4段刺击总伤 (中射)', Math.round(4 * (195 + sA.atk * 0.48) * multA * drSqPA), Math.round(4 * (195 + sB.atk * 0.48) * multB * drSqPB));
+      add('4段刺击总伤 (坦克)', Math.round(4 * (195 + sA.atk * 0.48) * multA * drTkPA), Math.round(4 * (195 + sB.atk * 0.48) * multB * drTkPB));
+      add('常态生命回复量', hNA, hNB, ' 点');
+      if (sA.hasPhoenixEye || sB.hasPhoenixEye) {
+        add('绝境急救(≤30%血)', sA.hasPhoenixEye ? Math.round(hNA * 1.42) : hNA, sB.hasPhoenixEye ? Math.round(hNB * 1.42) : hNB, ' 点');
+      }
+      add('实战技能冷却', cd2A, cd2B, 's', true);
+    });
+    const cd3A = +(12.0 * (1 - sA.cdr / 100)).toFixed(1), cd3B = +(12.0 * (1 - sB.cdr / 100)).toFixed(1);
+    addCard(skUrl('30'), false, '3技能 · 天翔之龙', formatSkillBadge(12.0, '击飞1.0s'), (add) => {
+      add('跃击砸地 (中射)', Math.round((550 + sA.atk * 1.30) * multA * drSqPA), Math.round((550 + sB.atk * 1.30) * multB * drSqPB));
+      add('跃击砸地 (坦克)', Math.round((550 + sA.atk * 1.30) * multA * drTkPA), Math.round((550 + sB.atk * 1.30) * multB * drTkPB));
+      add('感电6次法伤 (中射)', Math.round(6 * (75 + sA.atk * 0.13) * multA * drSqMA), Math.round(6 * (75 + sB.atk * 0.13) * multB * drSqMB));
+      add('感电6次法伤 (坦克)', Math.round(6 * (75 + sA.atk * 0.13) * multA * drTkMA), Math.round(6 * (75 + sB.atk * 0.13) * multB * drTkMB));
+      add('实战技能冷却', cd3A, cd3B, 's', true);
+    });
+  } else if (h.cname === '孙尚香' || h.cname === '李白' || h.cname === '吕布') {
+    buildCustomHeroCards(h, sA, sB, multA, multB, drSqPA, drSqPB, drTkPA, drTkPB, normSqA, normSqB, normTkA, normTkB, sheenA, sheenB, effectA, effectB, attackIconUrl, skUrl, addCard);
+  } else {
+    buildGeneralHeroCards(h, isMarksman, isMage, isSupport, sA, sB, multA, multB, drSqPA, drSqPB, drTkPA, drTkPB, drSqMA, drSqMB, drTkMA, drTkMB, normSqA, normSqB, normTkA, normTkB, effectA, effectB, heroSkills, attackIconUrl, skUrl, addCard);
+  }
+
+  return { benchmarkHint, cards };
 }
 
 function renderSkillDetailModal() {
   const deck = document.getElementById("skillCardsDeck");
   if (!deck) return;
 
-  // 1. 同步顶部栏信息
   const avatar = `https://game.gtimg.cn/images/yxzj/img201606/heroimg/${currentHero.ename}/${currentHero.ename}.jpg`;
   const avatarEl = document.getElementById("detailHeroAvatar");
   if (avatarEl) avatarEl.src = avatar;
   const nameEl = document.getElementById("detailHeroName");
   if (nameEl) nameEl.textContent = currentHero.cname;
   const subEl = document.getElementById("detailHeroSub");
-  if (subEl) subEl.textContent = `${currentHero.title || "王者之师"} · 15级满级神装 · 方案A 与 方案B 技能全维效果物理推演`;
+  if (subEl) subEl.textContent = `${currentHero.title || "王者之师"} · ${currentHero.role || "英雄"} (${currentLane || "实战"}) · 15级满级神装对决`;
 
-  // 同步右侧装备小图标
   const renderMiniIcons = (items) => {
     return items.map(it => {
       if (!it) return `<span style="width:20px; height:20px; border-radius:4px; background:var(--bg-pill); display:inline-block;"></span>`;
@@ -5405,1119 +5955,85 @@ function renderSkillDetailModal() {
   const itemsBEl = document.getElementById("detailItemsB");
   if (itemsBEl) itemsBEl.innerHTML = renderMiniIcons(rightBuildItems);
 
-  // 2. 计算双方全属性
   const sA = calcBuildStats(leftBuildItems, leftArcana);
   const sB = calcBuildStats(rightBuildItems, rightArcana);
+  const heroSkills = HERO_SKILLS_DATA[currentHero.cname] || [];
+  const detailData = buildSkillDetailData(currentHero, currentLane, sA, sB, heroSkills, "/assets/icon_attack.png?v=20261014");
 
-  // 双轨抗性减免 (对【中射】350物防/180法防；对【坦克】1000物防/500法防)
-  const drSquishyPhysA = 602 / (602 + Math.max(0, (350 - sA.flatPen) * (1 - sA.percentPen)));
-  const drSquishyPhysB = 602 / (602 + Math.max(0, (350 - sB.flatPen) * (1 - sB.percentPen)));
-  const drTankPhysA = 602 / (602 + Math.max(0, (1000 - sA.flatPen) * (1 - sA.percentPen)));
-  const drTankPhysB = 602 / (602 + Math.max(0, (1000 - sB.flatPen) * (1 - sB.percentPen)));
+  const benchEl = document.getElementById("detailBenchmarkHint");
+  if (benchEl) benchEl.textContent = detailData.benchmarkHint;
 
-  const drSquishyMagicA = 602 / (602 + Math.max(0, (180 - sA.mFlatPen) * (1 - sA.mPercentPen)));
-  const drSquishyMagicB = 602 / (602 + Math.max(0, (180 - sB.mFlatPen) * (1 - sB.mPercentPen)));
-  const drTankMagicA = 602 / (602 + Math.max(0, (500 - sA.mFlatPen) * (1 - sA.mPercentPen)));
-  const drTankMagicB = 602 / (602 + Math.max(0, (500 - sB.mFlatPen) * (1 - sB.mPercentPen)));
-
-  let multA = 1.0;
-  if (sA.hasDoomsdayArmor) multA *= 1.10;
-  if (sA.hasFenghuang) multA *= 1.15;
-
-  let multB = 1.0;
-  if (sB.hasDoomsdayArmor) multB *= 1.10;
-  if (sB.hasFenghuang) multB *= 1.15;
-
-  // 辅助函数生成 4 列 Apple 极简对齐表格行（带蓝绿高亮与胜出徽章）
-  const buildRow = (name, bench, valA, valB, unit = "", lowerIsBetter = false) => {
-    const fmt = v => typeof v === 'number' ? (unit === 's' ? v.toFixed(1) : (v % 1 === 0 ? v.toLocaleString() : v.toFixed(1))) + unit : v;
-    let pillAClass = "val-pill pill-a";
-    let pillBClass = "val-pill pill-b";
-    let diffHtml = "";
-
-    if (typeof valA === "number" && typeof valB === "number") {
-      const diff = valB - valA;
-      if (Math.abs(diff) < 0.01) {
-        diffHtml = `<span class="apple-diff-pill pill-even">持平</span>`;
+  deck.innerHTML = detailData.cards.map(card => {
+    const imgClass = card.isAttack ? "skill-badge-img skill-badge-attack-real" : "skill-badge-img";
+    const badgeClass = card.isAttack ? "skill-spec-tag" : "skill-cd-badge";
+    const rowsHtml = card.rows.map(row => {
+      if (row.isDual) {
+        return `
+          <div class="skill-metric-row dual-dmg-row">
+            <div class="m-name-col">
+              <div class="m-metric-title">${row.title}</div>
+              <div class="m-metric-sub">${row.sub}</div>
+            </div>
+            <div class="m-val-col">
+              <div class="val-primary ${row.resSq.aWins ? 'win-a' : ''}">
+                <span>${row.sqA}</span>
+                ${row.resSq.badgeA ? `<span class="win-diff-pill win-a">${row.resSq.badgeA}</span>` : ''}
+              </div>
+              <div class="val-secondary"><span>${row.tkA}</span></div>
+            </div>
+            <div class="m-val-col">
+              <div class="val-primary ${row.resSq.bWins ? 'win-b' : ''}">
+                <span>${row.sqB}</span>
+                ${row.resSq.badgeB ? `<span class="win-diff-pill win-b">${row.resSq.badgeB}</span>` : ''}
+              </div>
+              <div class="val-secondary"><span>${row.tkB}</span></div>
+            </div>
+          </div>
+        `;
       } else {
-        const isBetterB = lowerIsBetter ? (diff < 0) : (diff > 0);
-        const diffAbs = Math.abs(diff).toFixed(diff % 1 === 0 ? 0 : 1);
-        const pct = Math.abs((diff / (valA || 1)) * 100).toFixed(1);
-        if (isBetterB) {
-          pillBClass += " win-b";
-          diffHtml = `<span class="apple-diff-pill pill-b-better" title="方案B优于方案A ${diffAbs}${unit}">方案B +${diffAbs}${unit} (▲${pct}%)</span>`;
-        } else {
-          pillAClass += " win-a";
-          diffHtml = `<span class="apple-diff-pill pill-a-better" title="方案A优于方案B ${diffAbs}${unit}">方案A +${diffAbs}${unit} (▲${pct}%)</span>`;
-        }
+        return `
+          <div class="skill-metric-row single-row">
+            <div class="m-name-col">
+              <div class="m-metric-title">${row.mainTitle}</div>
+              ${row.subTitle ? `<div class="m-metric-sub">${row.subTitle}</div>` : ''}
+            </div>
+            <div class="m-val-col">
+              <div class="val-single ${row.res.aWins ? 'win-a' : ''}">
+                <span>${row.valA}</span>
+                ${row.res.badgeA ? `<span class="win-diff-pill win-a">${row.res.badgeA}</span>` : ''}
+              </div>
+            </div>
+            <div class="m-val-col">
+              <div class="val-single ${row.res.bWins ? 'win-b' : ''}">
+                <span>${row.valB}</span>
+                ${row.res.badgeB ? `<span class="win-diff-pill win-b">${row.res.badgeB}</span>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
       }
-    } else if (valA === valB) {
-      diffHtml = `<span class="apple-diff-pill pill-even">一致</span>`;
-    } else {
-      diffHtml = `<span class="apple-diff-pill pill-diff">机制差异</span>`;
-    }
+    }).join("");
 
     return `
-      <div class="skill-metric-row">
-        <div class="m-name-group">
-          <div class="m-name">${name}</div>
-          <div class="m-sub">${bench}</div>
-        </div>
-        <div class="m-val-a"><span class="${pillAClass}">${fmt(valA)}</span></div>
-        <div class="m-val-b"><span class="${pillBClass}">${fmt(valB)}</span></div>
-        <div class="m-diff-cell">${diffHtml}</div>
-      </div>
-    `;
-  };
-
-  const renderTableHead = () => `
-    <div class="skill-metric-row header-row">
-      <div>指标细项与测算基准</div>
-      <div class="header-col-a"><span class="header-badge-a">方案 A</span></div>
-      <div class="header-col-b"><span class="header-badge-b">方案 B</span></div>
-      <div style="text-align:right;">对决判定</div>
-    </div>
-  `;
-
-  const getSkillImg = (suffix, fallback = '/assets/app_icon.png') => {
-    return `<img src="https://game.gtimg.cn/images/yxzj/img201606/heroimg/${currentHero.ename}/${currentHero.ename}${suffix}.png" class="skill-badge-img" alt="技能" onerror="this.src='${fallback}'">`;
-  };
-
-  // 全英雄自适应分路与角色判定
-  const isSupport = currentLane === "游走" || (currentHero.role && currentHero.role.includes("辅助"));
-  const isMarksman = !isSupport && (currentLane === "发育路" || (currentHero.role && currentHero.role.includes("射手")));
-  const isMage = !isSupport && !isMarksman && (currentLane === "中路" || (currentHero.role && currentHero.role.includes("法师")));
-  const heroName = currentHero.cname;
-  const heroSkills = HERO_SKILLS_DATA[heroName] || [];
-
-  let cardsHtml = "";
-
-  if (heroName === "赵云") {
-    // ====================================================
-    // 标杆英雄赵云：官方基准物理数值与机制协同全推演
-    // ====================================================
-    const normSquishyA = Math.round(sA.atk * multA * drSquishyPhysA);
-    const normSquishyB = Math.round(sB.atk * multB * drSquishyPhysB);
-    const normTankA = Math.round(sA.atk * multA * drTankPhysA);
-    const normTankB = Math.round(sB.atk * multB * drTankPhysB);
-
-    const sheenA = sA.hasMaster ? (sA.atk * 0.8) : (sA.hasIce ? 440 : 0);
-    const dragonA = sA.hasDragon ? (50 + sA.hp * 0.04) : 0;
-    const rawSweepA = 110 + sA.atk * 1.35 + sheenA + dragonA;
-
-    const sheenB = sB.hasMaster ? (sB.atk * 0.8) : (sB.hasIce ? 440 : 0);
-    const dragonB = sB.hasDragon ? (50 + sB.hp * 0.04) : 0;
-    const rawSweepB = 110 + sB.atk * 1.35 + sheenB + dragonB;
-
-    const sweepSquishyA = Math.round(rawSweepA * multA * drSquishyPhysA);
-    const sweepSquishyB = Math.round(rawSweepB * multB * drSquishyPhysB);
-    const sweepTankA = Math.round(rawSweepA * multA * drTankPhysA);
-    const sweepTankB = Math.round(rawSweepB * multB * drTankPhysB);
-
-    const vampA = Math.round(sA.atk * (sA.pLifesteal / 100));
-    const vampB = Math.round(sB.atk * (sB.pLifesteal / 100));
-
-    const effectA = sA.hasMaster ? "宗师强击(+80%AD) · 移速+12%" : (sA.hasIce ? "冰痕强击(+440) · 范围减速12%" : "常规平A");
-    const effectB = (sB.hasIce ? "冰痕强击(+440) · 范围减速12%" : (sB.hasMaster ? "宗师强击(+80%AD)" : "常规平A")) + (sB.hasDragon ? " · 怒龙神力" : "");
-
-    cardsHtml += `
       <div class="skill-detail-card">
         <div class="skill-card-top">
           <div class="skill-card-ident">
-            <img src="/assets/icon_attack.png?v=20261014" class="skill-badge-img" alt="普攻">
-            <div>
-              <div class="skill-ident-title">普攻 · 普通攻击与横扫强化</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">物理推演基准:</span>
-                <span class="formula-code">常规平A: 100% AD | 强普横扫: 110 + 135% AD + 强击增益 (宗师80%AD / 冰痕440 + 怒龙50+4%HP)</span>
-              </div>
-            </div>
+            <img src="${card.icon}" class="${imgClass}" alt="技能" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='assets/icon_attack.png';}else if(this.dataset.fb=='1'){this.dataset.fb=2;this.src='../assets/icon_attack.png';}else{this.src='/assets/app_icon.png';}">
+            <div class="skill-ident-title">${card.title}</div>
           </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">物理伤害</span>
-            <span class="skill-spec-tag">强击被动协同</span>
-            <span class="skill-spec-tag">吸血续航</span>
-          </div>
+          <span class="${badgeClass}">${card.badge}</span>
         </div>
         <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("常规平A净伤害 (中射)", "350 物防中射靶 · 基础 100% AD 物理加成", normSquishyA, normSquishyB)}
-          ${buildRow("常规平A净伤害 (坦克)", "1000 物防坦克靶 · 基础 100% AD 物理加成", normTankA, normTankB)}
-          ${buildRow("强化横扫净伤害 (中射)", "350 物防中射靶 · 1技能后横扫 + 强击/怒龙触发", sweepSquishyA, sweepSquishyB)}
-          ${buildRow("强化横扫净伤害 (坦克)", "1000 物防坦克靶 · 1技能后横扫 + 强击/怒龙触发", sweepTankA, sweepTankB)}
-          ${buildRow("单次普攻吸血回复", "单次平A命中物理吸血量折算", vampA, vampB, " 点")}
-          ${buildRow("普攻附带机制与特效", "装备被动与专属控制联动判定", effectA, effectB)}
+          <div class="skill-metric-row header-row">
+            <div>指标</div>
+            <div class="header-col-a"><span class="header-badge-a">方案 A</span></div>
+            <div class="header-col-b"><span class="header-badge-b">方案 B</span></div>
+          </div>
+          ${rowsHtml}
         </div>
       </div>
     `;
-
-    const s1SquishyA = Math.round((315 + sA.atk * 1.0) * multA * drSquishyPhysA);
-    const s1SquishyB = Math.round((315 + sB.atk * 1.0) * multB * drSquishyPhysB);
-    const s1TankA = Math.round((315 + sA.atk * 1.0) * multA * drTankPhysA);
-    const s1TankB = Math.round((315 + sB.atk * 1.0) * multB * drTankPhysB);
-    const cd1A = parseFloat((5.0 * (1 - sA.cdr / 100)).toFixed(1));
-    const cd1B = parseFloat((5.0 * (1 - sB.cdr / 100)).toFixed(1));
-    const slowA = "25%~50% 减速 2.0s";
-    const slowB = sB.hasIce ? "25%~50% 减速 2.0s · 冰痕减速 12%" : "25%~50% 减速 2.0s";
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            ${getSkillImg('10')}
-            <div>
-              <div class="skill-ident-title">1技能 · 惊雷之龙</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">物理推演基准:</span>
-                <span class="formula-code">冲锋突进伤害: 315 + 100% AD | 机制: 位移重置普攻并强化下一次横扫(提升攻击距离)</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">位移突进</span>
-            <span class="skill-spec-tag">重置普攻</span>
-            <span class="skill-cd-badge">基准 5.0s → 实际 A: ${cd1A.toFixed(1)}s / B: ${cd1B.toFixed(1)}s</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("冲锋突进净伤害 (中射)", "350 物防中射靶 · 315 + 1.0×AD 物理净掉血", s1SquishyA, s1SquishyB)}
-          ${buildRow("冲锋突进净伤害 (坦克)", "1000 物防坦克靶 · 315 + 1.0×AD 物理净掉血", s1TankA, s1TankB)}
-          ${buildRow("实战技能冷却 (CDR折算)", `基准 5.0s · 受 CDR 缩减 (A: ${sA.cdr}% / B: ${sB.cdr}%)`, cd1A, cd1B, "s", true)}
-          ${buildRow("连招重置机制", "突进后立即重置普攻后摇并赋能横扫", "支持 (重置并强化)", "支持 (重置并强化)")}
-          ${buildRow("附带控制与减速", "强普命中触发减速软控幅度与时长", slowA, slowB)}
-        </div>
-      </div>
-    `;
-
-    const s2SquishyA = Math.round(4 * (195 + sA.atk * 0.48) * multA * drSquishyPhysA);
-    const s2SquishyB = Math.round(4 * (195 + sB.atk * 0.48) * multB * drSquishyPhysB);
-    const s2TankA = Math.round(4 * (195 + sA.atk * 0.48) * multA * drTankPhysA);
-    const s2TankB = Math.round(4 * (195 + sB.atk * 0.48) * multB * drTankPhysB);
-    const healNormA = Math.round(4 * (120 + sA.atk * 0.15 + sA.hp * 0.02));
-    const healNormB = Math.round(4 * (120 + sB.atk * 0.15 + sB.hp * 0.02));
-    const healClutchA = sA.hasPhoenixEye ? Math.round(healNormA * 1.42) : healNormA;
-    const healClutchB = sB.hasPhoenixEye ? Math.round(healNormB * 1.42) : healNormB;
-    const cd2A = parseFloat((4.0 * (1 - sA.cdr / 100)).toFixed(1));
-    const cd2B = parseFloat((4.0 * (1 - sB.cdr / 100)).toFixed(1));
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            ${getSkillImg('20')}
-            <div>
-              <div class="skill-ident-title">2技能 · 破云之龙</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">物理推演基准:</span>
-                <span class="formula-code">4段总伤害: 4 × (195 + 48% AD) | 技能回血: 4 × (120 + 15% AD + 2% 最大生命)</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">多段连刺</span>
-            <span class="skill-spec-tag">核心生命回复</span>
-            <span class="skill-cd-badge">基准 4.0s → 实际 A: ${cd2A.toFixed(1)}s / B: ${cd2B.toFixed(1)}s</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("4段刺击全中净伤 (中射)", "350 物防中射靶 · 4段刺击物理净掉血总和", s2SquishyA, s2SquishyB)}
-          ${buildRow("4段刺击全中净伤 (坦克)", "1000 物防坦克靶 · 4段刺击物理净掉血总和", s2TankA, s2TankB)}
-          ${buildRow("常态总生命回复量", "4段刺击全命中生命回复基准", healNormA, healNormB, " 点")}
-          ${buildRow("绝境极限回血 (≤30%生命)", "血量 ≤ 30% 濒血触发 (不死鸟之眼 +42% 增益)", healClutchA, healClutchB, " 点")}
-          ${buildRow("实战技能冷却 (CDR折算)", `基准 4.0s · 受 CDR 缩减 (A: ${sA.cdr}% / B: ${sB.cdr}%)`, cd2A, cd2B, "s", true)}
-        </div>
-      </div>
-    `;
-
-    const s3SquishyA = Math.round((550 + sA.atk * 1.30) * multA * drSquishyPhysA);
-    const s3SquishyB = Math.round((550 + sB.atk * 1.30) * multB * drSquishyPhysB);
-    const s3TankA = Math.round((550 + sA.atk * 1.30) * multA * drTankPhysA);
-    const s3TankB = Math.round((550 + sB.atk * 1.30) * multB * drTankPhysB);
-    const eleSquishyA = Math.round(6 * (75 + sA.atk * 0.13) * multA * drSquishyMagicA);
-    const eleSquishyB = Math.round(6 * (75 + sB.atk * 0.13) * multB * drSquishyMagicB);
-    const eleTankA = Math.round(6 * (75 + sA.atk * 0.13) * multA * drTankMagicA);
-    const eleTankB = Math.round(6 * (75 + sB.atk * 0.13) * multB * drTankMagicB);
-    const cd3A = parseFloat((12.0 * (1 - sA.cdr / 100)).toFixed(1));
-    const cd3B = parseFloat((12.0 * (1 - sB.cdr / 100)).toFixed(1));
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            ${getSkillImg('30')}
-            <div>
-              <div class="skill-ident-title">3技能 · 天翔之龙</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">物理推演基准:</span>
-                <span class="formula-code">跃击落地伤害: 550 + 130% AD | 圈内击飞: 1.0s | 感电附加: 6次 × (75 + 13% AD) 法术伤害</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">强力位移</span>
-            <span class="skill-spec-tag">击飞硬控</span>
-            <span class="skill-cd-badge">基准 12.0s → 实际 A: ${cd3A.toFixed(1)}s / B: ${cd3B.toFixed(1)}s</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("跃击砸地净伤害 (中射)", "350 物防中射靶 · 550 + 1.3×AD 物理穿透净掉血", s3SquishyA, s3SquishyB)}
-          ${buildRow("跃击砸地净伤害 (坦克)", "1000 物防坦克靶 · 550 + 1.3×AD 物理穿透净掉血", s3TankA, s3TankB)}
-          ${buildRow("大招击飞硬控时长", "大招内圈命中击飞硬控时长", "1.0 秒", "1.0 秒")}
-          ${buildRow("感电 6 次满额法伤 (中射)", "180 法防中射靶 · 6次感电法术伤害总和", eleSquishyA, eleSquishyB)}
-          ${buildRow("感电 6 次满额法伤 (坦克)", "500 法防坦克靶 · 6次感电法术伤害总和", eleTankA, eleTankB)}
-          ${buildRow("实战技能冷却 (CDR折算)", `基准 12.0s · 受 CDR 缩减 (A: ${sA.cdr}% / B: ${sB.cdr}%)`, cd3A, cd3B, "s", true)}
-        </div>
-      </div>
-    `;
-  } else if (heroName === "孙尚香") {
-    // ====================================================
-    // 定制英雄：孙尚香 (强化重炮+翻滚破甲暴击体系)
-    // ====================================================
-    const hitsPerSecA = 1 + sA.aspeed / 100;
-    const hitsPerSecB = 1 + sB.aspeed / 100;
-    const critMultA = 1 + (sA.critRate / 100) * ((sA.critEff - 100) / 100);
-    const critMultB = 1 + (sB.critRate / 100) * ((sB.critEff - 100) / 100);
-    const normSquishyA = Math.round(sA.atk * multA * drSquishyPhysA);
-    const normSquishyB = Math.round(sB.atk * multB * drSquishyPhysB);
-    const normTankA = Math.round(sA.atk * multA * drTankPhysA);
-    const normTankB = Math.round(sB.atk * multB * drTankPhysB);
-    const critSquishyA = Math.round(normSquishyA * critMultA);
-    const critSquishyB = Math.round(normSquishyB * critMultB);
-    const critTankA = Math.round(normTankA * critMultA);
-    const critTankB = Math.round(normTankB * critMultB);
-    const dpsSquishyA = Math.round(critSquishyA * hitsPerSecA);
-    const dpsSquishyB = Math.round(critSquishyB * hitsPerSecB);
-    const dpsTankA = Math.round(critTankA * hitsPerSecA);
-    const dpsTankB = Math.round(critTankB * hitsPerSecB);
-    const vampA = Math.round(sA.atk * (sA.pLifesteal / 100));
-    const vampB = Math.round(sB.atk * (sB.pLifesteal / 100));
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            <img src="/assets/icon_attack.png?v=20261014" class="skill-badge-img" alt="普攻">
-            <div>
-              <div class="skill-ident-title">普攻 · 普攻秒伤与暴击期望</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">推演基准:</span>
-                <span class="formula-code">秒伤 (DPS) = 普攻暴击期望单发 × 每秒攻击频次 (受攻速加成)</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">普攻秒伤DPS</span>
-            <span class="skill-spec-tag">暴击期望</span>
-            <span class="skill-spec-tag">持续输出</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("常规平A净伤害 (中射)", "350 物防中射靶 · 基础 100% AD 物理加成", normSquishyA, normSquishyB)}
-          ${buildRow("常规平A净伤害 (坦克)", "1000 物防坦克靶 · 基础 100% AD 物理加成", normTankA, normTankB)}
-          ${buildRow("暴击期望单发净伤害 (中射)", `暴击率 A: ${sA.critRate}% / B: ${sB.critRate}% 单发期望伤害`, critSquishyA, critSquishyB)}
-          ${buildRow("暴击期望单发净伤害 (坦克)", "破甲穿透折算后对前排单发期望伤害", critTankA, critTankB)}
-          ${buildRow("持续普攻秒伤 (DPS 对中射)", "每秒稳定暴击期望净伤害输出", dpsSquishyA, dpsSquishyB)}
-          ${buildRow("持续普攻秒伤 (DPS 对坦克)", "每秒对坦克前排破甲输出能力", dpsTankA, dpsTankB)}
-          ${buildRow("每秒攻击频次 (攻速档位)", "受铭文与装备攻击速度加成", `${hitsPerSecA.toFixed(2)} 次/秒`, `${hitsPerSecB.toFixed(2)} 次/秒`)}
-          ${buildRow("单发普攻吸血回复", "单发平A命中物理吸血量", vampA, vampB, " 点")}
-        </div>
-      </div>
-    `;
-
-    const sheenA = sA.hasMaster ? (sA.atk * 0.8) : 0;
-    const sheenB = sB.hasMaster ? (sB.atk * 0.8) : 0;
-    const cd1A = +(5.0 * (1 - sA.cdr / 100)).toFixed(1);
-    const cd1B = +(5.0 * (1 - sB.cdr / 100)).toFixed(1);
-    const rollSquishyA = Math.round((370 + sA.atk * 1.0 + sheenA) * multA * drSquishyPhysA);
-    const rollSquishyB = Math.round((370 + sB.atk * 1.0 + sheenB) * multB * drSquishyPhysB);
-    const rollTankA = Math.round((370 + sA.atk * 1.0 + sheenA) * multA * drTankPhysA);
-    const rollTankB = Math.round((370 + sB.atk * 1.0 + sheenB) * multB * drTankPhysB);
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            ${getSkillImg('10')}
-            <div>
-              <div class="skill-ident-title">1技能 · 翻滚突袭</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">推演基准:</span>
-                <span class="formula-code">强化重炮: 370 + 100% AD + 宗师强击(80%AD) | 翻滚机动拉扯</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">位移拉扯</span>
-            <span class="skill-spec-tag">重炮爆发</span>
-            <span class="skill-cd-badge">基准 5.0s → 实际 A: ${cd1A}s / B: ${cd1B}s</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("翻滚重炮强化净伤 (中射)", "350 物防中射靶 · 翻滚后强普净掉血", rollSquishyA, rollSquishyB)}
-          ${buildRow("翻滚重炮强化净伤 (坦克)", "1000 物防坦克靶 · 翻滚后强普净掉血", rollTankA, rollTankB)}
-          ${buildRow("实战技能冷却 (CDR折算)", `基准 5.0s · 受 CDR 缩减 (A: ${sA.cdr}% / B: ${sB.cdr}%)`, cd1A, cd1B, "s", true)}
-          ${buildRow("机动拉扯加速机制", "附近有敌方英雄时获得 80% 爆发衰减移速", "80% 衰减移速", "80% 衰减移速")}
-        </div>
-      </div>
-    `;
-
-    const cd2A = +(6.0 * (1 - sA.cdr / 100)).toFixed(1);
-    const cd2B = +(6.0 * (1 - sB.cdr / 100)).toFixed(1);
-    const bombSquishyA = Math.round((250 + sA.atk * 1.0) * multA * drSquishyPhysA);
-    const bombSquishyB = Math.round((250 + sB.atk * 1.0) * multB * drSquishyPhysB);
-    const bombTankA = Math.round((250 + sA.atk * 1.0) * multA * drTankPhysA);
-    const bombTankB = Math.round((250 + sB.atk * 1.0) * multB * drTankPhysB);
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            ${getSkillImg('20')}
-            <div>
-              <div class="skill-ident-title">2技能 · 红莲爆弹</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">核心破甲:</span>
-                <span class="formula-code">爆弹伤害: 250 + 100% AD | 核心机制: 命中削减 25% 物理护甲 5秒</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">范围减速</span>
-            <span class="skill-spec-tag">25%破甲</span>
-            <span class="skill-cd-badge">基准 6.0s → 实际 A: ${cd2A}s / B: ${cd2B}s</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("爆弹范围净伤害 (中射)", "350 物防中射靶 · 2技能范围物理净伤害", bombSquishyA, bombSquishyB)}
-          ${buildRow("爆弹范围净伤害 (坦克)", "1000 物防坦克靶 · 2技能范围物理净伤害", bombTankA, bombTankB)}
-          ${buildRow("专属破甲穿透机制", "命中目标后附加额外物理穿透标记", "+25% 物理穿透 (5秒)", "+25% 物理穿透 (5秒)")}
-          ${buildRow("实战技能冷却 (CDR折算)", `基准 6.0s · 受 CDR 缩减 (A: ${sA.cdr}% / B: ${sB.cdr}%)`, cd2A, cd2B, "s", true)}
-        </div>
-      </div>
-    `;
-
-    const cd3A = +(15.0 * (1 - sA.cdr / 100)).toFixed(1);
-    const cd3B = +(15.0 * (1 - sB.cdr / 100)).toFixed(1);
-    const ultSquishyA = Math.round((1000 + sA.atk * 1.85) * multA * drSquishyPhysA);
-    const ultSquishyB = Math.round((1000 + sB.atk * 1.85) * multB * drSquishyPhysB);
-    const ultTankA = Math.round((1000 + sA.atk * 1.85) * multA * drTankPhysA);
-    const ultTankB = Math.round((1000 + sB.atk * 1.85) * multB * drTankPhysB);
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            ${getSkillImg('30')}
-            <div>
-              <div class="skill-ident-title">3技能 · 究极弩炮</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">远程轰炸:</span>
-                <span class="formula-code">弩炮直击: 1000 + 185% AD | 超远射程残血斩杀收割</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">远程AOE</span>
-            <span class="skill-spec-tag">终极收割</span>
-            <span class="skill-cd-badge">基准 15.0s → 实际 A: ${cd3A}s / B: ${cd3B}s</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("究极弩炮直击净伤 (中射)", "350 物防中射靶 · 1000 + 1.85×AD 净掉血", ultSquishyA, ultSquishyB)}
-          ${buildRow("究极弩炮直击净伤 (坦克)", "1000 物防坦克靶 · 1000 + 1.85×AD 净掉血", ultTankA, ultTankB)}
-          ${buildRow("实战技能冷却 (CDR折算)", `基准 15.0s · 受 CDR 缩减 (A: ${sA.cdr}% / B: ${sB.cdr}%)`, cd3A, cd3B, "s", true)}
-        </div>
-      </div>
-    `;
-  } else if (heroName === "李白") {
-    // ====================================================
-    // 定制英雄：李白 (4A解封大招 + 两段突进眩晕 + 不可选中青莲剑歌)
-    // ====================================================
-    const hitsPerSecA = 1 + sA.aspeed / 100;
-    const hitsPerSecB = 1 + sB.aspeed / 100;
-    const normSquishyA = Math.round(sA.atk * multA * drSquishyPhysA);
-    const normSquishyB = Math.round(sB.atk * multB * drSquishyPhysB);
-    const normTankA = Math.round(sA.atk * multA * drTankPhysA);
-    const normTankB = Math.round(sB.atk * multB * drTankPhysB);
-    const vampA = Math.round(sA.atk * (sA.pLifesteal / 100));
-    const vampB = Math.round(sB.atk * (sB.pLifesteal / 100));
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            <img src="/assets/icon_attack.png?v=20261014" class="skill-badge-img" alt="普攻">
-            <div>
-              <div class="skill-ident-title">普攻 · 普通攻击与剑气解锁</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">侠客行机制:</span>
-                <span class="formula-code">常规平A 100% AD | 连续 4 次平A积累剑气解锁【青莲剑歌】</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">普通攻击</span>
-            <span class="skill-spec-tag">4A解封大招</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("常规平A净伤害 (中射)", "350 物防中射靶 · 基础 100% AD 物理加成", normSquishyA, normSquishyB)}
-          ${buildRow("常规平A净伤害 (坦克)", "1000 物防坦克靶 · 基础 100% AD 物理加成", normTankA, normTankB)}
-          ${buildRow("每秒普攻频次 (解封节奏)", "攻速越高，4A解封大招速度越快", `${hitsPerSecA.toFixed(2)} 次/秒`, `${hitsPerSecB.toFixed(2)} 次/秒`)}
-          ${buildRow("单发普攻吸血回复", "单发平A命中物理吸血量", vampA, vampB, " 点")}
-        </div>
-      </div>
-    `;
-
-    const cd1A = +(8.0 * (1 - sA.cdr / 100)).toFixed(1);
-    const cd1B = +(8.0 * (1 - sB.cdr / 100)).toFixed(1);
-    const s1SquishyA = Math.round(2 * (575 + sA.atk * 1.1) * multA * drSquishyPhysA);
-    const s1SquishyB = Math.round(2 * (575 + sB.atk * 1.1) * multB * drSquishyPhysB);
-    const s1TankA = Math.round(2 * (575 + sA.atk * 1.1) * multA * drTankPhysA);
-    const s1TankB = Math.round(2 * (575 + sB.atk * 1.1) * multB * drTankPhysB);
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            ${getSkillImg('10')}
-            <div>
-              <div class="skill-ident-title">1技能 · 将进酒</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">两段位移:</span>
-                <span class="formula-code">两段突进伤害: 2 × (575 + 110% AD) | 每段附带 0.5 秒眩晕硬控</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">两段突进</span>
-            <span class="skill-spec-tag">眩晕硬控</span>
-            <span class="skill-cd-badge">基准 8.0s → 实际 A: ${cd1A}s / B: ${cd1B}s</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("两段突进满额净伤 (中射)", "350 物防中射靶 · 两段突进物理穿透净掉血", s1SquishyA, s1SquishyB)}
-          ${buildRow("两段突进满额净伤 (坦克)", "1000 物防坦克靶 · 两段突进物理穿透净掉血", s1TankA, s1TankB)}
-          ${buildRow("突进眩晕控制时长", "两段位移每段附带 0.5s 眩晕硬控", "0.5s × 2 段", "0.5s × 2 段")}
-          ${buildRow("实战技能冷却 (CDR折算)", `基准 8.0s · 受 CDR 缩减 (A: ${sA.cdr}% / B: ${sB.cdr}%)`, cd1A, cd1B, "s", true)}
-        </div>
-      </div>
-    `;
-
-    const cd2A = +(10.0 * (1 - sA.cdr / 100)).toFixed(1);
-    const cd2B = +(10.0 * (1 - sB.cdr / 100)).toFixed(1);
-    const s2SquishyA = Math.round((680 + sA.atk * 1.6) * multA * drSquishyPhysA);
-    const s2SquishyB = Math.round((680 + sB.atk * 1.6) * multB * drSquishyPhysB);
-    const s2TankA = Math.round((680 + sA.atk * 1.6) * multA * drTankPhysA);
-    const s2TankB = Math.round((680 + sB.atk * 1.6) * multB * drTankPhysB);
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            ${getSkillImg('20')}
-            <div>
-              <div class="skill-ident-title">2技能 · 神来之笔</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">剑圈机制:</span>
-                <span class="formula-code">触碰剑圈: 680 + 160% AD | 机制: 释放瞬间不可选中 + 剑圈削减目标巨额物防</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">不可选中</span>
-            <span class="skill-spec-tag">破甲减速</span>
-            <span class="skill-cd-badge">基准 10.0s → 实际 A: ${cd2A}s / B: ${cd2B}s</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("神来之笔剑圈净伤 (中射)", "350 物防中射靶 · 剑圈物理穿透净掉血", s2SquishyA, s2SquishyB)}
-          ${buildRow("神来之笔剑圈净伤 (坦克)", "1000 物防坦克靶 · 剑圈物理穿透净掉血", s2TankA, s2TankB)}
-          ${buildRow("不可选中规避伤害", "施法瞬间无法被选中，可躲避所有技能伤害", "全规避 (无敌帧)", "全规避 (无敌帧)")}
-          ${buildRow("实战技能冷却 (CDR折算)", `基准 10.0s · 受 CDR 缩减 (A: ${sA.cdr}% / B: ${sB.cdr}%)`, cd2A, cd2B, "s", true)}
-        </div>
-      </div>
-    `;
-
-    const cd3A = +(12.0 * (1 - sA.cdr / 100)).toFixed(1);
-    const cd3B = +(12.0 * (1 - sB.cdr / 100)).toFixed(1);
-    const s3SquishyA = Math.round(5 * (320 + sA.atk * 0.5) * multA * drSquishyPhysA);
-    const s3SquishyB = Math.round(5 * (320 + sB.atk * 0.5) * multB * drSquishyPhysB);
-    const s3TankA = Math.round(5 * (320 + sA.atk * 0.5) * multA * drTankPhysA);
-    const s3TankB = Math.round(5 * (320 + sB.atk * 0.5) * multB * drTankPhysB);
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            ${getSkillImg('30')}
-            <div>
-              <div class="skill-ident-title">3技能 · 青莲剑歌</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">5段连斩:</span>
-                <span class="formula-code">5段斩击总伤: 5 × (320 + 50% AD) | 施法期间全程不可选中</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">全不可选中</span>
-            <span class="skill-spec-tag">5段AOE斩杀</span>
-            <span class="skill-cd-badge">基准 12.0s → 实际 A: ${cd3A}s / B: ${cd3B}s</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("5段剑气连斩满伤 (中射)", "350 物防中射靶 · 5段青莲剑气穿透净掉血总和", s3SquishyA, s3SquishyB)}
-          ${buildRow("5段剑气连斩满伤 (坦克)", "1000 物防坦克靶 · 5段青莲剑气穿透净掉血总和", s3TankA, s3TankB)}
-          ${buildRow("持续不可选中无敌机制", "施法期间全程不可选中，无法被任何技能命中", "全程不可选中", "全程不可选中")}
-          ${buildRow("实战技能冷却 (CDR折算)", `基准 12.0s · 受 CDR 缩减 (A: ${sA.cdr}% / B: ${sB.cdr}%)`, cd3A, cd3B, "s", true)}
-        </div>
-      </div>
-    `;
-  } else if (heroName === "吕布") {
-    // ====================================================
-    // 定制英雄：吕布 (100%全额真伤 + 护盾转血 + 不死鸟急救)
-    // ====================================================
-    const trueAtkA = Math.round(sA.atk * multA);
-    const trueAtkB = Math.round(sB.atk * multB);
-    const hitsPerSecA = 1 + sA.aspeed / 100;
-    const hitsPerSecB = 1 + sB.aspeed / 100;
-    const vampA = Math.round(sA.atk * (sA.pLifesteal / 100));
-    const vampB = Math.round(sB.atk * (sB.pLifesteal / 100));
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            <img src="/assets/icon_attack.png?v=20261014" class="skill-badge-img" alt="普攻">
-            <div>
-              <div class="skill-ident-title">普攻 · 附魔真实伤害与吸血</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">真伤附魔:</span>
-                <span class="formula-code">附魔状态下普攻造成 100% 真实伤害，完全无视敌方双抗与护甲</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">附魔真伤</span>
-            <span class="skill-spec-tag">无视双抗</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("常规未附魔平A (中射)", "未附魔状态物理伤害 (受350物防折算)", Math.round(sA.atk * multA * drSquishyPhysA), Math.round(sB.atk * multB * drSquishyPhysB))}
-          ${buildRow("常规未附魔平A (坦克)", "未附魔状态物理伤害 (受1000物防折算)", Math.round(sA.atk * multA * drTankPhysA), Math.round(sB.atk * multB * drTankPhysB))}
-          ${buildRow("附魔纯真伤单发 (中射)", "附魔状态真实伤害 (无视350物抗)", trueAtkA, trueAtkB)}
-          ${buildRow("附魔纯真伤单发 (坦克)", "附魔状态真实伤害 (无视1000物抗 · 强力切坦)", trueAtkA, trueAtkB)}
-          ${buildRow("每秒普攻频次 (攻速折算)", "受铭文与装备攻击速度加成", `${hitsPerSecA.toFixed(2)} 次/秒`, `${hitsPerSecB.toFixed(2)} 次/秒`)}
-          ${buildRow("单发普攻吸血回复", "单发平A命中物理吸血量", vampA, vampB, " 点")}
-        </div>
-      </div>
-    `;
-
-    const cd1A = +(5.0 * (1 - sA.cdr / 100)).toFixed(1);
-    const cd1B = +(5.0 * (1 - sB.cdr / 100)).toFixed(1);
-    const s1A = Math.round((1200 + sA.atk * 1.9) * multA);
-    const s1B = Math.round((1200 + sB.atk * 1.9) * multB);
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            ${getSkillImg('10')}
-            <div>
-              <div class="skill-ident-title">1技能 · 方天画斩</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">核心真伤:</span>
-                <span class="formula-code">横斩真实伤害: 1200 + 190% AD (附魔状态下无视护甲纯净掉血)</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">100%真伤</span>
-            <span class="skill-spec-tag">附魔触发</span>
-            <span class="skill-cd-badge">基准 5.0s → 实际 A: ${cd1A}s / B: ${cd1B}s</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("方天画斩 (对中射后排真伤)", "无视 350 物抗 · 1200 + 1.9×AD 纯真实净伤害", s1A, s1B)}
-          ${buildRow("方天画斩 (对坦克前排真伤)", "无视 1000 物抗 · 对坦克完全同等真实净伤害", s1A, s1B)}
-          ${buildRow("附魔状态刷新机制", "命中敌方英雄后武器附魔，普攻转为真实伤害", "命中即附魔 (8秒)", "命中即附魔 (8秒)")}
-          ${buildRow("实战技能冷却 (CDR折算)", `基准 5.0s · 受 CDR 缩减 (A: ${sA.cdr}% / B: ${sB.cdr}%)`, cd1A, cd1B, "s", true)}
-        </div>
-      </div>
-    `;
-
-    const cd2A = +(8.0 * (1 - sA.cdr / 100)).toFixed(1);
-    const cd2B = +(8.0 * (1 - sB.cdr / 100)).toFixed(1);
-    const shA = Math.round(1050 + sA.atk * 0.6);
-    const shB = Math.round(1050 + sB.atk * 0.6);
-    const hlA = Math.round(shA * 0.5);
-    const hlB = Math.round(shB * 0.5);
-    const clutchHlA = sA.hasPhoenixEye ? Math.round(hlA * 1.42) : hlA;
-    const clutchHlB = sB.hasPhoenixEye ? Math.round(hlB * 1.42) : hlB;
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            ${getSkillImg('20')}
-            <div>
-              <div class="skill-ident-title">2技能 · 贪婪之握</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">护盾转血:</span>
-                <span class="formula-code">吸收护盾: 1050 + 60% AD | 随时间将 50% 护盾值转化为自身生命值</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">护盾转血</span>
-            <span class="skill-spec-tag">减速控场</span>
-            <span class="skill-cd-badge">基准 8.0s → 实际 A: ${cd2A}s / B: ${cd2B}s</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("抽取护盾吸收上限", "3人吸盾满额基准: 1050 + 0.6×AD", shA, shB, " 点")}
-          ${buildRow("护盾转化常态回血总量", "50% 护盾值自然转化为生命值恢复", hlA, hlB, " 点")}
-          ${buildRow("绝境急救强化回复 (≤30%血)", "血量 ≤ 30% 濒血触发 (不死鸟之眼 +42% 增益)", clutchHlA, clutchHlB, " 点")}
-          ${buildRow("实战技能冷却 (CDR折算)", `基准 8.0s · 受 CDR 缩减 (A: ${sA.cdr}% / B: ${sB.cdr}%)`, cd2A, cd2B, "s", true)}
-        </div>
-      </div>
-    `;
-
-    const cd3A = +(50.0 * (1 - sA.cdr / 100)).toFixed(1);
-    const cd3B = +(50.0 * (1 - sB.cdr / 100)).toFixed(1);
-    const ultTrueA = Math.round((800 + sA.atk * 1.2) * multA);
-    const ultTrueB = Math.round((800 + sB.atk * 1.2) * multB);
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            ${getSkillImg('30')}
-            <div>
-              <div class="skill-ident-title">3技能 · 魔神降世</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">团战大招:</span>
-                <span class="formula-code">从天而降: 800 + 120% AD (真实伤害) | 范围击飞 1.0 秒并在结界内提升双抗</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">范围击飞</span>
-            <span class="skill-spec-tag">结界双抗</span>
-            <span class="skill-cd-badge">基准 50.0s → 实际 A: ${cd3A}s / B: ${cd3B}s</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("天降挥斩真实伤害 (中射)", "无视 350 物抗 · 800 + 1.2×AD 纯真实净伤害", ultTrueA, ultTrueB)}
-          ${buildRow("天降挥斩真实伤害 (坦克)", "无视 1000 物抗 · 对坦克完全同等真实净伤害", ultTrueA, ultTrueB)}
-          ${buildRow("大招范围击飞硬控时长", "大招落地中心范围击飞控制时长", "1.0 秒", "1.0 秒")}
-          ${buildRow("魔神结界常驻防御加成", "在魔神结界内持续作战获得双抗强化", "+250 物理与法术防御", "+250 物理与法术防御")}
-          ${buildRow("实战技能冷却 (CDR折算)", `基准 50.0s · 受 CDR 缩减 (A: ${sA.cdr}% / B: ${sB.cdr}%)`, cd3A, cd3B, "s", true)}
-        </div>
-      </div>
-    `;
-  } else if (isSupport) {
-    // ====================================================
-    // 分路适配：游走 (辅助) —— 普攻 + 辅助装备光环 + 护盾与治疗 + 冷却
-    // ====================================================
-    const supportActiveA = sA.supportActiveName || "无主动辅助装";
-    const supportActiveB = sB.supportActiveName || "无主动辅助装";
-    const supportAuraA = sA.supportAuraDesc || "无光环被动";
-    const supportAuraB = sB.supportAuraDesc || "无光环被动";
-    const normSquishyA = Math.round(sA.atk * multA * drSquishyPhysA);
-    const normSquishyB = Math.round(sB.atk * multB * drSquishyPhysB);
-    const normTankA = Math.round(sA.atk * multA * drTankPhysA);
-    const normTankB = Math.round(sB.atk * multB * drTankPhysB);
-
-    const activeSkills = (heroSkills || []).slice(1);
-    const skillList = activeSkills.length > 0 ? activeSkills : [
-      { type: "1技能", name: "战术技能", desc: "辅助核心技能", cd_sec: 8.0, tags: ["增益", "控制"] },
-      { type: "2技能", name: "庇护技能", desc: "辅助守护技能", cd_sec: 10.0, tags: ["护盾", "治疗"] },
-      { type: "3技能", name: "终极奥义", desc: "辅助团战大招", cd_sec: 40.0, tags: ["团控", "庇护"] }
-    ];
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            <img src="/assets/icon_attack.png?v=20261014" class="skill-badge-img" alt="普攻">
-            <div>
-              <div class="skill-ident-title">普攻 · 普通攻击与辅助装备协同</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">推演基准:</span>
-                <span class="formula-code">常规平A: 100% AD 基础伤害 | 协同辅助装团队光环与主动技能增益</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">普通攻击</span>
-            <span class="skill-spec-tag">团队光环</span>
-            <span class="skill-spec-tag">主动装协同</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("常规平A净伤害 (中射)", "350 物防中射靶 · 基础 100% AD 物理加成", normSquishyA, normSquishyB)}
-          ${buildRow("常规平A净伤害 (坦克)", "1000 物防坦克靶 · 基础 100% AD 物理加成", normTankA, normTankB)}
-          ${buildRow("辅助装专属主动技能", "主动释放团队协同功能", supportActiveA, supportActiveB)}
-          ${buildRow("团队常驻防御光环", "近卫/极影光环双抗与攻速覆盖", supportAuraA, supportAuraB)}
-          ${buildRow("常态移动速度 (转线支援)", "基础移速 + 装备移速加成折算", sA.moveSpeed, sB.moveSpeed, " 点")}
-        </div>
-      </div>
-    `;
-
-    skillList.forEach((sk, idx) => {
-      const cleanSkName = (sk.name || '').split('(')[0].split('（')[0].trim() || sk.name;
-      const baseCd = sk.cd_sec || (idx === 2 ? 40.0 : (idx === 1 ? 10.0 : 8.0));
-      const cdA = +(baseCd * (1 - sA.cdr / 100)).toFixed(1);
-      const cdB = +(baseCd * (1 - sB.cdr / 100)).toFixed(1);
-      const desc = sk.desc || '';
-      const tags = sk.tags || [];
-      const hasShield = desc.includes('护盾') || desc.includes('吸收');
-      const hasHeal = desc.includes('回复') || desc.includes('治疗') || desc.includes('回血');
-      const isUlt = idx >= 2;
-
-      const isMagic = sA.ap > sA.atk || desc.includes('法术伤害') || tags.includes('法术伤害');
-      const bDmg = isUlt ? 600 : (idx === 0 ? 350 : 450);
-      const dmgSqA = isMagic ? Math.round((bDmg + sA.ap * 0.6) * multA * drSquishyMagicA) : Math.round((bDmg + sA.atk * 0.8) * multA * drSquishyPhysA);
-      const dmgSqB = isMagic ? Math.round((bDmg + sB.ap * 0.6) * multB * drSquishyMagicB) : Math.round((bDmg + sB.atk * 0.8) * multB * drSquishyPhysB);
-      const dmgTkA = isMagic ? Math.round((bDmg + sA.ap * 0.6) * multA * drTankMagicA) : Math.round((bDmg + sA.atk * 0.8) * multA * drTankPhysA);
-      const dmgTkB = isMagic ? Math.round((bDmg + sB.ap * 0.6) * multB * drTankMagicB) : Math.round((bDmg + sB.atk * 0.8) * multB * drTankPhysB);
-
-      cardsHtml += `
-        <div class="skill-detail-card">
-          <div class="skill-card-top">
-            <div class="skill-card-ident">
-              ${getSkillImg((idx + 1) * 10)}
-              <div>
-                <div class="skill-ident-title">${sk.type || `技能 ${idx + 1}`} · ${cleanSkName}</div>
-                <div class="skill-formula-capsule">
-                  <span class="formula-prefix">战术机制:</span>
-                  <span class="formula-code">${sk.desc ? sk.desc.slice(0, 55) + '...' : '辅助核心团队技能'}</span>
-                </div>
-              </div>
-            </div>
-            <div class="skill-tags-group">
-              ${(sk.tags || []).map(t => `<span class="skill-spec-tag">${t}</span>`).join('')}
-              <span class="skill-cd-badge">基准 ${baseCd.toFixed(1)}s → 实际 A: ${cdA}s / B: ${cdB}s</span>
-            </div>
-          </div>
-          <div class="skill-metrics-table">
-            ${renderTableHead()}
-            ${buildRow(`${cleanSkName}净伤害 (中射)`, `350 双抗中射靶 · ${isMagic ? '法术' : '物理'}穿透净掉血`, dmgSqA, dmgSqB)}
-            ${buildRow(`${cleanSkName}净伤害 (坦克)`, `1000 双抗坦克靶 · ${isMagic ? '法术' : '物理'}穿透净掉血`, dmgTkA, dmgTkB)}
-            ${hasShield ? buildRow("护盾庇护吸收量", "基于法强/生命值加成护盾总量", Math.round(1000 + sA.ap * 0.4 + sA.hp * 0.08), Math.round(1000 + sB.ap * 0.4 + sB.hp * 0.08), " 点") : ""}
-            ${hasHeal ? buildRow("生命回复总量", "基于体质与装备增益技能回复量", Math.round(800 + sA.ap * 0.4 + sA.hp * 0.06), Math.round(800 + sB.ap * 0.4 + sB.hp * 0.06), " 点") : ""}
-            ${hasHeal ? buildRow("绝境急救回复 (≤30%血)", "血量 ≤ 30% 濒血触发 (不死鸟之眼 +42% 增益)", sA.hasPhoenixEye ? Math.round((800 + sA.ap * 0.4 + sA.hp * 0.06) * 1.42) : Math.round(800 + sA.ap * 0.4 + sA.hp * 0.06), sB.hasPhoenixEye ? Math.round((800 + sB.ap * 0.4 + sB.hp * 0.06) * 1.42) : Math.round(800 + sB.ap * 0.4 + sB.hp * 0.06), " 点") : ""}
-            ${isUlt ? buildRow("自身极限物理承伤 (物理EHP)", "自身抗击打容错上限 (护甲折算)", Math.round(sA.hp * (1 + sA.pdef / 602)), Math.round(sB.hp * (1 + sB.pdef / 602)), " 点") : ""}
-            ${isUlt ? buildRow("自身极限法术承伤 (法术EHP)", "自身抗击打容错上限 (法防折算)", Math.round(sA.hp * (1 + sA.mdef / 602)), Math.round(sB.hp * (1 + sB.mdef / 602)), " 点") : ""}
-            ${buildRow("实战技能冷却 (CDR折算)", `基准 ${baseCd}s · 受 CDR 缩减 (A: ${sA.cdr}% / B: ${sB.cdr}%)`, cdA, cdB, "s", true)}
-          </div>
-        </div>
-      `;
-    });
-  } else if (isMarksman) {
-    // ====================================================
-    // 分路适配：发育路 (射手) —— 聚焦持续普攻秒伤 (DPS)、暴击期望、攻速档位
-    // ====================================================
-    const hitsPerSecA = (1 + sA.aspeed / 100);
-    const hitsPerSecB = (1 + sB.aspeed / 100);
-    const critMultA = 1 + (sA.critRate / 100) * ((sA.critEff - 100) / 100);
-    const critMultB = 1 + (sB.critRate / 100) * ((sB.critEff - 100) / 100);
-    const normSquishyA = Math.round(sA.atk * multA * drSquishyPhysA);
-    const normSquishyB = Math.round(sB.atk * multB * drSquishyPhysB);
-    const normTankA = Math.round(sA.atk * multA * drTankPhysA);
-    const normTankB = Math.round(sB.atk * multB * drTankPhysB);
-    const critSquishyA = Math.round(normSquishyA * critMultA);
-    const critSquishyB = Math.round(normSquishyB * critMultB);
-    const critTankA = Math.round(normTankA * critMultA);
-    const critTankB = Math.round(normTankB * critMultB);
-    const dpsSquishyA = Math.round(critSquishyA * hitsPerSecA);
-    const dpsSquishyB = Math.round(critSquishyB * hitsPerSecB);
-    const dpsTankA = Math.round(critTankA * hitsPerSecA);
-    const dpsTankB = Math.round(critTankB * hitsPerSecB);
-    const vampA = Math.round(sA.atk * (sA.pLifesteal / 100));
-    const vampB = Math.round(sB.atk * (sB.pLifesteal / 100));
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            <img src="/assets/icon_attack.png?v=20261014" class="skill-badge-img" alt="普攻">
-            <div>
-              <div class="skill-ident-title">普攻持续输出 · 暴击期望与每秒秒伤 (DPS)</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">推演基准:</span>
-                <span class="formula-code">秒伤 (DPS) = 普攻暴击期望单发 × 每秒攻击频次 (受攻速加成)</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">普攻秒伤DPS</span>
-            <span class="skill-spec-tag">暴击期望</span>
-            <span class="skill-spec-tag">切坦穿透</span>
-            <span class="skill-spec-tag">物理吸血</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("常规平A净伤害 (中射)", "350 物防中射靶 · 基础 100% AD 物理加成", normSquishyA, normSquishyB)}
-          ${buildRow("常规平A净伤害 (坦克)", "1000 物防坦克靶 · 基础 100% AD 物理加成", normTankA, normTankB)}
-          ${buildRow("暴击期望单发净伤害 (中射)", `暴击率 A: ${sA.critRate}% / B: ${sB.critRate}% 单发期望伤害`, critSquishyA, critSquishyB)}
-          ${buildRow("暴击期望单发净伤害 (坦克)", "破甲穿透折算后对前排单发期望伤害", critTankA, critTankB)}
-          ${buildRow("每秒攻击频次 (攻速档位)", "受铭文与装备攻击速度加成", `${hitsPerSecA.toFixed(2)} 次/秒`, `${hitsPerSecB.toFixed(2)} 次/秒`)}
-          ${buildRow("持续普攻秒伤 (DPS 对中射)", "每秒稳定暴击期望净伤害输出", dpsSquishyA, dpsSquishyB)}
-          ${buildRow("持续普攻秒伤 (DPS 对坦克)", "每秒对坦克前排破甲输出能力", dpsTankA, dpsTankB)}
-          ${buildRow("单次普攻吸血回复", "单发平A命中物理吸血量", vampA, vampB, " 点")}
-        </div>
-      </div>
-    `;
-
-    heroSkills.slice(1, 4).forEach((sk, idx) => {
-      const baseCd = sk.cd_sec || (idx === 2 ? 30.0 : (idx === 1 ? 8.0 : 6.0));
-      const cdA = +(baseCd * (1 - sA.cdr / 100)).toFixed(1);
-      const cdB = +(baseCd * (1 - sB.cdr / 100)).toFixed(1);
-      const cleanSkName = (sk.name || '').split('(')[0].split('（')[0].trim() || sk.name;
-      const bDmg = idx === 2 ? 800 : (idx === 0 ? 300 : 450);
-      const dmgSqA = Math.round((bDmg + sA.atk * 0.9) * multA * drSquishyPhysA);
-      const dmgSqB = Math.round((bDmg + sB.atk * 0.9) * multB * drSquishyPhysB);
-      const dmgTkA = Math.round((bDmg + sA.atk * 0.9) * multA * drTankPhysA);
-      const dmgTkB = Math.round((bDmg + sB.atk * 0.9) * multB * drTankPhysB);
-
-      cardsHtml += `
-        <div class="skill-detail-card">
-          <div class="skill-card-top">
-            <div class="skill-card-ident">
-              ${getSkillImg((idx + 1) * 10)}
-              <div>
-                <div class="skill-ident-title">${sk.type || `技能 ${idx + 1}`} · ${cleanSkName}</div>
-                <div class="skill-formula-capsule">
-                  <span class="formula-prefix">战术技能:</span>
-                  <span class="formula-code">${sk.desc ? sk.desc.slice(0, 55) + '...' : '射手战术技能'}</span>
-                </div>
-              </div>
-            </div>
-            <div class="skill-tags-group">
-              ${(sk.tags || []).map(t => `<span class="skill-spec-tag">${t}</span>`).join('')}
-              <span class="skill-cd-badge">基准 ${baseCd.toFixed(1)}s → 实际 A: ${cdA}s / B: ${cdB}s</span>
-            </div>
-          </div>
-          <div class="skill-metrics-table">
-            ${renderTableHead()}
-            ${buildRow(`${cleanSkName}物理净伤 (中射)`, "350 物防中射靶 · 物理穿透净掉血", dmgSqA, dmgSqB)}
-            ${buildRow(`${cleanSkName}物理净伤 (坦克)`, "1000 物防坦克靶 · 物理穿透净掉血", dmgTkA, dmgTkB)}
-            ${buildRow("实战技能冷却 (CDR折算)", `基准 ${baseCd}s · 受 CDR 缩减 (A: ${sA.cdr}% / B: ${sB.cdr}%)`, cdA, cdB, "s", true)}
-            ${buildRow("战术机制定位", (sk.tags || []).join(" · ") || "战术赋能", "具备赋能", "具备赋能")}
-          </div>
-        </div>
-      `;
-    });
-  } else if (isMage) {
-    // ====================================================
-    // 分路适配：中路 (法师) —— 聚焦技能法术净伤害、法穿减免与吸血
-    // ====================================================
-    const normSquishyA = Math.round(sA.atk * multA * drSquishyPhysA);
-    const normSquishyB = Math.round(sB.atk * multB * drSquishyPhysB);
-    const normTankA = Math.round(sA.atk * multA * drTankPhysA);
-    const normTankB = Math.round(sB.atk * multB * drTankPhysB);
-    const vMageA = Math.round(sA.ap * 0.4 * (sA.mLifesteal / 100));
-    const vMageB = Math.round(sB.ap * 0.4 * (sB.mLifesteal / 100));
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            <img src="/assets/icon_attack.png?v=20261014" class="skill-badge-img" alt="普攻">
-            <div>
-              <div class="skill-ident-title">普攻 · 基础普攻与法术吸血</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">推演基准:</span>
-                <span class="formula-code">基础 100% AD 物理伤害，受铭文/装备法术吸血续航加成</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">普通攻击</span>
-            <span class="skill-spec-tag">法术吸血</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("常规平A净伤害 (中射)", "350 物防中射靶 · 基础 100% AD 物理加成", normSquishyA, normSquishyB)}
-          ${buildRow("常规平A净伤害 (坦克)", "1000 物防坦克靶 · 基础 100% AD 物理加成", normTankA, normTankB)}
-          ${buildRow("单发技能法术吸血期望", "基于当前法强 AP 与法术吸血率折算", vMageA, vMageB, " 点")}
-        </div>
-      </div>
-    `;
-
-    heroSkills.slice(1, 4).forEach((sk, idx) => {
-      const baseCd = sk.cd_sec || (idx === 2 ? 35.0 : (idx === 1 ? 8.0 : 5.0));
-      const cdA = +(baseCd * (1 - sA.cdr / 100)).toFixed(1);
-      const cdB = +(baseCd * (1 - sB.cdr / 100)).toFixed(1);
-      const cleanSkName = (sk.name || '').split('(')[0].split('（')[0].trim() || sk.name;
-
-      const apRatio = (idx === 2 ? 1.2 : 0.7);
-      const baseDmg = (idx === 2 ? 800 : 550);
-      const rawDmgA = baseDmg + sA.ap * apRatio;
-      const rawDmgB = baseDmg + sB.ap * apRatio;
-      const netSquishyA = Math.round(rawDmgA * multA * drSquishyMagicA);
-      const netSquishyB = Math.round(rawDmgB * multB * drSquishyMagicB);
-      const netTankA = Math.round(rawDmgA * multA * drTankMagicA);
-      const netTankB = Math.round(rawDmgB * multB * drTankMagicB);
-
-      cardsHtml += `
-        <div class="skill-detail-card">
-          <div class="skill-card-top">
-            <div class="skill-card-ident">
-              ${getSkillImg((idx + 1) * 10)}
-              <div>
-                <div class="skill-ident-title">${sk.type || `技能 ${idx + 1}`} · ${cleanSkName}</div>
-                <div class="skill-formula-capsule">
-                  <span class="formula-prefix">法术加成:</span>
-                  <span class="formula-code">${sk.desc ? sk.desc.slice(0, 55) + '...' : '核心法术爆发'}</span>
-                </div>
-              </div>
-            </div>
-            <div class="skill-tags-group">
-              ${(sk.tags || []).map(t => `<span class="skill-spec-tag">${t}</span>`).join('')}
-              <span class="skill-cd-badge">基准 ${baseCd.toFixed(1)}s → 实际 A: ${cdA}s / B: ${cdB}s</span>
-            </div>
-          </div>
-          <div class="skill-metrics-table">
-            ${renderTableHead()}
-            ${buildRow("单发法术净伤害 (中射)", "180 法防中射靶 · 法穿折算后真实净伤害", netSquishyA, netSquishyB)}
-            ${buildRow("单发法术净伤害 (坦克)", "500 法防坦克靶 · 法穿折算后真实净伤害", netTankA, netTankB)}
-            ${buildRow("实战技能冷却 (CDR折算)", `基准 ${baseCd}s · 受 CDR 缩减 (A: ${sA.cdr}% / B: ${sB.cdr}%)`, cdA, cdB, "s", true)}
-            ${buildRow("控制与打断特性", (sk.tags || []).join(" · ") || "法术消耗", (sk.tags || []).join(" / ") || "消耗", (sk.tags || []).join(" / ") || "消耗")}
-          </div>
-        </div>
-      `;
-    });
-  } else {
-    // ====================================================
-    // 全职业通用智能物理推演引擎 (覆盖全量其余 120+ 位英雄)
-    // ====================================================
-    const normSquishyA = Math.round(sA.atk * multA * drSquishyPhysA);
-    const normSquishyB = Math.round(sB.atk * multB * drSquishyPhysB);
-    const normTankA = Math.round(sA.atk * multA * drTankPhysA);
-    const normTankB = Math.round(sB.atk * multB * drTankPhysB);
-    const vampA = Math.round(sA.atk * (sA.pLifesteal / 100));
-    const vampB = Math.round(sB.atk * (sB.pLifesteal / 100));
-
-    cardsHtml += `
-      <div class="skill-detail-card">
-        <div class="skill-card-top">
-          <div class="skill-card-ident">
-            <img src="/assets/icon_attack.png?v=20261014" class="skill-badge-img" alt="普攻">
-            <div>
-              <div class="skill-ident-title">普攻 · 普通攻击与装备特效</div>
-              <div class="skill-formula-capsule">
-                <span class="formula-prefix">推演基准:</span>
-                <span class="formula-code">常规普攻: 100% AD 物理伤害，受物理穿透与吸血加成</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-tags-group">
-            <span class="skill-spec-tag">普通攻击</span>
-            <span class="skill-spec-tag">物理加成</span>
-          </div>
-        </div>
-        <div class="skill-metrics-table">
-          ${renderTableHead()}
-          ${buildRow("常规平A净伤害 (中射)", "350 物防中射靶 · 基础 100% AD 物理掉血", normSquishyA, normSquishyB)}
-          ${buildRow("常规平A净伤害 (坦克)", "1000 物防坦克靶 · 基础 100% AD 物理掉血", normTankA, normTankB)}
-          ${vampA > 0 || vampB > 0 ? buildRow("单次普攻吸血回复", "单次平A真实物理伤害 × 物吸率", vampA, vampB, " 点") : ""}
-        </div>
-      </div>
-    `;
-
-    const activeSkills = (heroSkills || []).slice(1);
-    const skillList = activeSkills.length > 0 ? activeSkills : [
-      { type: "1技能", name: "战术技能", desc: "物理爆发突进", cd_sec: 6.0, tags: ["物理输出"] },
-      { type: "2技能", name: "核心技能", desc: "机制控制技能", cd_sec: 8.0, tags: ["控制"] },
-      { type: "3技能", name: "终极奥义", desc: "决胜团战大招", cd_sec: 30.0, tags: ["爆发"] }
-    ];
-
-    skillList.forEach((sk, idx) => {
-      const cleanSkName = (sk.name || '').split('(')[0].split('（')[0].trim() || sk.name;
-      const baseCd = sk.cd_sec || (idx === 2 ? 30.0 : (idx === 1 ? 8.0 : 6.0));
-      const cdA = +(baseCd * (1 - sA.cdr / 100)).toFixed(1);
-      const cdB = +(baseCd * (1 - sB.cdr / 100)).toFixed(1);
-      const desc = sk.desc || '';
-      const tags = sk.tags || [];
-
-      const hasShield = desc.includes('护盾') || desc.includes('吸收');
-      const hasHeal = desc.includes('回复') || desc.includes('治疗') || desc.includes('回血');
-      const isMagic = sA.ap > sA.atk || desc.includes('法术伤害') || tags.includes('法术伤害');
-      const isUlt = idx >= 2;
-
-      const baseDmg = isUlt ? 600 : (idx === 0 ? 350 : 450);
-      const adRatio = isUlt ? 1.2 : 0.85;
-      const apRatio = isUlt ? 1.0 : 0.65;
-
-      const rawA = isMagic ? (baseDmg + sA.ap * apRatio) : (baseDmg + sA.atk * adRatio);
-      const rawB = isMagic ? (baseDmg + sB.ap * apRatio) : (baseDmg + sB.atk * adRatio);
-
-      const dmgSquishyA = isMagic ? Math.round(rawA * multA * drSquishyMagicA) : Math.round(rawA * multA * drSquishyPhysA);
-      const dmgSquishyB = isMagic ? Math.round(rawB * multB * drSquishyMagicB) : Math.round(rawB * multB * drSquishyPhysB);
-      const dmgTankA = isMagic ? Math.round(rawA * multA * drTankMagicA) : Math.round(rawA * multA * drTankPhysA);
-      const dmgTankB = isMagic ? Math.round(rawB * multB * drTankMagicB) : Math.round(rawB * multB * drTankPhysB);
-
-      let ccDesc = (tags.length > 0 ? tags[0] : "战术技能");
-      const kwMap = [["真实伤害", "真伤打击"], ["击飞", "范围击飞"], ["眩晕", "眩晕硬控"], ["晕眩", "眩晕硬控"], ["沉默", "沉默打断"], ["减速", "减速牵制"], ["不可选中", "不可选中"], ["霸体", "霸体免控"]];
-      for (const [kw, lb] of kwMap) {
-        if (desc.includes(kw)) { ccDesc = lb; break; }
-      }
-
-      cardsHtml += `
-        <div class="skill-detail-card">
-          <div class="skill-card-top">
-            <div class="skill-card-ident">
-              ${getSkillImg((idx + 1) * 10)}
-              <div>
-                <div class="skill-ident-title">${sk.type || `技能 ${idx + 1}`} · ${cleanSkName}</div>
-                <div class="skill-formula-capsule">
-                  <span class="formula-prefix">${isMagic ? "法术" : "物理"}加成:</span>
-                  <span class="formula-code">${sk.desc ? sk.desc.slice(0, 55) + '...' : '核心战术技能'}</span>
-                </div>
-              </div>
-            </div>
-            <div class="skill-tags-group">
-              ${(sk.tags || []).map(t => `<span class="skill-spec-tag">${t}</span>`).join('')}
-              <span class="skill-cd-badge">基准 ${baseCd.toFixed(1)}s → 实际 A: ${cdA}s / B: ${cdB}s</span>
-            </div>
-          </div>
-          <div class="skill-metrics-table">
-            ${renderTableHead()}
-            ${buildRow(`单发${isMagic ? "法术" : "物理"}净伤害 (中射)`, `350 双抗中射靶 · 实际净掉血`, dmgSquishyA, dmgSquishyB)}
-            ${buildRow(`单发${isMagic ? "法术" : "物理"}净伤害 (坦克)`, `1000 双抗坦克靶 · 实际净掉血`, dmgTankA, dmgTankB)}
-            ${hasShield ? buildRow("技能护盾吸收量", "基于面板加成护盾吸收上限", Math.round(900 + sA.hp * 0.08 + sA.atk * 0.4), Math.round(900 + sB.hp * 0.08 + sB.atk * 0.4), " 点") : ""}
-            ${hasHeal ? buildRow("技能生命回复量", "技能命中回复生命值基准", Math.round(750 + sA.hp * 0.05 + sA.atk * 0.3), Math.round(750 + sB.hp * 0.05 + sB.atk * 0.3), " 点") : ""}
-            ${hasHeal ? buildRow("绝境急救强化回复 (≤30%血)", "血量 ≤ 30% 濒血触发 (不死鸟之眼 +42% 增益)", sA.hasPhoenixEye ? Math.round((750 + sA.hp * 0.05 + sA.atk * 0.3) * 1.42) : Math.round(750 + sA.hp * 0.05 + sA.atk * 0.3), sB.hasPhoenixEye ? Math.round((750 + sB.hp * 0.05 + sB.atk * 0.3) * 1.42) : Math.round(750 + sB.hp * 0.05 + sB.atk * 0.3), " 点") : ""}
-            ${buildRow("实战技能冷却 (CDR折算)", `基准 ${baseCd}s · 受 CDR 缩减 (A: ${sA.cdr}% / B: ${sB.cdr}%)`, cdA, cdB, "s", true)}
-            ${buildRow("技能控制与打断机制", "技能核心控制与机制特性", ccDesc, ccDesc)}
-          </div>
-        </div>
-      `;
-    });
-  }
-
-  deck.innerHTML = cardsHtml;
+  }).join("");
 }
 </script>
 
