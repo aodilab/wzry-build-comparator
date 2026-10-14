@@ -610,28 +610,28 @@ body {
   color: var(--text-secondary);
   border: 1px solid var(--border-card);
 }
-.apple-diff-pill.pill-b-better {
-  background: rgba(0, 113, 227, 0.08);
-  color: var(--color-blue);
-  border: 1px solid rgba(0, 113, 227, 0.22);
-}
 .apple-diff-pill.pill-a-better {
-  background: rgba(255, 59, 48, 0.08);
-  color: #d70015;
-  border: 1px solid rgba(255, 59, 48, 0.22);
+  background: rgba(0, 113, 227, 0.08);
+  color: #0071e3;
+  border: 1px solid rgba(0, 113, 227, 0.20);
+}
+.apple-diff-pill.pill-b-better {
+  background: rgba(27, 109, 47, 0.08);
+  color: #1b6d2f;
+  border: 1px solid rgba(27, 109, 47, 0.20);
 }
 
 .arc-dot {
   display: inline-block;
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   margin-right: 5px;
   vertical-align: middle;
 }
-.arc-dot.red { background: #d70015; }
-.arc-dot.blue { background: #0071e3; }
-.arc-dot.green { background: #248a3d; }
+.arc-dot.red { background: #e05260; }
+.arc-dot.blue { background: #4a90e2; }
+.arc-dot.green { background: #4caf7a; }
 
 /* ========================================================
    连招下拉框 (标准 Apple Dropdown 造型)
@@ -702,9 +702,9 @@ body {
   transition: all 0.2s ease;
 }
 .combo-cc-tag.cc-control {
-  background: var(--color-orange-bg);
-  color: var(--color-orange);
-  border: 1px solid rgba(255, 149, 0, 0.2);
+  background: var(--bg-pill);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-card);
 }
 .combo-cc-tag.cc-tactical {
   background: rgba(0, 113, 227, 0.08);
@@ -760,12 +760,12 @@ body {
   letter-spacing: 0.02em;
 }
 .badge-left {
-  background: var(--color-blue-bg);
-  color: var(--color-blue);
+  background: rgba(0, 113, 227, 0.08);
+  color: #0071e3;
 }
 .badge-right {
-  background: var(--color-orange-bg);
-  color: var(--color-orange);
+  background: rgba(27, 109, 47, 0.08);
+  color: #1b6d2f;
 }
 .build-name {
   font-size: 15px;
@@ -814,9 +814,10 @@ body {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 .scheme-btn-custom.active {
-  background: var(--color-orange);
-  color: #ffffff;
+  background: #ffffff;
+  color: var(--text-primary);
   font-weight: 600;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
 .action-btn-pill {
@@ -845,7 +846,7 @@ body {
 .slot-item {
   aspect-ratio: 1;
   background: var(--bg-sub);
-  border: 1.5px dashed var(--border-card);
+  border: 1px solid var(--border-light);
   border-radius: 14px;
   display: flex;
   flex-direction: column;
@@ -855,46 +856,55 @@ body {
   cursor: pointer;
   position: relative;
   min-width: 0;
-  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s, box-shadow 0.2s;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 .slot-item.filled {
-  border-style: solid;
-  border-color: transparent;
+  border-color: rgba(0, 0, 0, 0.05);
   background: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 .slot-item:hover {
-  border-color: var(--color-blue);
+  border-color: rgba(0, 113, 227, 0.35);
+  background: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 113, 227, 0.14);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
 }
 
-/* 装备独立删除按钮 */
+/* 装备独立删除按钮：默认隐藏，悬停渐显的深灰毛玻璃微圆钮 */
 .slot-delete-btn {
   position: absolute;
   top: -4px;
   right: -4px;
-  width: 20px;
-  height: 20px;
+  width: 19px;
+  height: 19px;
   border-radius: 50%;
-  background: #ff3b30;
+  background: rgba(29, 29, 31, 0.68);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   color: #ffffff;
-  border: 2px solid #ffffff;
-  font-size: 11px;
-  font-weight: 800;
+  border: 1.5px solid #ffffff;
+  font-size: 10px;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(255, 59, 48, 0.45);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.88);
+  transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), background 0.18s ease;
   z-index: 10;
   line-height: 1;
 }
+.slot-item.filled:hover .slot-delete-btn {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
 .slot-delete-btn:hover {
-  transform: scale(1.22);
-  background: #d70015;
-  box-shadow: 0 3px 10px rgba(215, 0, 21, 0.55);
+  transform: scale(1.14) !important;
+  background: rgba(29, 29, 31, 0.92);
 }
 
 .slot-img {
@@ -920,6 +930,7 @@ body {
   align-items: center;
   justify-content: space-between;
   background: var(--bg-sub);
+  border: 1px solid var(--border-light);
   border-radius: 12px;
   padding: 9px 14px;
   font-size: 12px;
@@ -928,32 +939,38 @@ body {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 .arcana-tag {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   font-weight: 500;
-}
-.arc-red { color: #d70015; }
-.arc-blue { color: #0071e3; }
-.arc-green { color: #248a3d; }
-.btn-edit-arcana {
-  border: none;
-  background: transparent;
-  color: var(--color-blue);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 3px 8px;
+  color: var(--text-primary);
+  padding: 2px 4px;
   border-radius: 6px;
-  transition: background 0.2s;
+  transition: background 0.18s ease;
+}
+.arcana-tag:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+.arc-red, .arc-blue, .arc-green { color: var(--text-primary); }
+.btn-edit-arcana {
+  border: 1px solid var(--border-card);
+  background: #ffffff;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  transition: all 0.2s;
   font-family: inherit;
   white-space: nowrap;
 }
 .btn-edit-arcana:hover {
-  background: var(--color-blue-bg);
+  background: var(--bg-pill-hover);
+  color: var(--text-primary);
 }
 
 /* ========================================================
@@ -1143,12 +1160,12 @@ body {
   letter-spacing: 0.02em;
 }
 .passive-tag-a {
-  background: var(--color-blue-bg);
-  color: var(--color-blue);
+  background: rgba(0, 113, 227, 0.08);
+  color: #0071e3;
 }
 .passive-tag-b {
-  background: var(--color-orange-bg);
-  color: var(--color-orange);
+  background: rgba(27, 109, 47, 0.08);
+  color: #1b6d2f;
 }
 .passive-desc {
   font-size: 12px;
@@ -4193,8 +4210,7 @@ function renderSlots() {
       } else {
         return `
           <div class="slot-item" onclick="openItemModal('${side}', ${i})" title="点击添加装备">
-            <span style="font-size:22px; color:var(--text-tertiary); font-weight:300;">+</span>
-            <div class="slot-name" style="color:var(--text-tertiary);">+ 添加</div>
+            <span style="font-size:20px; color:#aeaeb2; font-weight:300; line-height:1;">+</span>
           </div>
         `;
       }
@@ -4207,12 +4223,12 @@ function renderSlots() {
   // 铭文行渲染 (红/蓝/绿 支持多铭文混搭摘要，无冗余括号与Emoji)
   const renderArcanaHtml = (arc, side) => `
     <div class="arcana-list">
-      <span style="font-weight:600; color:var(--text-primary);">五级铭文:</span>
+      <span style="font-weight:600; color:var(--text-secondary);">五级铭文</span>
       <span class="arcana-tag arc-red" onclick="openArcanaModal('${side}', 'red')" style="cursor:pointer;" title="点击配置红色铭文组合"><span class="arc-dot red"></span>${formatArcanaSummaryText(arc.red, 'red')}</span>
       <span class="arcana-tag arc-blue" onclick="openArcanaModal('${side}', 'blue')" style="cursor:pointer;" title="点击配置蓝色铭文组合"><span class="arc-dot blue"></span>${formatArcanaSummaryText(arc.blue, 'blue')}</span>
       <span class="arcana-tag arc-green" onclick="openArcanaModal('${side}', 'green')" style="cursor:pointer;" title="点击配置绿色铭文组合"><span class="arc-dot green"></span>${formatArcanaSummaryText(arc.green, 'green')}</span>
     </div>
-    <button class="btn-edit-arcana" onclick="openArcanaModal('${side}', 'red')">✏️ 编辑铭文</button>
+    <button class="btn-edit-arcana" onclick="openArcanaModal('${side}', 'red')">编辑铭文</button>
   `;
 
   document.getElementById("leftArcanaRow").innerHTML = renderArcanaHtml(leftArcana, 'left');
@@ -4865,7 +4881,13 @@ function renderStatsTable() {
       ${displayRows.map(r => {
         let pillHtml = '<span class="apple-diff-pill pill-even">双方持平</span>';
         if (r.isPen) {
-          pillHtml = r.valA === r.valB ? pillHtml : '<span class="apple-diff-pill pill-b-better">穿透机制差异</span>';
+          if (r.valA !== r.valB) {
+            const effPenA = sA.flatPen + sA.percentPen * 600;
+            const effPenB = sB.flatPen + sB.percentPen * 600;
+            const penClass = effPenB > effPenA ? 'pill-b-better' : (effPenA > effPenB ? 'pill-a-better' : 'pill-even');
+            const penText = effPenB > effPenA ? '方案 B 穿透更高' : (effPenA > effPenB ? '方案 A 穿透更高' : '穿透机制差异');
+            pillHtml = `<span class="apple-diff-pill ${penClass}">${penText}</span>`;
+          }
         } else {
           pillHtml = formatAppleDiff(r.numA, r.numB, r.unit);
         }
