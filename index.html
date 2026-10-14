@@ -724,7 +724,7 @@ body {
 }
 
 /* ========================================================
-   双轨装备槽位与控制区
+   双轨装备槽位与控制区 (纯白通透瓷感 + A蓝/B绿阵营微光呼应)
    ======================================================== */
 .builds-deck {
   display: grid;
@@ -734,7 +734,7 @@ body {
   margin-bottom: 28px;
 }
 .build-column-card {
-  background: var(--bg-card);
+  background: #ffffff;
   border: 1px solid var(--border-card);
   border-radius: var(--radius-card);
   padding: 24px 26px;
@@ -745,9 +745,13 @@ body {
   justify-content: space-between;
   transition: box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease;
 }
-.build-column-card:hover {
-  border-color: rgba(0, 0, 0, 0.10);
+.build-column-card.card-scheme-a:hover {
+  border-color: rgba(0, 113, 227, 0.35);
   box-shadow: var(--shadow-hover);
+}
+.build-column-card.card-scheme-b:hover {
+  border-color: rgba(27, 109, 47, 0.35);
+  box-shadow: 0 14px 34px -4px rgba(27, 109, 47, 0.07), 0 4px 12px -2px rgba(15, 38, 74, 0.04);
 }
 
 .build-header {
@@ -764,19 +768,21 @@ body {
   gap: 10px;
 }
 .build-badge {
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 6px;
+  padding: 3.5px 10px;
+  border-radius: 7px;
   letter-spacing: 0.02em;
 }
 .badge-left {
-  background: rgba(0, 113, 227, 0.08);
+  background: rgba(0, 113, 227, 0.09);
   color: #0071e3;
+  border: 1px solid rgba(0, 113, 227, 0.18);
 }
 .badge-right {
-  background: rgba(27, 109, 47, 0.08);
+  background: rgba(27, 109, 47, 0.09);
   color: #1b6d2f;
+  border: 1px solid rgba(27, 109, 47, 0.20);
 }
 .build-name {
   font-size: 15px;
@@ -786,8 +792,8 @@ body {
   transition: all 0.2s ease;
 }
 .build-name.is-prompt {
-  color: var(--text-secondary);
-  font-weight: 500;
+  color: #46556b;
+  font-weight: 600;
   font-size: 13.5px;
 }
 
@@ -799,66 +805,81 @@ body {
 }
 .scheme-tabs {
   display: flex;
-  background: var(--bg-sub);
-  border: 1px solid var(--border-card);
+  background: #f2f6fc;
+  border: 1px solid #dce6f4;
   border-radius: var(--radius-pill);
-  padding: 2px;
+  padding: 2.5px;
   gap: 2px;
 }
 .scheme-btn {
   border: none;
   background: transparent;
-  padding: 4px 10px;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text-secondary);
+  padding: 4px 11px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #3b4b61;
   border-radius: var(--radius-pill);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   font-family: inherit;
 }
-.scheme-btn:hover { color: var(--text-primary); }
+.scheme-btn:hover {
+  color: #0071e3;
+  background: rgba(255, 255, 255, 0.75);
+}
 .scheme-btn.active {
   background: #ffffff;
-  color: var(--color-blue);
-  font-weight: 600;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  color: #0071e3;
+  font-weight: 700;
+  box-shadow: 0 1px 5px rgba(0, 113, 227, 0.14);
 }
 .scheme-btn-custom.active {
   background: #ffffff;
-  color: var(--text-primary);
-  font-weight: 600;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  color: #0071e3;
+  font-weight: 700;
+  box-shadow: 0 1px 5px rgba(0, 113, 227, 0.14);
 }
 
+/* 次要操作按钮：纯白瓷感细描边，不抢夺方案 A/B 色彩重心 */
 .action-btn-pill {
-  border: 1px solid #d7e5f8;
-  background: #f2f7fe;
-  padding: 4px 10px;
-  font-size: 11px;
+  border: 1px solid #d8e2ef;
+  background: #ffffff;
+  padding: 4px 11px;
+  font-size: 11.5px;
   font-weight: 600;
-  color: #365686;
+  color: #3b4b61;
   border-radius: var(--radius-pill);
   cursor: pointer;
-  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(15, 38, 74, 0.02);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   font-family: inherit;
 }
 .action-btn-pill:hover {
-  background: #e2edfc;
-  border-color: #b7d2f6;
+  background: #f5f9ff;
+  border-color: #b5ccf0;
   color: #0066cc;
+}
+.card-scheme-b .action-btn-pill:hover {
+  background: #f3faf5;
+  border-color: rgba(27, 109, 47, 0.35);
+  color: #1b6d2f;
+}
+.action-btn-pill.btn-clear-action:hover {
+  background: #fff5f5 !important;
+  border-color: rgba(255, 59, 48, 0.35) !important;
+  color: #d70015 !important;
 }
 
 .slots-grid {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 16px;
 }
 .slot-item {
   aspect-ratio: 1;
-  background: #f5f9fe;
-  border: 1px dashed #cdddf2;
+  background: #ffffff;
+  border: 1.5px dashed #d4e0f0;
   border-radius: 14px;
   display: flex;
   flex-direction: column;
@@ -868,7 +889,15 @@ body {
   cursor: pointer;
   position: relative;
   min-width: 0;
+  box-shadow: 0 2px 6px rgba(15, 38, 74, 0.015);
   transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.slot-plus-icon {
+  font-size: 21px;
+  color: #8fa3bf;
+  font-weight: 300;
+  line-height: 1;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 .slot-item.filled {
   border: 1px solid #e1eaf5;
@@ -877,10 +906,21 @@ body {
 }
 .slot-item:hover {
   border-style: solid;
-  border-color: rgba(0, 113, 227, 0.42);
+  border-color: rgba(0, 113, 227, 0.45);
   background: #ffffff;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(0, 113, 227, 0.08);
+}
+.slot-item:hover .slot-plus-icon {
+  color: #0071e3;
+  transform: scale(1.1);
+}
+.card-scheme-b .slot-item:hover {
+  border-color: rgba(27, 109, 47, 0.45);
+  box-shadow: 0 6px 16px rgba(27, 109, 47, 0.08);
+}
+.card-scheme-b .slot-item:hover .slot-plus-icon {
+  color: #1b6d2f;
 }
 
 /* 装备独立删除按钮：默认隐藏，悬停渐显的深灰毛玻璃微圆钮 */
@@ -942,11 +982,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #f5f9fe;
-  border: 1px solid #e1ebf7;
+  background: #ffffff;
+  border: 1px solid #e1eaf5;
   border-radius: 12px;
   padding: 9px 14px;
   font-size: 12px;
+  box-shadow: 0 2px 8px rgba(15, 38, 74, 0.02);
 }
 .arcana-list {
   display: flex;
@@ -957,34 +998,43 @@ body {
 .arcana-tag {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   font-weight: 500;
   color: var(--text-primary);
-  padding: 2px 4px;
+  padding: 2px 5px;
   border-radius: 6px;
   transition: background 0.18s ease;
 }
 .arcana-tag:hover {
   background: rgba(0, 113, 227, 0.06);
 }
+.card-scheme-b .arcana-tag:hover {
+  background: rgba(27, 109, 47, 0.06);
+}
 .arc-red, .arc-blue, .arc-green { color: var(--text-primary); }
 .btn-edit-arcana {
-  border: 1px solid #d5e4f7;
+  border: 1px solid #d8e2ef;
   background: #ffffff;
-  color: #0066cc;
-  font-size: 11px;
+  color: #3b4b61;
+  font-size: 11.5px;
   font-weight: 600;
   cursor: pointer;
-  padding: 4px 10px;
+  padding: 4px 11px;
   border-radius: var(--radius-pill);
-  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(15, 38, 74, 0.02);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   font-family: inherit;
   white-space: nowrap;
 }
 .btn-edit-arcana:hover {
-  background: #e6f0fd;
-  border-color: #b5d0f5;
-  color: #0051a8;
+  background: #f5f9ff;
+  border-color: #b5ccf0;
+  color: #0071e3;
+}
+.card-scheme-b .btn-edit-arcana:hover {
+  background: #f3faf5;
+  border-color: rgba(27, 109, 47, 0.35);
+  color: #1b6d2f;
 }
 
 /* ========================================================
@@ -3216,7 +3266,7 @@ body {
 
   <section class="builds-deck">
     <!-- 左边：方案 A -->
-    <div class="build-column-card">
+    <div class="build-column-card card-scheme-a">
       <div class="build-header">
         <div class="build-title-box">
           <span class="build-badge badge-left">方案 A</span>
@@ -3224,7 +3274,7 @@ body {
         </div>
         <div class="build-controls">
           <div class="scheme-tabs" id="officialSchemeTabs"></div>
-          <button class="action-btn-pill" id="btnResetOfficial" title="清空方案 A 为空">清空</button>
+          <button class="action-btn-pill btn-clear-action" id="btnResetOfficial" title="清空方案 A 为空">清空</button>
         </div>
       </div>
       <div class="slots-grid" id="leftSlots"></div>
@@ -3232,7 +3282,7 @@ body {
     </div>
 
     <!-- 右边：方案 B -->
-    <div class="build-column-card">
+    <div class="build-column-card card-scheme-b">
       <div class="build-header">
         <div class="build-title-box">
           <span class="build-badge badge-right">方案 B</span>
@@ -3240,7 +3290,7 @@ body {
         </div>
         <div class="build-controls">
           <button class="action-btn-pill" id="btnCopyLeft">复制方案 A</button>
-          <button class="action-btn-pill" id="btnClearRight">清空</button>
+          <button class="action-btn-pill btn-clear-action" id="btnClearRight">清空</button>
         </div>
       </div>
       <div class="slots-grid" id="rightSlots"></div>
@@ -3856,6 +3906,14 @@ function populateHeroSelect() {
   });
 }
 
+function getHeroLaneBuilds(heroName, lane) {
+  const heroBuilds = OFFICIAL_BUILDS[heroName] || {};
+  const lanesMap = heroBuilds.lanes || {};
+  if (lanesMap[lane] && lanesMap[lane].length > 0) return lanesMap[lane];
+  const firstKey = Object.keys(lanesMap).find(k => lanesMap[k] && lanesMap[k].length > 0);
+  return firstKey ? lanesMap[firstKey] : [];
+}
+
 // 加载英雄数据与初始化出装与铭文
 function loadHero(hero, lane) {
   document.getElementById("topHeroAvatar").src = `https://game.gtimg.cn/images/yxzj/img201606/heroimg/${hero.ename}/${hero.ename}.jpg`;
@@ -3885,8 +3943,7 @@ function loadHero(hero, lane) {
     crumbCurrentHero.textContent = `${hero.cname} · ${currentLane}`;
   }
 
-  const heroBuilds = OFFICIAL_BUILDS[hero.cname] || {};
-  const laneBuilds = (heroBuilds.lanes && heroBuilds.lanes[currentLane]) ? heroBuilds.lanes[currentLane] : [];
+  const laneBuilds = getHeroLaneBuilds(hero.cname, currentLane);
   
   // 默认刚进来没有出装，提示用户选择对照出装
   isLeftCustomMode = false;
@@ -3955,8 +4012,7 @@ function enableLeftCustomMode() {
     green: {}
   };
 
-  const heroBuilds = OFFICIAL_BUILDS[currentHero.cname] || {};
-  const laneBuilds = (heroBuilds.lanes && heroBuilds.lanes[currentLane]) ? heroBuilds.lanes[currentLane] : [];
+  const laneBuilds = getHeroLaneBuilds(currentHero.cname, currentLane);
   renderSchemeTabs(laneBuilds);
   renderAll();
 }
@@ -3976,8 +4032,7 @@ function switchOfficialScheme(idx) {
   officialSchemeIdx = idx;
   isLeftCustomMode = false;
 
-  const heroBuilds = OFFICIAL_BUILDS[currentHero.cname] || {};
-  const laneBuilds = (heroBuilds.lanes && heroBuilds.lanes[currentLane]) ? heroBuilds.lanes[currentLane] : [];
+  const laneBuilds = getHeroLaneBuilds(currentHero.cname, currentLane);
   const activeOfficial = (laneBuilds && laneBuilds[officialSchemeIdx]) || (laneBuilds && laneBuilds[0]) || { items: [] };
 
   const titleEl = document.getElementById("leftBuildTitle");
@@ -4017,8 +4072,7 @@ document.getElementById("btnResetOfficial").onclick = () => {
   leftBuildItems = [null, null, null, null, null, null];
   leftArcana = { red: {}, blue: {}, green: {} };
 
-  const heroBuilds = OFFICIAL_BUILDS[currentHero.cname] || {};
-  const laneBuilds = (heroBuilds.lanes && heroBuilds.lanes[currentLane]) ? heroBuilds.lanes[currentLane] : [];
+  const laneBuilds = getHeroLaneBuilds(currentHero.cname, currentLane);
   renderSchemeTabs(laneBuilds);
   renderAll();
 };
@@ -4059,8 +4113,7 @@ function deleteSlotItem(event, side, slotIdx) {
       tEl.textContent = "我的实战方案";
       tEl.classList.remove("is-prompt");
     }
-    const heroBuilds = OFFICIAL_BUILDS[currentHero.cname] || {};
-    const laneBuilds = (heroBuilds.lanes && heroBuilds.lanes[currentLane]) ? heroBuilds.lanes[currentLane] : [];
+    const laneBuilds = getHeroLaneBuilds(currentHero.cname, currentLane);
     renderSchemeTabs(laneBuilds);
   } else {
     rightBuildItems[slotIdx] = null;
@@ -4210,7 +4263,7 @@ function getItemImgFallback(itemId) {
 function formatArcanaSummaryText(colorMap, color) {
   const entries = Object.entries(colorMap || {}).filter(([_, count]) => count > 0);
   if (entries.length === 0) {
-    return `<span style="color:var(--text-tertiary); font-weight:normal;">未配</span>`;
+    return `<span style="color:#64748b; font-weight:500;">未配</span>`;
   }
   const text = entries.map(([name, c]) => `${c}×${name}`).join(" ");
   return `<span>${text}</span>`;
@@ -4246,7 +4299,7 @@ function renderSlots() {
       } else {
         return `
           <div class="slot-item" onclick="openItemModal('${side}', ${i})" title="点击添加装备">
-            <span style="font-size:20px; color:#6b8ab8; font-weight:300; line-height:1;">+</span>
+            <span class="slot-plus-icon">+</span>
           </div>
         `;
       }
@@ -5230,8 +5283,7 @@ function selectItem(itemId) {
       tEl.textContent = "我的实战方案";
       tEl.classList.remove("is-prompt");
     }
-    const heroBuilds = OFFICIAL_BUILDS[currentHero.cname] || {};
-    const laneBuilds = (heroBuilds.lanes && heroBuilds.lanes[currentLane]) ? heroBuilds.lanes[currentLane] : [];
+    const laneBuilds = getHeroLaneBuilds(currentHero.cname, currentLane);
     renderSchemeTabs(laneBuilds);
   } else {
     rightBuildItems[slotIdx] = item;
