@@ -198,9 +198,13 @@ def main():
 
     # 可视化配装沙盒网页
     if args.all or args.sandbox:
-        print("[沙盒网页] 开始生成王者荣耀六神装配装沙盒 (sandbox.html)...")
-        build_sandbox_html()
-        print()
+        if HAS_SANDBOX and build_sandbox_html:
+            print("[沙盒网页] 开始生成王者荣耀六神装配装沙盒 (sandbox.html)...")
+            build_sandbox_html()
+            print()
+        elif args.sandbox:
+            print("[提示] 当前开源环境未包含私有沙盒组装模板，已跳过。")
+            print()
 
     # 高清图文出版级矢量 PDF 手册 (私有化流水线)
     if args.all or args.pdf:
@@ -239,15 +243,23 @@ def main():
 
     # 搜索引擎规范资产 (robots.txt 与 sitemap.xml)
     if args.seo:
-        print("[SEO 资产] 开始自动化生成搜索引擎标准 robots.txt 与 sitemap.xml...")
-        build_all_seo_assets()
-        print()
+        if HAS_SEO and build_all_seo_assets:
+            print("[SEO 资产] 开始自动化生成搜索引擎标准 robots.txt 与 sitemap.xml...")
+            build_all_seo_assets()
+            print()
+        else:
+            print("[提示] 当前开源环境未包含私有 SEO 构建器，已跳过。")
+            print()
 
     # 百度主动推送 API
     if args.push_baidu:
-        print("[百度推送] 开始主动向百度搜索资源平台提交最新 URL 配额...")
-        push_urls_to_baidu(limit=10)
-        print()
+        if HAS_SEO and push_urls_to_baidu:
+            print("[百度推送] 开始主动向百度搜索资源平台提交最新 URL 配额...")
+            push_urls_to_baidu(limit=10)
+            print()
+        else:
+            print("[提示] 当前开源环境未包含私有推送脚本，已跳过。")
+            print()
 
     print("=== 全部指定构建任务顺利完成！知识库、沙盒与物料已就绪 ===")
 
