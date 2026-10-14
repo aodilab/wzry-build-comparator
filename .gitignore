@@ -130,6 +130,5 @@ assets/icon_candidates/
 /sandbox.html
 /preview_miniprogram.html
 /wrangler.json
-
 !assets/**
-!dist_pages/**
+

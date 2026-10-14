@@ -26,12 +26,23 @@ from src.builders.hero_builds_builder import build_hero_builds
 from src.builders.item_builder import build_items
 from src.builders.arcana_builder import build_arcana
 from src.builders.rules_builder import build_rules
-from src.builders.sandbox_builder import build_sandbox_html
-from src.builders.seo_builder import build_all_seo_assets
-from src.core.baidu_pusher import push_urls_to_baidu
+try:
+    from src.builders.sandbox_builder import build_sandbox_html
+    HAS_SANDBOX = True
+except (ImportError, Exception):
+    HAS_SANDBOX = False
+    build_sandbox_html = None
 
-HAS_SANDBOX = True
-HAS_SEO = True
+try:
+    from src.builders.seo_builder import build_all_seo_assets
+    from src.core.baidu_pusher import push_urls_to_baidu
+    HAS_SEO = True
+except (ImportError, Exception):
+    HAS_SEO = False
+    build_all_seo_assets = None
+    push_urls_to_baidu = None
+
+
 
 # 私有化商业高阶流水线（受控加载，公开开源环境优雅 fallback）
 try:
