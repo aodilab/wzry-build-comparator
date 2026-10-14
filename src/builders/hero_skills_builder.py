@@ -11,7 +11,11 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from config.settings import OUTPUT_DIR, DOC_HERO_SKILLS_NAME, ROLE_MAP
-from config.patches import REWORKED_HERO_SKILLS_PATCHES
+try:
+    from config.patches import REWORKED_HERO_SKILLS_PATCHES
+except (ImportError, ModuleNotFoundError):
+    REWORKED_HERO_SKILLS_PATCHES = {}
+
 from config.hero_base_stats import get_hero_base_stats
 from src.core.http import fetch_html
 from src.core.cleaner import clean_plain_text

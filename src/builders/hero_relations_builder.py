@@ -12,7 +12,12 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from config.settings import OUTPUT_DIR, DOC_HERO_RELATIONS_NAME, ROLE_MAP
-from config.patches import HERO_RELATIONS_PATCHES
+try:
+    from config.patches import HERO_RELATIONS_PATCHES
+except (ImportError, ModuleNotFoundError):
+    HERO_RELATIONS_PATCHES = {}
+
+
 from src.core.http import fetch_html
 from src.core.cleaner import clean_plain_text
 from src.core.hero_validator import get_validated_hero_list

@@ -14,7 +14,11 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 from config.settings import OUTPUT_DIR, DOC_HERO_BUILDS_NAME, ROLE_MAP
 from config.hero_registry import CN_HERO_MANIFEST
 from config.hero_base_stats import get_hero_base_stats
-from config.hero_official_builds import OFFICIAL_HERO_BUILDS
+try:
+    from config.hero_official_builds import OFFICIAL_HERO_BUILDS
+except (ImportError, ModuleNotFoundError, Exception):
+    OFFICIAL_HERO_BUILDS = {}
+
 from src.core.http import fetch_json
 from src.core.item_calculator import calculate_build_stats
 
