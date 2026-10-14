@@ -2477,20 +2477,20 @@ body {
   color: #ffffff;
 }
 
-/* 133 英雄卡片大网格 (极简高密度 Apple 风格) */
+/* 133 英雄卡片大网格 (极简高雅 Apple 舒适画廊风格) */
 .hall-hero-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(114px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(142px, 1fr));
+  gap: 16px;
 }
 .hall-hero-card {
   background: var(--bg-card);
-  border-radius: 16px;
-  padding: 14px 8px 12px;
+  border-radius: 18px;
+  padding: 18px 12px 16px;
   text-align: center;
   cursor: pointer;
   border: 1px solid var(--border-card);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
   display: flex;
   flex-direction: column;
@@ -2499,20 +2499,20 @@ body {
   user-select: none;
 }
 .hall-hero-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
   border-color: rgba(0, 113, 227, 0.4);
-  box-shadow: 0 8px 20px rgba(0, 113, 227, 0.08);
+  box-shadow: 0 10px 24px rgba(0, 113, 227, 0.09);
 }
 .hall-hero-avatar-wrap {
   position: relative;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 .hall-hero-avatar {
-  width: 58px;
-  height: 58px;
+  width: 66px;
+  height: 66px;
   border-radius: 50%;
-  border: 2px solid #ffffff;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  border: 2.5px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   object-fit: cover;
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -2520,7 +2520,7 @@ body {
   transform: scale(1.06);
 }
 .hall-hero-name {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--text-primary);
   margin: 0;
@@ -2531,8 +2531,8 @@ body {
   max-width: 100%;
 }
 .hall-hero-name.long-name {
-  font-size: 12px;
-  letter-spacing: -0.03em;
+  font-size: 13px;
+  letter-spacing: -0.02em;
 }
 
 .hall-empty-tip {
