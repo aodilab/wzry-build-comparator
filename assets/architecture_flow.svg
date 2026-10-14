@@ -4,9 +4,9 @@
       /* 全局统一白色卡片风格 */
       .box { fill: #ffffff; stroke: #d0d7de; stroke-width: 1.1; rx: 6px; }
       
-      /* 流程线：变细 (1.0px)、颜色变浅清透 (#58a6ff) */
-      .conn-line { stroke: #58a6ff; stroke-width: 1.0; fill: none; }
-      .arrow { fill: #58a6ff; }
+      /* 流程线：极细 (0.8px)、颜色大幅浅化为淡雅科技灰蓝 (#8cb4e2) */
+      .conn-line { stroke: #8cb4e2; stroke-width: 0.8; fill: none; }
+      .arrow { fill: #8cb4e2; }
       
       /* 分隔线 */
       .divider { stroke: #d0d7de; stroke-width: 1; }
@@ -24,7 +24,7 @@
   <text x="420" y="44" text-anchor="middle" class="txt-bold">挑选英雄与分路 (133位国服正式服英雄全收录)</text>
   <text x="420" y="62" text-anchor="middle" class="txt-dim">(内置 133 位英雄全分路共 505 套王者官方推荐出装)</text>
 
-  <!-- 顶下连线 (细线 1.0px，轻盈浅蓝 #58a6ff，小巧箭头) -->
+  <!-- 顶下连线 (0.8px 极细线，柔和灰蓝 #8cb4e2) -->
   <line x1="420" y1="75" x2="420" y2="95" class="conn-line"/>
   <line x1="225" y1="95" x2="615" y2="95" class="conn-line"/>
   <line x1="225" y1="95" x2="225" y2="117" class="conn-line"/>
@@ -45,7 +45,7 @@
   <text x="615" y="180" text-anchor="middle" class="txt-bold" font-size="11">VS</text>
   <text x="615" y="193" text-anchor="middle" class="txt-dim">玩家完全自由装配「方案 B」</text>
 
-  <!-- 中汇聚连线 (细线 1.0px，轻盈浅蓝 #58a6ff，小巧箭头) -->
+  <!-- 中汇聚连线 (0.8px 极细线，柔和灰蓝 #8cb4e2) -->
   <line x1="225" y1="200" x2="225" y2="218" class="conn-line"/>
   <line x1="615" y1="200" x2="615" y2="218" class="conn-line"/>
   <line x1="225" y1="218" x2="615" y2="218" class="conn-line"/>

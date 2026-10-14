@@ -1,0 +1,75 @@
+<svg width="840" height="520" viewBox="0 0 840 520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      /* 全局统一白色卡片风格 */
+      .box { fill: #ffffff; stroke: #d0d7de; stroke-width: 1.1; rx: 6px; }
+      
+      /* 流程线：极细 (0.8px)、颜色大幅浅化为淡雅科技灰蓝 (#8cb4e2) */
+      .conn-line { stroke: #8cb4e2; stroke-width: 0.8; fill: none; }
+      .arrow { fill: #8cb4e2; }
+      
+      /* 分隔线 */
+      .divider { stroke: #d0d7de; stroke-width: 1; }
+      
+      /* 文字两档层级色彩 */
+      .txt-bold { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", ui-monospace, SFMono-Regular, Consolas, sans-serif; font-size: 13.5px; font-weight: bold; fill: #1f2328; }
+      .txt-main { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", ui-monospace, SFMono-Regular, Consolas, sans-serif; font-size: 13px; fill: #1f2328; }
+      .txt-dim { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", ui-monospace, SFMono-Regular, Consolas, sans-serif; font-size: 12px; fill: #656d76; }
+      .txt-sub-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", ui-monospace, SFMono-Regular, Consolas, sans-serif; font-size: 12.5px; font-weight: bold; fill: #1f2328; }
+    </style>
+  </defs>
+
+  <!-- 顶框：挑选英雄与分路 -->
+  <rect x="210" y="20" width="420" height="55" class="box"/>
+  <text x="420" y="44" text-anchor="middle" class="txt-bold">挑选英雄与分路 (133位国服正式服英雄全收录)</text>
+  <text x="420" y="62" text-anchor="middle" class="txt-dim">(内置 133 位英雄全分路共 505 套王者官方推荐出装)</text>
+
+  <!-- 顶下连线 (0.8px 极细线，柔和灰蓝 #8cb4e2) -->
+  <line x1="420" y1="75" x2="420" y2="95" class="conn-line"/>
+  <line x1="225" y1="95" x2="615" y2="95" class="conn-line"/>
+  <line x1="225" y1="95" x2="225" y2="117" class="conn-line"/>
+  <line x1="615" y1="95" x2="615" y2="117" class="conn-line"/>
+  <polygon points="222,117 228,117 225,122" class="arrow"/>
+  <polygon points="612,117 618,117 615,122" class="arrow"/>
+
+  <!-- 模式一与模式二 -->
+  <rect x="65" y="125" width="320" height="75" class="box"/>
+  <text x="225" y="146" text-anchor="middle" class="txt-sub-title">【模式一：官方推荐基准探索】</text>
+  <text x="225" y="165" text-anchor="middle" class="txt-dim">一键选用 505 套官方推荐出装为「方案 A」</text>
+  <text x="225" y="180" text-anchor="middle" class="txt-bold" font-size="11">VS</text>
+  <text x="225" y="193" text-anchor="middle" class="txt-dim">玩家自主调整魔改的「方案 B」</text>
+
+  <rect x="455" y="125" width="320" height="75" class="box"/>
+  <text x="615" y="146" text-anchor="middle" class="txt-sub-title">【模式二：双方案自由对比】</text>
+  <text x="615" y="165" text-anchor="middle" class="txt-dim">玩家完全自由装配「方案 A」</text>
+  <text x="615" y="180" text-anchor="middle" class="txt-bold" font-size="11">VS</text>
+  <text x="615" y="193" text-anchor="middle" class="txt-dim">玩家完全自由装配「方案 B」</text>
+
+  <!-- 中汇聚连线 (0.8px 极细线，柔和灰蓝 #8cb4e2) -->
+  <line x1="225" y1="200" x2="225" y2="218" class="conn-line"/>
+  <line x1="615" y1="200" x2="615" y2="218" class="conn-line"/>
+  <line x1="225" y1="218" x2="615" y2="218" class="conn-line"/>
+  <line x1="420" y1="218" x2="420" y2="240" class="conn-line"/>
+  <polygon points="417,240 423,240 420,245" class="arrow"/>
+
+  <!-- 底框：主面板看板 -->
+  <rect x="35" y="248" width="770" height="255" class="box"/>
+  <text x="420" y="272" text-anchor="middle" class="txt-bold" font-size="14">主面板：多维度数据对决看板</text>
+  <line x1="35" y1="284" x2="805" y2="284" class="divider"/>
+
+  <!-- 基础通用维度 -->
+  <text x="55" y="304" class="txt-sub-title">【基础通用维度】</text>
+  <text x="70" y="324" class="txt-main">• 板块一：实战连招与伤害对决 (带入双靶抗性与穿透，算连招总爆发与总控制)</text>
+  <text x="100" y="342" class="txt-dim">└──► [专属下钻视窗] 各技能详细物理拆解 (普攻/1/2/3技能单发净伤与CD)</text>
+  <text x="70" y="360" class="txt-main">• 板块二：实战生存与多维续航 (有效生命 EHP + 满血/半血/残血三档动态回复)</text>
+  <text x="70" y="378" class="txt-main">• 板块三：各技能实际冷却时间 (英雄 15 级基础 CD，冷却上限 40%)</text>
+  <text x="70" y="396" class="txt-main">• 板块四：核心面板属性对决 (双抗/移速/攻速/穿透等 12 项基础属性横向对标)</text>
+  <text x="70" y="414" class="txt-main">• 板块五：核心装备机制差异 (过滤同类共有被动，仅比独有特性)</text>
+
+  <line x1="35" y1="426" x2="805" y2="426" class="divider"/>
+
+  <!-- 分路专属维度 -->
+  <text x="55" y="446" class="txt-sub-title">【分路专属维度】</text>
+  <text x="70" y="466" class="txt-main">• 打野专属：野区清理与控龙耗时 (对比两套出装刷野速率、红蓝BUFF与大龙斩杀线)</text>
+  <text x="70" y="484" class="txt-main">• 辅助专属：团队协同与增益效果 (对比两套出装团队光环加成与主动装护盾/加速)</text>
+</svg>
