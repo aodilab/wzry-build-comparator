@@ -35,7 +35,7 @@
 ## 二、 整体设计架构流程
 
 <p align="center">
-  <img src="assets/architecture_flow.svg" alt="王者出装箱系统全景推演架构流程" width="100%">
+  <img src="assets/architecture_flow_v2.svg" alt="王者出装箱系统全景推演架构流程" width="100%">
 </p>
 
 
