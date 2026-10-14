@@ -1,0 +1,12 @@
+# ==============================================================================
+# Honor of Kings Knowledge Base & Tactical Sandbox (wzry.aodilab.com)
+# Robots Exclusion Protocol
+# ==============================================================================
+
+User-agent: *
+Allow: /
+Allow: /assets/
+Allow: /download
+
+# Sitemaps
+Sitemap: https://wzry.aodilab.com/sitemap.xml

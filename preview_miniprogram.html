@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon-192x192.png?v=20261013v3">
+  <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png?v=20261013v3">
+  <link rel="icon" type="image/png" href="favicon.png?v=20261013v3">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261013v3">
+  <title>王者出装推演 · 微信小程序预览版</title>
+  <link rel="stylesheet" href="templates/preview/css_01_base_shell.css">
+  <link rel="stylesheet" href="templates/preview/css_02_hall_cards.css">
+  <link rel="stylesheet" href="templates/preview/css_03_duel_header.css">
+  <link rel="stylesheet" href="templates/preview/css_04_build_slots.css">
+  <link rel="stylesheet" href="templates/preview/css_05_combat_metrics.css">
+  <link rel="stylesheet" href="templates/preview/css_06_synergy_diff.css">
+  <link rel="stylesheet" href="templates/preview/css_07_specs_table.css">
+  <link rel="stylesheet" href="templates/preview/css_08_modals_base.css">
+  <link rel="stylesheet" href="templates/preview/css_09_shop_sheet.css">
+  <link rel="stylesheet" href="templates/preview/css_10_arcana_sheet.css">
+  <link rel="stylesheet" href="templates/preview/css_11_skill_modal.css">
+</head>
+<body>
+<div class="phone-shell">
+  <!-- 顶部导航条 -->
+  <div class="apple-nav-bar">
+    <div class="nav-circle-btn" id="navBackBtn" onclick="App.goToHall()" style="display:none;" title="返回选英雄">‹</div>
+    <div class="nav-title" id="navPageTitle">王者出装推演</div>
+    <div class="nav-circle-btn" onclick="App.goToHall()" title="英雄库">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+    </div>
+  </div>
+  <!-- ================= 页面一：挑选英雄大厅 ================= -->
+  <div class="page-stage active" id="pageHall">
+    <div class="hall-wrap">
+      <div class="hall-main-title">挑选演练英雄</div>
+      <div class="hall-sub-title">点击英雄即刻进入专属配装与实战对决</div>
+      <div class="apple-search-box">
+        <svg class="search-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#86868b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="hallSearchInput" class="apple-search-input" placeholder="搜索英雄（如：孙尚香 / 李白）" oninput="App.onHallSearch(this.value)">
+      </div>
+      <div class="apple-seg-control" id="hallRoleSeg"></div>
+      <div class="hall-hero-grid" id="hallHeroGrid"></div>
+    </div>
+  </div>
+  <!-- ================= 页面二：推演室 (对标苹果图2~图5设计体系与网站逻辑) ================= -->
+  <div class="page-stage" id="pageDetail">
+    <div class="studio-wrap">
+      <!-- 1. 英雄概览卡片 -->
+      <div class="apple-card" style="padding:14px 18px;">
+        <div class="hero-banner-row">
+          <div class="hero-banner-left">
+            <img id="dHeroAvatar" referrerpolicy="no-referrer" class="hero-banner-avatar" src="" alt="avatar">
+            <div class="hero-info-col">
+              <div class="hero-name-row">
+                <span class="hero-name-txt" id="dHeroName">赵云</span>
+                <span class="hero-role-pill" id="dHeroRole">战士</span>
+              </div>
+              <div class="hero-subtitle-txt" id="dHeroTitle">苍天翔龙 · 15级满级神装对决</div>
+            </div>
+          </div>
+          <div class="lane-pills-row" id="dLanePills"></div>
+        </div>
+      </div>
+      <!-- 2. 出装方案对决双轨卡片 (严格 100% 对齐 index.html 与 wzry.aodilab.com) -->
+      <div class="builds-deck">
+        <!-- 方案 A 卡片 -->
+        <div class="build-column-card">
+          <div class="build-header">
+            <div class="build-title-box">
+              <span class="build-badge badge-left">方案 A</span>
+              <span class="build-name is-prompt" id="leftBuildTitle">请选择您对照的出装</span>
+            </div>
+            <div class="build-controls">
+              <button class="action-btn-pill" id="btnResetOfficial" onclick="App.resetOfficial()" title="清空方案 A 为空" style="display:none;">清空</button>
+            </div>
+          </div>
+          <div class="scheme-tabs-row" id="officialSchemeTabs"></div>
+          <div class="slots-grid" id="leftSlots"></div>
+          <div class="arcana-row" id="leftArcanaRow"></div>
+        </div>
+        <!-- 方案 B 卡片 -->
+        <div class="build-column-card">
+          <div class="build-header">
+            <div class="build-title-box">
+              <span class="build-badge badge-right">方案 B</span>
+              <span class="build-name is-prompt" id="rightBuildTitle">请搭配您的实战出装</span>
+            </div>
+            <div class="build-controls">
+              <button class="action-btn-pill" id="btnCopyLeft" onclick="App.applyCopyAToB()">复制方案 A</button>
+              <button class="action-btn-pill" id="btnClearRight" onclick="App.clearRightScheme()" style="display:none;">清空</button>
+            </div>
+          </div>
+          <div class="slots-grid" id="rightSlots"></div>
+          <div class="arcana-row" id="rightArcanaRow"></div>
+        </div>
+      </div>
+      <!-- 3. 实战伤害对决卡片 -->
+      <div class="apple-card" id="primaryAnalysisSection">
+        <div class="combat-section-head">
+          <div class="combat-head-left">
+            <div class="apple-section-title" id="dPrimaryTitle">实战伤害对决</div>
+            <div class="apple-section-desc" id="dPrimaryDesc">双抗折算实战净掉血</div>
+          </div>
+          <!-- 右上角连招选择器 (Apple 紧凑胶囊) -->
+          <div class="combo-header-wrap" id="dComboWrap">
+            <button class="combo-header-pill" id="dComboTrigger" onclick="App.toggleComboMenu(event)" title="点击切换实战连招">
+              <span class="combo-pill-title" id="dComboActiveName">基础连招</span>
+              <span class="combo-pill-seq" id="dComboActiveKey">12A3A</span>
+              <svg class="combo-chevron-icon" id="dComboChevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <!-- Apple 悬浮毛玻璃菜单 (右对齐) -->
+            <div class="combo-popover-menu" id="dComboPopover" onclick="event.stopPropagation()">
+              <div class="combo-popover-inner" id="dComboOptionsList"></div>
+            </div>
+          </div>
+        </div>
+        <!-- 纯净双轨列头指示 (方案 A VS 方案 B 零背景框) -->
+        <div class="combat-columns-header">
+          <div class="combat-col-side left"><span class="build-badge badge-left">方案 A</span></div>
+          <span class="combat-col-vs">VS</span>
+          <div class="combat-col-side right"><span class="build-badge badge-right">方案 B</span></div>
+        </div>
+        <!-- 模式 A：常规/输出 实战伤害对决 (中射/坦克) -->
+        <div id="dDmgBlock">
+          <!-- 打中射爆发对比 -->
+          <div class="compare-metric-row">
+            <div class="metric-card-head">打【中射】实战爆发净伤害</div>
+            <div class="metric-card-sub">基准抗性：350 物理防御 / 180 法术防御</div>
+            <div class="metric-cols-row">
+              <div class="metric-side-col"><div class="metric-num-val" id="dDmgSquishyA">0<span class="metric-num-unit">点</span></div></div>
+              <div class="metric-vs-sep">vs</div>
+              <div class="metric-side-col"><div class="metric-num-val" id="dDmgSquishyB">0<span class="metric-num-unit">点</span></div></div>
+            </div>
+            <div class="metric-winner-wrap" id="dDmgSquishyPill"></div>
+          </div>
+          <!-- 打坦克爆发对比 -->
+          <div class="compare-metric-row">
+            <div class="metric-card-head">打【坦克】实战爆发净伤害</div>
+            <div class="metric-card-sub">基准抗性：1000 物理防御 / 600 法术防御</div>
+            <div class="metric-cols-row">
+              <div class="metric-side-col"><div class="metric-num-val" id="dDmgTankA">0<span class="metric-num-unit">点</span></div></div>
+              <div class="metric-vs-sep">vs</div>
+              <div class="metric-side-col"><div class="metric-num-val" id="dDmgTankB">0<span class="metric-num-unit">点</span></div></div>
+            </div>
+            <div class="metric-winner-wrap" id="dDmgTankPill"></div>
+          </div>
+        </div>
+        <!-- 模式 B：辅助/游走 团队价值与承伤对决 (EHP/护盾) -->
+        <div id="dSupportBlock" style="display:none;">
+          <!-- 极限物理承伤上限 (EHP) -->
+          <div class="compare-metric-row">
+            <div class="metric-card-head">极限物理承伤上限 (EHP)</div>
+            <div class="metric-card-sub">基于自身生命与物防折算实际承受物理总伤害</div>
+            <div class="metric-cols-row">
+              <div class="metric-side-col"><div class="metric-num-val" id="dEhpPhysA">0<span class="metric-num-unit">点</span></div></div>
+              <div class="metric-vs-sep">vs</div>
+              <div class="metric-side-col"><div class="metric-num-val" id="dEhpPhysB">0<span class="metric-num-unit">点</span></div></div>
+            </div>
+            <div class="metric-winner-wrap" id="dEhpPhysPill"></div>
+          </div>
+          <!-- 极限法术承伤上限 (EHP) -->
+          <div class="compare-metric-row">
+            <div class="metric-card-head">极限法术承伤上限 (EHP)</div>
+            <div class="metric-card-sub">基于自身生命与法防折算实际承受法术总伤害</div>
+            <div class="metric-cols-row">
+              <div class="metric-side-col"><div class="metric-num-val" id="dEhpMagicA">0<span class="metric-num-unit">点</span></div></div>
+              <div class="metric-vs-sep">vs</div>
+              <div class="metric-side-col"><div class="metric-num-val" id="dEhpMagicB">0<span class="metric-num-unit">点</span></div></div>
+            </div>
+            <div class="metric-winner-wrap" id="dEhpMagicPill"></div>
+          </div>
+          <!-- 团队护盾与保护数值 -->
+          <div class="compare-metric-row">
+            <div class="metric-card-head">团队护盾与保护数值</div>
+            <div class="metric-card-sub">核心辅助技能全队群体承伤庇护总量</div>
+            <div class="metric-cols-row">
+              <div class="metric-side-col"><div class="metric-num-val" id="dSupportUtilA">0<span class="metric-num-unit">点</span></div></div>
+              <div class="metric-vs-sep">vs</div>
+              <div class="metric-side-col"><div class="metric-num-val" id="dSupportUtilB">0<span class="metric-num-unit">点</span></div></div>
+            </div>
+            <div class="metric-winner-wrap" id="dSupportUtilPill"></div>
+          </div>
+        </div>
+        <!-- 二级数据视窗入口 (格式对齐铭文行两端对齐规格) -->
+        <div class="action-entry-row" onclick="App.openSkillDetailModal()">
+          <div class="action-entry-left">
+            <div class="action-entry-icon-chip">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#636366" stroke-width="2.2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            </div>
+            <div class="action-entry-text-col">
+              <span class="action-entry-label">技能拆解</span>
+              <span class="action-entry-desc" id="dSkillEntryDesc">伤害 / 控制 / 回复物理拆解</span>
+            </div>
+          </div>
+          <span class="action-entry-link">展开详情 ›</span>
+        </div>
+      </div>
+      <!-- 4. 野区清理与控龙耗时 (PVE) -->
+      <div class="apple-card" id="jungleSection" style="display:none;">
+        <div class="apple-section-head">
+          <div class="apple-section-title">野区清理与控龙耗时</div>
+          <div class="apple-section-desc">单组野怪抢夺 (Buff 1.2万血) 与 史诗级大龙单刷 (3.5万血)</div>
+        </div>
+        <div class="compare-metric-row">
+          <div class="metric-card-head">单组野怪清理耗时 (Buff 1.2万血)</div>
+          <div class="metric-card-sub">起手核心爆发 + 惩击真伤快速收割</div>
+          <div class="metric-cols-row">
+            <div class="metric-side-col"><div class="metric-num-val" id="dBuffTimeA">0<span class="metric-num-unit">s</span></div></div>
+            <div class="metric-vs-sep">vs</div>
+            <div class="metric-side-col"><div class="metric-num-val" id="dBuffTimeB">0<span class="metric-num-unit">s</span></div></div>
+          </div>
+          <div class="metric-winner-wrap" id="dBuffTimePill"></div>
+        </div>
+        <div class="compare-metric-row">
+          <div class="metric-card-head">单刷主宰/暴君耗时 (3.5万血)</div>
+          <div class="metric-card-sub">技能真空期普攻站桩输出效率</div>
+          <div class="metric-cols-row">
+            <div class="metric-side-col"><div class="metric-num-val" id="dDragonTimeA">0<span class="metric-num-unit">s</span></div></div>
+            <div class="metric-vs-sep">vs</div>
+            <div class="metric-side-col"><div class="metric-num-val" id="dDragonTimeB">0<span class="metric-num-unit">s</span></div></div>
+          </div>
+          <div class="metric-winner-wrap" id="dDragonTimePill"></div>
+        </div>
+      </div>
+      <!-- 5. 生存与续航对决卡片 -->
+      <div class="apple-card" id="sustainSection">
+        <div class="apple-section-head">
+          <div class="apple-section-title">生存与续航对决</div>
+          <div class="apple-section-desc">英雄技能回复公式 + 物理/法术吸血率 + 脱战常态回复</div>
+        </div>
+        <div class="compare-metric-row">
+          <div class="metric-card-head" id="dVampTitle">普攻单次吸血</div>
+          <div class="metric-card-sub" id="dVampSub">物理/法术吸血率单次实算</div>
+          <div class="metric-cols-row">
+            <div class="metric-side-col"><div class="metric-num-val" id="dVampA">0<span class="metric-num-unit">点</span></div></div>
+            <div class="metric-vs-sep">vs</div>
+            <div class="metric-side-col"><div class="metric-num-val" id="dVampB">0<span class="metric-num-unit">点</span></div></div>
+          </div>
+          <div class="metric-winner-wrap" id="dVampPill"></div>
+        </div>
+        <div class="compare-metric-row">
+          <div class="metric-card-head">脱战每秒常态回血</div>
+          <div class="metric-card-sub">基础自然回血 + 霸者重装/不死鸟被动</div>
+          <div class="metric-cols-row">
+            <div class="metric-side-col"><div class="metric-num-val" id="dRegenA">0<span class="metric-num-unit">点/s</span></div></div>
+            <div class="metric-vs-sep">vs</div>
+            <div class="metric-side-col"><div class="metric-num-val" id="dRegenB">0<span class="metric-num-unit">点/s</span></div></div>
+          </div>
+          <div class="metric-winner-wrap" id="dRegenPill"></div>
+        </div>
+        <div class="compare-metric-row">
+          <div class="metric-card-head" id="dHealTitleA">核心技能回复</div>
+          <div class="metric-card-sub">健康血线完整单次回复</div>
+          <div class="metric-cols-row">
+            <div class="metric-side-col"><div class="metric-num-val" id="dHealRegA">0<span class="metric-num-unit">点</span></div></div>
+            <div class="metric-vs-sep">vs</div>
+            <div class="metric-side-col"><div class="metric-num-val" id="dHealRegB">0<span class="metric-num-unit">点</span></div></div>
+          </div>
+          <div class="metric-winner-wrap" id="dHealRegPill"></div>
+        </div>
+        <div class="compare-metric-row">
+          <div class="metric-card-head">残血极限回复 (生命≤30%)</div>
+          <div class="metric-card-sub">计入不死鸟之眼血统被动最高增幅</div>
+          <div class="metric-cols-row">
+            <div class="metric-side-col"><div class="metric-num-val" id="dClutchHealA">0<span class="metric-num-unit">点</span></div></div>
+            <div class="metric-vs-sep">vs</div>
+            <div class="metric-side-col"><div class="metric-num-val" id="dClutchHealB">0<span class="metric-num-unit">点</span></div></div>
+          </div>
+          <div class="metric-winner-wrap" id="dClutchHealPill"></div>
+        </div>
+      </div>
+      <!-- 6. 技能实际冷却时间卡片 -->
+      <div class="apple-card" id="cdSection">
+        <div class="apple-section-head">
+          <div class="apple-section-title">技能实际冷却时间</div>
+          <div class="apple-section-desc" id="dCdrSummaryText">满级满装真空期 · 方案 A 0% vs 方案 B 0%</div>
+        </div>
+        <div id="dCdGrid"></div>
+      </div>
+      <!-- 7. 核心机制差异卡片 (彻底对齐网站规则与苹果图2极简排版) -->
+      <div class="apple-card" id="passivesSection">
+        <div class="apple-section-head">
+          <div class="apple-section-title">核心机制差异</div>
+          <div class="apple-section-desc">双方关键机制点对点对比，剔除无差异项</div>
+        </div>
+        <div class="mechanic-diff-deck" id="dMechanicDeck"></div>
+      </div>
+      <!-- 8. 综合属性规格清单卡片 -->
+      <div class="apple-card" id="statsSection">
+        <div class="apple-section-head">
+          <div class="apple-section-title">综合属性规格</div>
+          <div class="apple-section-desc">15级满级基础属性 + 铭文 + 6件神装参数</div>
+        </div>
+        <div class="stats-filter-bar">
+          <button class="stats-filter-btn active" id="btnStatsDiff" onclick="App.setStatsFilter(true)">仅看差异</button>
+          <button class="stats-filter-btn" id="btnStatsAll" onclick="App.setStatsFilter(false)">看全部</button>
+        </div>
+        <div class="specs-list-box" id="dStatsTable"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="templates/preview/dataset_preview.js"></script>
+<script src="templates/preview/js_modals_dom.js"></script>
+<script src="templates/preview/js_calc_stats.js"></script>
+<script src="templates/preview/js_calc_combo.js"></script>
+<script src="templates/preview/js_calc_diff.js"></script>
+<script src="templates/preview/js_app_hall.js"></script>
+<script src="templates/preview/js_app_schemes.js"></script>
+<script src="templates/preview/js_app_recalc.js"></script>
+<script src="templates/preview/js_app_mechanics.js"></script>
+<script src="templates/preview/js_app_inspector.js"></script>
+<script src="templates/preview/js_app_shop.js"></script>
+<script src="templates/preview/js_app_arcana.js"></script>
+<script src="templates/preview/js_skill_rows.js"></script>
+<script src="templates/preview/js_skill_custom.js"></script>
+<script src="templates/preview/js_skill_general.js"></script>
+<script src="templates/preview/js_touch_gestures.js"></script>
+</body>
+</html>

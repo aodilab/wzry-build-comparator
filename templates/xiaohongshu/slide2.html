@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+{common_css}
+{slide_css}
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+    <div class="brand-pill"><span class="dot"></span>避坑指南 · 装备被动互斥诊断</div>
+    <div class="page-indicator">02 / 05</div>
+</div>
+
+<div class="title-header">
+    <div class="title-main">出装对比。拒绝属性内耗。</div>
+    <div class="title-sub">智能识别同名唯一被动互斥，同等经济实战效果差出一倍。</div>
+</div>
+
+<!-- 左右双栏 Bento 对比 -->
+<div class="compare-container">
+    
+    <!-- 左卡片: 典型误区出装 -->
+    <div class="compare-bento-card">
+        <div class="col-header">
+            <div class="col-title-group">
+                <span class="title-bad">✕ 典型误区出装</span>
+            </div>
+            <div class="col-score-pill pill-bad">评分 52 分 · 严重互斥</div>
+        </div>
+
+        <!-- 6件装备带状态角标 -->
+        <div class="equips-showcase">
+            <div class="equip-bento-cell">
+                <div class="eq-thumb-box">
+                    <img src="{IMG_ROUDAO}" alt="肉刀">
+                    <span class="eq-conflict-badge">献祭</span>
+                </div>
+                <span class="eq-name-text">巡守利斧</span>
+            </div>
+            <div class="equip-bento-cell">
+                <div class="eq-thumb-box">
+                    <img src="{IMG_DIKANGXIE}" alt="抵抗鞋">
+                    <span class="eq-conflict-badge">溢出</span>
+                </div>
+                <span class="eq-name-text">抵抗之靴</span>
+            </div>
+            <div class="equip-bento-cell">
+                <div class="eq-thumb-box">
+                    <img src="{IMG_HEIQIE}" alt="黑切">
+                </div>
+                <span class="eq-name-text">暗影战斧</span>
+            </div>
+            <div class="equip-bento-cell">
+                <div class="eq-thumb-box">
+                    <img src="{IMG_HUOJIA}" alt="火甲">
+                    <span class="eq-conflict-badge">互斥失效</span>
+                </div>
+                <span class="eq-name-text">红莲斗篷</span>
+            </div>
+            <div class="equip-bento-cell">
+                <div class="eq-thumb-box">
+                    <img src="{IMG_ZONGSHI}" alt="宗师">
+                    <span class="eq-conflict-badge">强击</span>
+                </div>
+                <span class="eq-name-text">宗师之力</span>
+            </div>
+            <div class="equip-bento-cell">
+                <div class="eq-thumb-box">
+                    <img src="{IMG_BINGHEN}" alt="冰痕">
+                    <span class="eq-conflict-badge">互斥失效</span>
+                </div>
+                <span class="eq-name-text">冰痕之握</span>
+            </div>
+        </div>
+
+        <!-- 核心损益 Bento 单元 -->
+        <div class="highlight-stat-bento stat-box-bad">
+            <div class="stat-bignum-row">
+                <span class="stat-bignum num-bad">-1,800</span>
+                <span class="stat-tagline tag-bad">金币被动浪费</span>
+            </div>
+            <div class="stat-detail-text">肉刀+火甲同属【献祭】、宗师+冰痕同属【强击】，同名唯一被动无法叠加！</div>
+        </div>
+
+        <!-- 4项对比参数 -->
+        <div class="contrast-metrics-list">
+            <div class="contrast-metric-row">
+                <span class="cm-lbl">等效物理承伤</span>
+                <span class="cm-val-bad">14,250 (极易暴毙)</span>
+            </div>
+            <div class="contrast-metric-row">
+                <span class="cm-lbl">最终最大生命</span>
+                <span class="cm-val-bad">8,820 (单薄脆皮)</span>
+            </div>
+            <div class="contrast-metric-row">
+                <span class="cm-lbl">法术防御 (魔抗)</span>
+                <span class="cm-val-bad">350 (无魔女法抗脆如纸)</span>
+            </div>
+            <div class="contrast-metric-row">
+                <span class="cm-lbl">韧性加成收益</span>
+                <span class="cm-val-bad">进战满额霸体，抵抗鞋归零</span>
+            </div>
+        </div>
+
+        <!-- 底部实战诊断小卡 -->
+        <div class="col-bottom-diag diag-bad">
+            <b>⚠️ 实战痛点:</b> 前期合成真空期长达 4 分钟，中期团战进场吃第一波法核集火直接融化，无法打出二技能真伤压制。
+        </div>
+    </div>
+
+    <!-- 右卡片: 国服万血真伤神装 -->
+    <div class="compare-bento-card">
+        <div class="col-header">
+            <div class="col-title-group">
+                <span class="title-good">✔ 国服万血真伤神装</span>
+            </div>
+            <div class="col-score-pill pill-good">满分 100 分 · 机制闭环</div>
+        </div>
+
+        <!-- 6件装备带优势角标 -->
+        <div class="equips-showcase">
+            <div class="equip-bento-cell">
+                <div class="eq-thumb-box">
+                    <img src="{IMG_ROUDAO}" alt="肉刀">
+                    <span class="eq-ok-badge">万血基石</span>
+                </div>
+                <span class="eq-name-text">巡守利斧</span>
+            </div>
+            <div class="equip-bento-cell">
+                <div class="eq-thumb-box">
+                    <img src="{IMG_BUJIAXIE}" alt="布甲鞋">
+                    <span class="eq-ok-badge">-10%普攻</span>
+                </div>
+                <span class="eq-name-text">影忍之足</span>
+            </div>
+            <div class="equip-bento-cell">
+                <div class="eq-thumb-box">
+                    <img src="{IMG_HEIQIE}" alt="黑切">
+                    <span class="eq-ok-badge">破甲清零</span>
+                </div>
+                <span class="eq-name-text">暗影战斧</span>
+            </div>
+            <div class="equip-bento-cell">
+                <div class="eq-thumb-box">
+                    <img src="{IMG_CANGQIONG}" alt="苍穹">
+                    <span class="eq-ok-badge">35%减伤</span>
+                </div>
+                <span class="eq-name-text">纯净苍穹</span>
+            </div>
+            <div class="equip-bento-cell">
+                <div class="eq-thumb-box">
+                    <img src="{IMG_BAOLIE}" alt="暴烈">
+                    <span class="eq-ok-badge">10%移速</span>
+                </div>
+                <span class="eq-name-text">暴烈之甲</span>
+            </div>
+            <div class="equip-bento-cell">
+                <div class="eq-thumb-box">
+                    <img src="{IMG_MONV}" alt="魔女">
+                    <span class="eq-ok-badge">1500法盾</span>
+                </div>
+                <span class="eq-name-text">魔女斗篷</span>
+            </div>
+        </div>
+
+        <!-- 核心损益 Bento 单元 -->
+        <div class="highlight-stat-bento stat-box-good">
+            <div class="stat-bignum-row">
+                <span class="stat-bignum num-good">100%</span>
+                <span class="stat-tagline tag-good">经济完全转化</span>
+            </div>
+            <div class="stat-detail-text">六神装零互斥冲突，物法双抗均衡，打野肉刀堆万血极度容错！</div>
+        </div>
+
+        <!-- 4项对比参数 -->
+        <div class="contrast-metrics-list">
+            <div class="contrast-metric-row">
+                <span class="cm-lbl">等效物理承伤</span>
+                <span class="cm-val-good">30,210 (+112% 翻倍坦度)</span>
+            </div>
+            <div class="contrast-metric-row">
+                <span class="cm-lbl">最终最大生命</span>
+                <span class="cm-val-good">10,250 (肉刀+2950 高容错)</span>
+            </div>
+            <div class="contrast-metric-row">
+                <span class="cm-lbl">法术防御 (魔抗)</span>
+                <span class="cm-val-good">549 (+1500 吸收法术护盾)</span>
+            </div>
+            <div class="contrast-metric-row">
+                <span class="cm-lbl">普攻伤害防御</span>
+                <span class="cm-val-good">影忍之足直减 10% 普攻伤害</span>
+            </div>
+        </div>
+
+        <!-- 底部实战诊断小卡 -->
+        <div class="col-bottom-diag diag-good">
+            <b>✔ 实战优势:</b> 陨星与巡守利斧无缝过渡，9分半苍穹成型迎来质变，进场吃满集火大招激光瞬间回满血线。
+        </div>
+    </div>
+
+</div>
+
+<div class="bottom-bar">
+    <div class="bottom-left">⚡ 装备双向合成拓扑支持 · 杜绝装备合成真空期</div>
+    <div class="bottom-right">
+        <span>右滑查看三大底层机制联动分析</span>
+        <span>→</span>
+    </div>
+</div>
+
+</body>
+</html>

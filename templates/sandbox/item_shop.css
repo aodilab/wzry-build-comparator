@@ -1,0 +1,144 @@
+/* ==========================================================================
+   4. 中间栏：装备商店（极简通透卡片排版）
+   ========================================================================== */
+.item-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 16px 20px 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+  gap: 14px;
+  align-content: start;
+}
+
+/* 苹果官网风格统一规范卡片 (Apple Official Store Uniform Cards) */
+.item-card {
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  border-radius: 18px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  box-shadow: var(--card-shadow);
+  height: 146px;
+  box-sizing: border-box;
+}
+
+.item-card:hover {
+  background: var(--apple-card-hover);
+  border-color: var(--apple-border-hover);
+  transform: translateY(-3px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.item-card.equipped {
+  border-color: var(--color-green);
+  background: var(--color-green-bg);
+}
+
+.item-top {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.item-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid var(--apple-border);
+  object-fit: cover;
+  background: #111;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.item-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.01em;
+}
+
+.item-price-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-amber);
+  background: var(--color-amber-bg);
+  padding: 2px 7px;
+  border-radius: 6px;
+  margin-top: 3px;
+}
+
+.item-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.item-stat-line {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-stat-primary {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* 苹果官网风格被动/类别胶囊徽标 (Apple Subtle Pill) */
+.item-passive-pill {
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--color-amber);
+  background: var(--color-amber-bg);
+  border-radius: 6px;
+  padding: 3px 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 4px;
+  display: block;
+}
+
+.item-passive-pill.pill-subtle {
+  color: var(--text-tertiary);
+  background: var(--apple-subcard);
+}
+
+.item-equipped-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: var(--color-green);
+  color: #fff;
+  display: none;
+}
+
+.item-card.equipped .item-equipped-badge {
+  display: block;
+}
