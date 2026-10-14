@@ -117,19 +117,19 @@ raw_assets/
 *.mkv
 *.mov
 assets/icon_candidates/
-*.png
-!favicon.png
-!apple-touch-icon.png
-!assets/app_icon.png
-!assets/sponsor_wechat.jpg
-!assets/icon_dual_endless_cleaver.png
-!assets/icon_fuhuojia_resurrection.png
-!assets/icon_real_fuhuojia.png
-!favicon-48x48.png
-!favicon-192x192.png
-!social_preview.png
+# 静态图片过滤（assets/ 与 dist_pages/ 内允许保留）
+/favicon*.png
+/favicon.ico
+/apple-touch-icon.png
+/social_preview.png
+/baidu_verify_*.html
+/BingSiteAuth.xml
+/robots.txt
+/sitemap.xml
+/index.html
+/sandbox.html
+/preview_miniprogram.html
+/wrangler.json
 
-# 站长验证临时文件
-baidu_verify_*.html
-BingSiteAuth.xml
-CHANGELOG.md
+!assets/**
+!dist_pages/**
