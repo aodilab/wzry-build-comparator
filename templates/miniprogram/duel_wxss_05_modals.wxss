@@ -1,0 +1,263 @@
+.sheet-title-txt {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: #1d1d1f;
+  letter-spacing: -0.015em;
+}
+.sheet-subtitle-txt {
+  font-size: 11.5px;
+  color: #86868b;
+}
+.sheet-close-btn {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #f0f0f2;
+  color: #8e8e93;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  z-index: 5;
+}
+.sheet-close-btn::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  bottom: -10px;
+  left: -10px;
+}
+.sheet-close-btn:active {
+  background: #e5e5ea;
+  transform: scale(0.92);
+}
+.sheet-close-svg {
+  width: 11px;
+  height: 11px;
+  display: block;
+}
+.sheet-scroll-body {
+  flex: 1;
+  height: 0;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 0 20px;
+}
+
+/* 通用胶囊分段控制器 (与 preview_miniprogram.html 1:1 对齐) */
+.apple-seg-control {
+  display: flex;
+  background: transparent;
+  padding: 2px 0;
+  gap: 5px;
+  width: 100%;
+}
+.apple-seg-item {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  color: #1d1d1f;
+  background: #ffffff;
+  border: 1px solid #e5e5ea;
+  border-radius: 999px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: all 0.18s ease;
+}
+.apple-seg-item.active {
+  background: #007aff;
+  border-color: #007aff;
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(0, 122, 255, 0.28);
+}
+
+/* 装备商店全局 iOS Sheet 材质系统 */
+.shop-sheet {
+  background: rgba(255, 255, 255, 0.96);
+  padding: 6px 16px 20px;
+  box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.12);
+}
+.shop-sheet .sheet-grabber {
+  background: #e2e4ea;
+  width: 36px;
+  height: 4px;
+  border-radius: 999px;
+  margin: 2px auto 10px;
+}
+.shop-sheet .sheet-title-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 0 0 6px;
+  border-bottom: none;
+}
+.shop-sheet .sheet-title-txt {
+  font-size: 17.5px;
+  font-weight: 700;
+  color: #000000;
+  letter-spacing: -0.02em;
+}
+.shop-sheet .sheet-top-unequip-btn {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15.5px;
+  font-weight: 600;
+  color: #ff3b30;
+  padding: 4px 4px;
+}
+.shop-sheet .sheet-close-btn {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e5e5ea;
+  color: #1c1c1e;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+.shop-header-pinned {
+  flex-shrink: 0;
+  background: #ffffff;
+  padding-bottom: 6px;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+}
+.shop-search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 8px 0 8px;
+}
+.shop-search-icon {
+  position: absolute;
+  left: 12px;
+  width: 15px;
+  height: 15px;
+  pointer-events: none;
+  z-index: 2;
+}
+.shop-search-ph {
+  color: #8e8e93;
+  font-size: 13.5px;
+}
+.shop-search-input {
+  width: 100%;
+  height: 40px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 0 12px 0 36px;
+  border: 1.5px solid #e1e6ed;
+  font-size: 13.5px;
+  color: #000000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+.shop-sheet .apple-seg-control {
+  background: transparent;
+  padding: 2px 0;
+  gap: 6px;
+  display: flex;
+}
+.shop-sheet .apple-seg-item {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #1c1c1e;
+  background: #ffffff;
+  border: 1px solid #e5e5ea;
+  border-radius: 999px;
+  padding: 6px 12px;
+  flex: 1;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+.shop-sheet .apple-seg-item.active {
+  background: #ffffff;
+  border-color: rgba(0, 122, 255, 0.45);
+  color: #007aff;
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 122, 255, 0.08);
+}
+
+/* 上半区：双列极简选装网格 */
+.shop-grid-scroll-area {
+  flex: 1;
+  height: 0;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 1px 12px;
+}
+.shop-grid-2col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.shop-grid-card {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 10px;
+  border-radius: 13px;
+  background: #ffffff;
+  border: 1px solid #ebebf0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  min-width: 0;
+}
+.shop-grid-card.active {
+  background: #ffffff;
+  border-color: #007aff;
+  box-shadow: 0 0 0 1px #007aff, 0 3px 12px rgba(0, 122, 255, 0.08);
+}
+.shop-card-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  background: #f2f2f7;
+  border: 0.5px solid rgba(0, 0, 0, 0.04);
+}
+.shop-card-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  flex: 1;
+  gap: 3px;
+}
+.shop-card-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #1d1d1f;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  letter-spacing: -0.015em;
+}
+.shop-grid-card.active .shop-card-name {
+  font-weight: 700;
+}
+.shop-card-price-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.5px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #8e8e93;
+  height: 18px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}

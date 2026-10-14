@@ -1,0 +1,123 @@
+   层级 1 专属：实战分路快速选择毛玻璃浮层 (Lane Picker Sheet)
+   ========================================================================== */
+.lane-picker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.lane-picker-overlay.active {
+  display: flex;
+}
+
+.lane-picker-card {
+  width: 90%;
+  max-width: 440px;
+  background: var(--apple-panel);
+  border: 1px solid var(--apple-panel-border);
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: appleModalSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lane-picker-header {
+  padding: 16px 20px 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--apple-border);
+}
+
+.lane-picker-hero {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lane-picker-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--color-blue);
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.2);
+}
+
+.lane-picker-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lane-picker-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.lane-picker-sub {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+
+.lane-picker-body {
+  padding: 20px;
+}
+
+.lane-picker-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.lane-picker-btn {
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1.5px solid var(--apple-border);
+  background: var(--apple-card);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  box-shadow: var(--card-shadow);
+}
+
+.lane-picker-btn:hover {
+  border-color: var(--color-blue);
+  background: var(--apple-card-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.lane-picker-btn.active {
+  background: var(--color-blue-bg);
+  border-color: var(--color-blue);
+  box-shadow: 0 0 0 2px var(--color-blue), 0 4px 12px rgba(0, 113, 227, 0.2);
+}
+
+.lane-picker-btn-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.lane-picker-btn-tip {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   层级二：方案与推演室 (Hero Studio)

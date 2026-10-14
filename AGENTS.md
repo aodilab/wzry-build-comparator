@@ -1,0 +1,67 @@
+# 王者荣耀知识库与推演系统 (AGENTS.md)
+
+## 工作准则
+1. **实事求是**：测试报错与功能缺陷如实反馈，不掩盖问题；不执行违背技术常理的操作。
+2. **直奔本质**：语言简明，就事论事，严禁形容词堆砌与废话。
+3. **单一数据源**：基础数据以官网接口为准，延迟与重做技能收拢于 `config/patches/`，严禁捏造数值。
+4. **测试闭环**：代码与配置修改后必须本地运行与比对测试，确保功能无倒退。
+
+---
+
+## 一、 交付产物拓扑
+- **`output/`**：8 卷纯 Markdown 知识库（数值、克制、出装、装备、铭文、机制、分路、连招）。
+- **`sandbox.html` / `index.html`**：纯前端配装推演沙盒，支持铭文混搭、属性计算与连招对决。
+- **`dist_pages/`**：Cloudflare CDN 静态托管（沙盒、出装对决台、提货中心、直链抓取）。
+- **`taobao/pdf/`**：Playwright 驱动的 12 册矢量 PDF 手册。
+- **`miniprogram/` & `preview_miniprogram.html`**：微信原生小程序双页面 + 网页端 1:1 组件化镜像外壳。
+
+---
+
+## 二、 目录架构
+```text
+├── AGENTS.md                  # 规则总纲
+├── build.py                   # 统一构建入口 (--kb/--all/--sandbox/--miniprogram/--sync-builds/--seo)
+├── preview_miniprogram.html   # 小程序网页预览外壳 (~320行，外链 templates/preview/)
+├── wrangler.json              # Cloudflare 网络配置
+├── config/                    # 配置与静态字典（≤350行；海量出装外置为 official_builds_data.json）
+│   └── patches/               # 英雄重做/新英雄补丁包 (≤350行)
+├── src/                       # 核心业务源码（120~250行，红线 ≤350行）
+│   ├── core/                  # 网络层 http.py、清洗 cleaner.py、校验 hero_validator.py
+│   └── builders/              # 知识库、沙盒、PDF、小程序构建流水线
+├── templates/                 # 细粒度组件模板（120~250行，红线 ≤350行）
+│   ├── sandbox/               # 沙盒 CSS 与 JS 模块
+│   ├── preview/               # 小程序网页预览 CSS 与 JS 模块
+│   ├── miniprogram/           # 原生小程序页面与逻辑模块
+│   ├── pdf/                   # PDF 排版样式与模板
+│   ├── xiaohongshu/           # 宣传卡片样式
+│   └── details/               # 详情页样式与切片
+├── miniprogram/               # 微信原生小程序工程与数据集
+├── output/                    # 交付层：8 卷 Markdown 知识库
+├── dist_pages/                # 线上发布层：沙盒、对决台与提货门户
+├── taobao/                    # 出版物层：12 册 PDF 与素材缓存
+├── raw_assets/                # 本地录屏与源件
+└── scratch/                   # 临时调试目录（随用随清）
+```
+
+---
+
+## 三、 三层解耦架构模型
+1. **数据层 (Data)**：静态纯数据（`official_builds_data.json`、`dataset_preview.js`），与执行代码彻底隔离。
+2. **组件层 (Templates & Core)**：单一职责模块（`src/` 与 `templates/`，120~250 行区间），严禁内嵌大字典。
+3. **生成层 (Deliverables)**：统一由 `python build.py` 调度生成，严禁手工维护巨石生成物。
+
+---
+
+## 四、 代码行数与工程红线
+| 模块类型 | 黄金区间 | 极限红线 | 约束 |
+| :--- | :---: | :---: | :--- |
+| **业务源码 (`src/`)** | **120 ~ 250 行** | **≤ 350 行** | 单一职责，超限必须拆分。 |
+| **前端与预览模板 (`templates/`)**| **120 ~ 250 行** | **≤ 350 行** | 逻辑、算分、UI 分离。 |
+| **配置与补丁 (`config/`)** | **100 ~ 250 行** | **≤ 350 行** | 按领域拆包，大字典外置为 JSON。 |
+| **规则总纲 (`AGENTS.md`)**| **50 ~ 80 行** | **≤ 100 行** | 纯事实与规则，严禁修饰词。 |
+| **交付生成物** | **自动构建** | 无限制 | 统一由 `python build.py` 生成。 |
+
+- **统一入口**：统一通过 `python build.py` 构建，根目录禁止散落临时脚本。
+- **环境隔离**：`scratch/` 仅用于临时调试，提交前必须清空。
+- **双端镜像**：`preview_miniprogram.html` 与 `miniprogram/pages/duel/` 保持组件与逻辑 1:1 等价拆解。
+- **测试闭环**：代码或配置修改后必须本地试运行与自动化比对验证，确保零功能倒退。

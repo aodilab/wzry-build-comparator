@@ -1,0 +1,194 @@
+/* 核心两列对比容器: 纵向充分舒展撑满 */
+.compare-container {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 20px 0;
+}
+.compare-bento-card {
+    background: #ffffff;
+    border-radius: 28px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.03);
+    padding: 28px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.col-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0f0f4;
+}
+.col-title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 21px;
+    font-weight: 800;
+}
+.title-bad { color: #d70015; }
+.title-good { color: #1a7f37; }
+.col-score-pill {
+    font-size: 14.5px;
+    font-weight: 700;
+    padding: 5px 16px;
+    border-radius: 980px;
+}
+.pill-bad { background: #fff0f2; color: #d70015; border: 1px solid rgba(215, 0, 21, 0.15); }
+.pill-good { background: #f0faf3; color: #1a7f37; border: 1px solid rgba(26, 127, 55, 0.15); }
+
+/* 装备陈列区 */
+.equips-showcase {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 18px 0;
+}
+.equip-bento-cell {
+    background: #fbfbfd;
+    border: 1px solid #f0f0f4;
+    border-radius: 18px;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+}
+.eq-thumb-box {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    overflow: visible;
+}
+.eq-thumb-box img {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+.eq-conflict-badge {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background: #d70015;
+    color: #ffffff;
+    font-size: 11.5px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 980px;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(215, 0, 21, 0.3);
+}
+.eq-ok-badge {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background: #1a7f37;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 980px;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(26, 127, 55, 0.25);
+}
+.eq-name-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1d1d1f;
+    text-align: center;
+}
+
+/* 核心损益重点 Bento 单元 */
+.highlight-stat-bento {
+    border-radius: 20px;
+    padding: 18px 22px;
+    margin-bottom: 18px;
+}
+.stat-box-bad {
+    background: #fff8f8;
+    border: 1px solid #ffe2e5;
+}
+.stat-box-good {
+    background: #f6fbf8;
+    border: 1px solid #d4f2df;
+}
+.stat-bignum-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+.stat-bignum {
+    font-size: 46px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.03em;
+}
+.num-bad { color: #d70015; }
+.num-good { color: #1a7f37; }
+.stat-tagline {
+    font-size: 17.5px;
+    font-weight: 800;
+}
+.tag-bad { color: #d70015; }
+.tag-good { color: #1a7f37; }
+.stat-detail-text {
+    font-size: 16px;
+    color: #6e6e73;
+    line-height: 1.45;
+}
+
+/* 4项实战参数横向对撞清单 */
+.contrast-metrics-list {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    margin-bottom: 18px;
+}
+.contrast-metric-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 11px 16px;
+    border-radius: 12px;
+    background: #fbfbfd;
+    font-size: 16.5px;
+}
+.cm-lbl {
+    font-weight: 600;
+    color: #86868b;
+}
+.cm-val-bad {
+    font-weight: 800;
+    color: #d70015;
+}
+.cm-val-good {
+    font-weight: 800;
+    color: #1a7f37;
+}
+
+/* 底部实战诊断小卡 */
+.col-bottom-diag {
+    padding: 15px 18px;
+    border-radius: 16px;
+    font-size: 16px;
+    line-height: 1.5;
+}
+.diag-bad {
+    background: #fff5f5;
+    color: #8a1f29;
+    border-left: 4px solid #d70015;
+}
+.diag-good {
+    background: #f0faf3;
+    color: #145927;
+    border-left: 4px solid #1a7f37;
+}

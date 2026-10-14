@@ -1,0 +1,285 @@
+.lane-verify-tag {
+    background: rgba(0, 113, 227, 0.08);
+    color: #0071e3;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.lane-verify-banner a {
+    color: #0071e3;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* 英雄出装微型验算胶囊 */
+.build-slot-line {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 6px;
+    margin: 8px 0;
+    font-size: 8.5pt;
+    line-height: 1.4;
+}
+.build-slot-label {
+    font-weight: 700;
+    color: #1d1d1f;
+    white-space: nowrap;
+}
+.build-slot-items {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    flex-wrap: nowrap;
+}
+.sandbox-verify-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: #f0f7ff;
+    border: 1px solid rgba(0, 113, 227, 0.35);
+    color: #0071e3;
+    padding: 2px 7px;
+    border-radius: 980px;
+    font-size: 7.5pt;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+    margin-left: 6px;
+    box-shadow: 0 1px 3px rgba(0, 113, 227, 0.08);
+}
+
+/* 职业领域顶部分界横幅 (Esports Role Division Banner) */
+.role-division-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    color: #ffffff;
+    padding: 12px 18px;
+    border-radius: 10px;
+    margin: 28px 0 16px;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
+    break-before: page;
+    page-break-before: always;
+}
+.role-banner-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.role-banner-icon {
+    font-size: 16pt;
+}
+.role-banner-title {
+    font-size: 13pt;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+.role-banner-sub {
+    font-size: 8pt;
+    color: #94a3b8;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 3px 10px;
+    border-radius: 980px;
+}
+
+/* 英雄基础属性 6 宫格矩阵面板 (Apple 6-Cell Stat Matrix) */
+.hero-stats-matrix {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 10px 0 14px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+.stat-card {
+    background: #fbfcfd;
+    border: 1px solid #e5e5ea;
+    border-radius: 8px;
+    padding: 7px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.stat-k {
+    font-size: 7.5pt;
+    font-weight: 600;
+    color: #86868b;
+    margin-bottom: 2px;
+}
+.stat-v {
+    font-size: 11pt;
+    font-weight: 800;
+    color: #1d1d1f;
+    line-height: 1.2;
+}
+.stat-growth {
+    font-size: 7pt;
+    color: #0284c7;
+    margin-top: 1px;
+}
+
+/* 技能独立功能模块卡片 (Skill Module Card) */
+.skill-module-card {
+    background: #ffffff;
+    border: 1px solid #e5e5ea;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+.skill-banner-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #f2f2f7;
+}
+.skill-banner-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.skill-meta-pills {
+    display: flex;
+    gap: 6px;
+}
+.skill-meta-pill {
+    font-size: 7.5pt;
+    color: #64748b;
+    background: #f1f5f9;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+.skill-growth-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 8pt;
+    color: #0284c7;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    padding: 4px 8px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+}
+.growth-lbl {
+    font-weight: 700;
+    color: #0369a1;
+}
+.skill-desc-box {
+    font-size: 8.5pt;
+    color: #334155;
+    line-height: 1.5;
+}
+
+/* 装备全维度卡片 (Volume 04 Item Entry Card) */
+.item-entry-card {
+    background: #ffffff;
+    border: 1px solid #e5e5ea;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+.item-entry-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed #e5e5ea;
+}
+.item-entry-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.item-price-badges {
+    display: flex;
+    gap: 6px;
+}
+.price-pill {
+    font-size: 8pt;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 6px;
+    background: #fffbeb;
+    color: #b45309;
+    border: 1px solid #fde68a;
+}
+.item-stat-row {
+    font-size: 8.5pt;
+    font-weight: 700;
+    color: #0284c7;
+    margin-bottom: 6px;
+}
+.item-flow-row {
+    font-size: 8pt;
+    color: #475569;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+.item-effect-box {
+    margin-top: 6px;
+    font-size: 8pt;
+    color: #334155;
+    background: #f8fafc;
+    border-radius: 6px;
+    padding: 6px 8px;
+    line-height: 1.45;
+}
+
+/* 分路战术流派卡片 (Volume 03 Tactical Scheme Card) - 彻底去除具体装备，聚焦打法与沙盒导流 */
+.tactical-scheme-card {
+    background: #ffffff;
+    border: 1px solid #e5e5ea;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+.tactical-scheme-header {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #f1f5f9;
+}
+.tactical-scheme-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.tactical-reason {
+    font-size: 8.5pt;
+    color: #334155;
+    line-height: 1.5;
+}
+.tactical-sandbox-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 8pt;
+    color: #64748b;
+    margin-top: 2px;
+}

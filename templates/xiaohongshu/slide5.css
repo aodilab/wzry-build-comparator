@@ -1,0 +1,325 @@
+/* 入口总画卷 (Unified Portal Canvas) */
+.portal-canvas {
+    flex: 1;
+    background: #ffffff;
+    border-radius: 32px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.03);
+    padding: 36px 36px 32px 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 18px 0;
+    gap: 22px;
+}
+
+/* 1. Safari 官方拟真地址栏大卡 */
+.safari-mockup-card {
+    background: #fbfbfd;
+    border: 1px solid #eeeff2;
+    border-radius: 24px;
+    padding: 24px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.sm-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.sm-dots {
+    display: flex;
+    gap: 8px;
+}
+.sm-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+.dot-red { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green { background: #27c93f; }
+
+.sm-browser-lbl {
+    font-size: 15px;
+    font-weight: 700;
+    color: #86868b;
+    letter-spacing: 0.02em;
+}
+.sm-address-box {
+    background: #ffffff;
+    border: 1.5px solid #0071e3;
+    border-radius: 18px;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.08);
+}
+.url-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.url-lock-icon {
+    font-size: 24px;
+}
+.url-domain {
+    font-size: 42px;
+    font-weight: 900;
+    color: #0071e3;
+    letter-spacing: -0.02em;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+}
+.url-sub-hint {
+    font-size: 15px;
+    color: #86868b;
+    font-weight: 600;
+    margin-left: 8px;
+}
+.btn-visit-tag {
+    background: #0071e3;
+    color: #ffffff;
+    font-size: 17px;
+    font-weight: 800;
+    padding: 10px 24px;
+    border-radius: 980px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.25);
+}
+.sm-features-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+.feat-chip {
+    flex: 1;
+    background: #ffffff;
+    border: 1px solid #eeeff2;
+    border-radius: 14px;
+    padding: 11px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 15.5px;
+    font-weight: 700;
+    color: #1d1d1f;
+}
+
+/* 2. 沙盒局内装备自由搭配实景预览大卡 */
+.sandbox-preview-bento {
+    flex: 1;
+    background: #fbfbfd;
+    border: 1px solid #eeeff2;
+    border-radius: 24px;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+}
+.sp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.sp-hero-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.sp-avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+.sp-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.sp-hero-title {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.sp-h-name {
+    font-size: 20px;
+    font-weight: 900;
+    color: #1d1d1f;
+}
+.sp-h-switch {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0071e3;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.sp-score-tag {
+    font-size: 16px;
+    font-weight: 800;
+    color: #1a7f37;
+    background: #effaf2;
+    border: 1px solid rgba(26, 127, 55, 0.2);
+    padding: 6px 16px;
+    border-radius: 980px;
+}
+
+/* 6个神装自由插拔槽位 */
+.sp-slots-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px;
+}
+.sp-slot-cell {
+    background: #ffffff;
+    border: 1.5px solid #e5e5ea;
+    border-radius: 18px;
+    padding: 14px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    position: relative;
+}
+.sp-slot-cell::after {
+    content: "点击替换 ▾";
+    font-size: 11px;
+    font-weight: 700;
+    color: #0071e3;
+    background: #f0f7ff;
+    padding: 2px 7px;
+    border-radius: 6px;
+}
+.sp-slot-thumb {
+    width: 62px;
+    height: 62px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #111;
+}
+.sp-slot-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.sp-slot-name {
+    font-size: 14.5px;
+    font-weight: 800;
+    color: #1d1d1f;
+    text-align: center;
+}
+
+/* 自由搭配实时数值反馈条 */
+.sp-metrics-row {
+    display: flex;
+    background: #ffffff;
+    border: 1px solid #eeeff2;
+    border-radius: 14px;
+    padding: 12px 18px;
+    justify-content: space-around;
+    align-items: center;
+}
+.sp-metric-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+.sp-m-lbl {
+    font-size: 13px;
+    font-weight: 700;
+    color: #86868b;
+}
+.sp-m-val {
+    font-size: 18px;
+    font-weight: 900;
+    color: #1d1d1f;
+}
+.sp-m-highlight {
+    color: #0071e3;
+}
+.sp-m-safe {
+    color: #1a7f37;
+}
+
+/* 搭配铭文行 */
+.sp-arcana-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #eeeff2;
+    border-radius: 14px;
+    padding: 11px 18px;
+}
+.sp-arc-lbl {
+    font-size: 15px;
+    font-weight: 800;
+    color: #1d1d1f;
+}
+.sp-arc-list {
+    display: flex;
+    gap: 12px;
+}
+.sp-arc-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #1d1d1f;
+    background: #fbfbfd;
+    border: 1px solid #eeeff2;
+    padding: 4px 12px;
+    border-radius: 980px;
+}
+.sp-arc-chip img {
+    width: 22px;
+    height: 22px;
+}
+
+/* 3. 极简 3 步使用说明卡 */
+.steps-quickstart-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+.qs-step-cell {
+    background: #fbfbfd;
+    border: 1px solid #f0f0f4;
+    border-radius: 20px;
+    padding: 20px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.qs-step-pill {
+    font-size: 13.5px;
+    font-weight: 800;
+    padding: 3px 12px;
+    border-radius: 980px;
+    width: fit-content;
+}
+.qs-p1 { background: #eef6ff; color: #0071e3; border: 1px solid rgba(0, 113, 227, 0.15); }
+.qs-p2 { background: #effaf2; color: #1a7f37; border: 1px solid rgba(26, 127, 55, 0.15); }
+.qs-p3 { background: #fff8ee; color: #d97706; border: 1px solid rgba(217, 119, 6, 0.2); }
+
+.qs-title {
+    font-size: 19px;
+    font-weight: 900;
+    color: #1d1d1f;
+}
+.qs-desc {
+    font-size: 15px;
+    color: #515154;
+    line-height: 1.45;
+}

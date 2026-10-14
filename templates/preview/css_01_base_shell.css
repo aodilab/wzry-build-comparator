@@ -1,0 +1,246 @@
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    *::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+    :root {
+      --apple-bg: #f8f9fa;
+      --apple-card: #ffffff;
+      --apple-pill-bg: #f0f4ff;
+      --apple-text-primary: #1d1d1f;
+      --apple-text-secondary: #86868b;
+      --apple-text-tertiary: #a1a1a6;
+      --apple-blue: #007aff;
+      --apple-blue-bg: rgba(0, 122, 255, 0.08);
+      --apple-green-dark: #248a3d;
+      --apple-red: #ff3b30;
+      --apple-divider: #e8e8ed;
+      --apple-divider-light: rgba(0, 0, 0, 0.04);
+      --radius-card: 20px;
+    }
+    body {
+      background-color: #f8f9fa;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      margin: 0;
+    }
+    .phone-shell {
+      width: 420px;
+      height: min(890px, calc(100vh - 20px));
+      background: var(--apple-bg);
+      border-radius: 44px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+      border: 10px solid #1d1d1f;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    @media (max-width: 600px) {
+      body { height: 100%; background-color: var(--apple-bg); }
+      .phone-shell { width: 100vw; height: 100vh; height: 100dvh; border: none; border-radius: 0; box-shadow: none; }
+      .modal-mask, .lane-modal-mask, .skill-detail-modal { border-radius: 0; }
+    }
+
+    /* 顶部导航条 */
+    .apple-nav-bar {
+      height: 48px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      border-bottom: 0.5px solid rgba(0,0,0,0.08);
+      flex-shrink: 0;
+      z-index: 100;
+    }
+    .nav-circle-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      border: 0.5px solid rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #1d1d1f;
+      font-size: 16px;
+      font-weight: 600;
+      transition: transform 0.15s;
+    }
+    .nav-circle-btn:active { transform: scale(0.92); }
+    .nav-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--apple-text-primary);
+      letter-spacing: -0.2px;
+    }
+
+    /* 页面视图切换 */
+    .page-stage {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      background: #f8f9fa;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .page-stage.active { display: flex; }
+
+    /* ================= 页面一：挑选英雄大厅 (对标 App Store 纯白透亮画布) ================= */
+    #pageHall {
+      background: #ffffff;
+    }
+    .hall-wrap {
+      padding: 24px 20px 40px;
+      display: flex;
+      flex-direction: column;
+    }
+    .hall-main-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.02em;
+    }
+    .hall-sub-title {
+      font-size: 13px;
+      color: #8e8e93;
+      margin-top: 4px;
+      margin-bottom: 18px;
+    }
+    .apple-search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .search-svg-icon {
+      position: absolute;
+      left: 14px;
+      stroke: #007aff;
+      pointer-events: none;
+    }
+    .apple-search-input {
+      width: 100%;
+      height: 42px;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 0 14px 0 40px;
+      font-size: 14px;
+      border: 1.5px solid #e1e6ed;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      outline: none;
+      color: #000000;
+      font-family: inherit;
+      transition: all 0.18s ease;
+    }
+    .apple-search-input:focus {
+      border-color: #007aff;
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.16);
+    }
+    /* 彻底消灭灰色粗槽底，转为独立纯白浮动胶囊筛选器 (对标 App Store 胶囊体系，7项等宽自适应全屏对齐) */
+    .apple-seg-control {
+      display: flex;
+      background: transparent;
+      padding: 2px 0;
+      margin-bottom: 18px;
+      gap: 5px;
+      width: 100%;
+      user-select: none;
+    }
+    .apple-seg-control::-webkit-scrollbar {
+      display: none;
+    }
+    .apple-seg-item {
+      flex: 1;
+      min-width: 0;
+      text-align: center;
+      padding: 6px 0;
+      font-size: 12px;
+      color: #1d1d1f;
+      background: #ffffff;
+      border: 1px solid #e5e5ea;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 500;
+      white-space: nowrap;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+      transition: all 0.18s ease;
+    }
+    .apple-seg-item:hover {
+      border-color: #c7c7cc;
+    }
+    .apple-seg-item.active {
+      background: #007aff;
+      border-color: #007aff;
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 3px 10px rgba(0, 122, 255, 0.28);
+    }
+    .hall-hero-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px 12px;
+      padding: 4px 0 30px;
+      justify-items: center;
+    }
+    .hall-hero-tile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      min-width: 0;
+      width: 100%;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+    .hall-hero-tile:active { transform: scale(0.92); opacity: 0.8; }
+    .hall-hero-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #ffffff;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      background: #f2f2f7;
+    }
+    .hall-hero-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1d1d1f;
+      margin-top: 6px;
+      line-height: 1.2;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* ================= 页面二：推演室 (Apple 纯白立体圆角卡片体系) ================= */
+    .studio-wrap {
+      padding: 16px 16px 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: #f8f9fa;
+    }

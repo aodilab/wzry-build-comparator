@@ -1,0 +1,277 @@
+/* 英雄、神装与铭文整合 Bento 卡片 */
+.hero-build-bento {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 26px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+    padding: 20px 32px 18px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.build-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.hero-left-col {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+.hero-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+.hero-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.hero-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.h-name {
+    font-size: 30px;
+    font-weight: 900;
+    color: #1d1d1f;
+    letter-spacing: -0.02em;
+}
+.h-sub {
+    font-size: 16px;
+    color: #86868b;
+    font-weight: 500;
+}
+.hero-equips-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.equip-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+.equip-thumb {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    border: 1px solid #e5e5ea;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    background: #111;
+}
+.equip-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.equip-lbl {
+    font-size: 14px;
+    font-weight: 700;
+    color: #86868b;
+}
+
+/* 铭文专属下半栏 */
+.build-divider {
+    width: 100%;
+    height: 1px;
+    background: #f0f0f4;
+}
+.build-arcana-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.arcana-left-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.arcana-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: #1d1d1f;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.arcana-items-list {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+.arcana-pill-unit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fbfbfd;
+    padding: 5px 14px 5px 8px;
+    border-radius: 980px;
+    border: 1px solid #eeeff2;
+}
+.arcana-thumb {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.arcana-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.arcana-meta {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1d1d1f;
+}
+.arcana-meta span {
+    font-size: 14.5px;
+    color: #86868b;
+    font-weight: 500;
+    margin-left: 4px;
+}
+.arcana-sum-tag {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0071e3;
+    background: #f0f7ff;
+    padding: 6px 16px;
+    border-radius: 980px;
+    border: 1px solid rgba(0, 113, 227, 0.12);
+}
+
+/* 3 大分类 Bento 板块容器 (纵向均匀撑满) */
+.specs-section-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 18px;
+    margin: 18px 0;
+}
+.spec-category-bento {
+    flex: 1;
+    background: #ffffff;
+    border-radius: 26px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+    padding: 24px 34px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.cat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f4;
+}
+.cat-title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 800;
+    color: #1d1d1f;
+}
+.cat-pill {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0071e3;
+    background: #f0f7ff;
+    padding: 4px 12px;
+    border-radius: 980px;
+}
+.cat-items-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+    padding-top: 8px;
+}
+.metric-unit {
+    display: flex;
+    flex-direction: column;
+}
+.metric-name {
+    font-size: 17.5px;
+    font-weight: 700;
+    color: #86868b;
+    margin-bottom: 6px;
+}
+.metric-val-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+.metric-val-main {
+    font-size: 46px;
+    font-weight: 900;
+    line-height: 1;
+    color: #1d1d1f;
+    letter-spacing: -0.03em;
+}
+.metric-val-sub {
+    font-size: 19px;
+    font-weight: 700;
+    color: #86868b;
+}
+.metric-bar-track {
+    width: 100%;
+    height: 6px;
+    background: #ebebf0;
+    border-radius: 980px;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+.metric-bar-fill {
+    height: 100%;
+    border-radius: 980px;
+}
+.fill-green { background: #34c759; }
+.fill-purple { background: #af52de; }
+.fill-blue { background: #0071e3; }
+
+.metric-sub-formula {
+    font-size: 16.5px;
+    font-weight: 500;
+    color: #6e6e73;
+    line-height: 1.4;
+}
+
+/* 底部极简小结独立 Bento 卡片 */
+.summary-bento-card {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.02);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.summary-badge {
+    font-size: 19.5px;
+    font-weight: 800;
+    color: #1a7f37;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.summary-desc {
+    font-size: 17.5px;
+    font-weight: 500;
+    color: #6e6e73;
+}

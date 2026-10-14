@@ -1,0 +1,271 @@
+.benchmark-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.benchmark-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2px;
+}
+.benchmark-header-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.benchmark-hint {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* iOS 原生分段控制器 (Segmented Tab Bar) */
+.benchmark-segmented-bar {
+  display: flex;
+  background: #ebebed;
+  padding: 3px;
+  border-radius: 999px;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 4px;
+}
+.benchmark-tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 6px 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #636366;
+  border-radius: 999px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.benchmark-tab-item.active {
+  background: #ffffff;
+  color: #1d1d1f;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 激活的对标出装单卡片 (100% 容器宽度，绝不超出屏幕) */
+.benchmark-active-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  padding: 10px 12px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.benchmark-active-desc {
+  font-size: 11px;
+  line-height: 1.4;
+  color: #6e6e73;
+}
+
+/* 推荐方案的具体6件装备微缩图 (均匀6等分) */
+.benchmark-items-wrap {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.benchmark-mini-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.benchmark-mini-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #f0f0f2;
+}
+.benchmark-mini-name {
+  font-size: 9.5px;
+  color: var(--text-secondary);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 48px;
+}
+
+/* 铭文差异提示条 */
+.arcana-diff-alert {
+  background: #eef7ff;
+  border: 1px solid #c7e2fe;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 11px;
+  color: #0071e3;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.4;
+}
+
+/* 3列/4列数值对照卡片表 */
+.diff-table-card {
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.diff-table-header {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr 1.3fr;
+  padding: 8px 10px;
+  background: var(--apple-subcard);
+  border-bottom: 1px solid var(--apple-border);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-align: center;
+}
+.diff-table-header .col-metric { text-align: left; }
+.diff-table-body {
+  display: flex;
+  flex-direction: column;
+}
+.diff-table-row {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr 1.3fr;
+  padding: 8px 10px;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+  font-size: 12px;
+  text-align: center;
+}
+.diff-table-row:last-child { border-bottom: none; }
+.diff-table-row .col-metric {
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 11.5px;
+}
+.diff-table-row .col-user {
+  color: var(--text-primary);
+  font-family: -apple-system, "SF Pro Rounded", sans-serif;
+}
+.diff-table-row .col-user.font-bold { font-weight: 700; color: #0071e3; }
+.diff-table-row .col-base {
+  color: var(--text-secondary);
+  font-family: -apple-system, "SF Pro Rounded", sans-serif;
+}
+.diff-status-pill {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  white-space: nowrap;
+}
+.diff-status-pill.status-plus {
+  background: #dcfce7;
+  color: #16a34a;
+}
+.diff-status-pill.status-minus {
+  background: #fee2e2;
+  color: #dc2626;
+}
+.diff-status-pill.status-equal {
+  background: #f0f0f2;
+  color: #8e8e93;
+}
+
+/* 核心装备机制差异 (PROS / CONS) */
+.mechanics-diff-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mechanics-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.mechanic-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.mechanic-group-title {
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.mechanic-group-title.pro-group-title { color: #2e7d32; }
+.mechanic-group-title.con-group-title { color: #d97706; }
+.mechanic-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.mechanic-card {
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.mechanic-card.pro-card {
+  background: rgba(52, 199, 89, 0.05);
+  border-left: 3.5px solid #34c759;
+}
+.mechanic-card.con-card {
+  background: rgba(255, 149, 0, 0.05);
+  border-left: 3.5px solid #ff9500;
+}
+.mechanic-card-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.mechanic-pill {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+  color: #fff;
+  line-height: 1.2;
+}
+.mechanic-pill.pro-pill { background: #34c759; }
+.mechanic-pill.con-pill { background: #ff9500; }
+.mechanic-card-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.mechanic-card-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+.mechanic-empty-box {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  background: var(--apple-subcard);
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* 实战连招伤害推演卡片 */

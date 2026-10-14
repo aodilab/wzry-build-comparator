@@ -1,0 +1,859 @@
+<!-- 王者出装推演 ｜ 页面二：双轨实战推演室主视图 (1:1 复刻 preview_miniprogram.html) -->
+<view class="studio-page" bindtap="closeComboMenu">
+  <view class="studio-wrap">
+
+    <!-- 1. 英雄概览卡片 -->
+    <view class="apple-card" style="padding:14px 18px;">
+      <view class="hero-banner-row">
+        <view class="hero-banner-left" bindtap="goBackToHall">
+          <image class="hero-banner-avatar" src="{{heroAvatar}}" mode="aspectFill" />
+          <view class="hero-info-col">
+            <view class="hero-name-row">
+              <text class="hero-name-txt">{{hero.cname}}</text>
+              <text class="hero-role-pill">{{hero.role}}</text>
+            </view>
+            <view class="hero-subtitle-txt">{{hero.title || '国服英雄'}} · 15级满级神装对决</view>
+          </view>
+        </view>
+        <view class="lane-pills-row">
+          <block wx:for="{{supportedLanes}}" wx:key="*this">
+            <view class="lane-choice-pill {{item === currentLane ? 'active' : ''}}" bindtap="switchStudioLane" data-lane="{{item}}">
+              {{item}}
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+
+    <!-- 2. 出装方案对决双轨卡片 (严格 100% 对齐 preview_miniprogram.html) -->
+    <view class="builds-deck">
+      <!-- 方案 A 卡片 -->
+      <view class="build-column-card">
+        <view class="build-header">
+          <view class="build-title-box">
+            <text class="build-badge badge-left">方案 A</text>
+            <text class="build-name {{leftTitleIsPrompt ? 'is-prompt' : ''}}">{{leftBuildTitle}}</text>
+          </view>
+          <view class="build-controls">
+            <view class="action-btn-pill btn-reset" wx:if="{{hasLeftItems}}" bindtap="resetOfficial">清空</view>
+          </view>
+        </view>
+
+        <view class="scheme-tabs-row">
+          <block wx:for="{{schemes}}" wx:key="index">
+            <view class="scheme-btn {{item.isActive ? 'active' : ''}}" bindtap="switchOfficialScheme" data-index="{{index}}">
+              {{item.title}}
+            </view>
+          </block>
+          <view class="scheme-btn scheme-btn-custom {{isLeftCustomMode ? 'active' : ''}}" bindtap="enableLeftCustomMode">自选方案</view>
+        </view>
+
+        <view class="slots-grid">
+          <block wx:for="{{leftItems}}" wx:key="index">
+            <block wx:if="{{item}}">
+              <view class="slot-item filled" bindtap="openItemInspector" data-side="left" data-index="{{index}}">
+                <image class="slot-img" src="{{item.icon}}" mode="aspectFill" />
+              </view>
+            </block>
+            <block wx:else>
+              <view class="slot-item" bindtap="openShopSheet" data-side="left" data-index="{{index}}">
+                <image class="slot-plus-svg" src="/assets/ic_slot_plus.png" mode="aspectFit" />
+              </view>
+            </block>
+          </block>
+        </view>
+
+        <view class="arcana-row">
+          <view class="arcana-list">
+            <text class="arcana-label-title">五级铭文</text>
+            <view class="arcana-chips-group">
+              <block wx:if="{{!leftArcSummary.hasAny}}">
+                <text class="arcana-empty-tip" bindtap="openArcanaSheet" data-side="left" data-color="red">未配置铭文</text>
+              </block>
+              <block wx:else>
+                <block wx:for="{{leftArcSummary.groups}}" wx:key="color" wx:for-item="grp" wx:for-index="gIdx">
+                  <text wx:if="{{gIdx > 0}}" class="arcana-sep">·</text>
+                  <view class="arcana-tag" bindtap="openArcanaSheet" data-side="left" data-color="{{grp.color}}">
+                    <block wx:for="{{grp.entries}}" wx:key="name" wx:for-item="ent">
+                      <view class="arc-entry-item"><text class="arc-count">{{ent.count}}</text><text>{{ent.name}}</text></view>
+                    </block>
+                  </view>
+                </block>
+              </block>
+            </view>
+          </view>
+          <view class="btn-edit-arcana" bindtap="openArcanaSheet" data-side="left" data-color="red">编辑 ›</view>
+        </view>
+      </view>
+
+      <!-- 方案 B 卡片 -->
+      <view class="build-column-card">
+        <view class="build-header">
+          <view class="build-title-box">
+            <text class="build-badge badge-right">方案 B</text>
+            <text class="build-name {{rightTitleIsPrompt ? 'is-prompt' : ''}}">{{rightBuildTitle}}</text>
+          </view>
+          <view class="build-controls">
+            <view class="action-btn-pill btn-copy" bindtap="applyCopyAToB">复制方案 A</view>
+            <view class="action-btn-pill btn-reset" wx:if="{{hasRightItems}}" bindtap="clearRightScheme">清空</view>
+          </view>
+        </view>
+
+        <view class="slots-grid">
+          <block wx:for="{{rightItems}}" wx:key="index">
+            <block wx:if="{{item}}">
+              <view class="slot-item filled" bindtap="openItemInspector" data-side="right" data-index="{{index}}">
+                <image class="slot-img" src="{{item.icon}}" mode="aspectFill" />
+              </view>
+            </block>
+            <block wx:else>
+              <view class="slot-item" bindtap="openShopSheet" data-side="right" data-index="{{index}}">
+                <image class="slot-plus-svg" src="/assets/ic_slot_plus.png" mode="aspectFit" />
+              </view>
+            </block>
+          </block>
+        </view>
+
+        <view class="arcana-row">
+          <view class="arcana-list">
+            <text class="arcana-label-title">五级铭文</text>
+            <view class="arcana-chips-group">
+              <block wx:if="{{!rightArcSummary.hasAny}}">
+                <text class="arcana-empty-tip" bindtap="openArcanaSheet" data-side="right" data-color="red">未配置铭文</text>
+              </block>
+              <block wx:else>
+                <block wx:for="{{rightArcSummary.groups}}" wx:key="color" wx:for-item="grp" wx:for-index="gIdx">
+                  <text wx:if="{{gIdx > 0}}" class="arcana-sep">·</text>
+                  <view class="arcana-tag" bindtap="openArcanaSheet" data-side="right" data-color="{{grp.color}}">
+                    <block wx:for="{{grp.entries}}" wx:key="name" wx:for-item="ent">
+                      <view class="arc-entry-item"><text class="arc-count">{{ent.count}}</text><text>{{ent.name}}</text></view>
+                    </block>
+                  </view>
+                </block>
+              </block>
+            </view>
+          </view>
+          <view class="btn-edit-arcana" bindtap="openArcanaSheet" data-side="right" data-color="red">编辑 ›</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 3. 实战伤害对决 / 辅助团队价值对决卡片 -->
+    <view class="apple-card">
+      <view class="combat-section-head">
+        <view class="combat-head-left">
+          <view class="apple-section-title">{{combatSectionTitle}}</view>
+          <view class="apple-section-desc">{{combatSectionDesc}}</view>
+        </view>
+
+        <!-- 右上角连招选择器 (Apple 紧凑胶囊) -->
+        <view class="combo-header-wrap {{showComboMenu ? 'active' : ''}}" wx:if="{{!isSupport}}">
+          <view class="combo-header-pill" catchtap="toggleComboMenu">
+            <text class="combo-pill-title">{{activeCombo.name}}</text>
+            <text class="combo-pill-seq" wx:if="{{activeCombo.key}}">{{activeCombo.key}}</text>
+            <image class="combo-chevron-icon" src="{{showComboMenu ? '/assets/ic_chevron_blue.png' : '/assets/ic_chevron_down.png'}}" mode="aspectFit" />
+          </view>
+
+          <!-- Apple 悬浮毛玻璃菜单 (右对齐) -->
+          <view class="combo-popover-menu" catchtap="stopProp">
+            <view class="combo-popover-inner">
+              <block wx:for="{{comboOptions}}" wx:key="index">
+                <view class="combo-menu-item {{index === activeComboIdx ? 'active' : ''}}" bindtap="selectCombo" data-index="{{index}}">
+                  <view class="combo-item-info">
+                    <view class="combo-item-top">
+                      <text class="combo-item-name">{{item.name}}</text>
+                      <text class="combo-item-key" wx:if="{{item.key}}">{{item.key}}</text>
+                    </view>
+                    <text class="combo-item-desc" wx:if="{{item.cleanDesc}}">{{item.cleanDesc}}</text>
+                  </view>
+                  <image wx:if="{{index === activeComboIdx}}" class="combo-check-icon" src="/assets/ic_check_blue.png" mode="aspectFit" />
+                </view>
+              </block>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 纯净双轨列头指示 (方案 A VS 方案 B) -->
+      <view class="combat-columns-header">
+        <view class="combat-col-side left">
+          <text class="build-badge badge-left">方案 A</text>
+        </view>
+        <text class="combat-col-vs">VS</text>
+        <view class="combat-col-side right">
+          <text class="build-badge badge-right">方案 B</text>
+        </view>
+      </view>
+
+      <view class="dmg-metrics-group">
+        <!-- 模式 A：常规/输出 实战伤害对决 (中射/坦克) -->
+        <block wx:if="{{!isSupport}}">
+          <view class="compare-metric-row">
+            <view class="metric-card-head">打【中射】实战爆发净伤害</view>
+            <view class="metric-card-sub">基准抗性：350 物理防御 / 180 法术防御</view>
+            <view class="metric-cols-row">
+              <view class="metric-side-col">
+                <view class="metric-num-val">{{dmgSquishyA}}<text class="metric-num-unit">点</text></view>
+              </view>
+              <view class="metric-vs-sep">vs</view>
+              <view class="metric-side-col">
+                <view class="metric-num-val">{{dmgSquishyB}}<text class="metric-num-unit">点</text></view>
+              </view>
+            </view>
+            <view class="metric-winner-wrap">
+              <text class="apple-winner-pill {{pills.dmgSquishy.cls}}">{{pills.dmgSquishy.text}}</text>
+            </view>
+          </view>
+
+          <view class="compare-metric-row">
+            <view class="metric-card-head">打【坦克】实战爆发净伤害</view>
+            <view class="metric-card-sub">基准抗性：1000 物理防御 / 600 法术防御</view>
+            <view class="metric-cols-row">
+              <view class="metric-side-col">
+                <view class="metric-num-val">{{dmgTankA}}<text class="metric-num-unit">点</text></view>
+              </view>
+              <view class="metric-vs-sep">vs</view>
+              <view class="metric-side-col">
+                <view class="metric-num-val">{{dmgTankB}}<text class="metric-num-unit">点</text></view>
+              </view>
+            </view>
+            <view class="metric-winner-wrap">
+              <text class="apple-winner-pill {{pills.dmgTank.cls}}">{{pills.dmgTank.text}}</text>
+            </view>
+          </view>
+        </block>
+
+        <!-- 模式 B：辅助/游走 团队价值与承伤对决 -->
+        <block wx:else>
+          <view class="compare-metric-row">
+            <view class="metric-card-head">极限物理承伤上限 (EHP)</view>
+            <view class="metric-card-sub">基于自身生命与物防折算实际承受物理总伤害</view>
+            <view class="metric-cols-row">
+              <view class="metric-side-col">
+                <view class="metric-num-val">{{ehpPhysA}}<text class="metric-num-unit">点</text></view>
+              </view>
+              <view class="metric-vs-sep">vs</view>
+              <view class="metric-side-col">
+                <view class="metric-num-val">{{ehpPhysB}}<text class="metric-num-unit">点</text></view>
+              </view>
+            </view>
+            <view class="metric-winner-wrap">
+              <text class="apple-winner-pill {{pills.ehpPhys.cls}}">{{pills.ehpPhys.text}}</text>
+            </view>
+          </view>
+
+          <view class="compare-metric-row">
+            <view class="metric-card-head">极限法术承伤上限 (EHP)</view>
+            <view class="metric-card-sub">基于自身生命与法防折算实际承受法术总伤害</view>
+            <view class="metric-cols-row">
+              <view class="metric-side-col">
+                <view class="metric-num-val">{{ehpMagicA}}<text class="metric-num-unit">点</text></view>
+              </view>
+              <view class="metric-vs-sep">vs</view>
+              <view class="metric-side-col">
+                <view class="metric-num-val">{{ehpMagicB}}<text class="metric-num-unit">点</text></view>
+              </view>
+            </view>
+            <view class="metric-winner-wrap">
+              <text class="apple-winner-pill {{pills.ehpMagic.cls}}">{{pills.ehpMagic.text}}</text>
+            </view>
+          </view>
+
+          <view class="compare-metric-row">
+            <view class="metric-card-head">团队护盾与保护数值</view>
+            <view class="metric-card-sub">核心辅助技能全队群体承伤庇护总量</view>
+            <view class="metric-cols-row">
+              <view class="metric-side-col">
+                <view class="metric-num-val">{{supportUtilA}}<text class="metric-num-unit">点</text></view>
+              </view>
+              <view class="metric-vs-sep">vs</view>
+              <view class="metric-side-col">
+                <view class="metric-num-val">{{supportUtilB}}<text class="metric-num-unit">点</text></view>
+              </view>
+            </view>
+            <view class="metric-winner-wrap">
+              <text class="apple-winner-pill {{pills.supportUtil.cls}}">{{pills.supportUtil.text}}</text>
+            </view>
+          </view>
+        </block>
+      </view>
+
+      <!-- 二级数据视窗入口 -->
+      <view class="action-entry-row" bindtap="openSkillDetailModal">
+        <view class="action-entry-left">
+          <view class="action-entry-icon-chip">
+            <image class="entry-bolt-svg" src="/assets/ic_bolt_gray.png" mode="aspectFit" />
+          </view>
+          <view class="action-entry-text-col">
+            <text class="action-entry-label">技能拆解</text>
+            <text class="action-entry-desc">{{skillEntryDesc}}</text>
+          </view>
+        </view>
+        <text class="action-entry-link">展开详情 ›</text>
+      </view>
+    </view>
+
+
+    <!-- 4. 野区清理与控龙耗时 (PVE，仅打野分路显示) -->
+    <view class="apple-card" wx:if="{{isJungle}}">
+      <view class="apple-section-head">
+        <view class="apple-section-title">野区清理与控龙耗时</view>
+        <view class="apple-section-desc">单组野怪抢夺 (Buff 1.2万血) 与 史诗级大龙单刷 (3.5万血)</view>
+      </view>
+
+      <view class="compare-metric-row">
+        <view class="metric-card-head">单组野怪清理耗时 (Buff 1.2万血)</view>
+        <view class="metric-card-sub">起手核心爆发 + 惩击真伤快速收割</view>
+        <view class="metric-cols-row">
+          <view class="metric-side-col">
+            <view class="metric-num-val">{{outA.buffTime || 0}}<text class="metric-num-unit">s</text></view>
+          </view>
+          <view class="metric-vs-sep">vs</view>
+          <view class="metric-side-col">
+            <view class="metric-num-val">{{outB.buffTime || 0}}<text class="metric-num-unit">s</text></view>
+          </view>
+        </view>
+        <view class="metric-winner-wrap">
+          <text class="apple-winner-pill {{pills.buffTime.cls}}">{{pills.buffTime.text}}</text>
+        </view>
+      </view>
+
+      <view class="compare-metric-row">
+        <view class="metric-card-head">单刷主宰/暴君耗时 (3.5万血)</view>
+        <view class="metric-card-sub">技能真空期普攻站桩输出效率</view>
+        <view class="metric-cols-row">
+          <view class="metric-side-col">
+            <view class="metric-num-val">{{outA.dragonTime || 0}}<text class="metric-num-unit">s</text></view>
+          </view>
+          <view class="metric-vs-sep">vs</view>
+          <view class="metric-side-col">
+            <view class="metric-num-val">{{outB.dragonTime || 0}}<text class="metric-num-unit">s</text></view>
+          </view>
+        </view>
+        <view class="metric-winner-wrap">
+          <text class="apple-winner-pill {{pills.dragonTime.cls}}">{{pills.dragonTime.text}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 5. 生存与续航对决卡片 -->
+    <view class="apple-card">
+      <view class="apple-section-head">
+        <view class="apple-section-title">生存与续航对决</view>
+        <view class="apple-section-desc">英雄技能回复公式 + 物理/法术吸血率 + 脱战常态回复</view>
+      </view>
+
+      <view class="compare-metric-row">
+        <view class="metric-card-head">{{vampTitle}}</view>
+        <view class="metric-card-sub">{{vampSub}}</view>
+        <view class="metric-cols-row">
+          <view class="metric-side-col">
+            <view class="metric-num-val">{{outA.aHitVamp || 0}}<text class="metric-num-unit">点</text></view>
+          </view>
+          <view class="metric-vs-sep">vs</view>
+          <view class="metric-side-col">
+            <view class="metric-num-val">{{outB.aHitVamp || 0}}<text class="metric-num-unit">点</text></view>
+          </view>
+        </view>
+        <view class="metric-winner-wrap">
+          <text class="apple-winner-pill {{pills.vamp.cls}}">{{pills.vamp.text}}</text>
+        </view>
+      </view>
+
+      <view class="compare-metric-row">
+        <view class="metric-card-head">脱战每秒常态回血</view>
+        <view class="metric-card-sub">基础自然回血 + 霸者重装/不死鸟被动</view>
+        <view class="metric-cols-row">
+          <view class="metric-side-col">
+            <view class="metric-num-val">{{outA.outOfCombatRegen || 0}}<text class="metric-num-unit">点/s</text></view>
+          </view>
+          <view class="metric-vs-sep">vs</view>
+          <view class="metric-side-col">
+            <view class="metric-num-val">{{outB.outOfCombatRegen || 0}}<text class="metric-num-unit">点/s</text></view>
+          </view>
+        </view>
+        <view class="metric-winner-wrap">
+          <text class="apple-winner-pill {{pills.regen.cls}}">{{pills.regen.text}}</text>
+        </view>
+      </view>
+
+      <view class="compare-metric-row">
+        <view class="metric-card-head">{{outA.healDef || '核心技能回复'}}</view>
+        <view class="metric-card-sub">健康血线完整单次回复</view>
+        <view class="metric-cols-row">
+          <view class="metric-side-col">
+            <view class="metric-num-val">{{outA.regularHeal || 0}}<text class="metric-num-unit">点</text></view>
+          </view>
+          <view class="metric-vs-sep">vs</view>
+          <view class="metric-side-col">
+            <view class="metric-num-val">{{outB.regularHeal || 0}}<text class="metric-num-unit">点</text></view>
+          </view>
+        </view>
+        <view class="metric-winner-wrap">
+          <text class="apple-winner-pill {{pills.healReg.cls}}">{{pills.healReg.text}}</text>
+        </view>
+      </view>
+
+      <view class="compare-metric-row">
+        <view class="metric-card-head">残血极限回复 (生命≤30%)</view>
+        <view class="metric-card-sub">计入不死鸟之眼血统被动最高增幅</view>
+        <view class="metric-cols-row">
+          <view class="metric-side-col">
+            <view class="metric-num-val">{{outA.clutchHeal || 0}}<text class="metric-num-unit">点</text></view>
+          </view>
+          <view class="metric-vs-sep">vs</view>
+          <view class="metric-side-col">
+            <view class="metric-num-val">{{outB.clutchHeal || 0}}<text class="metric-num-unit">点</text></view>
+          </view>
+        </view>
+        <view class="metric-winner-wrap">
+          <text class="apple-winner-pill {{pills.clutchHeal.cls}}">{{pills.clutchHeal.text}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 6. 技能实际冷却时间卡片 -->
+    <view class="apple-card">
+      <view class="apple-section-head">
+        <view class="apple-section-title">技能实际冷却时间</view>
+        <view class="apple-section-desc">满级满装技能真空期 · 方案 A 冷却加成 {{statsA.cdr || 0}}% vs 方案 B {{statsB.cdr || 0}}%</view>
+      </view>
+
+      <block wx:for="{{cdRows}}" wx:key="title">
+        <view class="compare-metric-row">
+          <view class="metric-card-head">{{item.title}}</view>
+          <view class="metric-card-sub">{{item.sub}}</view>
+          <view class="metric-cols-row">
+            <view class="metric-side-col">
+              <view class="metric-num-val">{{item.cdA}}<text class="metric-num-unit">s</text></view>
+            </view>
+            <view class="metric-vs-sep">vs</view>
+            <view class="metric-side-col">
+              <view class="metric-num-val">{{item.cdB}}<text class="metric-num-unit">s</text></view>
+            </view>
+          </view>
+          <view class="metric-winner-wrap">
+            <text class="apple-winner-pill {{item.pill.cls}}">{{item.pill.text}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <!-- 7. 核心机制差异卡片 -->
+    <view class="apple-card">
+      <view class="apple-section-head">
+        <view class="apple-section-title">核心机制差异</view>
+        <view class="apple-section-desc">双方关键机制点对点对比，剔除无差异项</view>
+      </view>
+
+      <view class="mechanic-diff-deck">
+        <block wx:if="{{mechanicDiff.isEmpty}}">
+          <view class="mechanic-empty-box">
+            <view class="mechanic-empty-title">双方装备配置完全一致</view>
+            <view class="mechanic-empty-sub">两套方案装备完全相同，胜负重点取决于铭文配置与局内等级。</view>
+          </view>
+        </block>
+        <block wx:else>
+          <!-- 1. 机制取向差异 -->
+          <view class="mechanic-section-group" wx:if="{{mechanicDiff.contrasts.length > 0}}">
+            <view class="mechanic-group-header">
+              <text class="mechanic-group-tag tag-contrast">机制取向差异</text>
+              <text class="mechanic-group-sub">同类被动选择不同</text>
+            </view>
+            <view class="mechanic-exclusive-list">
+              <block wx:for="{{mechanicDiff.contrasts}}" wx:key="index">
+                <view class="mechanic-contrast-row">
+                  <view class="mechanic-contrast-side">
+                    <text class="scheme-name-tag">方案 A</text>
+                    <view class="m-contrast-title">
+                      <text>{{item.itemA.name}}</text>
+                      <text class="m-badge-pill">{{item.itemA.label}}</text>
+                    </view>
+                    <view class="m-item-desc">{{item.itemA.desc}}</view>
+                  </view>
+                  <view class="mechanic-contrast-vs">vs</view>
+                  <view class="mechanic-contrast-side">
+                    <text class="scheme-name-tag">方案 B</text>
+                    <view class="m-contrast-title">
+                      <text>{{item.itemB.name}}</text>
+                      <text class="m-badge-pill pill-green">{{item.itemB.label}}</text>
+                    </view>
+                    <view class="m-item-desc">{{item.itemB.desc}}</view>
+                  </view>
+                </view>
+              </block>
+            </view>
+          </view>
+
+          <!-- 2. 方案 A 专属机制 -->
+          <view class="mechanic-section-group" wx:if="{{mechanicDiff.exclusiveA.length > 0}}">
+            <view class="mechanic-group-header">
+              <text class="mechanic-group-tag tag-a">方案 A 专属机制 ({{mechanicDiff.exclusiveA.length}} 项)</text>
+            </view>
+            <view class="mechanic-exclusive-list">
+              <block wx:for="{{mechanicDiff.exclusiveA}}" wx:key="index">
+                <view class="mechanic-exclusive-item">
+                  <view class="m-item-head">
+                    <text class="m-equip-name">{{item.name}}</text>
+                    <text class="m-badge-pill">{{item.label}}</text>
+                  </view>
+                  <view class="m-item-desc">{{item.desc}}</view>
+                </view>
+              </block>
+            </view>
+          </view>
+
+          <!-- 3. 方案 B 专属机制 -->
+          <view class="mechanic-section-group" wx:if="{{mechanicDiff.exclusiveB.length > 0}}">
+            <view class="mechanic-group-header">
+              <text class="mechanic-group-tag tag-b">方案 B 专属机制 ({{mechanicDiff.exclusiveB.length}} 项)</text>
+            </view>
+            <view class="mechanic-exclusive-list">
+              <block wx:for="{{mechanicDiff.exclusiveB}}" wx:key="index">
+                <view class="mechanic-exclusive-item">
+                  <view class="m-item-head">
+                    <text class="m-equip-name">{{item.name}}</text>
+                    <text class="m-badge-pill pill-green">{{item.label}}</text>
+                  </view>
+                  <view class="m-item-desc">{{item.desc}}</view>
+                </view>
+              </block>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <!-- 8. 综合属性规格清单卡片 -->
+    <view class="apple-card">
+      <view class="apple-section-head">
+        <view class="apple-section-title">综合属性规格</view>
+        <view class="apple-section-desc">15级满级基础属性 + 铭文 + 6件神装参数</view>
+      </view>
+
+      <view class="stats-filter-bar">
+        <view class="stats-filter-btn {{filterStatsDiffOnly ? 'active' : ''}}" bindtap="setStatsFilter" data-diff="{{true}}">仅看差异</view>
+        <view class="stats-filter-btn {{!filterStatsDiffOnly ? 'active' : ''}}" bindtap="setStatsFilter" data-diff="{{false}}">看全部</view>
+      </view>
+
+      <view class="specs-list-box">
+        <block wx:if="{{displaySpecRows.length === 0}}">
+          <view class="specs-empty-tip">两套方案基础面板参数完全一致</view>
+        </block>
+        <block wx:else>
+          <block wx:for="{{displaySpecRows}}" wx:key="name">
+            <view class="spec-item-row">
+              <view class="spec-left-val {{item.aWin ? 'win-blue' : ''}}">{{item.valA}}</view>
+              <view class="spec-mid-name">{{item.name}}</view>
+              <view class="spec-right-val {{item.bWin ? 'win-green' : ''}}">{{item.valB}}</view>
+            </view>
+          </block>
+        </block>
+      </view>
+    </view>
+
+  </view>
+</view>
+
+  <wxs src="./sheet_gesture.wxs" module="sheetGesture" />
+  <!-- 专属装备属性与机制检视卡 (Apple Sheet) -->
+  <view class="modal-mask modal-mask-inspector {{showItemInspector ? 'active' : ''}}" show="{{showItemInspector}}" change:show="{{sheetGesture.onInspectorShowChange}}" style="{{sheetMaskStyle.inspector || ''}}" bindtap="closeItemInspector" catchtouchmove="noop">
+    <view class="sheet-box item-inspector-sheet sheet-box-inspector" style="{{sheetBoxStyle.inspector || ''}}" catchtap="noop">
+      <view class="sheet-grabber" data-sheet="inspector" data-zone="header" bindtouchstart="{{sheetGesture.onTouchStart}}" catchtouchmove="{{sheetGesture.onTouchMove}}" bindtouchend="{{sheetGesture.onTouchEnd}}" bindtouchcancel="{{sheetGesture.onTouchEnd}}"></view>
+      <view class="sheet-title-bar" data-sheet="inspector" data-zone="header" bindtouchstart="{{sheetGesture.onTouchStart}}" catchtouchmove="{{sheetGesture.onTouchMove}}" bindtouchend="{{sheetGesture.onTouchEnd}}" bindtouchcancel="{{sheetGesture.onTouchEnd}}">
+        <text class="sheet-title-txt">装备机制与属性</text>
+        <view class="sheet-close-btn" data-role="close" catchtap="closeItemInspector" catchtouchend="closeItemInspector">
+          <image class="sheet-close-svg" data-role="close" src="/assets/ic_close_sheet.png" mode="aspectFit" />
+        </view>
+      </view>
+
+      <view class="item-inspector-content" wx:if="{{inspectorItem}}" data-sheet="inspector" data-zone="body" bindtouchstart="{{sheetGesture.onTouchStart}}" bindtouchmove="{{sheetGesture.onTouchMove}}" bindtouchend="{{sheetGesture.onTouchEnd}}" bindtouchcancel="{{sheetGesture.onTouchEnd}}">
+        <view class="inspector-header">
+          <image class="inspector-icon" src="{{inspectorItem.icon}}" mode="aspectFill" />
+          <view class="inspector-info-col">
+            <view class="inspector-name">{{inspectorItem.item_name}}</view>
+            <view class="inspector-subtitle">{{inspectorItem.category}}装备 · 顶级神装</view>
+            <view class="inspector-meta-line">
+              <text class="price-gold-txt">{{inspectorItem.priceFormatted}} 金币</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-inspector-section">
+          <view class="item-inspector-section-label">基础属性</view>
+          <view class="inspector-stats-grid">
+            <view wx:for="{{inspectorItem.statCells}}" wx:key="index" class="inspector-stat-cell" style="{{item.isGray ? 'color:#8e8e93;' : ''}}">
+              <text class="inspector-stat-val">{{item.val}}</text>
+              <text wx:if="{{item.name}}" class="inspector-stat-name">{{item.name}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-inspector-section">
+          <view class="item-inspector-section-label">唯一被动与专属机制</view>
+          <view class="inspector-mechanics-wrap">
+            <view wx:if="{{!inspectorItem.hasPassives}}" style="font-size:12.5px; color:#8e8e93; padding:8px 0;">
+              该装备为纯数值加成，无附带被动机制，适合作为核心大件的前置过渡。
+            </view>
+            <block wx:else>
+              <view wx:for="{{inspectorItem.regularPassives}}" wx:key="index" class="inspector-mech-row">
+                <view class="inspector-mech-title-bar">
+                  <text class="inspector-mech-title-text"><text class="inspector-mech-badge-icon">◈</text> {{item.titleTxt}}</text>
+                  <text wx:if="{{item.cd}}" class="inspector-mech-cd">{{item.cd}}</text>
+                </view>
+                <rich-text class="inspector-mech-desc" nodes="{{item.richDesc}}"></rich-text>
+              </view>
+              <view wx:if="{{inspectorItem.ruleItemsText}}" class="inspector-mech-row" style="background:#f2f2f7;">
+                <view class="inspector-mech-title-bar">
+                  <text class="inspector-mech-title-text" style="color:#636366;"><text class="inspector-mech-badge-icon" style="color:#8e8e93;">ℹ</text> 通用规则机制</text>
+                </view>
+                <view class="inspector-mech-desc" style="color:#636366;">{{inspectorItem.ruleItemsText}}</view>
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+
+      <view class="item-inspector-actions">
+        <view class="btn-inspector-replace" catchtap="openShopFromInspector">
+          <image class="inspector-action-ic-replace" src="/assets/ic_replace_white.png" mode="aspectFit" />
+          <text>去商店替换</text>
+        </view>
+        <view class="btn-inspector-unequip" catchtap="unequipFromInspector">
+          <image class="inspector-action-ic-trash" src="/assets/ic_trash_red.png" mode="aspectFit" />
+          <text>卸下此槽</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 装备商店抽屉 (Apple Sheet) -->
+  <view class="modal-mask modal-mask-shop {{showShopSheet ? 'active' : ''}}" show="{{showShopSheet}}" change:show="{{sheetGesture.onShopShowChange}}" style="{{sheetMaskStyle.shop || ''}}" bindtap="closeShopSheet" catchtouchmove="noop">
+    <view class="sheet-box shop-sheet sheet-box-shop" style="{{sheetBoxStyle.shop || ''}}" catchtap="noop">
+      <view class="sheet-grabber" data-sheet="shop" data-zone="header" bindtouchstart="{{sheetGesture.onTouchStart}}" catchtouchmove="{{sheetGesture.onTouchMove}}" bindtouchend="{{sheetGesture.onTouchEnd}}" bindtouchcancel="{{sheetGesture.onTouchEnd}}"></view>
+      <view class="sheet-title-bar" data-sheet="shop" data-zone="header" bindtouchstart="{{sheetGesture.onTouchStart}}" catchtouchmove="{{sheetGesture.onTouchMove}}" bindtouchend="{{sheetGesture.onTouchEnd}}" bindtouchcancel="{{sheetGesture.onTouchEnd}}">
+        <view wx:if="{{canUnequipCurrentSlot}}" class="sheet-top-unequip-btn" data-role="close" catchtap="unequipCurrentSlot" catchtouchend="unequipCurrentSlot">卸下</view>
+        <text class="sheet-title-txt">装配神装</text>
+        <view class="sheet-close-btn" data-role="close" catchtap="closeShopSheet" catchtouchend="closeShopSheet">
+          <image class="sheet-close-svg" data-role="close" src="/assets/ic_close_shop.png" mode="aspectFit" />
+        </view>
+      </view>
+
+      <view class="shop-header-pinned">
+        <view class="shop-search-bar">
+          <image class="shop-search-icon" src="/assets/ic_search_blue.png" mode="aspectFit" />
+          <input wx:if="{{showShopSheet}}" type="text" class="shop-search-input" value="{{shopKw}}" placeholder="搜索装备名称或属性 (如: 穿透、暴击、吸血)" placeholder-class="shop-search-ph" bindinput="onShopSearch" />
+        </view>
+        <view class="apple-seg-control" style="margin-top:2px; margin-bottom:0;">
+          <view wx:for="{{shopCats}}" wx:key="*this" class="apple-seg-item {{shopCat === item ? 'active' : ''}}" data-cat="{{item}}" catchtap="setShopCat">{{item}}</view>
+        </view>
+      </view>
+
+      <!-- 上半区：双列极简选装网格 (可滚动) -->
+      <scroll-view scroll-y="true" bounces="{{false}}" show-scrollbar="{{false}}" upper-threshold="10" class="shop-grid-scroll-area" data-sheet="shop" data-zone="body" bindscroll="{{sheetGesture.onScroll}}" bindscrolltoupper="{{sheetGesture.onScrollToUpper}}" bindtouchstart="{{sheetGesture.onTouchStart}}" bindtouchmove="{{sheetGesture.onTouchMove}}" bindtouchend="{{sheetGesture.onTouchEnd}}" bindtouchcancel="{{sheetGesture.onTouchEnd}}">
+        <view wx:if="{{filteredShopItems.length === 0}}" style="text-align:center; padding:40px 0; color:var(--apple-text-secondary); font-size:13px;">
+          未检索到符合条件的装备
+        </view>
+        <view wx:else class="shop-grid-2col">
+          <view wx:for="{{filteredShopItems}}" wx:key="item_name" class="shop-grid-card {{previewingItemName === item.item_name ? 'active' : ''}}" data-name="{{item.item_name}}" catchtap="previewShopItem">
+            <image class="shop-card-icon" src="{{item.icon}}" mode="aspectFill" lazy-load />
+            <view class="shop-card-meta">
+              <text class="shop-card-name">{{item.item_name}}</text>
+              <text class="shop-card-price-pill">{{item.total_price || 0}}</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+
+      <!-- 下半区：详情检查与装配面板 (严格对齐图4 Inset Grouped) -->
+      <view class="shop-inspector-section-label">装备机制与规格</view>
+      <view class="shop-inspector-panel">
+        <view wx:if="{{!shopInspector}}" style="text-align:center; color:var(--apple-text-secondary); padding:20px; font-size:12px;">请点选上方装备查看加成与被动</view>
+        <block wx:else>
+          <view class="inspector-header">
+            <image class="inspector-icon" src="{{shopInspector.icon}}" mode="aspectFill" />
+            <view class="inspector-info-col">
+              <view class="inspector-name-row">
+                <view style="display:flex; align-items:center; gap:6px;">
+                  <text class="inspector-name">{{shopInspector.item_name}}</text>
+                  <text class="inspector-cat-badge">{{shopInspector.category}}</text>
+                </view>
+                <text class="inspector-price-capsule">🪙 {{shopInspector.total_price}}</text>
+              </view>
+              <view class="inspector-stats-row">
+                <text wx:for="{{shopInspector.statChips}}" wx:key="*this" class="inspector-stat-chip">{{item}}</text>
+              </view>
+            </view>
+          </view>
+
+          <view class="inspector-mechanics-wrap">
+            <view wx:if="{{!shopInspector.hasPassives}}" class="inspector-empty-hint">
+              <view class="empty-hint-tag">基础配件 · 核心增益</view>
+              <view class="empty-hint-desc">本装备为基础核心构件，提供纯正属性加成，可向上合成高阶神装。</view>
+            </view>
+            <block wx:else>
+              <view wx:for="{{shopInspector.regularPassives}}" wx:key="index" class="inspector-mech-row">
+                <view class="inspector-mech-title-bar">
+                  <text class="inspector-mech-badge {{item.badgeClass}}">{{item.title}}</text>
+                  <text wx:if="{{item.cd}}" class="inspector-mech-cd">{{item.cd}}</text>
+                </view>
+                <view class="inspector-mech-desc">{{item.cleanDesc}}</view>
+              </view>
+              <view wx:if="{{shopInspector.ruleItemsText}}" class="inspector-mech-row">
+                <view class="inspector-mech-title-bar">
+                  <text class="inspector-mech-badge badge-rule">通用规则机制</text>
+                </view>
+                <view class="inspector-mech-desc" style="color:#636366;">{{shopInspector.ruleItemsText}}</view>
+              </view>
+            </block>
+          </view>
+
+          <view class="inspector-equip-btn" data-name="{{shopInspector.item_name}}" catchtap="confirmEquipItem">
+            装配到当前格 ({{targetSlotLabel}})
+          </view>
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <!-- 铭文配置抽屉 (Apple Sheet) -->
+  <view class="modal-mask modal-mask-arcana {{showArcanaSheet ? 'active' : ''}}" show="{{showArcanaSheet}}" change:show="{{sheetGesture.onArcanaShowChange}}" style="{{sheetMaskStyle.arcana || ''}}" bindtap="closeArcanaSheet" catchtouchmove="noop">
+    <view class="sheet-box sheet-box-arcana" style="{{sheetBoxStyle.arcana || ''}}" catchtap="noop">
+      <view class="sheet-grabber" data-sheet="arcana" data-zone="header" bindtouchstart="{{sheetGesture.onTouchStart}}" catchtouchmove="{{sheetGesture.onTouchMove}}" bindtouchend="{{sheetGesture.onTouchEnd}}" bindtouchcancel="{{sheetGesture.onTouchEnd}}"></view>
+      <view class="sheet-title-bar" data-sheet="arcana" data-zone="header" bindtouchstart="{{sheetGesture.onTouchStart}}" catchtouchmove="{{sheetGesture.onTouchMove}}" bindtouchend="{{sheetGesture.onTouchEnd}}" bindtouchcancel="{{sheetGesture.onTouchEnd}}">
+        <view class="sheet-title-col">
+          <text class="sheet-title-txt">配置五级铭文</text>
+          <text class="sheet-subtitle-txt">每种颜色上限装配 10 颗 · 点击加减自由微调</text>
+        </view>
+        <view class="sheet-close-btn" data-role="close" catchtap="closeArcanaSheet" catchtouchend="closeArcanaSheet">
+          <image class="sheet-close-svg" data-role="close" src="/assets/ic_close_sheet.png" mode="aspectFit" />
+        </view>
+      </view>
+
+      <view class="apple-seg-control" style="margin-top:8px; margin-bottom:8px;">
+        <view class="apple-seg-item {{arcColor === 'red' ? 'active' : ''}}" data-color="red" catchtap="setArcanaColor">红色</view>
+        <view class="apple-seg-item {{arcColor === 'blue' ? 'active' : ''}}" data-color="blue" catchtap="setArcanaColor">蓝色</view>
+        <view class="apple-seg-item {{arcColor === 'green' ? 'active' : ''}}" data-color="green" catchtap="setArcanaColor">绿色</view>
+      </view>
+
+      <scroll-view scroll-y="true" bounces="{{false}}" show-scrollbar="{{false}}" upper-threshold="10" class="sheet-scroll-body" data-sheet="arcana" data-zone="body" bindscroll="{{sheetGesture.onScroll}}" bindscrolltoupper="{{sheetGesture.onScrollToUpper}}" bindtouchstart="{{sheetGesture.onTouchStart}}" bindtouchmove="{{sheetGesture.onTouchMove}}" bindtouchend="{{sheetGesture.onTouchEnd}}" bindtouchcancel="{{sheetGesture.onTouchEnd}}">
+        <view style="font-size:12px; color:var(--apple-text-secondary); margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+          <view>当前色系装配: <text style="color:var(--apple-text-primary); font-weight:600;">{{arcColorTotalCount}}/10</text> 颗</view>
+          <text style="color:#ff3b30; font-weight:500;" catchtap="clearCurrentArcanaColor">清空此色</text>
+        </view>
+        <view class="arcana-grid-list">
+          <view wx:for="{{filteredArcanaList}}" wx:key="name" class="arcana-item-row">
+            <view class="arc-row-left">
+              <image wx:if="{{item.icon}}" class="arc-row-icon" src="{{item.icon}}" mode="aspectFill" />
+              <view class="arc-row-text">
+                <text class="arc-row-name">{{item.name}}</text>
+                <text class="arc-row-props">{{item.propsText}}</text>
+              </view>
+            </view>
+            <view class="arc-row-counter">
+              <view class="arc-cnt-btn" data-name="{{item.name}}" data-delta="-1" catchtap="changeArcanaCount">-</view>
+              <text class="arc-cnt-val">{{item.count}}</text>
+              <view class="arc-cnt-btn" data-name="{{item.name}}" data-delta="1" catchtap="changeArcanaCount">+</view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 各技能详细物理拆解与效果对决二级视窗 (Apple iOS Sheet 规格) -->
+  <view class="modal-mask modal-mask-skill skill-detail-modal {{showSkillDetailModal ? 'active' : ''}}" show="{{showSkillDetailModal}}" change:show="{{sheetGesture.onSkillShowChange}}" style="{{sheetMaskStyle.skill || ''}}" bindtap="closeSkillDetailModal" catchtouchmove="noop">
+    <view class="sheet-box skill-detail-sheet sheet-box-skill" style="{{sheetBoxStyle.skill || ''}}" catchtap="noop">
+      <view class="sheet-grabber" data-sheet="skill" data-zone="header" bindtouchstart="{{sheetGesture.onTouchStart}}" catchtouchmove="{{sheetGesture.onTouchMove}}" bindtouchend="{{sheetGesture.onTouchEnd}}" bindtouchcancel="{{sheetGesture.onTouchEnd}}"></view>
+      <view class="detail-modal-header" data-sheet="skill" data-zone="header" bindtouchstart="{{sheetGesture.onTouchStart}}" catchtouchmove="{{sheetGesture.onTouchMove}}" bindtouchend="{{sheetGesture.onTouchEnd}}" bindtouchcancel="{{sheetGesture.onTouchEnd}}">
+        <view class="detail-modal-nav-row">
+          <view class="detail-modal-hero-chip">
+            <image class="detail-modal-hero-avatar" src="{{heroAvatar}}" mode="aspectFill" />
+            <view class="detail-modal-hero-info">
+              <view class="detail-modal-hero-name-row">
+                <text class="detail-modal-hero-name">{{hero.cname}}</text>
+                <text class="detail-modal-hero-role">{{hero.role || '英雄'}} · {{currentLane || '实战'}}</text>
+              </view>
+            </view>
+          </view>
+          <view class="sheet-close-btn" data-role="close" catchtap="closeSkillDetailModal" catchtouchend="closeSkillDetailModal">
+            <image class="sheet-close-svg" data-role="close" src="/assets/ic_close_sheet.png" mode="aspectFit" />
+          </view>
+        </view>
+
+        <view class="detail-intro-bar">
+          <view class="detail-intro-title">技能伤害与效果对决</view>
+          <view class="modal-benchmark-hint">{{skillDetailData.benchmarkHint}}</view>
+        </view>
+      </view>
+
+      <scroll-view scroll-y="true" bounces="{{false}}" show-scrollbar="{{false}}" upper-threshold="10" class="detail-modal-content" data-sheet="skill" data-zone="body" bindscroll="{{sheetGesture.onScroll}}" bindscrolltoupper="{{sheetGesture.onScrollToUpper}}" bindtouchstart="{{sheetGesture.onTouchStart}}" bindtouchmove="{{sheetGesture.onTouchMove}}" bindtouchend="{{sheetGesture.onTouchEnd}}" bindtouchcancel="{{sheetGesture.onTouchEnd}}">
+        <view class="skill-cards-deck">
+          <view wx:for="{{skillDetailData.cards}}" wx:for-item="card" wx:key="index" class="skill-detail-card">
+            <view class="skill-card-top">
+              <view class="skill-card-ident">
+                <image wx:if="{{card.isAttack}}" class="skill-badge-img skill-badge-attack-real" src="{{card.icon}}" mode="aspectFill" />
+                <image wx:else class="skill-badge-img" src="{{card.icon}}" mode="aspectFill" />
+                <view class="skill-ident-title">{{card.title}}</view>
+              </view>
+              <text class="{{card.isAttack ? 'skill-spec-tag' : 'skill-cd-badge'}}">{{card.badge}}</text>
+            </view>
+
+            <view class="skill-metrics-table">
+              <view class="skill-metric-row header-row">
+                <view class="m-head-title">指标</view>
+                <view class="m-head-side left"><text class="build-badge badge-left">方案 A</text></view>
+                <view class="m-head-side right"><text class="build-badge badge-right">方案 B</text></view>
+              </view>
+
+              <block wx:for="{{card.rows}}" wx:for-item="row" wx:key="index">
+                <view wx:if="{{row.isDual}}" class="skill-metric-row dual-dmg-row">
+                  <view class="m-name-col">
+                    <view class="m-metric-title">{{row.title}}</view>
+                    <view class="m-metric-sub">{{row.sub}}</view>
+                  </view>
+                  <view class="m-val-col left">
+                    <view class="val-primary {{row.resSq.aWins ? 'win-a' : ''}}">
+                      <text>{{row.sqA}}</text>
+                      <text wx:if="{{row.resSq.badgeA}}" class="win-diff-pill win-a">{{row.resSq.badgeA}}</text>
+                    </view>
+                    <view class="val-secondary">
+                      <text>{{row.tkA}}</text>
+                    </view>
+                  </view>
+                  <view class="m-val-col right">
+                    <view class="val-primary {{row.resSq.bWins ? 'win-b' : ''}}">
+                      <text>{{row.sqB}}</text>
+                      <text wx:if="{{row.resSq.badgeB}}" class="win-diff-pill win-b">{{row.resSq.badgeB}}</text>
+                    </view>
+                    <view class="val-secondary">
+                      <text>{{row.tkB}}</text>
+                    </view>
+                  </view>
+                </view>
+
+                <view wx:else class="skill-metric-row single-row">
+                  <view class="m-name-col">
+                    <view class="m-metric-title">{{row.mainTitle}}</view>
+                    <view wx:if="{{row.subTitle}}" class="m-metric-sub">{{row.subTitle}}</view>
+                  </view>
+                  <view class="m-val-col left">
+                    <view class="val-single {{row.res.aWins ? 'win-a' : ''}}">
+                      <text>{{row.valA}}</text>
+                      <text wx:if="{{row.res.badgeA}}" class="win-diff-pill win-a">{{row.res.badgeA}}</text>
+                    </view>
+                  </view>
+                  <view class="m-val-col right">
+                    <view class="val-single {{row.res.bWins ? 'win-b' : ''}}">
+                      <text>{{row.valB}}</text>
+                      <text wx:if="{{row.res.badgeB}}" class="win-diff-pill win-b">{{row.res.badgeB}}</text>
+                    </view>
+                  </view>
+                </view>
+              </block>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>

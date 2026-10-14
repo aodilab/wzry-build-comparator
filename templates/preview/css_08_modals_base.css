@@ -1,0 +1,239 @@
+    .shop-card-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #1d1d1f;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      letter-spacing: -0.015em;
+    }
+    .shop-grid-card.active .shop-card-name {
+      color: #1d1d1f;
+      font-weight: 700;
+    }
+    /* 优雅轻量金币价格 (剔除粗暴大蓝药丸底色，保持中性沉稳质感) */
+    .shop-card-price-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 2.5px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #8e8e93;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.01em;
+      background: transparent;
+      padding: 0;
+      height: 18px;
+      line-height: 1;
+    }
+    .shop-card-price-pill::before {
+      content: '🪙';
+      font-size: 10px;
+      line-height: 1;
+      opacity: 0.85;
+    }
+    .shop-grid-card.active .shop-card-price-pill {
+      color: #636366;
+      background: transparent;
+    }
+
+    /* 下半区：舒适从容检视看板 (200px 黄金呼吸比例，杜绝切字与拥挤) */
+    .shop-inspector-section-label {
+      display: none;
+    }
+    .shop-inspector-panel {
+      flex-shrink: 0;
+      height: 226px;
+      min-height: 226px;
+      max-height: 226px;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 10px 14px 12px;
+      border: 1px solid #ebebf0;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+      box-sizing: border-box;
+      margin-top: 6px;
+    }
+    .inspector-header {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .inspector-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #f2f2f7;
+      border: 0.5px solid rgba(0, 0, 0, 0.05);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    }
+    .inspector-info-col {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1;
+      min-width: 0;
+    }
+    .inspector-name-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .inspector-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1d1d1f;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    /* 检视看板轻量价格标签 (白底微描边，消除粗大浅蓝底) */
+    .inspector-price-capsule {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      height: 22px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 0.5px solid #e5e5ea;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #1d1d1f;
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+    .inspector-cat-badge {
+      font-size: 10.5px;
+      font-weight: 500;
+      padding: 1.5px 6px;
+      border-radius: 4px;
+      width: fit-content;
+      background: #f2f2f7;
+      color: #636366;
+    }
+
+    /* 属性药丸：去彩虹化，统一为 Apple 纯净中性微胶囊，保持呼吸感 */
+    .inspector-stats-row {
+      flex-shrink: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 5px;
+      align-items: center;
+      margin-top: 1px;
+    }
+    .inspector-stat-chip {
+      font-size: 10.5px;
+      font-weight: 500;
+      padding: 1.5px 6px;
+      border-radius: 5px;
+      white-space: nowrap;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      border: 0.5px solid rgba(0, 0, 0, 0.04);
+      letter-spacing: -0.01em;
+    }
+
+    /* 机制条目：消除碎片化大厚框，收拢为统一轻质微列表 (方案 A：固定高度下从容展开多效果) */
+    .inspector-mechanics-wrap {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      display: flex;
+      flex-direction: column;
+      background: #f8f9fa;
+      border-radius: 11px;
+      padding: 7px 11px;
+      gap: 0;
+      scrollbar-width: none;
+    }
+    .inspector-mechanics-wrap::-webkit-scrollbar {
+      display: none;
+    }
+    .inspector-mech-row {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5px;
+      padding: 2px 0;
+    }
+    .inspector-mech-row + .inspector-mech-row {
+      border-top: 0.5px solid rgba(0, 0, 0, 0.06);
+      margin-top: 5px;
+      padding-top: 5px;
+    }
+    .inspector-mech-title-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .inspector-mech-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 1.5px 6.5px;
+      border-radius: 4px;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      background: #f0f1f4;
+      color: #1d1d1f;
+      border: 0.5px solid rgba(0, 0, 0, 0.04);
+    }
+    .inspector-mech-badge.badge-active {
+      background: #e5e5ea;
+      color: #000000;
+      font-weight: 700;
+    }
+    .inspector-mech-badge.badge-passive {
+      background: #f0f1f4;
+      color: #3a3a3c;
+    }
+    .inspector-mech-badge.badge-rule {
+      background: #f0f1f4;
+      color: #636366;
+    }
+    .inspector-mech-cd {
+      font-size: 10px;
+      font-weight: 500;
+      color: #8e8e93;
+      background: #ffffff;
+      padding: 1px 6px;
+      border-radius: 4px;
+      border: 0.5px solid #e5e5ea;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.25;
+    }
+    .inspector-mech-desc {
+      font-size: 11px;
+      color: #3a3a3c;
+      line-height: 1.44;
+      letter-spacing: -0.01em;
+    }
+    .inspector-empty-hint {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5px;
+      padding: 2px 0;
+    }
+    .empty-hint-tag {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #007aff;
+    }
+    .empty-hint-desc {
+      font-size: 11px;
+      color: #636366;
+      line-height: 1.46;
+    }

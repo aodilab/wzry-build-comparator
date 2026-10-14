@@ -1,0 +1,155 @@
+/* 一体化画卷主体大画布 (Unified Architecture Canvas) */
+.unified-mech-canvas {
+    flex: 1;
+    background: #ffffff;
+    border-radius: 32px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.03);
+    padding: 30px 34px 26px 34px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 18px 0;
+}
+
+/* 机制条目通用行: 结构化微底槽，凝练不松散 */
+.mech-step-pod {
+    background: #fbfbfd;
+    border: 1px solid #f0f0f4;
+    border-radius: 22px;
+    padding: 22px 26px;
+    display: grid;
+    grid-template-columns: 1fr 180px;
+    gap: 24px;
+    align-items: center;
+}
+.ms-left {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.ms-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.ms-step-pill {
+    font-size: 15px;
+    font-weight: 800;
+    padding: 4px 14px;
+    border-radius: 980px;
+    letter-spacing: 0.02em;
+}
+.pill-step1 { background: #eef6ff; color: #0071e3; border: 1px solid rgba(0, 113, 227, 0.15); }
+.pill-step2 { background: #effaf2; color: #1a7f37; border: 1px solid rgba(26, 127, 55, 0.15); }
+.pill-step3 { background: #fff8ee; color: #d97706; border: 1px solid rgba(217, 119, 6, 0.2); }
+
+.ms-title {
+    font-size: 24px;
+    font-weight: 900;
+    color: #1d1d1f;
+    letter-spacing: -0.02em;
+}
+.ms-desc {
+    font-size: 18px;
+    color: #48484a;
+    line-height: 1.48;
+}
+.ms-chips-row {
+    display: flex;
+    gap: 12px;
+}
+.chip-unit {
+    font-size: 16px;
+    font-weight: 700;
+    padding: 7px 16px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.chip-green { background: #ffffff; color: #1a7f37; border: 1px solid rgba(26, 127, 55, 0.18); box-shadow: 0 1px 4px rgba(0,0,0,0.02); }
+.chip-red { background: #ffffff; color: #d70015; border: 1px solid rgba(215, 0, 21, 0.18); box-shadow: 0 1px 4px rgba(0,0,0,0.02); }
+
+/* 右侧大指标单元 */
+.ms-right-stat {
+    background: #ffffff;
+    border: 1px solid #eeeff2;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+    border-radius: 18px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.stat-lbl {
+    font-size: 15px;
+    font-weight: 700;
+    color: #86868b;
+    margin-bottom: 3px;
+}
+.stat-num {
+    font-size: 50px;
+    font-weight: 900;
+    color: #0071e3;
+    line-height: 1;
+    letter-spacing: -0.03em;
+}
+.stat-num-green { color: #1a7f37; }
+.stat-num-orange { color: #d97706; }
+.stat-sub {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #6e6e73;
+    margin-top: 5px;
+}
+
+/* 衔接处微下行引导 (极简流向，消解过度感) */
+.flow-step-arrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 0;
+    opacity: 0.45;
+}
+
+/* 画卷底部对位实战场景 */
+.canvas-bottom-scenarios {
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f4;
+}
+.scen-head {
+    font-size: 19px;
+    font-weight: 800;
+    color: #1d1d1f;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.scen-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+.scen-cell {
+    background: #fbfbfd;
+    border: 1px solid #f0f0f4;
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.scen-tag {
+    font-size: 16px;
+    font-weight: 800;
+    color: #1d1d1f;
+}
+.scen-detail {
+    font-size: 15.5px;
+    color: #515154;
+    line-height: 1.45;
+}

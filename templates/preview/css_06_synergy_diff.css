@@ -1,0 +1,251 @@
+
+    /* 综合属性规格过滤栏 (纯白微描边，彻底告别色块与挤压) */
+    .stats-filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .stats-filter-btn {
+      font-size: 11.5px;
+      font-weight: 500;
+      padding: 4.5px 12px;
+      border-radius: 9999px;
+      background: #ffffff;
+      border: 0.5px solid #e5e5ea;
+      color: #8e8e93;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      user-select: none;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+    .stats-filter-btn:active {
+      transform: scale(0.97);
+    }
+    .stats-filter-btn.active {
+      font-weight: 600;
+      color: #007aff;
+      border-color: rgba(0, 122, 255, 0.45);
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0, 122, 255, 0.06);
+    }
+
+    /* 属性规格表 (三列对标设计，字阶对齐 Apple 规格) */
+    .specs-list-box {
+      display: flex;
+      flex-direction: column;
+      margin-top: 4px;
+    }
+    .spec-item-row {
+      display: grid;
+      grid-template-columns: 1fr 110px 1fr;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 0.5px solid rgba(0, 0, 0, 0.04);
+    }
+    .spec-item-row:last-child { border-bottom: none; }
+    .spec-left-val {
+      text-align: right;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--apple-text-primary);
+      padding-right: 14px;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.01em;
+    }
+    .spec-mid-name {
+      text-align: center;
+      color: var(--apple-text-secondary);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+    .spec-right-val {
+      text-align: left;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--apple-text-primary);
+      padding-left: 14px;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.01em;
+    }
+
+    /* 抽屉规范 (Apple Sheet 原生自下而上滑出与上下拖拽体系) */
+    .modal-mask {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0);
+      z-index: 999;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      border-radius: 44px;
+      overflow: hidden;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.32s cubic-bezier(0.32, 0.72, 0, 1),
+                  backdrop-filter 0.32s cubic-bezier(0.32, 0.72, 0, 1),
+                  visibility 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .modal-mask.active {
+      pointer-events: auto;
+      opacity: 1;
+      visibility: visible;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .sheet-box {
+      width: 100%;
+      max-height: 94%;
+      height: 94%;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 28px 28px 0 0;
+      padding: 10px 18px 24px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.2);
+      transform: translateY(100%);
+      transition: transform 0.36s cubic-bezier(0.32, 0.72, 0, 1);
+      touch-action: pan-y;
+      will-change: transform, opacity;
+    }
+    .modal-mask.active .sheet-box {
+      transform: translateY(0);
+    }
+    .sheet-grabber {
+      width: 44px;
+      height: 5px;
+      border-radius: 9999px;
+      background: rgba(60, 60, 67, 0.28);
+      margin: 4px auto 12px;
+      flex-shrink: 0;
+      cursor: grab;
+      touch-action: none;
+      position: relative;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .sheet-grabber::after {
+      content: '';
+      position: absolute;
+      top: -12px;
+      bottom: -12px;
+      left: -24px;
+      right: -24px;
+    }
+    .sheet-grabber:hover {
+      background: rgba(60, 60, 67, 0.45);
+    }
+    .sheet-grabber:active {
+      cursor: grabbing;
+      transform: scaleX(1.12);
+      background: rgba(60, 60, 67, 0.6);
+    }
+    .sheet-title-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 8px;
+      border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+      flex-shrink: 0;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .sheet-title-col {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .sheet-title-txt {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--apple-text-primary);
+      letter-spacing: -0.015em;
+    }
+    .sheet-subtitle-txt {
+      font-size: 11.5px;
+      color: var(--apple-text-secondary);
+    }
+    .sheet-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sheet-btn-text-danger {
+      background: rgba(255, 59, 48, 0.08);
+      color: #ff3b30;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .sheet-btn-text-danger:active {
+      background: rgba(255, 59, 48, 0.18);
+      transform: scale(0.95);
+    }
+    .sheet-close-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #f0f0f2;
+      color: #8e8e93;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+    .sheet-close-btn:active {
+      background: #e5e5ea;
+      transform: scale(0.92);
+    }
+    .sheet-scroll-body {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 4px 0 20px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .sheet-scroll-body::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+
+    /* 方案选择卡片 */
+    .scheme-picker-card {
+      background: #ffffff;
+      border: 1px solid var(--apple-divider);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .scheme-picker-card.active {
+      border: 1.5px solid #1d1d1f;
+      background: #fafafc;
+    }
+    .scheme-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }

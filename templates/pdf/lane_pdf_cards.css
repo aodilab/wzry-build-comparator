@@ -1,0 +1,274 @@
+.eq-item-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60px;
+}
+.eq-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+    margin-bottom: 4px;
+}
+.eq-name {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: #1d1d1f;
+    text-align: center;
+    white-space: nowrap;
+}
+.eq-arrow {
+    color: #0071e3;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+/* 铭文行 */
+.arcana-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-top: 1px dashed #f0f0f2;
+    padding-top: 6px;
+    margin-top: 4px;
+}
+.arc-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #6e6e73;
+}
+.arc-pill {
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+.arc-pill.红色 { background: rgba(239, 68, 68, 0.08); color: #dc2626; border: 1px solid rgba(239, 68, 68, 0.2); }
+.arc-pill.蓝色 { background: rgba(59, 130, 246, 0.08); color: #2563eb; border: 1px solid rgba(59, 130, 246, 0.2); }
+.arc-pill.绿色 { background: rgba(34, 197, 94, 0.08); color: #16a34a; border: 1px solid rgba(34, 197, 94, 0.2); }
+
+/* 多维数据网格 (Apple Grid) */
+.specs-grid {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+.specs-grid.cols-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+.spec-card {
+    background: #fbfbfd;
+    border: 1px solid #f0f0f3;
+    border-radius: 10px;
+    padding: 8px 10px;
+    text-align: center;
+}
+.spec-card.highlight {
+    background: rgba(0, 113, 227, 0.04);
+    border-color: rgba(0, 113, 227, 0.18);
+}
+.spec-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #86868b;
+    margin-bottom: 3px;
+}
+.spec-main-val {
+    font-size: 20px;
+    font-weight: 800;
+    color: #1d1d1f;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+}
+.spec-unit {
+    font-size: 11px;
+    font-weight: 500;
+    color: #86868b;
+}
+.spec-sub {
+    font-size: 10px;
+    color: #4b5563;
+    font-weight: 600;
+    margin-top: 3px;
+}
+.spec-foot {
+    font-size: 9.5px;
+    color: #86868b;
+    margin-top: 2px;
+}
+
+/* 打靶伤害横幅 */
+.dummy-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+.dummy-card {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 10px;
+}
+.dummy-card.squishy {
+    background: rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.15);
+}
+.dummy-card.tank {
+    background: rgba(59, 130, 246, 0.05);
+    border: 1px solid rgba(59, 130, 246, 0.15);
+}
+.dummy-icon {
+    font-size: 18px;
+}
+.dummy-info {
+    flex: 1;
+}
+.dummy-title {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #1d1d1f;
+}
+.dummy-desc {
+    display: block;
+    font-size: 9.5px;
+    color: #86868b;
+}
+.dummy-val {
+    font-size: 16px;
+    font-weight: 800;
+    color: #1d1d1f;
+    letter-spacing: -0.3px;
+}
+.dummy-val .unit {
+    font-size: 10px;
+    font-weight: 500;
+    color: #86868b;
+}
+
+/* 游走辅助专属横幅 */
+.support-utility-banner {
+    background: rgba(0, 113, 227, 0.05);
+    border: 1px solid rgba(0, 113, 227, 0.15);
+    border-radius: 10px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: #1d1d1f;
+}
+.utility-icon { font-size: 16px; }
+
+/* 机制详解 */
+.analysis-card {
+    margin-bottom: 0;
+}
+.analysis-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+.analysis-item:last-child { margin-bottom: 0; }
+.analysis-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+}
+.analysis-dot.blue { background: #0071e3; }
+.analysis-dot.green { background: #34c759; }
+.analysis-dot.orange { background: #ff9500; }
+.analysis-content {
+    font-size: 11px;
+    line-height: 1.45;
+    color: #4b5563;
+}
+.analysis-content strong {
+    color: #1d1d1f;
+}
+
+/* 装备逐件解析网格 (2列3行) */
+.item-roles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+.item-role-cell {
+    background: #fbfbfd;
+    border: 1px solid #f0f0f3;
+    border-radius: 8px;
+    padding: 6px 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.it-mini-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    flex-shrink: 0;
+}
+.it-role-text {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.3;
+}
+.it-role-name {
+    font-size: 11px;
+    font-weight: 700;
+    color: #1d1d1f;
+    display: block;
+}
+.it-role-desc {
+    font-size: 9.5px;
+    color: #6e6e73;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 战术操作行 */
+.tactical-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    background: rgba(0, 113, 227, 0.03);
+    border: 1px solid rgba(0, 113, 227, 0.12);
+    border-radius: 8px;
+    padding: 6px 10px;
+    margin-bottom: 8px;
+}
+.tactical-col {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    font-size: 10.5px;
+}
+.tactical-label {
+    font-weight: 700;
+    color: #0071e3;
+    flex-shrink: 0;
+}
+.tactical-val {
+    color: #1d1d1f;
+    font-weight: 500;
+}
+
+/* 页脚 */
+.page-footer {
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    font-size: 10px;
+    color: #86868b;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}

@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>王者全维度战术大典 · 专属提货中心</title>
+<style>
+/* ==========================================================================
+   Apple Official Light Aesthetics (苹果官网纯白极简风)
+   对标 Apple 官方商城 / Apple ID 统一设计规范
+   ========================================================================== */
+:root {
+    --apple-bg: #f5f5f7;
+    --card-bg: #ffffff;
+    --card-border: rgba(0, 0, 0, 0.08);
+    --border-subtle: #e5e5ea;
+    --border-strong: #d2d2d7;
+    --text-primary: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --text-tertiary: #86868b;
+    --apple-blue: #0071e3;
+    --apple-blue-hover: #0077ed;
+    --apple-blue-light: #f0f7ff;
+    --apple-blue-border: #bfdbfe;
+    --apple-green: #34c759;
+    --apple-green-bg: #ecfdf5;
+    --apple-green-border: #a7f3d0;
+    --apple-green-text: #059669;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background-color: var(--apple-bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* 微信环境防拦截胶囊 */
+.wechat-banner {
+    display: none;
+    width: 100%;
+    max-width: 500px;
+    margin: 16px auto 0;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 980px;
+    padding: 10px 20px;
+    color: #dc2626;
+    font-size: 12.5px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.08);
+    z-index: 99;
+}
+
+/* 顶部微标 */
+.top-brand {
+    padding-top: 36px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: -0.01em;
+}
+
+.brand-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--apple-green);
+    box-shadow: 0 0 6px var(--apple-green);
+}
+
+/* 核心：单一集成提货卡片 (Single Integrated Portal Card) */
+.portal-container {
+    width: 100%;
+    max-width: 500px;
+    margin: 28px auto 36px;
+}
+
+.portal-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.03);
+    padding: 38px 32px;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.portal-card.shake {
+    animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+}
+
+/* 苹果官方 Squircle 图标 */
+.product-icon-wrap {
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 18px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #0071e3 0%, #6366f1 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    box-shadow: 0 8px 20px rgba(0, 113, 227, 0.25);
+}
+
+.product-title {
+    font-size: 23px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.product-sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 18px;
+}
+
+/* 规格标签 */
+.spec-pills {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 22px;
+}
+
+.spec-pill {
+    font-size: 11.5px;
+    color: #4b5563;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    padding: 4px 11px;
+    border-radius: 980px;
+    font-weight: 500;
+}
+
+.spec-pill.blue {
+    color: var(--apple-blue);
+    background: var(--apple-blue-light);
+    border-color: var(--apple-blue-border);
+    font-weight: 600;
+}
+
+/* 分割线 */
+.divider {
+    height: 1px;
+    background: var(--border-subtle);
+    margin: 0 -32px 24px;
+}
+
+/* 提货码验证区 */
+.redeem-section {
+    display: block;
+}
+
+.input-wrapper {
+    margin-bottom: 14px;
+}
+
+.apple-input {
+    width: 100%;
+    height: 50px;
+    background: #f5f5f7;
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    padding: 0 20px;
+    font-size: 16px;
+    color: var(--text-primary);
+    text-align: center;
+    outline: none;
+    font-weight: 600;
+    transition: all 0.25s;
+}
+
+.apple-input::placeholder {
+    font-size: 14px;
+    color: var(--text-tertiary);
+    font-weight: 400;
+}
+
+.apple-input:focus {
+    background: #ffffff;
+    border-color: var(--apple-blue);
+    box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15);
+}
+
+.btn-redeem {
+    width: 100%;
+    height: 50px;
+    background: var(--apple-blue);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 14px rgba(0, 113, 227, 0.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-redeem:hover {
+    background: var(--apple-blue-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.38);
+}
+
+.btn-redeem:active {
+    transform: scale(0.99);
+}
+
+.tip-text {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    margin-top: 14px;
+    line-height: 1.5;
+}
+
+/* 资源交付区 (默认隐藏，验证通过后在当前卡片展开) */
+.deliver-section {
+    display: none;
+    text-align: left;
+    animation: fadeIn 0.35s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.deliver-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.success-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--apple-green-bg);
+    border: 1px solid var(--apple-green-border);
+    color: var(--apple-green-text);
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 980px;
+}
+
+.deliver-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.deliver-sub {
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    margin-bottom: 14px;
+}
+
+/* 一键全部下载主操作按钮 (Apple Blue Pill) */
+.btn-dl-all {
+    width: 100%;
+    height: 48px;
+    background: var(--apple-blue);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 14px rgba(0, 113, 227, 0.28);
+    margin-bottom: 18px;
+}
+
+.btn-dl-all:hover {
+    background: var(--apple-blue-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.38);
+}
+
+.btn-dl-all:active {
+    transform: scale(0.99);
+}
+
+/* 手册紧凑列表 (iOS 原生分组列表规范) */
+.pdf-list {
+    background: #fbfbfd;
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 18px;
+}
+
+.pdf-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border-subtle);
+    transition: background 0.15s;
+}
+
+.pdf-item:last-child {
+    border-bottom: none;
+}
+
+.pdf-item:hover {
+    background: #f3f3f6;
+}
+
+.pdf-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.pdf-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--apple-blue);
+    background: var(--apple-blue-light);
+    border: 1px solid var(--apple-blue-border);
+    padding: 2px 7px;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.pdf-texts {
+    min-width: 0;
+}
+
+.pdf-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pdf-size {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 1px;
+}
+
+.btn-file-dl {
+    background: #ffffff;
+    color: var(--apple-blue);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 980px;
+    border: 1px solid var(--border-strong);
+    flex-shrink: 0;
+    transition: all 0.2s;
+}
+
+.btn-file-dl:hover {
+    background: var(--apple-blue);
+    color: #ffffff;
+    border-color: var(--apple-blue);
+}
+
+/* 赠品与生态入口 */
+.ecosystem-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.eco-link-btn {
+    flex: 1;
+    background: #f5f5f7;
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 10px 12px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.eco-link-btn:hover {
+    background: #ebebed;
+    color: var(--text-primary);
+}
+
+.eco-link-btn strong {
+    color: var(--text-primary);
+    display: block;
+    font-size: 12.5px;
+    margin-bottom: 2px;
+}
+
+/* 极简 Footer */
+.footer {
+    padding-bottom: 30px;
+    font-size: 11.5px;
+    color: var(--text-tertiary);
+    text-align: center;
+    line-height: 1.6;
+}
+</style>
+</head>
+<body>
+
+<!-- 微信防拦截提示 -->
+<div id="wxBanner" class="wechat-banner">
+    ⚠️ 微信内置浏览器已拦截直接保存。请点击右上角 <strong>【···】</strong> 选择 <strong>【在默认浏览器中打开】</strong> 即可直接下载！
+</div>
+
+<!-- 顶部微标 -->
+<div class="top-brand">
+    <span class="brand-dot"></span>
+    <span>Aodi Lab · 官方正版数字交付端口</span>
+</div>
+
+<!-- 核心：单一集成提货卡片 -->
+<div class="portal-container">
+    <div id="portalCard" class="portal-card">
+        
+        <!-- 产品头部标识 -->
+        <div class="product-icon-wrap">⚔️</div>
+        <h1 class="product-title">王者全维度战术大典</h1>
+        <p class="product-sub">2026 最新赛季全彩图鉴版 · 全套 6 册矢量数字手册</p>
+
+        <!-- 规格徽标 -->
+        <div class="spec-pills">
+            <span class="spec-pill blue">✨ 5,593 个官方微观图鉴</span>
+            <span class="spec-pill">133 位英雄数值</span>
+            <span class="spec-pill">双向合成拓扑</span>
+            <span class="spec-pill">附赠推演沙盒</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- 提货码输入区 (第一步：默认先展示) -->
+        <div id="redeemSection" class="redeem-section">
+            <div class="input-wrapper">
+                <input type="text" id="passInput" class="apple-input" placeholder="请输入提货码" autocomplete="off">
+            </div>
+            <button class="btn-redeem" onclick="verifyPassword()">
+                <span>验证并提取资源</span>
+            </button>
+            <p class="tip-text">
+                提货码已由淘宝旺旺自动发送给您
+            </p>
+        </div>
+
+        <!-- 资源交付区 (第二步：验证成功后在当前卡片丝滑展开) -->
+        <div id="deliverSection" class="deliver-section">
+            <div class="deliver-header">
+                <div>
+                    <div class="deliver-title">全套战术手册已就绪</div>
+                    <div class="deliver-sub">支持手机 / 平板 / 电脑原生 PDF 阅读器直接查阅</div>
+                </div>
+                <div class="success-badge">✅ 提货凭证有效</div>
+            </div>
+
+            <button class="btn-dl-all" onclick="downloadAll()">
+                <span>⚡ 一键按序下载全部 6 本 (55.4 MB)</span>
+            </button>
+
+            <div class="pdf-list">
+                <div class="pdf-item">
+                    <div class="pdf-info">
+                        <span class="pdf-num">01</span>
+                        <div class="pdf-texts">
+                            <div class="pdf-name">全英雄核心机制与技能数值全解</div>
+                            <div class="pdf-size">24.4 MB · 628 个技能与头像图标</div>
+                        </div>
+                    </div>
+                    <a href="./pdf/01_全英雄核心机制与技能数值全解.pdf" download class="btn-file-dl">下载</a>
+                </div>
+
+                <div class="pdf-item">
+                    <div class="pdf-info">
+                        <span class="pdf-num">02</span>
+                        <div class="pdf-texts">
+                            <div class="pdf-name">英雄战术克制关系与搭档谱系</div>
+                            <div class="pdf-size">7.3 MB · 865 个对位阵容头像</div>
+                        </div>
+                    </div>
+                    <a href="./pdf/02_英雄战术克制关系与搭档谱系.pdf" download class="btn-file-dl">下载</a>
+                </div>
+
+                <div class="pdf-item">
+                    <div class="pdf-info">
+                        <span class="pdf-num">03</span>
+                        <div class="pdf-texts">
+                            <div class="pdf-name">五大分路定位与实战核心出装</div>
+                            <div class="pdf-size">13.3 MB · 3,030 个装备合成图谱</div>
+                        </div>
+                    </div>
+                    <a href="./pdf/03_五大分路定位与实战核心出装.pdf" download class="btn-file-dl">下载</a>
+                </div>
+
+                <div class="pdf-item">
+                    <div class="pdf-info">
+                        <span class="pdf-num">04</span>
+                        <div class="pdf-texts">
+                            <div class="pdf-name">全装备属性效果与双向合成图谱</div>
+                            <div class="pdf-size">2.9 MB · 497 个全装备大图与互斥警示</div>
+                        </div>
+                    </div>
+                    <a href="./pdf/04_全装备属性效果与双向合成图谱.pdf" download class="btn-file-dl">下载</a>
+                </div>
+
+                <div class="pdf-item">
+                    <div class="pdf-info">
+                        <span class="pdf-num">05</span>
+                        <div class="pdf-texts">
+                            <div class="pdf-name">五级铭文图鉴与主流流派搭配</div>
+                            <div class="pdf-size">6.5 MB · 558 个五级铭文图鉴</div>
+                        </div>
+                    </div>
+                    <a href="./pdf/05_五级铭文图鉴与主流流派搭配.pdf" download class="btn-file-dl">下载</a>
+                </div>
+
+                <div class="pdf-item">
+                    <div class="pdf-info">
+                        <span class="pdf-num">06</span>
+                        <div class="pdf-texts">
+                            <div class="pdf-name">峡谷底层机制与伤害防御算分</div>
+                            <div class="pdf-size">805 KB · 红蓝Buff与底层免伤公式</div>
+                        </div>
+                    </div>
+                    <a href="./pdf/06_峡谷底层机制与伤害防御算分.pdf" download class="btn-file-dl">下载</a>
+                </div>
+            </div>
+
+            <div class="ecosystem-row">
+                <a href="./" target="_blank" class="eco-link-btn">
+                    <strong>🖥️ 在线推演沙盒</strong>
+                    <span>电脑免安装推演 ↗</span>
+                </a>
+                <div class="eco-link-btn" style="cursor: default;">
+                    <strong>📱 微信小程序</strong>
+                    <span>手机随身查出装</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    © 2026 Aodi Lab · 官方正式服数据驱动 · 终身免费版本迭代
+</footer>
+
+<script>
+// 检测微信内置浏览器
+if (/MicroMessenger/i.test(navigator.userAgent)) {
+    document.getElementById("wxBanner").style.display = "block";
+}
+
+// 赛季与 VIP 提货码定义
+const CURRENT_SEASON = "S45";
+const VALID_SEASON_CODES = ["S45A", "S45", "S38A", "S38", "2026"];
+const VALID_VIP_CODES = ["VIP9", "VIP", "LIFE", "LIFETIME"];
+
+// 支持 URL 参数直连提货（例如：?code=xxxx 或 ?order=xxxx）
+const urlParams = new URLSearchParams(window.location.search);
+const paramCode = (urlParams.get("code") || urlParams.get("order") || "").trim();
+
+if (paramCode.length > 0) {
+    validateAndProcess(paramCode, true);
+}
+
+function verifyPassword() {
+    const val = document.getElementById("passInput").value.trim();
+    if (!val) {
+        shakeCard("请输入旺旺发送给您的提货码");
+        return;
+    }
+    validateAndProcess(val, false);
+}
+
+function validateAndProcess(code, isAuto) {
+    const upper = code.toUpperCase();
+    
+    // 1. 终身 VIP 用户：永久放行
+    if (VALID_VIP_CODES.some(k => upper.includes(k))) {
+        unlock("✅ 终身更新尊享特权已激活");
+        return;
+    }
+    
+    // 2. 当前赛季尝鲜用户：当前赛季有效
+    if (VALID_SEASON_CODES.includes(upper)) {
+        unlock(`✅ S45 当前赛季（月照长安）凭证有效`);
+        return;
+    }
+    
+    // 3. 过期历史赛季码（例如将来升级后传入旧码）：友好提示升级复购
+    if (upper.startsWith("S") && !VALID_SEASON_CODES.includes(upper)) {
+        const msg = "【赛季更迭提醒】\n您持有的是历史赛季尝鲜凭证，当前战术手册已全量更新至最新 S45 赛季。\n\n若需获取最新全量手册与持续更新，请返回淘宝店铺重新拍下新赛季，或联系客服补差价升级【终身尊享版】！";
+        alert(msg);
+        return;
+    }
+    
+    // 4. 通用兜底（兼容用户输入的订单号或其他有效码）
+    if (code.length >= 4) {
+        unlock("✅ 提货凭证有效");
+        return;
+    }
+    
+    shakeCard("提货码不正确，请在淘宝旺旺聊天记录查验");
+}
+
+function shakeCard(msg) {
+    const card = document.getElementById("portalCard");
+    card.classList.add("shake");
+    setTimeout(() => card.classList.remove("shake"), 400);
+    alert(msg);
+}
+
+function unlock(badgeText) {
+    document.getElementById("redeemSection").style.display = "none";
+    document.getElementById("deliverSection").style.display = "block";
+    if (badgeText) {
+        const badge = document.querySelector(".success-badge");
+        if (badge) badge.innerText = badgeText;
+    }
+}
+
+// 一键按序触发 6 个文件下载
+function downloadAll() {
+    const links = document.querySelectorAll(".btn-file-dl");
+    links.forEach((a, idx) => {
+        setTimeout(() => {
+            const tempLink = document.createElement("a");
+            tempLink.href = a.href;
+            tempLink.download = "";
+            document.body.appendChild(tempLink);
+            tempLink.click();
+            document.body.removeChild(tempLink);
+        }, idx * 600);
+    });
+}
+
+document.getElementById("passInput").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") verifyPassword();
+});
+</script>
+
+</body>
+</html>

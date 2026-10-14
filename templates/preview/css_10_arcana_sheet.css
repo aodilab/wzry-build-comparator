@@ -1,0 +1,244 @@
+    .btn-inspector-unequip:hover {
+      background: rgba(255, 59, 48, 0.08);
+    }
+    .btn-inspector-unequip:active {
+      transform: scale(0.96);
+    }
+
+    .arcana-grid-list {
+      display: flex;
+      flex-direction: column;
+    }
+    .arcana-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 4px;
+      border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+    }
+    .arcana-item-row:last-child {
+      border-bottom: none;
+    }
+    .arc-row-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+    }
+    .arc-row-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      object-fit: contain;
+      background: #f5f5f7;
+      flex-shrink: 0;
+    }
+    .arc-row-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .arc-row-name { font-size: 14.5px; font-weight: 600; color: #1d1d1f; }
+    .arc-row-props { font-size: 12px; color: #86868b; margin-top: 2px; }
+    .arc-row-counter { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .arc-cnt-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 1px solid #e5e5ea;
+      color: #0071e3;
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .arc-cnt-btn:active {
+      background: rgba(0, 113, 227, 0.08);
+      transform: scale(0.92);
+    }
+    .arc-cnt-val { font-size: 14px; font-weight: 600; min-width: 20px; text-align: center; color: #1d1d1f; }
+
+    .lane-modal-mask {
+      position: absolute; inset: 0; background: rgba(0, 0, 0, 0.45); z-index: 1000;
+      display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px);
+      border-radius: 44px; overflow: hidden;
+    }
+    .lane-modal-mask.active { display: flex; }
+    .lane-modal-card { width: 320px; background: #ffffff; border-radius: 24px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+    .lane-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .lane-hero-summary { display: flex; align-items: center; gap: 12px; }
+    .lane-hero-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+    .lane-hero-name { font-size: 16px; font-weight: 700; }
+    .lane-hero-title { font-size: 12px; color: var(--apple-text-secondary); }
+    .btn-close-lane-modal { background: none; border: none; font-size: 18px; color: #8e8e93; cursor: pointer; }
+    .lane-select-title { font-size: 14px; font-weight: 600; color: var(--apple-text-secondary); margin-bottom: 12px; }
+    .lane-buttons-group { display: flex; flex-direction: column; gap: 8px; }
+    .lane-choice-btn {
+      height: 44px; border-radius: 12px; border: 1px solid #ebebf0; background: #ffffff;
+      color: var(--apple-text-primary); font-size: 14px; font-weight: 600; cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+      transition: all 0.15s ease;
+    }
+    .lane-choice-btn:active {
+      border-color: #007aff;
+      color: #007aff;
+      background: rgba(0, 122, 255, 0.05);
+    }
+
+    /* ================= 各技能全维物理拆解二级视窗 (Apple iOS Sheet 规格) ================= */
+    #skillDetailModal.modal-mask {
+      z-index: 1050;
+    }
+    #skillDetailModal .skill-detail-sheet {
+      padding: 6px 14px 16px;
+      height: 94%;
+      max-height: 94%;
+      background: var(--apple-bg);
+      display: flex;
+      flex-direction: column;
+    }
+    .detail-modal-header {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 8px 14px 10px;
+      margin-bottom: 8px;
+      border: 0.5px solid rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+      flex-shrink: 0;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .detail-modal-nav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .detail-modal-hero-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+    .detail-modal-hero-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      flex-shrink: 0;
+    }
+    .detail-modal-hero-info {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .detail-modal-hero-name-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .detail-modal-hero-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1d1d1f;
+    }
+    .detail-modal-hero-role {
+      font-size: 10px;
+      font-weight: 500;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: #f2f2f7;
+      color: #636366;
+    }
+    .detail-modal-hero-sub {
+      font-size: 10px;
+      color: #8e8e93;
+      line-height: 1.2;
+    }
+    .detail-modal-close-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #f2f2f7;
+      border: none;
+      color: #8e8e93;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .detail-modal-close-btn:active {
+      transform: scale(0.92);
+      background: #e5e5ea;
+    }
+    .detail-intro-bar {
+      margin-top: 1px;
+    }
+    .detail-intro-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1d1d1f;
+      letter-spacing: -0.01em;
+    }
+    .modal-benchmark-hint {
+      font-size: 10px;
+      color: #8e8e93;
+      line-height: 1.2;
+      padding: 1px 2px 0;
+    }
+
+    /* 双方 6 神装对照横条 */
+    .detail-build-compare-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f9f9fb;
+      border: 0.5px solid rgba(0, 0, 0, 0.05);
+      border-radius: 10px;
+      padding: 4px 8px;
+      margin-top: 1px;
+      gap: 6px;
+    }
+    .detail-build-side {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      min-width: 0;
+    }
+    .detail-build-tag {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 5px;
+      border-radius: 4px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .detail-build-tag.a-tag {
+      background: rgba(0, 113, 227, 0.1);
+      color: #0071e3;
+    }
+    .detail-build-tag.b-tag {
+      background: rgba(52, 199, 89, 0.14);
+      color: #248a3d;
+    }
+    .detail-mini-slots {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }

@@ -3,121 +3,30 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# C extensions
+# C extensions & packages
 *.so
-
-# Distribution / packaging
 .Python
 build/
-develop-eggs/
 dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
 *.egg-info/
-.installed.cfg
-*.egg
-
-# Virtual environments
 venv/
 .venv/
-ENV/
-env/
 
-# IDE & Editors
+# IDE
 .idea/
 .vscode/
-*.swp
-*.swo
 
-# === 本地临时测试、草稿与日志（永久屏蔽，绝对不上云） ===
+# 本地临时测试、草稿与日志
 scratch/
 test/
 temp/
 tmp/
-tests_local/
-_*
 *.log
 .cache/
 
-# 内部系统指令与机密
-AGENTS.md
-
-# 商业私有化资产与电商运营（严禁上传到公开 GitHub，防止数字资产与运营策略泄露）
-taobao/
-miniprogram/
-templates/miniprogram/
-templates/xiaohongshu/
-templates/details/
-templates/pdf/
-templates/sandbox/
-src/builders/miniprogram_builder.py
-scripts/build_preview_miniprogram.py
-src/builders/xiaohongshu_apple_builder.py
-src/builders/details_builder.py
-src/builders/sku_builder.py
-src/builders/build_07_pdf.py
-src/builders/pdf_builder.py
-src/builders/build_lane_pdfs.py
-src/core/build_analyzer.py
-src/builders/main_images_*.py
-
-# 核心数据流水线与自动化提取（严禁公开）
-src/builders/build_s45_stream_pipeline.py
-src/builders/video_extractor.py
-src/core/stream_ocr_rules.py
-
-# 核心高价值出装与连招数据库与出版物PDF（严禁公开）
-*.pdf
-output/07*
-output/08*
-output/pdf/
-config/hero_s45_official_builds.json
-config/hero_official_builds.py
-config/hero_combos.json
-config/hero_combos.py
-src/builders/kb_builder.py
-
-# 单文件前端沙盒编译成品（仅供线上 CDN 部署，不公开源码）
-sandbox.html
-index.html
-preview_miniprogram.html
-
-# 生产分发物料与 Cloudflare 账户凭证（仅由 Wrangler CLI 自动化推送）
-.wrangler/
-dist_pages/
-
-# 赛季原始多媒体录屏与废弃素材
+# 赛季原始超大多媒体录屏（体积数GB，保持本地）
 raw_assets/
 *.mp4
 *.mkv
 *.mov
-assets/icon_candidates/
-*.png
-!favicon.png
-!apple-touch-icon.png
-!assets/app_icon.png
-!assets/sponsor_wechat.jpg
-!assets/icon_dual_endless_cleaver.png
-!assets/icon_fuhuojia_resurrection.png
-!assets/icon_real_fuhuojia.png
-!favicon-48x48.png
-!favicon-192x192.png
-!social_preview.png
-
-# 站长验证临时文件
-baidu_verify_*.html
-BingSiteAuth.xml
-
-# 私有化维护脚本与通知密钥
-scripts/notify_wechat.py
-scripts/*_07*
-scripts/*compare*
-scripts/*official*
-
+.wrangler/
