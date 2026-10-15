@@ -1,19 +1,19 @@
 # 王者荣耀出装对比系统 ｜ 底层算法与战术知识库
 
 <p align="left">
-  <a href="https://github.com/aodilab/wzry-build-comparator/releases"><img src="https://img.shields.io/badge/Release-v2.0.0-0071e3.svg" alt="Release"></a>
+  <a href="https://github.com/aodilab/wzry-build-comparator/releases"><img src="https://img.shields.io/badge/Release-v1.2.0-0071e3.svg" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-34c759.svg" alt="License"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Web%20App-Online-0071e3.svg" alt="Web App"></a>
-  <a href="#"><img src="https://img.shields.io/badge/微信小程序-王者出装箱-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序"></a>
-  <a href="https://github.com/aodilab/wzry-build-comparator/releases/tag/v2.0.0"><img src="https://img.shields.io/badge/Demo%20Video-26s-ff3b30.svg?logo=youtube&logoColor=white" alt="Demo Video"></a>
+  <a href="#"><img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.2%20已上线-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序"></a>
+  <a href="assets/王者出装箱_最终成品.mp4"><img src="https://img.shields.io/badge/Demo%20Video-50s-ff3b30.svg?logo=youtube&logoColor=white" alt="Demo Video"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Heroes-133-ff9500.svg" alt="Heroes"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Official%20Builds-505-ff2d55.svg" alt="Official Builds"></a>
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.8+-5856d6.svg" alt="Python"></a>
 </p>
 
 - 🖥️ **电脑大屏端**：[https://wzry.aodilab.com](https://wzry.aodilab.com)（双轨横向对比、双靶抗性打靶、方案导出）
-- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（新版本预计 10 月 16 日上线，对局选人秒查，即开即用）
-- 🎬 **真机实操演示**：[前往 Release v2.0.0 观看操作演示 (26s) »](https://github.com/aodilab/wzry-build-comparator/releases/tag/v2.0.0)
+- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（v1.2 现已正式上线，对局选人秒查，即开即用）
+- 🎬 **真机实操演示**：[观看 v1.2 完整真机实操演示 (50s 竖屏高清) »](assets/王者出装箱_最终成品.mp4)
 - 📚 **开源算法库**：王者荣耀底层物理算分引擎与 6 卷战术知识库
 
 ---
