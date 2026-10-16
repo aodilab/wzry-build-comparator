@@ -14,10 +14,10 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from config.item_recipes import COMPONENTS_MAP
 
-# 鞋类唯一被动神速固定移速映射
+# 鞋类唯一被动神速固定移速映射 (正式服标准：神速之靴+30，常规二级鞋+50，疾步之靴被动神速II+70)
 BOOTS_SPEED_MAP = {
-    "神速之靴": 30, "影忍之足": 60, "抵抗之靴": 60,
-    "冷静之靴": 60, "秘法之靴": 60, "急速战靴": 60, "急速之靴": 60, "疾步之靴": 60
+    "神速之靴": 30, "影忍之足": 50, "抵抗之靴": 50,
+    "冷静之靴": 50, "秘法之靴": 50, "急速战靴": 50, "急速之靴": 50, "疾步之靴": 70
 }
 
 # 别名双向映射表与老旧ID规范化
@@ -88,8 +88,9 @@ def parse_single_item_stats(item_raw):
         if m: stats["aspeed"] += float(m.group(1))
         m = re.search(r'\+(\d+(?:\.\d+)?)%\s*(?:冷却缩减|冷却)', line)
         if m: stats["cdr"] += float(m.group(1))
-        m = re.search(r'\+(\d+(?:\.\d+)?)%\s*(?:移动速度|移速)', line)
-        if m: stats["percent_speed"] += float(m.group(1))
+        m = re.search(r'\+(\d+(?:\.\d+)?)%?\s*(?:移动速度|移速)', line)
+        if m and name not in BOOTS_SPEED_MAP and float(m.group(1)) <= 20:
+            stats["percent_speed"] += float(m.group(1))
         m = re.search(r'\+(\d+)%\s*物理吸血', line)
         if m: stats["p_lifesteal"] += int(m.group(1))
         m = re.search(r'\+(\d+)%\s*法术吸血', line)
@@ -99,7 +100,7 @@ def parse_single_item_stats(item_raw):
         if "碎星锤" in name and "30%物理穿透" in line:
             stats["p_pierce_percent"] = 30
         if "破晓" in name:
-            stats["p_pierce_percent"] = 35
+            stats["p_pierce_percent"] = 30
         if "虚无法杖" in name and "45%法术穿透" in line:
             stats["m_pierce_percent"] = 45
         if "秘法之靴" in name and "120" in line:
@@ -248,7 +249,7 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
         extra_pdef_note = ""
         extra_mdef_note = ""
         if "时之预言" in effective_six:
-            prop_val = min(int(final_ap * 0.1), 250)
+            prop_val = min(100 + int(final_ap * 0.1), 250)
             extra_pdef += prop_val
             extra_mdef += prop_val
             extra_pdef_note = f"(含时之预言+{prop_val}) "
