@@ -196,6 +196,46 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
             totals["flat_speed"] = st["flat_speed"]
             boots_counted = True
 
+        # S45 满层奖赏与光环被动属性累加
+        is_tier3_sup = any(k in name for k in ["救赎", "奔狼", "形昭", "星泉"])
+        if "近卫" in name:
+            def_b = 130 if is_tier3_sup else 72
+            totals["pdef"] += def_b
+            totals["mdef"] += def_b
+            totals["hp"] += 800 if is_tier3_sup else 400
+        elif "极影" in name:
+            totals["aspeed"] += 20 if is_tier3_sup else 12
+            totals["cdr"] += 15 if is_tier3_sup else 9
+            totals["hp"] += 800 if is_tier3_sup else 400
+
+        if "贪婪之噬" in name:
+            totals["atk"] += 75
+            totals["cdr"] += 5
+        elif "巨人之握" in name:
+            totals["hp"] += 750
+            totals["cdr"] += 5
+        elif "符文大剑" in name:
+            totals["ap"] += 150
+            totals["cdr"] += 5
+        elif "追击刀锋" in name:
+            totals["atk"] += 45
+        elif "巡守利斧" in name:
+            totals["hp"] += 450
+        elif "游击弯刀" in name:
+            totals["ap"] += 90
+
+    if "霸者重装" in effective_six:
+        totals["hp"] += int(totals["hp"] * 0.04)
+    if "破茧之衣" in effective_six:
+        totals["ap"] += min(100, 40 + int(totals["hp"] * 0.02))
+        totals["m_pierce_flat"] += min(150, 60 + int(totals["hp"] * 0.03))
+    if "噬神之书" in effective_six:
+        totals["cdr"] += int(totals["m_lifesteal"] / 2)
+    if "日暮之流" in effective_six:
+        totals["m_pierce_flat"] += 240
+    if "金色圣剑" in effective_six:
+        totals["aspeed"] += 20
+
     # 帽子+30%法强被动
     final_ap = int(totals["ap"] * 1.3) if totals["has_hat"] else totals["ap"]
     capped_cdr = min(int(totals["cdr"]), 40)
@@ -258,6 +298,10 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
             pm_val = min(int((b_atk + totals["atk"]) * 0.5), 250)
             extra_mdef += pm_val
             extra_mdef_note += f"(含破魔刀+{pm_val}) "
+        if "魔女斗篷" in effective_six:
+            mn_val = int((totals["mdef"] + extra_mdef) * 0.15)
+            extra_pdef += mn_val
+            extra_pdef_note += f"(含魔女+{mn_val}) "
 
         # 双抗免伤公式: 抗性 / (抗性 + 602)
         tot_pdef = b_pdef + totals["pdef"] + extra_pdef
