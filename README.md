@@ -1,7 +1,7 @@
 # 王者出装箱 ｜ 王者荣耀出装对比系统与底层战术知识库
 
 <p align="left">
-  <a href="https://github.com/aodilab/wzry-build-comparator/releases"><img src="https://img.shields.io/badge/Release-v1.2.0-0071e3.svg" alt="Release"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Release-v1.2.1-0071e3.svg" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-34c759.svg" alt="License"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Web%20App-Online-0071e3.svg" alt="Web App"></a>
   <a href="#"><img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.2%20已上线-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序"></a>
