@@ -1,4 +1,4 @@
-# 王者荣耀出装对比系统 ｜ 底层算法与战术知识库
+# 王者出装箱 ｜ 王者荣耀出装对比系统与底层战术知识库
 
 <p align="left">
   <a href="https://github.com/aodilab/wzry-build-comparator/releases"><img src="https://img.shields.io/badge/Release-v1.2.0-0071e3.svg" alt="Release"></a>
@@ -11,7 +11,7 @@
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.8+-5856d6.svg" alt="Python"></a>
 </p>
 
-- 🖥️ **电脑大屏端**：[https://wzry.aodilab.com](https://wzry.aodilab.com)（双轨横向对比、双靶抗性打靶、方案导出）
+- 🖥️ **电脑大屏端**：[王者出装箱在线推演平台 (wzry.aodilab.com)](https://wzry.aodilab.com)（双轨横向对比、双靶抗性打靶、方案导出）
 - 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（v1.2 现已正式上线，对局选人秒查，即开即用）
 - 🎬 **真机实操演示**：[前往 Release v1.2.0 获取完整真机实操演示视频 (50s 竖屏超清) »](https://github.com/aodilab/wzry-build-comparator/releases/tag/v1.2.0)
 - 📚 **开源算法库**：王者荣耀底层物理算分引擎与 6 卷战术知识库
