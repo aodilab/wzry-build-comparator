@@ -11,12 +11,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from config.settings import OUTPUT_DIR, DOC_HERO_SKILLS_NAME, ROLE_MAP
-try:
-    from config.patches import REWORKED_HERO_SKILLS_PATCHES
-except (ImportError, ModuleNotFoundError):
-    REWORKED_HERO_SKILLS_PATCHES = {}
-
+from config.patches import REWORKED_HERO_SKILLS_PATCHES
 from config.hero_base_stats import get_hero_base_stats
+from config.hero_skills_data import HERO_SKILLS_DATA
 from src.core.http import fetch_html
 from src.core.cleaner import clean_plain_text
 from src.core.stats_parser import format_cd_steps, format_cost_steps, extract_desc_growth_lines
@@ -52,6 +49,8 @@ def fetch_single_hero_skills(hero):
             if not name_tag:
                 continue
             skill_name = name_tag.find('b').get_text(strip=True) if name_tag.find('b') else f"未知技能 {idx}"
+            if not skill_name:
+                continue
             spans = name_tag.find_all('span')
             raw_cd = clean_plain_text(spans[0].get_text(strip=True)) if len(spans) > 0 else "无"
             raw_cost = clean_plain_text(spans[1].get_text(strip=True)) if len(spans) > 1 else "无"
@@ -74,9 +73,11 @@ def fetch_single_hero_skills(hero):
                 "tips": tips
             })
             
-        # 官方旧页面未同步重做机制英雄，优先注入权威受控补丁
+        # 官方旧页面未同步重做机制英雄，优先注入权威受控补丁，若静态页为空则兜底读取 HERO_SKILLS_DATA
         if cname in REWORKED_HERO_SKILLS_PATCHES:
             skills_list = REWORKED_HERO_SKILLS_PATCHES[cname]["skills"]
+        elif not skills_list and cname in HERO_SKILLS_DATA:
+            skills_list = HERO_SKILLS_DATA[cname]
 
         base_stats = get_hero_base_stats(ename, cname, role_str)
 
@@ -99,6 +100,17 @@ def fetch_single_hero_skills(hero):
                 "role": role_str,
                 "base_stats": base_stats,
                 "skills": REWORKED_HERO_SKILLS_PATCHES[cname]["skills"],
+                "success": True
+            }
+        if cname in HERO_SKILLS_DATA:
+            base_stats = get_hero_base_stats(ename, cname, role_str)
+            return {
+                "ename": ename,
+                "cname": cname,
+                "title": title,
+                "role": role_str,
+                "base_stats": base_stats,
+                "skills": HERO_SKILLS_DATA[cname],
                 "success": True
             }
         return {"ename": ename, "cname": cname, "success": False, "error": str(e)}
@@ -161,13 +173,13 @@ def build_hero_skills(output_file=None, max_workers=10):
             for s_idx, skill in enumerate(h.get("skills", [])):
                 skill_type = "被动技能" if s_idx == 0 else f"主动技能 {s_idx}"
                 markdown_content += f"#### {skill_type}：{skill.get('name', '未知技能')}\n"
-                
+                is_ult = (s_idx >= 3)
                 # 结构化冷却阶梯
-                cd_formatted = format_cd_steps(skill.get('cd', ''))
+                cd_formatted = format_cd_steps(skill.get('cd', ''), is_ult=is_ult)
                 markdown_content += f"- **各等级冷却时间 (CD)**：{cd_formatted}\n"
 
                 # 结构化消耗阶梯
-                cost_formatted = format_cost_steps(skill.get('cost', ''))
+                cost_formatted = format_cost_steps(skill.get('cost', ''), is_ult=is_ult)
                 markdown_content += f"- **各等级法力/能量消耗**：{cost_formatted}\n"
 
                 # 提取成长数值线
