@@ -11,7 +11,10 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from config.settings import OUTPUT_DIR, DOC_HERO_SKILLS_NAME, ROLE_MAP
-from config.patches import REWORKED_HERO_SKILLS_PATCHES
+try:
+    from config.patches import REWORKED_HERO_SKILLS_PATCHES
+except ImportError:
+    REWORKED_HERO_SKILLS_PATCHES = {}
 from config.hero_base_stats import get_hero_base_stats
 from config.hero_skills_data import HERO_SKILLS_DATA
 from src.core.http import fetch_html
@@ -73,11 +76,21 @@ def fetch_single_hero_skills(hero):
                 "tips": tips
             })
             
-        # 官方旧页面未同步重做机制英雄，优先注入权威受控补丁，若静态页为空则兜底读取 HERO_SKILLS_DATA
+        # 优先使用经过全量校验的权威补丁与 HERO_SKILLS_DATA (SSOT)，并保留官网抓取的消耗(cost)与技巧(tips)
         if cname in REWORKED_HERO_SKILLS_PATCHES:
             skills_list = REWORKED_HERO_SKILLS_PATCHES[cname]["skills"]
-        elif not skills_list and cname in HERO_SKILLS_DATA:
-            skills_list = HERO_SKILLS_DATA[cname]
+        elif cname in HERO_SKILLS_DATA:
+            ssot_list = HERO_SKILLS_DATA[cname]
+            merged_list = []
+            for idx, s_ssot in enumerate(ssot_list):
+                item = dict(s_ssot)
+                if idx < len(skills_list):
+                    if not item.get("cost") and skills_list[idx].get("cost"):
+                        item["cost"] = skills_list[idx]["cost"]
+                    if not item.get("tips") and skills_list[idx].get("tips"):
+                        item["tips"] = skills_list[idx]["tips"]
+                merged_list.append(item)
+            skills_list = merged_list
 
         base_stats = get_hero_base_stats(ename, cname, role_str)
 
