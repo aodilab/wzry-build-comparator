@@ -4,7 +4,7 @@
   <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Release-v1.2.1-0071e3.svg" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-34c759.svg" alt="License"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Web%20App-Online-0071e3.svg" alt="Web App"></a>
-  <a href="#"><img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.2%20已上线-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序"></a>
+  <a href="#"><img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.2.1%20已上线-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序"></a>
   <a href="https://github.com/aodilab/wzry-build-comparator/releases/tag/v1.2.0"><img src="https://img.shields.io/badge/Demo%20Video-50s-ff3b30.svg?logo=youtube&logoColor=white" alt="Demo Video"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Heroes-133-ff9500.svg" alt="Heroes"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Official%20Builds-505-ff2d55.svg" alt="Official Builds"></a>
@@ -12,7 +12,7 @@
 </p>
 
 - 🖥️ **电脑大屏端**：[王者出装箱在线推演平台 (wzry.aodilab.com)](https://wzry.aodilab.com)（双轨横向对比、双靶抗性打靶、方案导出）
-- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（v1.2 现已正式上线，对局选人秒查，即开即用）
+- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（v1.2.1 现已全量上线，对局选人秒查，即开即用）
 - 🎬 **真机实操演示**：[前往 Release v1.2.0 获取完整真机实操演示视频 (50s 竖屏超清) »](https://github.com/aodilab/wzry-build-comparator/releases/tag/v1.2.0)
 - 📚 **开源算法库**：王者荣耀底层物理算分引擎与 6 卷战术知识库
 
