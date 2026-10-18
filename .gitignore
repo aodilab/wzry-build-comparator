@@ -78,6 +78,7 @@ src/core/stream_ocr_rules.py
 
 # 核心高价值出装与连招数据库与出版物PDF（严禁公开）
 *.pdf
+output/03_王者荣耀_五大分路定位与实战出装思路.md
 output/07*
 output/08*
 output/pdf/
@@ -117,7 +118,7 @@ raw_assets/
 *.mkv
 *.mov
 assets/icon_candidates/
-# 静态图片过滤（assets/ 与 dist_pages/ 内允许保留）
+# 静态图片过滤（仅保留 README 公开展示所需的架构图与演示图，严禁公开小程序内部图标）
 /favicon*.png
 /favicon.ico
 /apple-touch-icon.png
@@ -131,4 +132,9 @@ assets/icon_candidates/
 /preview_miniprogram.html
 /wrangler.json
 !assets/**
+assets/mp_icons/
+assets/icon_*.png
+assets/app_icon.png
+assets/architecture_flow.svg
+docs/guides/*_for_discussion.md
 

@@ -12,7 +12,7 @@ OUTPUT_DIR = os.path.join(BASE_DIR, "output")
 # Gemini NotebookLM 8 大战术核心交付物命名 (带序号严格排序)
 DOC_HERO_SKILLS_NAME = "01_王者荣耀_全英雄技能数值与等级成长库.md"
 DOC_HERO_RELATIONS_NAME = "02_王者荣耀_英雄战术克制与阵容搭档拓扑.md"
-DOC_HERO_BUILDS_NAME = "03_王者荣耀_五大分路定位与实战出装思路.md"
+DOC_HERO_BUILDS_NAME = "03_王者荣耀_五大分路定位与战术流派指南.md"
 DOC_ITEMS_NAME = "04_王者荣耀_全装备属性与合成升级图谱.md"
 DOC_ARCANA_NAME = "05_王者荣耀_全铭文图鉴与英雄搭配方案.md"
 DOC_RULES_NAME = "06_王者荣耀_峡谷战场机制与宏观运营规则.md"

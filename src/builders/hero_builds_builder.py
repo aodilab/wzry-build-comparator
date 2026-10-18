@@ -98,13 +98,12 @@ def build_hero_builds(output_file=None, *args, **kwargs):
                     "schemes": hero_schemes
                 })
 
-    # 生成 Markdown 知识库
-    markdown_content = "# 王者荣耀 S45 赛季（月照长安）五大分路定位与实战出装思路库\n\n"
-    markdown_content += "> 📌 **数据源权威基准 (SSOT Ground Truth)**：\n"
-    markdown_content += "> - **数据源头**：100% 物理直读王者荣耀 S45 正式服官方推荐出装与铭文实录，彻底取代旧版官方静态网页落后数据。\n"
-    markdown_content += "> - **分路覆盖**：按国服五大实战分路【对抗路、打野、中路、发育路、游走】收录 133 位英雄、507 套成体系官方出装。\n"
-    markdown_content += "> - **计算准则**：严格排除已被合成消耗的原料散件，对最终 6 件成装进行净属性叠加，并推算 15 级终极实战面板。\n"
-    markdown_content += "> - **铭装协同**：每套出装方案严格绑定实操协同的标准五级铭文组合（30颗满配）。\n\n"
+    # 生成 Markdown 知识库（公开版脱敏：仅输出战术流派与打法思路，不暴露507套原始六神装底库）
+    markdown_content = "# 王者荣耀 S45 赛季（月照长安）五大分路定位与战术流派指南\n\n"
+    markdown_content += "> 📌 **分路战术定位基准 (Tactical Framework)**：\n"
+    markdown_content += "> - **分路覆盖**：按国服五大实战分路【对抗路、打野、中路、发育路、游走】全景收录 133 位英雄实战职能与战术流派演进。\n"
+    markdown_content += "> - **实战思维**：深度提炼各战术流派的核心攻防打法、切入时机与团队协同要点，建立高阶竞技大局观。\n"
+    markdown_content += "> - **沙盒动态验算**：各流派的具体六神装购买序列、满配属性面板与实战斩杀线已全面接入「王者推演沙盒」（[wzry.aodilab.com](https://wzry.aodilab.com)），支持结合局内敌我阵容实时演算。\n\n"
     markdown_content += "---\n\n"
 
     for lane_name in ["对抗路", "打野", "中路", "发育路", "游走"]:
@@ -116,44 +115,10 @@ def build_hero_builds(output_file=None, *args, **kwargs):
             markdown_content += f"- **常规推荐分路**：{lane_name}（定位：{h['role']}）\n\n"
 
             for idx, s in enumerate(h["schemes"]):
-                calc = s.get("calc", {})
-                effective_six = calc.get("effective_six", s["items"])
-                six_str = " + ".join(effective_six)
-                total_sum = calc.get("total_summary", "无")
-                total_gold = calc.get("total_gold", 0)
-                panel = calc.get("final_panel", {})
-
-                markdown_content += f"#### 🛡️ 【{lane_name}】方案{idx + 1}：【{s['title']}】\n"
-                build_path = " -> ".join(s["items"]) if s.get("items") else "暂无装备"
-                markdown_content += f"- **推荐购买顺序路径**：{build_path}\n"
-                markdown_content += f"- **【最终生效 6 件成装 (严格排除已消耗小件)】**：{six_str}\n"
-                markdown_content += f"- **【六神装总金币造价】**：约 {total_gold} 金币\n"
-                markdown_content += f"- **【六神装满配净属性总增幅】**：{total_sum}\n"
-
-                if panel:
-                    markdown_content += "- **【终极成型实战面板预测 (15级英雄基础 + 6神装总属性)】**：\n"
-                    markdown_content += f"  - 最终物理攻击力：{panel.get('final_atk', '无')}\n"
-                    if "0 (基础) + 0" not in str(panel.get("final_ap", "")):
-                        markdown_content += f"  - 最终法术攻击力：{panel.get('final_ap', '无')}\n"
-                    markdown_content += f"  - 最终最大生命值：{panel.get('final_hp', '无')}\n"
-                    markdown_content += f"  - 最终物理防御(物抗)：{panel.get('final_pdef', '无')}\n"
-                    markdown_content += f"  - 最终法术防御(魔抗)：{panel.get('final_mdef', '无')}\n"
-                    markdown_content += f"  - 最终移动速度：{panel.get('final_speed', '无')}\n"
-                    markdown_content += f"  - 最终攻击速度：{panel.get('final_aspeed', '无')}\n"
-                    markdown_content += f"  - 暴击与冷却：暴击率 {panel.get('final_crit', '0%')} ｜ 冷却缩减 {panel.get('final_cdr', '0%')}\n"
-
-                    conflicts = calc.get("conflicts", [])
-                    if conflicts:
-                        for c in conflicts:
-                            markdown_content += f"  - ⚠️ 【唯一被动互斥警告】：{c}\n"
-                    else:
-                        markdown_content += "  - ✅ 【被动契合度诊断】：6件成装被动无冲突，属性利用率100%\n"
-
-                if s.get("arcana_desc"):
-                    markdown_content += f"- **【官方实测满级铭文配置】**：`{s['arcana_desc']}`\n"
+                markdown_content += f"#### 🛡️ 【{lane_name}】战术方案{idx + 1}：【{s['title']}】\n"
                 if s.get("desc"):
-                    markdown_content += f"- **出装思路（推荐原因）**：{s['desc']}\n"
-                markdown_content += "\n"
+                    markdown_content += f"- **核心打法思路**：{s['desc']}\n"
+                markdown_content += "- **神装推演与实操验算**：此方案完整购买顺序、六神装满配面板与实战斩杀线已接入「王者出装推演沙盒」（[wzry.aodilab.com](https://wzry.aodilab.com)），支持结合局内敌我阵容实时模拟。\n\n"
 
             markdown_content += "---\n\n"
 
