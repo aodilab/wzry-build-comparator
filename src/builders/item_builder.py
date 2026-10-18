@@ -9,15 +9,15 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from config.settings import URL_ITEM_LIST, OUTPUT_DIR, DOC_ITEMS_NAME
 from config.item_recipes import ITEM_TYPE_MAP, COMPONENTS_MAP, get_upgrades_map
-from src.core.http import fetch_json
+from src.core.item_calculator import get_ground_truth_items
 from src.core.cleaner import clean_html
 
 def build_items(output_file=None):
     """
     抓取官方装备接口，整合合成拓扑树，生成 Markdown 知识库
     """
-    print("正在从王者荣耀官网获取最新装备数据...")
-    items = fetch_json(URL_ITEM_LIST)
+    print("正在从王者荣耀官网与115张权威截图获取最新装备数据...")
+    items = get_ground_truth_items()
     upgrades_map = get_upgrades_map()
     
     markdown_content = "# 王者荣耀 S45 赛季（月照长安）全装备属性与双向合成拓扑图谱\n\n"

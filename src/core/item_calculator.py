@@ -7,20 +7,53 @@
 3. 计算物理/法术攻击(含博学者之怒+30%AP增幅)、双抗(附带减伤比例)、生命、蓝量、暴击、攻速(含15级自身成长)、吸血与穿透；
 4. 自动扫描并诊断同名唯一被动互斥（强击/神速/穿透）。
 """
-import re
-import sys
-import os
+import re, sys, os, json
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, ROOT_DIR)
 from config.item_recipes import COMPONENTS_MAP
 
-# 鞋类唯一被动神速固定移速映射 (正式服标准：神速之靴+30，常规二级鞋+50，疾步之靴被动神速II+70)
+def get_ground_truth_items(api_items=None):
+    """以用户115张全装备截图(items_ground_truth.json)为唯一权威数据源合并装备字典列表"""
+    if api_items is None:
+        from config.settings import URL_ITEM_LIST
+        from src.core.http import fetch_json
+        api_items = fetch_json(URL_ITEM_LIST) or []
+    gt_path = os.path.join(ROOT_DIR, "config", "items_ground_truth.json")
+    gt_map = {}
+    if os.path.exists(gt_path):
+        with open(gt_path, "r", encoding="utf-8") as f:
+            gt_map = json.load(f)
+    merged = []
+    seen = set()
+    for it in api_items:
+        cname = it.get("item_name", "").strip()
+        seen.add(cname)
+        gt = gt_map.get(cname)
+        if gt:
+            it = dict(it)
+            it["total_price"] = gt["total_price"]
+            it["price"] = gt["total_price"]
+            it["des1"] = gt["des1"]
+            it["des2"] = gt["des2"]
+        merged.append(it)
+    for cname, gt in gt_map.items():
+        if cname not in seen:
+            merged.append({
+                "item_id": gt.get("item_id") or 9999,
+                "item_name": cname,
+                "item_type": gt.get("item_type", 1),
+                "price": gt["total_price"],
+                "total_price": gt["total_price"],
+                "des1": gt["des1"],
+                "des2": gt["des2"]
+            })
+    return merged
+
 BOOTS_SPEED_MAP = {
     "神速之靴": 30, "影忍之足": 50, "抵抗之靴": 50,
     "冷静之靴": 50, "秘法之靴": 50, "急速战靴": 50, "急速之靴": 50, "疾步之靴": 70
 }
-
-# 别名双向映射表与老旧ID规范化
 RAW_TO_COMMON_MAP = {
     "强者破军": "破军", "仁者破晓": "破晓", "贤者天书": "贤者之书",
     "急速之靴": "急速战靴", "1722": "极影·星泉", "1747": "极影·星泉"
@@ -37,41 +70,28 @@ def clean_item_name(name):
     return RAW_TO_COMMON_MAP.get(n, n)
 
 def get_raw_item_object(name, equip_map_raw):
-    """鲁棒获取装备原生字典，支持官方原生名与常用别名双向穿透"""
-    if not name or not equip_map_raw:
-        return None
-    if name in equip_map_raw:
-        return equip_map_raw[name]
-    raw_key = COMMON_TO_RAW_MAP.get(name)
-    if raw_key and raw_key in equip_map_raw:
-        return equip_map_raw[raw_key]
-    common_key = RAW_TO_COMMON_MAP.get(name)
-    if common_key and common_key in equip_map_raw:
-        return equip_map_raw[common_key]
+    if not name or not equip_map_raw: return None
+    for k in (name, COMMON_TO_RAW_MAP.get(name), RAW_TO_COMMON_MAP.get(name)):
+        if k and k in equip_map_raw: return equip_map_raw[k]
     return None
 
 def parse_single_item_stats(item_raw):
-    """全量提取单件装备的属性词缀与被动"""
+    """全量提取单件装备的属性词缀与被动(100%对齐115张装备截图)"""
     if not item_raw: return {}
-    des1 = item_raw.get("des1", "")
-    des2 = item_raw.get("des2", "")
-    full_text = re.sub(r'</?[^>]+>', '\n', f"{des1}\n{des2}")
+    full_text = re.sub(r'</?[^>]+>', '\n', f"{item_raw.get('des1', '')}\n{item_raw.get('des2', '')}")
     lines = [l.strip() for l in full_text.split('\n') if l.strip()]
-    
     name = clean_item_name(item_raw.get("item_name", ""))
     stats = {
         "name": name, "atk": 0, "ap": 0, "pdef": 0, "mdef": 0, "hp": 0, "mp": 0,
-        "crit": 0, "aspeed": 0, "cdr": 0, "percent_speed": 0, "flat_speed": 0,
+        "crit": 0, "aspeed": 0, "cdr": 0, "percent_speed": 0, "flat_speed": BOOTS_SPEED_MAP.get(name, 0),
         "p_lifesteal": 0, "m_lifesteal": 0, "p_pierce_flat": 0, "p_pierce_percent": 0,
         "m_pierce_flat": 0, "m_pierce_percent": 0, "has_hat": (name == "博学者之怒")
     }
-    
-    if name in BOOTS_SPEED_MAP:
-        stats["flat_speed"] = BOOTS_SPEED_MAP[name]
-        
     for line in lines:
+        if line.startswith("被动") or line.startswith("唯一") or line.startswith("主动"):
+            continue
         m = re.search(r'\+(\d+)\s*(?:物理攻击|物攻|物理)', line)
-        if m and "防御" not in line and "吸血" not in line and "穿透" not in line: stats["atk"] += int(m.group(1))
+        if m and not any(x in line for x in ("防御", "吸血", "穿透")): stats["atk"] += int(m.group(1))
         m = re.search(r'\+(\d+)\s*法术攻击', line)
         if m: stats["ap"] += int(m.group(1))
         m = re.search(r'\+(\d+)\s*(?:物理防御|物防)', line)
@@ -95,17 +115,12 @@ def parse_single_item_stats(item_raw):
         if m: stats["p_lifesteal"] += int(m.group(1))
         m = re.search(r'\+(\d+)%\s*法术吸血', line)
         if m: stats["m_lifesteal"] += int(m.group(1))
-        if "暗影战斧" in name and "增加90~180点物理穿透" in line:
-            stats["p_pierce_flat"] = 180
-        if "碎星锤" in name and "30%物理穿透" in line:
-            stats["p_pierce_percent"] = 30
-        if "破晓" in name:
-            stats["p_pierce_percent"] = 30
-        if "虚无法杖" in name and "45%法术穿透" in line:
-            stats["m_pierce_percent"] = 45
-        if "秘法之靴" in name and "120" in line:
-            stats["m_pierce_flat"] = 120
-            
+
+    if "暗影战斧" in name: stats["p_pierce_flat"] = 180
+    elif "碎星锤" in name or "破晓" in name: stats["p_pierce_percent"] = 30
+    elif "虚无法杖" in name: stats["m_pierce_percent"] = 45
+    elif "秘法之靴" in name: stats["m_pierce_flat"] = 120
+    elif "云灵木" in name: stats["m_pierce_flat"] = 60
     return stats
 
 def filter_effective_six_equips(equip_names):
@@ -173,30 +188,15 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
         if item_raw:
             total_gold += item_raw.get("total_price", 0)
         st = parse_single_item_stats(item_raw)
-        totals["atk"] += st.get("atk", 0)
-        totals["ap"] += st.get("ap", 0)
-        totals["pdef"] += st.get("pdef", 0)
-        totals["mdef"] += st.get("mdef", 0)
-        totals["hp"] += st.get("hp", 0)
-        totals["mp"] += st.get("mp", 0)
-        totals["crit"] += st.get("crit", 0.0)
-        totals["aspeed"] += st.get("aspeed", 0.0)
-        totals["cdr"] += st.get("cdr", 0.0)
-        totals["percent_speed"] += st.get("percent_speed", 0.0)
-        totals["p_lifesteal"] += st.get("p_lifesteal", 0)
-        totals["m_lifesteal"] += st.get("m_lifesteal", 0)
-        totals["p_pierce_flat"] += st.get("p_pierce_flat", 0)
+        for k in ("atk", "ap", "pdef", "mdef", "hp", "mp", "crit", "aspeed", "cdr", "percent_speed", "p_lifesteal", "m_lifesteal", "p_pierce_flat", "m_pierce_flat"):
+            totals[k] += st.get(k, 0)
         totals["p_pierce_percent"] = max(totals["p_pierce_percent"], st.get("p_pierce_percent", 0))
-        totals["m_pierce_flat"] += st.get("m_pierce_flat", 0)
         totals["m_pierce_percent"] = max(totals["m_pierce_percent"], st.get("m_pierce_percent", 0))
         if st.get("has_hat"): totals["has_hat"] = True
-        
-        # 鞋子神速移速仅生效一次
         if st.get("flat_speed", 0) > 0 and not boots_counted:
             totals["flat_speed"] = st["flat_speed"]
             boots_counted = True
 
-        # S45 满层奖赏与光环被动属性累加
         is_tier3_sup = any(k in name for k in ["救赎", "奔狼", "形昭", "星泉"])
         if "近卫" in name:
             def_b = 130 if is_tier3_sup else 72
@@ -208,44 +208,27 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
             totals["cdr"] += 15 if is_tier3_sup else 9
             totals["hp"] += 800 if is_tier3_sup else 400
 
-        if "贪婪之噬" in name:
-            totals["atk"] += 75
-            totals["cdr"] += 5
-        elif "巨人之握" in name:
-            totals["hp"] += 750
-            totals["cdr"] += 5
-        elif "符文大剑" in name:
-            totals["ap"] += 150
-            totals["cdr"] += 5
-        elif "追击刀锋" in name:
-            totals["atk"] += 45
-        elif "巡守利斧" in name:
-            totals["hp"] += 450
-        elif "游击弯刀" in name:
-            totals["ap"] += 90
+        if "贪婪之噬" in name: totals["atk"] += 75; totals["cdr"] += 5
+        elif "巨人之握" in name: totals["hp"] += 750; totals["cdr"] += 5
+        elif "符文大剑" in name: totals["ap"] += 150; totals["cdr"] += 5
+        elif "追击刀锋" in name: totals["atk"] += 45
+        elif "巡守利斧" in name: totals["hp"] += 450
+        elif "游击弯刀" in name: totals["ap"] += 90
 
-    if "霸者重装" in effective_six:
-        totals["hp"] += int(totals["hp"] * 0.04)
+    if "霸者重装" in effective_six: totals["hp"] += int(totals["hp"] * 0.04)
     if "破茧之衣" in effective_six:
         totals["ap"] += min(100, 40 + int(totals["hp"] * 0.02))
         totals["m_pierce_flat"] += min(150, 60 + int(totals["hp"] * 0.03))
-    if "噬神之书" in effective_six:
-        totals["cdr"] += int(totals["m_lifesteal"] / 2)
-    if "日暮之流" in effective_six:
-        totals["m_pierce_flat"] += 240
-    if "金色圣剑" in effective_six:
-        totals["aspeed"] += 20
+    if "噬神之书" in effective_six: totals["cdr"] += int(totals["m_lifesteal"] / 2)
+    if "日暮之流" in effective_six: totals["m_pierce_flat"] += 240
+    if "金色圣剑" in effective_six: totals["aspeed"] += 20
 
-    # 帽子+30%法强被动
     final_ap = int(totals["ap"] * 1.3) if totals["has_hat"] else totals["ap"]
     capped_cdr = min(int(totals["cdr"]), 40)
-    
-    # 汇总增幅文案
     parts = []
     if totals["atk"] > 0: parts.append(f"物理攻击 +{totals['atk']}")
     if final_ap > 0:
-        ap_desc = f"法术攻击 +{final_ap}" + ("(含帽子+30%增幅)" if totals['has_hat'] else "")
-        parts.append(ap_desc)
+        parts.append(f"法术攻击 +{final_ap}" + ("(含帽子+30%增幅)" if totals['has_hat'] else ""))
     if totals["pdef"] > 0: parts.append(f"物理防御 +{totals['pdef']}")
     if totals["mdef"] > 0: parts.append(f"法术防御 +{totals['mdef']}")
     if totals["hp"] > 0: parts.append(f"最大生命 +{totals['hp']}")
@@ -262,34 +245,21 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
         parts.append(f"物理穿透 {totals['p_pierce_flat']}点固定/{totals['p_pierce_percent']}%比例")
     if totals["m_pierce_flat"] > 0 or totals["m_pierce_percent"] > 0:
         parts.append(f"法术穿透 {totals['m_pierce_flat']}点固定/{totals['m_pierce_percent']}%比例")
-        
     summary_str = " ｜ ".join(parts) if parts else "纯功能/无基础属性增幅"
-    
-    # 终极实战面板预测
+
     final_panel = {}
     if hero_base_stats:
-        b_hp = hero_base_stats["hp"][1]
-        b_atk = hero_base_stats["atk"][1]
-        b_pdef = hero_base_stats["pdef"][1]
-        b_mdef = hero_base_stats["mdef"][1]
-        b_speed = hero_base_stats["speed"]
-        
-        # 英雄攻速成长 (15级自带 14 级成长)
+        b_hp, b_atk = hero_base_stats["hp"][1], hero_base_stats["atk"][1]
+        b_pdef, b_mdef, b_speed = hero_base_stats["pdef"][1], hero_base_stats["mdef"][1], hero_base_stats["speed"]
         growth_match = re.search(r'([\d\.]+)%', hero_base_stats.get("aspeed", "+1.0%"))
         growth_val = float(growth_match.group(1)) if growth_match else 1.0
         hero_self_aspeed = int(growth_val * 14)
         total_aspeed = hero_self_aspeed + int(totals["aspeed"])
-        
-        # 实战移速公式: (基础 + 固定鞋) * (1 + 百分比)
         calc_speed = int((b_speed + totals["flat_speed"]) * (1 + totals["percent_speed"] / 100))
-        
-        # 二次动态转化计算
-        extra_pdef = 0
-        extra_mdef = 0
-        extra_pdef_note = ""
-        extra_mdef_note = ""
+
+        extra_pdef, extra_mdef, extra_pdef_note, extra_mdef_note = 0, 0, "", ""
         if "时之预言" in effective_six:
-            prop_val = min(100 + int(final_ap * 0.1), 250)
+            prop_val = 100 + int(final_ap * 0.1)
             extra_pdef += prop_val
             extra_mdef += prop_val
             extra_pdef_note = f"(含时之预言+{prop_val}) "

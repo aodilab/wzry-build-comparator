@@ -13,48 +13,39 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 from config.settings import OUTPUT_DIR, DOC_ARCANA_NAME, ROLE_MAP
 from config.hero_registry import CN_HERO_MANIFEST
 from config.hero_arcana_data import ARCANA_LEVEL_5_DICT
-try:
-    from config.hero_official_builds import OFFICIAL_HERO_BUILDS
-except (ImportError, ModuleNotFoundError, Exception):
-    OFFICIAL_HERO_BUILDS = {}
+from config.hero_official_builds import OFFICIAL_HERO_BUILDS
+from src.core.item_calculator import RAW_TO_COMMON_MAP, get_ground_truth_items
 
-
-from src.core.item_calculator import RAW_TO_COMMON_MAP
-
-# 属性中文字典映射
+# 属性中文字典映射 (100%对齐五级铭文截图原词)
 STAT_NAMES = {
-    'magic_atk': '法术攻击力',
-    'phys_atk': '物理攻击力',
+    'magic_atk': '法术攻击',
+    'phys_atk': '物理攻击',
     'phys_pierce': '物理穿透',
     'magic_pierce': '法术穿透',
-    'atk_speed_pct': '攻速加成',
+    'atk_speed_pct': '攻击速度',
     'crit_rate_pct': '暴击率',
     'crit_effect_pct': '暴击效果',
     'max_hp': '最大生命',
-    'phys_def': '物理防御力',
-    'magic_def': '法术防御力',
+    'phys_def': '物理防御',
+    'magic_def': '法术防御',
     'phys_vamp_pct': '物理吸血',
     'magic_vamp_pct': '法术吸血',
     'move_speed_pct': '移速',
-    'hp_regen': '生命回复',
+    'hp_regen': '每5秒回血',
     'cd_reduction_pct': '冷却缩减'
 }
 
-# 预设装备造价缓存（避免实时抓取失败）
-ITEM_PRICE_MAP = {
-    "暗影战斧": 2090, "宗师之力": 2100, "无尽战刃": 2140, "破军": 2950, "强者破军": 2950,
-    "名刀·司命": 1900, "贪婪之噬": 2160, "巨人之握": 2160, "符文大剑": 2160,
-    "影忍之足": 710, "抵抗之靴": 710, "冷静之靴": 710, "秘法之靴": 710, "急速战靴": 710, "疾步之靴": 710,
-    "破晓": 3400, "仁者破晓": 3400, "幽影袖箭": 2040, "泣血之刃": 1800, "逐日之弓": 2100,
-    "影刃": 2070, "末世": 2160, "闪电匕首": 1840, "寒霜袭侵": 2080, "纯净苍穹": 2120,
-    "碎星锤": 2100, "暴烈之甲": 1950, "红莲斗篷": 2000, "霸者重装": 2070, "不死鸟之眼": 2100,
-    "永夜守护": 2110, "魔女斗篷": 2080, "极寒风暴": 2100, "怒龙剑盾": 1960, "冰痕之握": 2020,
-    "近卫·形昭": 1900, "极影·形昭": 1900, "近卫·救赎": 1900, "极影·救赎": 1900,
-    "近卫·星泉": 1900, "极影·星泉": 1900, "近卫·奔狼": 1900, "极影·奔狼": 1900,
-    "博学者之怒": 2300, "回响之杖": 2100, "痛苦面具": 2040, "日暮之流": 2120, "虚无法杖": 2110,
-    "贤者之书": 2990, "贤者天书": 2990, "噬神之书": 2090, "辉月": 1990, "梦魇之牙": 2050,
-    "冰霜冲击": 2100, "破魔刀": 2000, "制裁之刃": 1800, "时之预言": 2090, "圣杯": 1900
-}
+def _build_price_map():
+    pmap = {}
+    for it in get_ground_truth_items([]):
+        n = it.get("item_name", "")
+        p = it.get("total_price", 0)
+        if n and p:
+            pmap[n] = p
+            pmap[RAW_TO_COMMON_MAP.get(n, n)] = p
+    return pmap
+
+ITEM_PRICE_MAP = _build_price_map()
 
 def calc_arcana_stats(arcana_dict):
     """计算整套铭文组合（30颗满配）的净属性总加成"""
