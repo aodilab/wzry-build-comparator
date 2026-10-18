@@ -1,10 +1,10 @@
 # 王者出装箱 ｜ 王者荣耀出装对比系统与底层战术知识库
 
 <p align="left">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Release-v1.2.1-0071e3.svg" alt="Release"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Release-v1.2.2-0071e3.svg" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-34c759.svg" alt="License"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Web%20App-Online-0071e3.svg" alt="Web App"></a>
-  <a href="#"><img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.2.1%20已上线-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序"></a>
+  <a href="#"><img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.2.2%20已上线-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序"></a>
   <a href="https://github.com/aodilab/wzry-build-comparator/releases/tag/v1.2.0"><img src="https://img.shields.io/badge/Demo%20Video-50s-ff3b30.svg?logo=youtube&logoColor=white" alt="Demo Video"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Heroes-133-ff9500.svg" alt="Heroes"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Official%20Builds-505-ff2d55.svg" alt="Official Builds"></a>
@@ -12,15 +12,15 @@
 </p>
 
 - 🖥️ **电脑大屏端**：[王者出装箱在线推演平台 (wzry.aodilab.com)](https://wzry.aodilab.com)（双轨横向对比、双靶抗性打靶、方案导出）
-- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（v1.2.1 现已全量上线，对局选人秒查，即开即用）
+- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（v1.2.2 现已全量上线，对局选人秒查，即开即用）
 - 🎬 **真机实操演示**：[前往 Release v1.2.0 获取完整真机实操演示视频 (50s 竖屏超清) »](https://github.com/aodilab/wzry-build-comparator/releases/tag/v1.2.0)
 - 📚 **开源算法库**：王者荣耀底层物理算分引擎与 6 卷战术知识库
 
 > [!NOTE]
-> **📢 最新版本更新公告 [v1.2.1] (2026-10-17)**  
-> 1. **正式服平衡性同步**：全面对齐 10月15日 正式服赵云、鲁班大师、姬小满、女娲等 10 位英雄数值与机制调整；  
-> 2. **四大数据库深度校准**：补全全库 132 处技能文本截断、修复递减冷却（`-X/Lv`）与充能技能 CD 解析、对齐巫术法杖强击与打野/游走叠层被动；  
-> 3. **操作交互优化**：装备商店支持“先选定预览、再确认装备”防误触，优化长文本纵向滑动。  
+> **📢 最新版本更新公告 [v1.2.2] (2026-10-18)**  
+> 1. **623 张实机截图全库核准**：完成 133 位英雄全技能（含李信 10 技能、元流之子 9 技能等多形态词条，共 708 张技能卡片）、115 件局内装备（含重做贤者的庇护、冰痕之握、怒龙剑盾、不死鸟之眼）与 30 颗五级铭文的逐图实机对齐；  
+> 2. **技能拆解弹窗与图标修复**：同步赵云、孙尚香、李白、吕布特化拆解卡片的 S45 实机公式，修复弹窗首卡顶部贴边裁切、多形态英雄被动图标 404 及新英雄技能图标自动回退；  
+> 3. **实战深度攻略上线**：新增 [《S45 赵云打野出装详解》](docs/guides/zhaoyun_jungle_guide.md) 全期节点打靶拆解。  
 > 完整修复明细与技术解析请参阅 ➔ [**CHANGELOG.md (版本演化日志)**](CHANGELOG.md)。
 
 ---
