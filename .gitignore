@@ -46,9 +46,15 @@ _*
 *.log
 .cache/
 
-# 内部系统指令与机密
+# 内部系统指令与机密（含 Google Cloud / Vertex AI 服务账号密钥，严禁公开）
 AGENTS.md
 .agents/
+.env
+.env.*
+*key*.json
+*credentials*.json
+config/vertex_config.py
+src/core/vertex_client.py
 
 # 商业私有化资产与电商运营（严禁公开）
 taobao/

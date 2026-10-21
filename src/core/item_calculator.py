@@ -198,15 +198,15 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
             boots_counted = True
 
         is_tier3_sup = any(k in name for k in ["救赎", "奔狼", "形昭", "星泉"])
-        if "近卫" in name:
-            def_b = 130 if is_tier3_sup else 72
-            totals["pdef"] += def_b
-            totals["mdef"] += def_b
+        if "近卫" in name or "极影" in name:
             totals["hp"] += 800 if is_tier3_sup else 400
-        elif "极影" in name:
-            totals["aspeed"] += 20 if is_tier3_sup else 12
-            totals["cdr"] += 15 if is_tier3_sup else 9
-            totals["hp"] += 800 if is_tier3_sup else 400
+            totals["atk"] += 50 if is_tier3_sup else 30
+            if "近卫" in name:
+                def_b = 130 if is_tier3_sup else 72
+                totals["pdef"] += def_b; totals["mdef"] += def_b
+            else:
+                totals["aspeed"] += 20 if is_tier3_sup else 12
+                totals["cdr"] += 15 if is_tier3_sup else 9
 
         if "贪婪之噬" in name: totals["atk"] += 75; totals["cdr"] += 5
         elif "巨人之握" in name: totals["hp"] += 750; totals["cdr"] += 5
@@ -222,6 +222,7 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
     if "噬神之书" in effective_six: totals["cdr"] += int(totals["m_lifesteal"] / 2)
     if "日暮之流" in effective_six: totals["m_pierce_flat"] += 240
     if "金色圣剑" in effective_six: totals["aspeed"] += 20
+    if "逐风" in effective_six: totals["aspeed"] += 10; totals["percent_speed"] += 10
 
     final_ap = int(totals["ap"] * 1.3) if totals["has_hat"] else totals["ap"]
     capped_cdr = min(int(totals["cdr"]), 40)
