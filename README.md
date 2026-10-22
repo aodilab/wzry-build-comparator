@@ -1,26 +1,26 @@
 # 王者出装箱 ｜ 王者荣耀出装对比系统与底层战术知识库
 
 <p align="left">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Release-v1.2.3-0071e3.svg" alt="Release"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Release-v1.3.0-0071e3.svg" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-34c759.svg" alt="License"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Web%20App-Online-0071e3.svg" alt="Web App"></a>
-  <a href="#"><img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.2.3%20已上线-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序"></a>
+  <a href="#"><img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.3.0-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序"></a>
   <a href="https://github.com/aodilab/wzry-build-comparator/releases/tag/v1.2.0"><img src="https://img.shields.io/badge/Demo%20Video-50s-ff3b30.svg?logo=youtube&logoColor=white" alt="Demo Video"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Heroes-133-ff9500.svg" alt="Heroes"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Official%20Builds-505-ff2d55.svg" alt="Official Builds"></a>
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.8+-5856d6.svg" alt="Python"></a>
 </p>
 
-- 🖥️ **电脑大屏端**：[王者出装箱在线推演平台 (wzry.aodilab.com)](https://wzry.aodilab.com)（双轨横向对比、双靶抗性打靶、方案导出）
-- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（v1.2.3 现已全量上线，对局选人秒查，即开即用）
+- 🖥️ **电脑大屏端**：[王者出装箱在线推演平台 (wzry.aodilab.com)](https://wzry.aodilab.com)（双轨横向对比、双靶抗性打靶、实战精研社专栏、方案导出）
+- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（v1.3.0 全量同步，对局选人秒查，即开即用）
 - 🎬 **真机实操演示**：[前往 Release v1.2.0 获取完整真机实操演示视频 (50s 竖屏超清) »](https://github.com/aodilab/wzry-build-comparator/releases/tag/v1.2.0)
 - 📚 **开源算法库**：王者荣耀底层物理算分引擎与 6 卷战术知识库
 
 > [!NOTE]
-> **📢 最新版本更新公告 [v1.2.3] (2026-10-21)**  
-> 1. **PVE 刷野与控龙引擎重构**：废除虚高的全局打野刀乘区，实装 S45 正式服 1~3 级三系打野刀（贪婪之噬 / 巨人之握 / 符文大剑）【被动-狩猎】每 0.5 秒真实野怪灼烧公式，独立拆分【怒龙剑盾】（7% 最大生命物理重创）与【红莲斗篷】（3% 最大生命法术业炎），并校准高冷却缩减在暴君/主宰长线循环中的真实控龙加速；  
-> 2. **爆发连招内置冷却（ICD）与多靶伤害精算**：严格按正式服内置冷却限制单套连招触发上限（宗师之力 3s 限 1 次、冰痕之握 1.25s 限 2 次、巫术法杖 2.5s 限 1 次、怒龙剑盾 2.5s 限 1 次），补全二/三级打野刀对英雄 10%/25% 折算灼烧，并区分【末世】对脆皮靶与万血坦克靶的百分比破败伤害；  
-> 3. **S45 装备转化与增伤乘区全端对齐**：区分【仁者破晓】远程 30% / 近战 15% 物穿，补全游走装【被动-奖赏】主攻属性（+30/+50 AD 或 +60/+100 AP）、【贤者之书】刻印增伤与【逐风】满层属性转化。  
+> **📢 最新版本更新公告 [v1.3.0] (2026-10-23)**  
+> 1. **新增「实战精研社」1080p60 实测长视频与图文流派专栏**：Web 端与微信小程序同步上线【实战精研社】深度实测模块，搭载 Cloudflare R2 边缘流媒体（HTTP 206 Range 分片秒开播放）与三章训练营实测图文拆解，支持将 4 套满级六神装变阵一键载入推演台 `方案 A` / `方案 B` 实时打靶对比；  
+> 2. **三端物理计算引擎 100% 镜像对齐与 S45 机制精校**：完成小程序端、Web 在线推演台与预览沙盒 across 133 位英雄、505 套官方出装的 1:1 零误差核验；全面校准【冰痕之握】（`280 + 3% 额外生命`，双次强击）、【怒龙剑盾】（重创野怪 `7% 最大生命` / 神力英雄 `80 + 5% 额外生命`）、【不死鸟之眼】（每损失 10% 生命提升 `6.5%` 治疗，残血最高 `+45.5%`）与【破军】半血斩杀乘区；  
+> 3. **视觉交互升级与四层防爬虫护盾**：上线深浅双主题（`☀ 浅色 / ☾ 深色`）一键切换、职业主题色英雄原画顶栏、4 层渐进高斯模糊刘海导航与 `HarmonyOS Sans SC` 字重体系；Web 端实装构建期异或载荷混淆、SEO 静态摘要脱敏、Cloudflare Edge WAF 爬虫拦截与前端反自动化护盾。  
 > 完整修复明细与技术解析请参阅 ➔ [**CHANGELOG.md (版本演化日志)**](CHANGELOG.md)。
 
 ---

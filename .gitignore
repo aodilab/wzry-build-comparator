@@ -60,11 +60,13 @@ src/core/vertex_client.py
 taobao/
 miniprogram/
 templates/
-scripts/
+/scripts/
 src/builders/miniprogram_builder.py
 src/builders/miniprogram_dataset.py
 src/builders/xiaohongshu_apple_builder.py
 src/builders/details_builder.py
+src/builders/details_slices.py
+src/builders/details_slices_extra.py
 src/builders/sku_builder.py
 src/builders/build_07_pdf.py
 src/builders/pdf_builder.py
@@ -75,20 +77,12 @@ src/builders/lane_pdf_helpers.py
 src/builders/main_images_*.py
 src/core/build_analyzer.py
 
-# 核心数据流水线与自动化提取（严禁公开）
-src/builders/build_s45_stream_pipeline.py
-src/builders/s45_stream_worker.py
-src/builders/video_cv_helpers.py
-src/builders/video_extractor.py
-src/core/stream_ocr_rules.py
-
 # 核心高价值出装与连招数据库与出版物PDF（严禁公开）
 *.pdf
 output/03_王者荣耀_五大分路定位与实战出装思路.md
 output/07*
 output/08*
 output/pdf/
-config/hero_s45_official_builds.json
 config/hero_official_builds.py
 config/hero_combos.json
 config/hero_combos.py
@@ -112,8 +106,8 @@ robots.txt
 config/baidu_pushed_urls.json
 src/core/baidu_pusher.py
 src/builders/sandbox_builder.py
+src/builders/sandbox_template.py
 src/builders/seo_builder.py
-config/sandbox_template.py
 
 # 核心精调补丁包与专属数据（商业私有）
 config/patches/
@@ -124,6 +118,7 @@ raw_assets/
 *.mkv
 *.mov
 assets/icon_candidates/
+
 # 静态图片过滤（仅保留 README 公开展示所需的架构图与演示图，严禁公开小程序内部图标）
 /favicon*.png
 /favicon.ico
@@ -131,16 +126,12 @@ assets/icon_candidates/
 /social_preview.png
 /baidu_verify_*.html
 /BingSiteAuth.xml
-/robots.txt
-/sitemap.xml
-/index.html
-/sandbox.html
-/preview_miniprogram.html
-/wrangler.json
 !assets/**
 assets/mp_icons/
+assets/guides/
 assets/icon_*.png
 assets/app_icon.png
 assets/architecture_flow.svg
 docs/guides/*_for_discussion.md
-
+backups/
+fonts/
