@@ -118,7 +118,8 @@ def parse_single_item_stats(item_raw):
 
     if "暗影战斧" in name: stats["p_pierce_flat"] = 180
     elif "陨星" in name: stats["p_pierce_flat"] = 60
-    elif "碎星锤" in name or "破晓" in name: stats["p_pierce_percent"] = 30
+    elif "碎星锤" in name: stats["p_pierce_percent"] = 30
+    elif "破晓" in name: stats["p_pierce_percent"] = 15
     elif "穿云弓" in name or "拂晓" in name: stats["p_pierce_percent"] = 10
     elif "虚无法杖" in name: stats["m_pierce_percent"] = 45
     elif "秘法之靴" in name: stats["m_pierce_flat"] = 120
