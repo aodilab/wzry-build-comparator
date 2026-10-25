@@ -14,40 +14,23 @@ sys.path.insert(0, ROOT_DIR)
 from config.item_recipes import COMPONENTS_MAP
 
 def get_ground_truth_items(api_items=None):
-    """以用户115张全装备截图(items_ground_truth.json)为唯一权威数据源合并装备字典列表"""
-    if api_items is None:
-        from config.settings import URL_ITEM_LIST
-        from src.core.http import fetch_json
-        api_items = fetch_json(URL_ITEM_LIST) or []
+    """以用户115张全装备截图(items_ground_truth.json)为唯一权威本地数据源，绝不向外网接口爬取"""
     gt_path = os.path.join(ROOT_DIR, "config", "items_ground_truth.json")
     gt_map = {}
     if os.path.exists(gt_path):
         with open(gt_path, "r", encoding="utf-8") as f:
             gt_map = json.load(f)
     merged = []
-    seen = set()
-    for it in api_items:
-        cname = it.get("item_name", "").strip()
-        seen.add(cname)
-        gt = gt_map.get(cname)
-        if gt:
-            it = dict(it)
-            it["total_price"] = gt["total_price"]
-            it["price"] = gt["total_price"]
-            it["des1"] = gt["des1"]
-            it["des2"] = gt["des2"]
-        merged.append(it)
     for cname, gt in gt_map.items():
-        if cname not in seen:
-            merged.append({
-                "item_id": gt.get("item_id") or 9999,
-                "item_name": cname,
-                "item_type": gt.get("item_type", 1),
-                "price": gt["total_price"],
-                "total_price": gt["total_price"],
-                "des1": gt["des1"],
-                "des2": gt["des2"]
-            })
+        merged.append({
+            "item_id": gt.get("item_id") or 9999,
+            "item_name": cname,
+            "item_type": gt.get("item_type", 1),
+            "price": gt["total_price"],
+            "total_price": gt["total_price"],
+            "des1": gt["des1"],
+            "des2": gt["des2"]
+        })
     return merged
 
 BOOTS_SPEED_MAP = {
@@ -76,9 +59,9 @@ def get_raw_item_object(name, equip_map_raw):
     return None
 
 def parse_single_item_stats(item_raw):
-    """全量提取单件装备的属性词缀与被动(100%对齐115张装备截图)"""
+    """全量提取单件装备的基础面板属性词缀(100%严格只从 des1 提取，杜绝 des2 条件被动混入静态面板)"""
     if not item_raw: return {}
-    full_text = re.sub(r'</?[^>]+>', '\n', f"{item_raw.get('des1', '')}\n{item_raw.get('des2', '')}")
+    full_text = re.sub(r'</?[^>]+>', '\n', f"{item_raw.get('des1', '')}")
     lines = [l.strip() for l in full_text.split('\n') if l.strip()]
     name = clean_item_name(item_raw.get("item_name", ""))
     stats = {
@@ -117,10 +100,8 @@ def parse_single_item_stats(item_raw):
         if m: stats["m_lifesteal"] += int(m.group(1))
 
     if "暗影战斧" in name: stats["p_pierce_flat"] = 180
-    elif "陨星" in name: stats["p_pierce_flat"] = 60
     elif "碎星锤" in name: stats["p_pierce_percent"] = 30
     elif "破晓" in name: stats["p_pierce_percent"] = 15
-    elif "穿云弓" in name or "拂晓" in name: stats["p_pierce_percent"] = 10
     elif "虚无法杖" in name: stats["m_pierce_percent"] = 45
     elif "秘法之靴" in name: stats["m_pierce_flat"] = 120
     elif "云灵木" in name: stats["m_pierce_flat"] = 60
@@ -186,13 +167,20 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
     
     total_gold = 0
     boots_counted = False
+    qiege_pen, mboots_pen, yunling_pen = 0, 0, 0
     for name in effective_six:
         item_raw = get_raw_item_object(name, equip_map_raw)
         if item_raw:
             total_gold += item_raw.get("total_price", 0)
         st = parse_single_item_stats(item_raw)
-        for k in ("atk", "ap", "pdef", "mdef", "hp", "mp", "crit", "aspeed", "cdr", "percent_speed", "p_lifesteal", "m_lifesteal", "p_pierce_flat", "m_pierce_flat"):
+        for k in ("atk", "ap", "pdef", "mdef", "hp", "mp", "crit", "aspeed", "cdr", "percent_speed", "p_lifesteal", "m_lifesteal"):
             totals[k] += st.get(k, 0)
+        if st.get("p_pierce_flat", 0) > 0:
+            qiege_pen = max(qiege_pen, st["p_pierce_flat"])
+        if st.get("m_pierce_flat", 0) > 0:
+            if "秘法之靴" in name: mboots_pen = max(mboots_pen, st["m_pierce_flat"])
+            elif "云灵木" in name: yunling_pen = max(yunling_pen, st["m_pierce_flat"])
+            else: totals["m_pierce_flat"] += st["m_pierce_flat"]
         totals["p_pierce_percent"] = max(totals["p_pierce_percent"], st.get("p_pierce_percent", 0))
         totals["m_pierce_percent"] = max(totals["m_pierce_percent"], st.get("m_pierce_percent", 0))
         if st.get("has_hat"): totals["has_hat"] = True
@@ -218,14 +206,14 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
         elif "巡守利斧" in name: totals["hp"] += 450
         elif "游击弯刀" in name: totals["ap"] += 90
 
+    totals["p_pierce_flat"] += qiege_pen
+    totals["m_pierce_flat"] += mboots_pen + yunling_pen
     if "霸者重装" in effective_six: totals["hp"] += int(totals["hp"] * 0.04)
     if "破茧之衣" in effective_six:
         totals["ap"] += min(100, 40 + int(totals["hp"] * 0.02))
         totals["m_pierce_flat"] += min(150, 60 + int(totals["hp"] * 0.03))
     if "噬神之书" in effective_six: totals["cdr"] += int(totals["m_lifesteal"] / 2)
-    if "日暮之流" in effective_six: totals["m_pierce_flat"] += 240
-    if "金色圣剑" in effective_six: totals["aspeed"] += 20
-    if "逐风" in effective_six: totals["aspeed"] += 10; totals["percent_speed"] += 10
+    # 注意：日暮之流(对英雄造成伤害叠层)、金色圣剑(普攻叠2层)、逐风(普攻技能命中叠5层)、影刃(普攻命中触发)均为战斗触发被动，严禁计入常驻静态面板！
 
     final_ap = int(totals["ap"] * 1.3) if totals["has_hat"] else totals["ap"]
     capped_cdr = min(int(totals["cdr"]), 40)

@@ -3,12 +3,11 @@
 王者荣耀五大分路定位与实战出装思路数据库构建器
 按对抗路、打野、中路、发育路、游走五大分路组织出装方案
 严格排除被吞噬的小件，精准计算最终 6 神装净增幅与 15 级终极面板
-100% 对齐 S45 真机实测出装与绑定的官方铭文方案，彻底剔除旧版官网爬虫数据
+100% 对齐本地 S45 真机实测出装、本地装备截图库与绑定的官方铭文方案，绝不向外网爬取
 专为 NotebookLM 与大模型 RAG 设计
 """
 import os
 import sys
-import json
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from config.settings import OUTPUT_DIR, DOC_HERO_BUILDS_NAME, ROLE_MAP
@@ -19,8 +18,7 @@ try:
 except (ImportError, ModuleNotFoundError, Exception):
     OFFICIAL_HERO_BUILDS = {}
 
-from src.core.http import fetch_json
-from src.core.item_calculator import calculate_build_stats
+from src.core.item_calculator import calculate_build_stats, get_ground_truth_items
 
 LANE_MAPPING = {
     "对抗": "对抗路",
@@ -30,16 +28,12 @@ LANE_MAPPING = {
     "游走": "游走"
 }
 
+
 def get_equip_maps():
-    """获取装备映射表"""
-    cache_item = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
-                              ".cache", "json", "a6cd7ea78d2dfc098426715c83bbaadc.json")
-    if os.path.exists(cache_item):
-        with open(cache_item, "r", encoding="utf-8") as f:
-            items = json.load(f)
-    else:
-        items = fetch_json("https://pvp.qq.com/web201605/js/item.json")
+    """从本地权威截图库 items_ground_truth.json 获取装备映射表，绝不向外网爬取"""
+    items = get_ground_truth_items()
     return {item["item_name"]: item for item in items}
+
 
 def build_hero_builds(output_file=None, *args, **kwargs):
     """构建五大分路定位与实战出装思路数据库 (S45 官方基准 SSOT)"""
@@ -61,7 +55,6 @@ def build_hero_builds(output_file=None, *args, **kwargs):
             "role": role_str
         }
 
-    # 按五大分路聚合
     lane_heroes = {
         "对抗路": [],
         "打野": [],
@@ -98,7 +91,6 @@ def build_hero_builds(output_file=None, *args, **kwargs):
                     "schemes": hero_schemes
                 })
 
-    # 生成 Markdown 知识库（公开版脱敏：仅输出战术流派与打法思路，不暴露507套原始六神装底库）
     markdown_content = "# 王者荣耀 S45 赛季（月照长安）五大分路定位与战术流派指南\n\n"
     markdown_content += "> 📌 **分路战术定位基准 (Tactical Framework)**：\n"
     markdown_content += "> - **分路覆盖**：按国服五大实战分路【对抗路、打野、中路、发育路、游走】全景收录 133 位英雄实战职能与战术流派演进。\n"
@@ -135,6 +127,7 @@ def build_hero_builds(output_file=None, *args, **kwargs):
 
     print(f"【成功】五大分路定位与实战出装思路库已生成：'{output_file}'")
     return output_file
+
 
 if __name__ == "__main__":
     build_hero_builds()

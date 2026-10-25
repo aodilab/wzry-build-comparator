@@ -2,46 +2,34 @@
 """
 王者荣耀英雄战术克制与阵容搭档拓扑构建器
 专注 BP 禁选、选人克制与阵容协同：最佳搭档、压制英雄、被压制反制
+100% 锁定本地权威数据集 (config/hero_relations_data.json & config/patches/)，绝不向外网爬取
 专为 NotebookLM 与大模型 RAG 设计
 """
 import os
 import sys
-import re
-from bs4 import BeautifulSoup
-from concurrent.futures import ThreadPoolExecutor, as_completed
+import json
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, ROOT_DIR)
 from config.settings import OUTPUT_DIR, DOC_HERO_RELATIONS_NAME, ROLE_MAP
-try:
-    from config.patches import HERO_RELATIONS_PATCHES
-except (ImportError, ModuleNotFoundError):
-    HERO_RELATIONS_PATCHES = {}
-
-
-from src.core.http import fetch_html
-from src.core.cleaner import clean_plain_text
+from config.patches import HERO_RELATIONS_PATCHES
 from src.core.hero_validator import get_validated_hero_list
 
 
-def format_desc(target_cname, raw_desc):
-    """格式化关系描述，将英雄名字加粗"""
-    if not raw_desc:
-        return f"**{target_cname}**：暂无详细描述。"
-    pattern_cn = rf"^{target_cname}：\s*"
-    pattern_en = rf"^{target_cname}:\s*"
-    if re.match(pattern_cn, raw_desc):
-        return re.sub(pattern_cn, f"**{target_cname}**：", raw_desc)
-    elif re.match(pattern_en, raw_desc):
-        return re.sub(pattern_en, f"**{target_cname}**：", raw_desc)
-    else:
-        return f"**{target_cname}**：{raw_desc}"
+def _load_local_relations_data():
+    json_path = os.path.join(ROOT_DIR, "config", "hero_relations_data.json")
+    if os.path.exists(json_path):
+        with open(json_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {}
 
-def fetch_single_hero_relations(hero, hero_map):
-    """抓取单个英雄的战术配合与克制关系"""
+
+def fetch_single_hero_relations(hero, local_relations_map):
+    """从本地权威数据集中读取单个英雄的战术配合与克制关系，绝不向外网爬取"""
     ename = str(hero.get("ename"))
     cname = hero.get("cname")
     title = hero.get("title", "")
-    
+
     roles = []
     r1 = hero.get("hero_type")
     r2 = hero.get("hero_type2")
@@ -51,89 +39,29 @@ def fetch_single_hero_relations(hero, hero_map):
         roles.append(ROLE_MAP[r2])
     role_str = "/".join(roles) if roles else "战士"
 
-    detail_url = f"https://pvp.qq.com/web201605/herodetail/{ename}.shtml"
-    
-    try:
-        html_text = fetch_html(detail_url, encoding='gbk', retries=2)
-        soup = BeautifulSoup(html_text, 'html.parser')
-        
-        relations = {
-            "最佳搭档": [],
-            "压制英雄": [],
-            "被压制英雄": []
-        }
-        
-        info_box = soup.select_one('.hero-info-box')
-        if info_box:
-            info_divs = info_box.select('.hero-info')
-            relation_types = ["最佳搭档", "压制英雄", "被压制英雄"]
-            
-            for idx, div in enumerate(info_divs):
-                if idx >= len(relation_types):
-                    break
-                rel_type = relation_types[idx]
-                
-                a_tags = div.select('a')
-                p_tags = div.select('p')
-                
-                descs = []
-                for p in p_tags:
-                    p_text = clean_plain_text(p.get_text())
-                    if p_text in ["最佳搭档", "压制英雄", "被压制英雄", "英雄关系"] or not p_text:
-                        continue
-                    descs.append(p_text)
-                
-                for i, a in enumerate(a_tags):
-                    href = a.get('href', '')
-                    match = re.search(r'(\d+)\.shtml', href)
-                    if match:
-                        target_ename = match.group(1)
-                        target_cname = hero_map.get(target_ename, "未知英雄")
-                        raw_desc = descs[i] if i < len(descs) else ""
-                        formatted_rel = format_desc(target_cname, raw_desc)
-                        relations[rel_type].append(formatted_rel)
-                        
-        if not relations["最佳搭档"] and cname in HERO_RELATIONS_PATCHES:
-            relations = HERO_RELATIONS_PATCHES[cname]
-
-        return {
-            "ename": ename,
-            "cname": cname,
-            "title": title,
-            "role": role_str,
-            "relations": relations,
-            "success": True
-        }
-    except Exception as e:
-        if cname in HERO_RELATIONS_PATCHES:
-            return {
-                "ename": ename,
-                "cname": cname,
-                "title": title,
-                "role": role_str,
-                "relations": HERO_RELATIONS_PATCHES[cname],
-                "success": True
-            }
-        return {"ename": ename, "cname": cname, "success": False, "error": str(e)}
+    relations = HERO_RELATIONS_PATCHES.get(cname) or local_relations_map.get(cname) or {
+        "最佳搭档": [],
+        "压制英雄": [],
+        "被压制英雄": []
+    }
+    return {
+        "ename": ename,
+        "cname": cname,
+        "title": title,
+        "role": role_str,
+        "relations": relations,
+        "success": True
+    }
 
 
 def build_hero_relations(output_file=None, max_workers=10):
-    """构建英雄战术克制与阵容搭档拓扑数据库"""
+    """构建英雄战术克制与阵容搭档拓扑数据库 (100% 本地权威数据源)"""
     heroes = get_validated_hero_list()
-    hero_map = {str(h["ename"]): h["cname"] for h in heroes}
-    print(f"开始并发抓取 {len(heroes)} 位国服英雄克制与阵容搭档数据...")
+    local_relations_map = _load_local_relations_data()
+    print(f"开始从本地权威库加载 {len(heroes)} 位国服英雄克制与阵容搭档数据...")
 
-    hero_results = []
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        futures = {executor.submit(fetch_single_hero_relations, hero, hero_map): hero for hero in heroes}
-        for future in as_completed(futures):
-            res = future.result()
-            if res.get("success"):
-                hero_results.append(res)
-            else:
-                print(f"抓取警告: {res['cname']}, 原因: {res.get('error')}")
+    hero_results = [fetch_single_hero_relations(hero, local_relations_map) for hero in heroes]
 
-    # 生成 Markdown
     markdown_content = "# 王者荣耀 S45 赛季（月照长安）英雄战术克制与阵容搭档拓扑库\n\n"
     markdown_content += f"> 本知识库收录王者荣耀 S45 赛季“月照长安”国服全量 {len(hero_results)} 位英雄的克制与协同关系网络（包含第133位新英雄王维及重做英雄），专为 BP 选人决策、阵容搭配与反制分析设计。\n\n"
 
@@ -188,6 +116,7 @@ def build_hero_relations(output_file=None, max_workers=10):
 
     print(f"【成功】英雄战术克制与阵容搭档拓扑库已生成：'{output_file}'")
     return output_file
+
 
 if __name__ == "__main__":
     build_hero_relations()
