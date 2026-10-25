@@ -162,11 +162,12 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
         "crit": 0.0, "aspeed": 0.0, "cdr": 0.0, "percent_speed": 0.0,
         "flat_speed": 0, "p_lifesteal": 0, "m_lifesteal": 0,
         "p_pierce_flat": 0, "p_pierce_percent": 0, "m_pierce_flat": 0, "m_pierce_percent": 0,
-        "has_hat": False
+        "tenacity": 0, "has_hat": False
     }
     
     total_gold = 0
     boots_counted = False
+    tenacity_boots, tenacity_ice = False, False
     qiege_pen, mboots_pen, yunling_pen = 0, 0, 0
     for name in effective_six:
         item_raw = get_raw_item_object(name, equip_map_raw)
@@ -185,8 +186,10 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
         totals["m_pierce_percent"] = max(totals["m_pierce_percent"], st.get("m_pierce_percent", 0))
         if st.get("has_hat"): totals["has_hat"] = True
         if st.get("flat_speed", 0) > 0 and not boots_counted:
-            totals["flat_speed"] = st["flat_speed"]
+            totals["flat_speed"] = st["flat_speed"] + (70 if name == "疾步之靴" else 0)
             boots_counted = True
+        if name == "抵抗之靴": tenacity_boots = True
+        elif name in ("冰霜冲击", "徐行·凛冬", "凛冬"): tenacity_ice = True
 
         is_tier3_sup = any(k in name for k in ["救赎", "奔狼", "形昭", "星泉"])
         if "近卫" in name or "极影" in name:
@@ -206,6 +209,8 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
         elif "巡守利斧" in name: totals["hp"] += 450
         elif "游击弯刀" in name: totals["ap"] += 90
 
+    max_tenacity = 25 if (hero_base_stats and hero_base_stats.get("cname") == "杨戬") else 60
+    totals["tenacity"] = min(max_tenacity, (25 if tenacity_boots else 0) + (10 if tenacity_ice else 0))
     totals["p_pierce_flat"] += qiege_pen
     totals["m_pierce_flat"] += mboots_pen + yunling_pen
     if "霸者重装" in effective_six: totals["hp"] += int(totals["hp"] * 0.04)
