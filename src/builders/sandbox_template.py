@@ -91,10 +91,10 @@ def get_sandbox_html_template() -> str:
 <meta name="twitter:description" content="王者出装箱（wzry.aodilab.com）官方推演平台。收录S45全英雄双轨六神装对照方案VS实战方案伤害对决，靶子防御实时折算净伤害，五级铭文自由混搭。">
 <meta name="twitter:image" content="https://wzry.aodilab.com/social_preview.png">
 <!-- 国内权威统计 (51.la) -->
-<script charset="UTF-8" id="LA_COLLECT" async src="https://sdk.51.la/js-sdk-pro.min.js"></script>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js" onload="if(window.LA&&!window.__laInited){{window.__laInited=true;LA.init({{id:'3RHV2P1v28aZF1yy',ck:'3RHV2P1v28aZF1yy',autoTrack:true}});}}"></script>
 <script>
 {security_js}
-if(window.LA)LA.init({{id:"3RHV2P1v28aZF1yy",ck:"3RHV2P1v28aZF1yy",autoTrack:true}})</script>
+if(window.LA&&!window.__laInited){{window.__laInited=true;LA.init({{id:"3RHV2P1v28aZF1yy",ck:"3RHV2P1v28aZF1yy",autoTrack:true}});}}</script>
 <style>
 {combined_css}
 </style>
