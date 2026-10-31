@@ -16,8 +16,8 @@ from src.core.mechanic_taxonomy import C3_STAGE_RAMP_FACTORS, C5_ACTIVE_WINDOW_W
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 with open(ROOT_DIR / "config" / "hero_skills_data.json", "r", encoding="utf-8") as f:
     HERO_SKILLS_DB = json.load(f)
-with open(ROOT_DIR / "config" / "official_builds_data.json", "r", encoding="utf-8") as f:
-    OFFICIAL_BUILDS_DB = json.load(f)
+_OFF_BUILDS_PATH = ROOT_DIR / "config" / "official_builds_data.json"
+OFFICIAL_BUILDS_DB = json.loads(_OFF_BUILDS_PATH.read_text(encoding="utf-8")) if _OFF_BUILDS_PATH.exists() else {}
 
 SPELLBLADE_ITEMS = {"宗师之力", "冰痕之握", "巫术法杖", "符文大剑"}
 ACTIVE_ITEMS = {"纯净苍穹", "血魔之怒", "冰霜冲击", "不动·天穹", "侵掠·怒魂", "徐行·凛冬"}

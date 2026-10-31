@@ -13,7 +13,10 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 from config.settings import OUTPUT_DIR, DOC_ARCANA_NAME, ROLE_MAP
 from config.hero_registry import CN_HERO_MANIFEST
 from config.hero_arcana_data import ARCANA_LEVEL_5_DICT
-from config.hero_official_builds import OFFICIAL_HERO_BUILDS
+try:
+    from config.hero_official_builds import OFFICIAL_HERO_BUILDS
+except (ImportError, ModuleNotFoundError, Exception):
+    OFFICIAL_HERO_BUILDS = {}
 from src.core.item_calculator import RAW_TO_COMMON_MAP, get_ground_truth_items
 
 # 属性中文字典映射 (100%对齐五级铭文截图原词)

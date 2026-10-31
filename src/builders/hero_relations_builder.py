@@ -12,7 +12,10 @@ import json
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, ROOT_DIR)
 from config.settings import OUTPUT_DIR, DOC_HERO_RELATIONS_NAME, ROLE_MAP
-from config.patches import HERO_RELATIONS_PATCHES
+try:
+    from config.patches import HERO_RELATIONS_PATCHES
+except ImportError:
+    HERO_RELATIONS_PATCHES = {}
 from src.core.hero_validator import get_validated_hero_list
 
 
