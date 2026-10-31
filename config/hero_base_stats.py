@@ -37,6 +37,7 @@ HERO_SPECIAL_STATS = {
     169: {"cname": "后羿", "hp": (3182, 5986), "atk": (175, 375), "pdef": (86, 336), "mdef": (50, 169), "speed": 360, "aspeed": "+3.0%"},
     173: {"cname": "李元芳", "hp": (3007, 5725), "atk": (171, 371), "pdef": (87, 340), "mdef": (50, 169), "speed": 370, "aspeed": "+2.0%"},
     175: {"cname": "钟馗", "hp": (3426, 8025), "atk": (162, 312), "pdef": (105, 412), "mdef": (50, 169), "speed": 370, "aspeed": "+1.0%"},
+    178: {"cname": "杨戬", "hp": (3339, 7420), "atk": (166, 381), "pdef": (98, 412), "mdef": (50, 169), "speed": 380, "aspeed": "+2.0%"},
     190: {"cname": "诸葛亮", "hp": (3135, 6140), "atk": (156, 287), "pdef": (87, 332), "mdef": (50, 169), "speed": 360, "aspeed": "+1.0%"},
     196: {"cname": "百里守约", "hp": (3019, 5611), "atk": (188, 411), "pdef": (94, 329), "mdef": (50, 169), "speed": 360, "aspeed": "+3.0%"},
     199: {"cname": "公孙离", "hp": (3096, 5669), "atk": (173, 358), "pdef": (89, 335), "mdef": (50, 169), "speed": 370, "aspeed": "+3.0%"},
@@ -61,6 +62,9 @@ def get_hero_base_stats(ename, cname, role_str="战士"):
     eid = int(ename) if str(ename).isdigit() else 0
     if eid in HERO_SPECIAL_STATS and HERO_SPECIAL_STATS[eid].get("cname") == cname:
         return HERO_SPECIAL_STATS[eid]
+    for v in HERO_SPECIAL_STATS.values():
+        if v.get("cname") == cname:
+            return v
 
     # 根据主职业取基准模板
     main_role = role_str.split("/")[0] if role_str else "战士"

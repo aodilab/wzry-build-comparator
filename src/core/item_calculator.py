@@ -136,7 +136,7 @@ def diagnose_passive_conflicts(effective_six):
     """自动诊断同名唯一被动、主动装备按键与打野刀技能绑定"""
     conflicts = []
     # 强击
-    qiangji_items = [i for i in effective_six if i in ["宗师之力", "冰痕之握", "巫术法杖", "光辉之剑"]]
+    qiangji_items = [i for i in effective_six if i in ["宗师之力", "冰痕之握", "巫术法杖", "符文大剑"]]
     if len(qiangji_items) > 1:
         conflicts.append(f"【唯一被动-强击】冲突：同时装备了 {', '.join(qiangji_items)}，仅生效其中一件！")
     # 神速双鞋

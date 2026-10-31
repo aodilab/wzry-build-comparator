@@ -1,10 +1,10 @@
 # 王者出装箱 ｜ 王者荣耀出装对比系统与底层战术知识库
 
 <p align="left">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Release-v1.3.1-0071e3.svg" alt="Release"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Release-v1.3.4-0071e3.svg" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-34c759.svg" alt="License"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Web%20App-Online-0071e3.svg" alt="Web App"></a>
-  <a href="#"><img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.3.1-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序"></a>
+  <a href="#"><img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.3.4-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序"></a>
   <a href="https://github.com/aodilab/wzry-build-comparator/releases/tag/v1.2.0"><img src="https://img.shields.io/badge/Demo%20Video-50s-ff3b30.svg?logo=youtube&logoColor=white" alt="Demo Video"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Heroes-133-ff9500.svg" alt="Heroes"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Official%20Builds-505-ff2d55.svg" alt="Official Builds"></a>
@@ -12,15 +12,15 @@
 </p>
 
 - 🖥️ **电脑大屏端**：[王者出装箱在线推演平台 (wzry.aodilab.com)](https://wzry.aodilab.com)（双轨横向对比、双靶抗性打靶、实战精研社专栏、方案导出）
-- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（v1.3.1 全量同步，对局选人秒查，即开即用）
+- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（v1.3.4 全量同步，对局选人秒查，即开即用）
 - 🎬 **真机实操演示**：[前往 Release v1.2.0 获取完整真机实操演示视频 (50s 竖屏超清) »](https://github.com/aodilab/wzry-build-comparator/releases/tag/v1.2.0)
 - 📚 **开源算法库**：王者荣耀底层物理算分引擎与 6 卷战术知识库
 
 > [!NOTE]
-> **📢 最新版本更新公告 [v1.3.1] (2026-10-25)**  
-> 1. **分时期动态护甲、敌方穿透与重伤（`-35%`）实战推演升级**：全面引入随出装经济阶段（`stageRatio`）动态演进的敌方中射靶（神装 `430物防 / 250法防`）与前排坦克靶（神装 `1180物防 / 600法防`），新增计入敌方 `暗影战斧/破晓/虚无法杖` 穿透与 `梦魇/制裁` 重伤折算后的 **「受重伤极限回复」**、**「实战物理/法术抗伤上限（EHP）」** 及 **`面板免伤% / 挨穿免伤%`** 直观对比；  
-> 2. **英雄专属机制精算与 S45 装备韧性/移速校准**：实装杨戬【法天象地】变身 `+600` 血量、1 技能 `15%` 已损生命斩杀、2 技能真实伤害、3 技能穿兵群扫回血及专属 `25%` 常驻韧性上限；全端新增「韧性」面板属性（抵抗之靴 `+25%`、冰霜冲击/凛冬 `+10%`），并校准【疾步之靴】15 级脱战 `+140` 移速与【永夜守护】`10%` 最大生命回复；  
-> 3. **「实战精研社」独立专栏与三端 100% 镜像同步**：Web 端、预览沙盒与微信小程序端计算引擎、二级技能拆解弹窗及方案切换交互 1:1 零误差同步。
+> **📢 最新版本更新公告 [v1.3.4] (2026-10-31)**  
+> 1. **线性攻速折算体系校准与全职业普攻频次下钻**：全面对齐 S30+ 连续线性攻速折算机制（摒弃已废除的旧版普攻离散“攻速阈值档位”概念，每 `1%` 攻速连续线性缩短普攻前后摇），并为全职业二级「技能物理拆解」弹窗的普攻卡片补全实时 **`实际普攻频次（线性攻速折算）`** 对比行；  
+> 2. **S45 英雄与装备底层机制精校**：精准还原赵云 2 技能 5 段递减（`4.2` 倍首枪）+ 大招 5 段感电触发 + 血魔跨档刷 1 技能与白盾转真血、杨戬变身 `+600` 实战生命与 `0.5s→1.0s` 眩晕、吕布未附魔 `35%` 物穿与附魔回血、典韦/铠/曹操实战增益，并彻底清理退环境小件「光辉之剑」残留；  
+> 3. **「实战精研社」双英雄五套神装矩阵与三端 100% 镜像同步**：新增杨戬与赵云 S45 五套主流六神装、1~12 格小件平滑合成路线及小程序首页横滑轮播，Web 端、预览沙盒与微信小程序端 1:1 零误差同步。
 > 完整修复明细与技术解析请参阅 ➔ [**CHANGELOG.md (版本演化日志)**](CHANGELOG.md)。
 
 ---
@@ -111,8 +111,8 @@
 
 本项目基于底层实战推演引擎，提供全期节点打靶与多流派对决示范分析：
 
-- 🏹 **[【S45 赵云打野出装详解】S44改版机制、12格合成路线与五套神装拆解](docs/guides/zhaoyun_jungle_guide.md)**  
-  *深入拆解：S44改版三档位档差与空血反杀逻辑、12格背包陨星/光辉之剑双过渡路线、五套主流神装面板伤害对比，以及【杨戬打野出装详解（法天象地韧性上限与五套神装拆解）](docs/guides/yangjian_jungle_guide.md)。*
+- 🏹 **[【赵云打野出装详解】被动三档位机制、12格合成路线与五套神装拆解](docs/guides/zhaoyun_jungle_guide.md)**  
+  *深入拆解：被动三档位免伤与白盾转真血逻辑、12格平滑过渡合成路线、五套主流神装面板伤害对比，以及【杨戬打野与对抗路出装详解（法天象地韧性上限与五套神装拆解）](docs/guides/yangjian_jungle_guide.md)。*
 
 ---
 

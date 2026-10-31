@@ -19,7 +19,7 @@ with open(ROOT_DIR / "config" / "hero_skills_data.json", "r", encoding="utf-8") 
 with open(ROOT_DIR / "config" / "official_builds_data.json", "r", encoding="utf-8") as f:
     OFFICIAL_BUILDS_DB = json.load(f)
 
-SPELLBLADE_ITEMS = {"宗师之力", "冰痕之握", "巫术法杖", "光辉之剑", "符文大剑"}
+SPELLBLADE_ITEMS = {"宗师之力", "冰痕之握", "巫术法杖", "符文大剑"}
 ACTIVE_ITEMS = {"纯净苍穹", "血魔之怒", "冰霜冲击", "不动·天穹", "侵掠·怒魂", "徐行·凛冬"}
 
 
@@ -53,16 +53,11 @@ def evaluate_hero_build_at_stage(
     base_cfg = get_hero_base_stats(0, hero_cname) or {}
     r = max(0.0, min(1.0, (lv - 1) / 14.0))
 
-    hp0, hp15 = base_cfg.get("hp", (3225, 7035))
-    atk0, atk15 = base_cfg.get("atk", (176, 386))
-    pdef0, pdef15 = base_cfg.get("pdef", (102, 396))
-    mdef0, mdef15 = base_cfg.get("mdef", (50, 169))
+    hp0, hp15 = base_cfg.get("hp", (3225, 7035)); atk0, atk15 = base_cfg.get("atk", (176, 386))
+    pdef0, pdef15 = base_cfg.get("pdef", (102, 396)); mdef0, mdef15 = base_cfg.get("mdef", (50, 169))
     base_speed = base_cfg.get("speed", 380)
-
-    b_hp = round(hp0 + (hp15 - hp0) * r)
-    b_atk = round(atk0 + (atk15 - atk0) * r)
-    b_pdef = round(pdef0 + (pdef15 - pdef0) * r)
-    b_mdef = round(mdef0 + (mdef15 - mdef0) * r)
+    b_hp, b_atk = round(hp0 + (hp15 - hp0) * r), round(atk0 + (atk15 - atk0) * r)
+    b_pdef, b_mdef = round(pdef0 + (pdef15 - pdef0) * r), round(mdef0 + (mdef15 - mdef0) * r)
 
     bonus_atk, bonus_hp, bonus_pdef, bonus_mdef, bonus_ap = arc["atk"], arc["hp"], arc["pdef"], arc["mdef"], arc["ap"]
     cd_raw, speed_pct, combat_speed_pct, speed_flat, ooc_speed_flat = arc["cd"], arc["speed_pct"], 0.0, 0.0, 0.0
@@ -90,29 +85,16 @@ def evaluate_hero_build_at_stage(
         item_m_pen_flat += prof.get("m_pen_flat", 0.0); m_pen_pct = max(m_pen_pct, prof.get("m_pen_pct", 0.0))
         dmg_amp += prof["dmg_amp"]; pojun_amp = max(pojun_amp, prof["pojun_amp"])
         passive_dr = min(0.45, passive_dr + prof["passive_dr"]); active_dr = max(active_dr, prof["active_dr"])
-        heal_amp = max(heal_amp, prof["heal_amp"])
-        jg_burn_target_hp_ratio = max(jg_burn_target_hp_ratio, prof.get("jg_burn_target_hp_ratio", 0.0))
-        nulong_max_hp_ratio = max(nulong_max_hp_ratio, prof["nulong_max_hp_ratio"])
-        nulong_heal_max_hp = max(nulong_heal_max_hp, prof["nulong_heal_max_hp"])
-        wave_clear_score += prof["wave_clear_score"]
-        monv_shield = max(monv_shield, prof["monv_shield"]); monv_hp_ratio = max(monv_hp_ratio, prof["monv_hp_ratio"])
-        monv_mdef_to_pdef = max(monv_mdef_to_pdef, prof["monv_mdef_to_pdef"])
-        yongye_base += prof["yongye_heal_base"]; yongye_ratio += prof["yongye_hp_ratio"]
-        xuemo_ratio = max(xuemo_ratio, prof["xuemo_hp_ratio"])
-        on_hit_phys += prof["on_hit_phys"]; on_hit_max_hp_ratio = max(on_hit_max_hp_ratio, prof["on_hit_max_hp_ratio"])
-        on_hit_magic += prof.get("on_hit_magic", 0.0)
-        proc_phys_base += prof.get("proc_phys_base", 0.0); proc_phys_bonus_ad += prof.get("proc_phys_bonus_ad", 0.0)
-        proc_magic_base += prof.get("proc_magic_base", 0.0); proc_magic_hp_ratio += prof.get("proc_magic_hp_ratio", 0.0)
-        shield_base += prof.get("shield_base", 0.0); shield_hp_ratio += prof.get("shield_hp_ratio", 0.0)
-        if prof["has_mingdao"]: has_mingdao = True
-        if prof["has_bazhe"]: has_bazhe = True
-        if prof["has_pomo"]: has_pomo = True
-        if prof["has_hat"]: has_hat = True
-        if prof["has_prophecy"]: has_prophecy = True
-        if prof["has_cocoon"]: has_cocoon = True
-        if prof.get("has_sage_book"): has_sage_book = True
-        if raw_name == "冰痕之握": has_ice = True
-        if raw_name in ("冰霜冲击", "徐行·凛冬"): has_frost_shock = True
+        heal_amp = max(heal_amp, prof["heal_amp"]); jg_burn_target_hp_ratio = max(jg_burn_target_hp_ratio, prof.get("jg_burn_target_hp_ratio", 0.0))
+        nulong_max_hp_ratio = max(nulong_max_hp_ratio, prof["nulong_max_hp_ratio"]); nulong_heal_max_hp = max(nulong_heal_max_hp, prof["nulong_heal_max_hp"])
+        wave_clear_score += prof["wave_clear_score"]; monv_shield = max(monv_shield, prof["monv_shield"]); monv_hp_ratio = max(monv_hp_ratio, prof["monv_hp_ratio"])
+        monv_mdef_to_pdef = max(monv_mdef_to_pdef, prof["monv_mdef_to_pdef"]); yongye_base += prof["yongye_heal_base"]; yongye_ratio += prof["yongye_hp_ratio"]
+        xuemo_ratio = max(xuemo_ratio, prof["xuemo_hp_ratio"]); on_hit_phys += prof["on_hit_phys"]; on_hit_max_hp_ratio = max(on_hit_max_hp_ratio, prof["on_hit_max_hp_ratio"])
+        on_hit_magic += prof.get("on_hit_magic", 0.0); proc_phys_base += prof.get("proc_phys_base", 0.0); proc_phys_bonus_ad += prof.get("proc_phys_bonus_ad", 0.0)
+        proc_magic_base += prof.get("proc_magic_base", 0.0); proc_magic_hp_ratio += prof.get("proc_magic_hp_ratio", 0.0); shield_base += prof.get("shield_base", 0.0); shield_hp_ratio += prof.get("shield_hp_ratio", 0.0)
+        has_mingdao |= bool(prof["has_mingdao"]); has_bazhe |= bool(prof["has_bazhe"]); has_pomo |= bool(prof["has_pomo"])
+        has_hat |= bool(prof["has_hat"]); has_prophecy |= bool(prof["has_prophecy"]); has_cocoon |= bool(prof["has_cocoon"]); has_sage_book |= bool(prof.get("has_sage_book"))
+        has_ice |= (raw_name == "冰痕之握"); has_frost_shock |= (raw_name in ("冰霜冲击", "徐行·凛冬"))
         if prof["spellblade"]:
             if not best_spellblade or sb_rank.get(prof["spellblade"][0], 0) > sb_rank.get(best_spellblade[0], 0):
                 best_spellblade = prof["spellblade"]
@@ -140,10 +122,7 @@ def evaluate_hero_build_at_stage(
     cd_eff = min(40.0, cd_raw); cd_blue = min(40.0, cd_raw + 20.0)
     roam_speed = round((base_speed + speed_flat + 0.5 * ooc_speed_flat) * (1.0 + speed_pct / 100.0))
     combat_speed = round((base_speed + speed_flat) * (1.0 + (speed_pct + 0.75 * combat_speed_pct) / 100.0))
-    move_speed = roam_speed
-
-    s1_r = min(1.0, max(0.0, (lv - 1) / 8.0))
-    s2_r = min(1.0, max(0.0, (lv - 2) / 10.0))
+    s1_r, s2_r = min(1.0, max(0.0, (lv - 1) / 8.0)), min(1.0, max(0.0, (lv - 2) / 10.0))
     s3_lv = 3 if lv >= 12 else (2 if lv >= 8 else (1 if lv >= 4 else 0))
     s3_r = (s3_lv - 1) / 2.0 if s3_lv > 0 else 0.0
 
@@ -229,34 +208,24 @@ def evaluate_hero_build_at_stage(
     eff_heal_amp = max(heal_amp, missing_ten_blocks * 0.065) if heal_amp > 0 else 0.0
     anti_heal_mult = max(0.30, 1.0 - 0.35 * r + eff_heal_amp)
     heal_per_proc = round(((hb0 + (hb1 - hb0) * heal_skill_r) + model["passive_heal_bonus_hp"] * bonus_hp) * anti_heal_mult)
-    # 怒龙剑盾被动【重创】仅对兵线/野怪回血，对敌方英雄触发【神力】0回血；英雄团战按波及兵野0.25次期望折算
+    # 怒龙剑盾被动【重创】仅对兵线/野怪回血，英雄团战按波及兵野0.25次期望折算
     nulong_heal_total = 0.25 * (combat_max_hp * nulong_heal_max_hp) * (1.0 + eff_heal_amp)
     yongye_heal_total = (yongye_base + combat_max_hp * yongye_ratio) * (1.0 + eff_heal_amp) if (yongye_base > 0 or yongye_ratio > 0) else 0.0
     total_fight_heal = round(model["heal_procs_per_fight"] * heal_per_proc + nulong_heal_total + yongye_heal_total + 4.0 * on_hit_heal * (1.0 + eff_heal_amp))
-
     star_tuple = model.get("star_shatter_by_ult", (0.0, 0.0, 0.0, 0.0))
     alpha = star_tuple[s3_lv] if s3_lv < len(star_tuple) else 0.0
     star_mult = 1.0 / (1.0 - 0.65 * alpha) if alpha > 0 else 1.0
-    eff_self_pdef = max(0.0, (total_pdef - 240.0 * r) * (1.0 - 0.30 * r))
-    eff_self_mdef = max(0.0, (total_mdef - 150.0 * r) * (1.0 - 0.45 * r))
-    p_mit_factor = 0.88 * (1.0 + eff_self_pdef / 602.0) + 0.12
-    m_mit_factor = 0.88 * (1.0 + eff_self_mdef / 602.0) + 0.12
+    eff_self_pdef, eff_self_mdef = max(0.0, (total_pdef - 240.0 * r) * (1.0 - 0.30 * r)), max(0.0, (total_mdef - 150.0 * r) * (1.0 - 0.45 * r))
+    p_mit_factor, m_mit_factor = 0.88 * (1.0 + eff_self_pdef / 602.0) + 0.12, 0.88 * (1.0 + eff_self_mdef / 602.0) + 0.12
     mag_shield = (monv_shield + bonus_hp * monv_hp_ratio) if monv_shield > 0 else 0.0
     item_shield = shield_base + combat_max_hp * shield_hp_ratio
     eff_eq_ten = min(raw_eq_ten, model.get("equip_tenacity_cap", 0.60))
     innate_w = model.get("tenacity_synergy_mult", 0.45 if model.get("innate_tenacity", 0.0) >= 0.50 else 1.0)
-    if model.get("requires_tenacity_boots") and eff_eq_ten < 0.10:
-        tenacity_bonus = 0.91
-    else:
-        tenacity_bonus = 1.0 + eff_eq_ten * 0.22 * innate_w + slow_resist * 0.015
+    tenacity_bonus = 0.91 if (model.get("requires_tenacity_boots") and eff_eq_ten < 0.10) else (1.0 + eff_eq_ten * 0.22 * innate_w + slow_resist * 0.015)
 
     eff_m_with_shield = m_mit_factor * (1.0 + (0.45 * mag_shield) / max(1.0, total_hp))
-    arith_mit = 0.62 * p_mit_factor + 0.38 * eff_m_with_shield
-    harm_mit = 1.0 / (0.62 / p_mit_factor + 0.38 / eff_m_with_shield)
-    balanced_mit = 0.68 * arith_mit + 0.32 * harm_mit
-
-    dr_normal = 1.0 / (1.0 - 0.70 * passive_dr)
-    shield_perm = total_hp * model.get("extra_shield_hp_ratio", 0.0)
+    arith_mit, harm_mit = 0.62 * p_mit_factor + 0.38 * eff_m_with_shield, 1.0 / (0.62 / p_mit_factor + 0.38 / eff_m_with_shield)
+    balanced_mit, dr_normal, shield_perm = 0.68 * arith_mit + 0.32 * harm_mit, 1.0 / (1.0 - 0.70 * passive_dr), total_hp * model.get("extra_shield_hp_ratio", 0.0)
     hp_normal = total_hp + total_fight_heal * 0.85 + model.get("combat_flat_hp_bonus", 0.0) + shield_perm + item_shield * 0.70
     ehp_normal_downtime = round(hp_normal * balanced_mit * star_mult * dr_normal * tenacity_bonus)
 
@@ -274,13 +243,9 @@ def evaluate_hero_build_at_stage(
     entry_burst_ehp = round(peak_raw_hp * balanced_mit * star_mult * dr_peak * (1.12 if has_mingdao else 1.0) * tenacity_bonus)
 
     mixed_ehp = round(0.42 * ehp_normal_downtime + 0.25 * ehp_special_crisis + 0.33 * entry_burst_ehp)
-    phys_ehp = round(mixed_ehp * (p_mit_factor / arith_mit))
-    mag_ehp = round(mixed_ehp * (eff_m_with_shield / arith_mit))
-
-    mob_score = model.get("mobility_score", 0.70)
-    speed_bonus_weight = (1.0 - mob_score) * 0.14
-    eff_speed_for_tempo = 0.65 * roam_speed + 0.35 * combat_speed
-    tempo_mult = (1.0 + min(0.10, wave_clear_score)) * (1.0 + speed_bonus_weight * max(0.0, (eff_speed_for_tempo - 470.0) / 100.0))
+    phys_ehp, mag_ehp = round(mixed_ehp * (p_mit_factor / arith_mit)), round(mixed_ehp * (eff_m_with_shield / arith_mit))
+    mob_score, eff_speed_for_tempo = model.get("mobility_score", 0.70), 0.65 * roam_speed + 0.35 * combat_speed
+    tempo_mult = (1.0 + min(0.10, wave_clear_score)) * (1.0 + (1.0 - mob_score) * 0.14 * max(0.0, (eff_speed_for_tempo - 470.0) / 100.0))
     if model.get("needs_red_jg_early_tempo") and any(k in item_names for k in ("巡守利斧", "巨人之握")) and not any("黄盾" in k or "怒龙剑盾" in k for k in item_names):
         tempo_mult *= 0.94
 
@@ -328,7 +293,7 @@ def evaluate_hero_build_at_stage(
         "items": item_names, "lane": lane, "role_profile": state_eval["role_profile"], "price": total_price, "max_gap": max_gap,
         "total_atk": round(total_atk), "bonus_atk": round(bonus_atk), "total_hp": round(total_hp), "bonus_hp": round(bonus_hp),
         "total_pdef": round(total_pdef), "total_mdef": round(total_mdef), "cd_raw": round(cd_raw, 1), "cd_eff": round(cd_eff, 1),
-        "cd_blue": round(cd_blue, 1), "pen_flat": round(pen_flat, 1), "pen_pct": round(pen_pct, 1), "move_speed": move_speed,
+        "cd_blue": round(cd_blue, 1), "pen_flat": round(pen_flat, 1), "pen_pct": round(pen_pct, 1), "move_speed": roam_speed,
         "combat_speed": combat_speed, "s1_cd": s1_cd, "s2_cd": s2_cd, "s3_cd": s3_cd, "heal_per_proc": heal_per_proc,
         "total_fight_heal": total_fight_heal, "ehp_normal_downtime": ehp_normal_downtime, "ehp_special_crisis": ehp_special_crisis,
         "entry_burst_ehp": entry_burst_ehp, "phys_ehp": phys_ehp, "mag_ehp": mag_ehp, "mixed_ehp": mixed_ehp,
@@ -349,27 +314,27 @@ def optimize_hero_lifecycle(hero_cname: str, is_jungle: bool = True) -> dict:
     lane_key = "打野" if is_jungle else "对抗"
 
     if is_jungle:
-        early_paths = [("红刀+抵抗鞋+陨星+铁剑", ["追击刀锋", "抵抗之靴", "陨星", "铁剑"], 6, 8), ("红刀+冷静鞋+陨星+铁剑", ["追击刀锋", "冷静之靴", "陨星", "铁剑"], 6, 8), ("红刀+影忍足+陨星+铁剑", ["追击刀锋", "影忍之足", "陨星", "铁剑"], 6, 8), ("肉刀+抵抗鞋+陨星+铁剑", ["巡守利斧", "抵抗之靴", "陨星", "铁剑"], 6, 8), ("红刀+抵抗鞋+暗影战斧", ["追击刀锋", "抵抗之靴", "暗影战斧"], 7, 10)]
+        early_paths = [(f"红刀+{b[:2]}鞋+陨星+铁剑", ["追击刀锋", b, "陨星", "铁剑"], 6, 8) for b in ("抵抗之靴", "冷静之靴", "影忍之足")] + [("肉刀+抵抗鞋+陨星+铁剑", ["巡守利斧", "抵抗之靴", "陨星", "铁剑"], 6, 8), ("红刀+抵抗鞋+暗影战斧", ["追击刀锋", "抵抗之靴", "暗影战斧"], 7, 10)]
         base3 = ["追击刀锋", boots_list[0], "暗影战斧"]
     else:
-        early_paths = [("冷静鞋+陨星+荆棘护手", ["冷静之靴", "陨星", "荆棘护手"], 6, 0), ("影忍足+陨星+荆棘护手", ["影忍之足", "陨星", "荆棘护手"], 6, 0), ("抵抗鞋+陨星+日冕", ["抵抗之靴", "陨星", "日冕"], 6, 0), ("冷静鞋+暗影战斧+荆棘护手", ["冷静之靴", "暗影战斧", "荆棘护手"], 7, 0), ("抵抗鞋+暗影战斧+荆棘护手", ["抵抗之靴", "暗影战斧", "荆棘护手"], 7, 0)]
+        early_paths = [("冷静鞋+陨星+荆棘护手", ["冷静之靴", "陨星", "荆棘护手"], 6, 0), ("影忍足+陨星+荆棘护手", ["影忍之足", "陨星", "荆棘护手"], 6, 0), ("抵抗鞋+陨星+日冕", ["抵抗之靴", "陨星", "日冕"], 6, 0)] + [(f"{b[:2]}鞋+暗影战斧+荆棘护手", [b, "暗影战斧", "荆棘护手"], 7, 0) for b in ("冷静之靴", "抵抗之靴")]
         base3 = [boots_list[0], "暗影战斧"]
 
-    stage1_early = [{**evaluate_hero_build_at_stage(hero_cname, it, lv=lv, jg_stacks=st, lane=lane_key), "label": lb} for lb, it, lv, st in early_paths]
+    eval_fn = lambda it, lv, st: evaluate_hero_build_at_stage(hero_cname, it, lv=lv, jg_stacks=st, lane=lane_key)
+    stage1_early = [{**eval_fn(it, lv, st), "label": lb} for lb, it, lv, st in early_paths]
     mid_candidates = ["冰痕之握", "暴烈之甲", "纯净苍穹", "宗师之力", "强者破军", "怒龙剑盾", "碎星锤", "不死鸟之眼", "血魔之怒", "冰霜冲击"]
-    stage2_mid4 = [{**evaluate_hero_build_at_stage(hero_cname, base3 + [m4], lv=10, jg_stacks=16 if is_jungle else 0, lane=lane_key), "label": f"单核:{m4}"} for m4 in mid_candidates]
+    stage2_mid4 = [{**eval_fn(base3 + [m4], 10, 16 if is_jungle else 0), "label": f"单核:{m4}"} for m4 in mid_candidates]
     mid5_pairs = [("怒龙剑盾", "不死鸟之眼"), ("冰痕之握", "怒龙剑盾"), ("怒龙剑盾", "血魔之怒"), ("冰痕之握", "纯净苍穹"), ("暴烈之甲", "纯净苍穹"), ("冰痕之握", "暴烈之甲"), ("纯净苍穹", "不死鸟之眼"), ("纯净苍穹", "怒龙剑盾")]
-    stage2_mid5 = [{**evaluate_hero_build_at_stage(hero_cname, base3 + [a, b], lv=12, jg_stacks=20 if is_jungle else 0, lane=lane_key), "label": f"双核:{a}+{b}"} for a, b in mid5_pairs]
+    stage2_mid5 = [{**eval_fn(base3 + [a, b], 12, 20 if is_jungle else 0), "label": f"双核:{a}+{b}"} for a, b in mid5_pairs]
 
     pool_18 = ["暗影战斧", "宗师之力", "冰痕之握", "暴烈之甲", "纯净苍穹", "强者破军", "碎星锤", "怒龙剑盾", "血魔之怒", "冰霜冲击", "霸者重装", "名刀·司命", "魔女斗篷", "永夜守护", "不死鸟之眼", "反伤刺甲", "不祥征兆", "极寒风暴"]
-    all_late = []
-    for jg in (["贪婪之噬", "巨人之握"] if is_jungle else [None]):
-        for boot in boots_list:
-            for combo in itertools.combinations(pool_18, 4 if is_jungle else 5):
-                if len(SPELLBLADE_ITEMS.intersection(combo)) > 1 or len(ACTIVE_ITEMS.intersection(combo)) > 1:
-                    continue
-                prefix = [jg, boot] if jg else [boot]
-                all_late.append(evaluate_hero_build_at_stage(hero_cname, prefix + list(combo), lv=15, jg_stacks=25 if is_jungle else 0, lane=lane_key))
+    all_late = [
+        eval_fn(([jg, boot] if jg else [boot]) + list(combo), 15, 25 if is_jungle else 0)
+        for jg in (["贪婪之噬", "巨人之握"] if is_jungle else [None])
+        for boot in boots_list
+        for combo in itertools.combinations(pool_18, 4 if is_jungle else 5)
+        if len(SPELLBLADE_ITEMS.intersection(combo)) <= 1 and len(ACTIVE_ITEMS.intersection(combo)) <= 1
+    ]
 
     for res in all_late:
         s = res["sub_scores"]
@@ -378,32 +343,27 @@ def optimize_hero_lifecycle(hero_cname: str, is_jungle: bool = True) -> dict:
         res["score_behind"] = round(0.42 * s["surv_3state"] + 0.22 * s["burst_kill"] + 0.16 * s["cd_nb"] + 0.12 * s["econ_sustain"] + 0.08 * s["stickiness_cc"], 2)
         res["score_antitank"] = round(0.40 * s["econ_sustain"] + 0.28 * s["burst_kill"] + 0.20 * s["surv_3state"] + 0.12 * s["cd_nb"], 2)
 
-    official_audit = []
-    for b in OFFICIAL_BUILDS_DB.get(hero_cname, {}).get("lanes", {}).get(lane_key, []):
-        official_audit.append({**evaluate_hero_build_at_stage(hero_cname, b.get("items", []), lv=15, jg_stacks=25 if is_jungle else 0, lane=lane_key), "label": f"官方-{b.get('title', '')}"})
-    for v_label, v_items in model.get("viral_builds_jg" if is_jungle else "viral_builds_lane", []):
-        official_audit.append({**evaluate_hero_build_at_stage(hero_cname, v_items, lv=15, jg_stacks=25 if is_jungle else 0, lane=lane_key), "label": v_label})
+    official_audit = [{**eval_fn(b.get("items", []), 15, 25 if is_jungle else 0), "label": f"官方-{b.get('title', '')}"} for b in OFFICIAL_BUILDS_DB.get(hero_cname, {}).get("lanes", {}).get(lane_key, [])]
+    official_audit += [{**eval_fn(vi, 15, 25 if is_jungle else 0), "label": vl} for vl, vi in model.get("viral_builds_jg" if is_jungle else "viral_builds_lane", [])]
+    top5 = lambda k: sorted(all_late, key=lambda x: x[k], reverse=True)[:5]
 
     return {
         "hero": hero_cname, "lane": lane_key, "total_combinations_searched": len(all_late), "hero_positioning": analyze_hero_positioning_and_power_curve(hero_cname),
         "stage1_early": stage1_early, "stage2_mid4": sorted(stage2_mid4, key=lambda x: x["score_no_blue"], reverse=True), "stage2_mid5": sorted(stage2_mid5, key=lambda x: x["score_no_blue"], reverse=True),
-        "pareto_balanced": sorted(all_late, key=lambda x: x["score_no_blue"], reverse=True)[:5], "pareto_with_blue": sorted(all_late, key=lambda x: x["score_with_blue"], reverse=True)[:5],
-        "pareto_snowball": sorted(all_late, key=lambda x: x["score_snowball"], reverse=True)[:5], "pareto_behind": sorted(all_late, key=lambda x: x["score_behind"], reverse=True)[:5],
-        "pareto_antitank": sorted(all_late, key=lambda x: x["score_antitank"], reverse=True)[:5], "official_audit": official_audit,
+        "pareto_balanced": top5("score_no_blue"), "pareto_with_blue": top5("score_with_blue"), "pareto_snowball": top5("score_snowball"), "pareto_behind": top5("score_behind"), "pareto_antitank": top5("score_antitank"), "official_audit": official_audit,
     }
 
 
 if __name__ == "__main__":
     if hasattr(sys.stdout, "reconfigure"): sys.stdout.reconfigure(encoding="utf-8")
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--hero", type=str, default="赵云"); parser.add_argument("--lane", type=str, default="打野", choices=["打野", "对抗"])
-    args = parser.parse_args()
-    report = optimize_hero_lifecycle(args.hero, is_jungle=(args.lane == "打野"))
-    print(f"=== [{args.hero}·{args.lane}] 全周期推演完成 ({report['pareto_balanced'][0]['role_profile']}) ===")
+    p = argparse.ArgumentParser()
+    p.add_argument("--hero", default="赵云"); p.add_argument("--lane", default="打野", choices=["打野", "对抗"])
+    a = p.parse_args()
+    rep = optimize_hero_lifecycle(a.hero, is_jungle=(a.lane == "打野"))
+    fmt = lambda lbl, r: f"[{lbl}] {' + '.join(r['items'])} | 无蓝:{r['score_no_blue']} 有蓝:{r['score_with_blue']} | 三态EHP[常:{r['ehp_normal_downtime']}/特:{r['ehp_special_crisis']}/团:{r['entry_burst_ehp']}] | 三态分[常:{r['state_scores']['normal']}/特:{r['state_scores']['special']}/团:{r['state_scores']['teamfight']}->合:{r['state_scores']['composite_3state']}]"
+    print(f"=== [{a.hero}·{a.lane}] 全周期推演完成 ({rep['pareto_balanced'][0]['role_profile']}) ===")
     for tag, key in [("无蓝综合最优", "pareto_balanced"), ("有蓝综合最优", "pareto_with_blue"), ("顺风切C最优", "pareto_snowball"), ("逆风容错最优", "pareto_behind")]:
-        top = report[key][0]; st = top["state_scores"]
-        print(f"[{tag}] {' + '.join(top['items'])} | 无蓝:{top['score_no_blue']} 有蓝:{top['score_with_blue']} | 三态EHP[常:{top['ehp_normal_downtime']}/特:{top['ehp_special_crisis']}/团:{top['entry_burst_ehp']}] | 三态分[常:{st['normal']}/特:{st['special']}/团:{st['teamfight']}->合:{st['composite_3state']}]")
-    for oa in report["official_audit"]:
-        st = oa["state_scores"]
-        print(f"[{oa['label']}] {' + '.join(oa['items'])} | 无蓝:{oa['score_no_blue']} 有蓝:{oa['score_with_blue']} | 三态EHP[常:{oa['ehp_normal_downtime']}/特:{oa['ehp_special_crisis']}/团:{oa['entry_burst_ehp']}] | 三态分[常:{st['normal']}/特:{st['special']}/团:{st['teamfight']}->合:{st['composite_3state']}]")
+        print(fmt(tag, rep[key][0]))
+    for oa in rep["official_audit"]:
+        print(fmt(oa["label"], oa))
 
