@@ -1,10 +1,10 @@
 # 王者出装箱 ｜ 王者荣耀出装对比系统与底层战术知识库
 
 <p align="left">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Release-v1.3.4-0071e3.svg" alt="Release"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Release-v1.3.5-0071e3.svg" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-34c759.svg" alt="License"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Web%20App-Online-0071e3.svg" alt="Web App"></a>
-  <a href="#"><img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.3.4-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序"></a>
+  <a href="#"><img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.3.5-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序"></a>
   <a href="https://github.com/aodilab/wzry-build-comparator/releases/tag/v1.2.0"><img src="https://img.shields.io/badge/Demo%20Video-50s-ff3b30.svg?logo=youtube&logoColor=white" alt="Demo Video"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Heroes-133-ff9500.svg" alt="Heroes"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Official%20Builds-505-ff2d55.svg" alt="Official Builds"></a>
@@ -12,15 +12,15 @@
 </p>
 
 - 🖥️ **电脑大屏端**：[王者出装箱在线推演平台 (wzry.aodilab.com)](https://wzry.aodilab.com)（双轨横向对比、双靶抗性打靶、实战精研社专栏、方案导出）
-- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（v1.3.4 全量同步，对局选人秒查，即开即用）
+- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（v1.3.5 全量同步，对局选人秒查，即开即用）
 - 🎬 **真机实操演示**：[前往 Release v1.2.0 获取完整真机实操演示视频 (50s 竖屏超清) »](https://github.com/aodilab/wzry-build-comparator/releases/tag/v1.2.0)
 - 📚 **开源算法库**：王者荣耀底层物理算分引擎与 6 卷战术知识库
 
 > [!NOTE]
-> **📢 最新版本更新公告 [v1.3.4] (2026-10-31)**  
-> 1. **线性攻速折算体系校准与全职业普攻频次下钻**：全面对齐 S30+ 连续线性攻速折算机制（摒弃已废除的旧版普攻离散“攻速阈值档位”概念，每 `1%` 攻速连续线性缩短普攻前后摇），并为全职业二级「技能物理拆解」弹窗的普攻卡片补全实时 **`实际普攻频次（线性攻速折算）`** 对比行；  
-> 2. **S45 英雄与装备底层机制精校**：精准还原赵云 2 技能 5 段递减（`4.2` 倍首枪）+ 大招 5 段感电触发 + 血魔跨档刷 1 技能与白盾转真血、杨戬变身 `+600` 实战生命与 `0.5s→1.0s` 眩晕、吕布未附魔 `35%` 物穿与附魔回血、典韦/铠/曹操实战增益，并彻底清理退环境小件「光辉之剑」残留；  
-> 3. **「实战精研社」双英雄五套神装矩阵与三端 100% 镜像同步**：新增杨戬与赵云 S45 五套主流六神装、1~12 格小件平滑合成路线及小程序首页横滑轮播，Web 端、预览沙盒与微信小程序端 1:1 零误差同步。
+> **📢 最新版本更新公告 [v1.3.5] (2026-11-02)**  
+> 1. **10月29日正式服英雄平衡性调整全量对齐（孙策 / 诸葛亮 / 哪吒）**：同步孙策被动【怒潮】回血改为额外生命加成与低血最高 2 倍回复、3 技能【长帆破浪】撞人后跳/预输入一二技能/撞船获 `4/6/8层` 不屈，诸葛亮被动法球野怪减伤由 `40%` 回调至 `20%`、1 技能改为 `425~850(+85%AP)`，哪吒 1 技能真伤 `0.18→0.16额外AD`、3 技能 `1.6→1.5额外AD`；  
+> 2. **三端实战连招、续航抗伤（EHP）与 PVE 控龙算分引擎精校**：实装孙策残血最高 2 倍强普回血与不屈叠层实战物防、诸葛亮技能连招自动触发 5 颗法球齐射与野怪 `-20%` 修正、哪吒炙炼火种真实护盾叠加与大招 `20%` 减伤折算，并优化二级「技能物理拆解」弹窗多子句解析；  
+> 3. **线性攻速折算体系与「实战精研社」三端 100% 镜像同步**：全面对齐 S30+ 连续线性攻速折算机制、全职业普攻频次下钻与杨戬/赵云五套神装矩阵，Web 端、预览沙盒与微信小程序端 1:1 零误差同步。
 > 完整修复明细与技术解析请参阅 ➔ [**CHANGELOG.md (版本演化日志)**](CHANGELOG.md)。
 
 ---
