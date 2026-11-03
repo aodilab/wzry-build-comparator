@@ -88,6 +88,26 @@ HERO_COMBO_PROFILES = {
             ("双穿破甲-碎星锤流", ["贪婪之噬", "抵抗之靴", "暗影战斧", "冰痕之握", "怒龙剑盾", "碎星锤"]),
         ],
     },
+    "大司命": {
+        "burst_window_sec": 2.2, "full_window_sec": 4.2, "boots_candidates": ["抵抗之靴"],
+        "innate_tenacity": 0.0, "requires_tenacity_boots": True,
+        "mobility_score": 0.50, "ult_heal_missing_hp_ratio": 0.65, "needs_red_jg_early_tempo": True,
+        "orb_proc_mult": 1.25, "can_crit_enh_aa": True,
+        "burst_hits": {"s1": 1.0, "s2": 1.0, "s3_phys": 1.0, "enh_aa": 1.0, "aa": 1.2, "sb_procs": (1.0, 1.0), "exec_missing_pct": 0.10},
+        "full_hits": {"s1": 1.0, "s2": 1.5, "s3_phys": 1.3, "enh_aa": 1.8, "aa": 2.2, "sb_procs": (1.2, 1.0), "exec_missing_pct": 0.10},
+        "s1_base": (430.0, 860.0), "s1_bonus_ad": 1.55, "s1_cd": (12.5, 10.0),
+        "s2_base": (340.0, 680.0), "s2_bonus_ad": 1.05, "s2_cd": (10.0, 8.0),
+        "s3_base": (380.0, 760.0), "s3_bonus_ad": 1.50, "s3_cd": (40.0, 36.0, 32.0),
+        "enh_aa_base": (210.0, 210.0), "enh_aa_total_ad": 2.65, "enh_aa_bonus_ad": 0.0,
+        "passive_heal_base": (240.0, 480.0), "passive_heal_bonus_hp": 0.045, "heal_procs_per_fight": 6.2,
+        "viral_builds_jg": [
+            ("黄盾影刃苍穹流(正面团战通用首选)", ["贪婪之噬", "抵抗之靴", "怒龙剑盾", "影刃", "纯净苍穹", "不死鸟之眼"]),
+            ("末世名刀苍穹流(顺风切C/双保命)", ["贪婪之噬", "抵抗之靴", "末世", "影刃", "纯净苍穹", "名刀·司命"]),
+            ("影刃制裁不死鸟流(克制回血/高续航)", ["贪婪之噬", "抵抗之靴", "影刃", "制裁之刃", "纯净苍穹", "不死鸟之眼"]),
+            ("黄盾寒霜粘人流(三重减速防风筝)", ["贪婪之噬", "抵抗之靴", "怒龙剑盾", "暗影战斧", "纯净苍穹", "寒霜袭侵"]),
+            ("影刃无尽暴击流(高暴击压斩杀线)", ["贪婪之噬", "抵抗之靴", "影刃", "无尽战刃", "血魔之怒", "不死鸟之眼"]),
+        ],
+    },
 }
 
 

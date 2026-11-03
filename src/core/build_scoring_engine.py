@@ -122,6 +122,14 @@ def get_dynamic_role_lane_weights(hero_cname: str, lane: str, model: dict) -> Di
                 "cdr_cycle": 0.14, "econ_sustain": 0.06, "stickiness_cc": 0.04,
             }
             state_weights = {"normal": 0.52, "special": 0.20, "teamfight": 0.28}
+        elif model.get("orb_proc_mult", 1.0) > 1.2 and high_heal:
+            # 大司命（官方：战士 + 多段魂链法球回血斩杀打野）
+            role_profile = f"官方[{role_tag}]·魂链法球重装打野（3秒魂链高频攻速移速粘人 + 法球/暴击斩杀 + 苍穹不死鸟残血群吸闭环）"
+            weights = {
+                "surv_3state": 0.31, "burst_kill": 0.28, "pve_roam": 0.16,
+                "stickiness_cc": 0.10, "econ_sustain": 0.09, "cdr_cycle": 0.06,
+            }
+            state_weights = {"normal": 0.42, "special": 0.25, "teamfight": 0.33}
         elif has_true_dmg and high_heal:
             # 杨戬/典韦/大司命等（官方：战士 + 真伤高回血打野）
             role_profile = f"官方[{role_tag}]·重装真伤回血打野（三态双抗群吸闭环 + 秒C与贴脸真伤 + 黄盾控龙移速）"
@@ -230,6 +238,11 @@ def evaluate_three_combat_states(
     has_monv = "魔女斗篷" in item_names
     has_yongye = "永夜守护" in item_names
     has_heiqie = "暗影战斧" in item_names
+    has_yingren = "影刃" in item_names
+    has_moshi = "末世" in item_names
+    has_zhicai = "制裁之刃" in item_names
+    has_hanshuang = "寒霜袭侵" in item_names
+    has_wujin = "无尽战刃" in item_names
 
     ehp_normal = raw_metrics["ehp_normal_downtime"]
     ehp_special = raw_metrics["ehp_special_crisis"]
@@ -260,7 +273,7 @@ def evaluate_three_combat_states(
 
     s_norm_surv = min(100.0, ehp_normal / div_norm)
     s_norm_dmg = min(100.0, dmg_normal / 108.0)
-    norm_tempo_bonus = (
+    norm_tempo_bonus = ((3.5 if "贪婪之噬" in item_names else -3.0) + (6.0 if has_yingren else 0.0) + (6.2 if has_nulong else 0.0) + (3.2 if (has_moshi or has_zhicai or has_hanshuang) else 0.0) + (4.0 if has_businiao else (2.5 if (has_monv or has_yongye) else 0.0)) + (2.0 if has_heiqie else 0.0)) if hero_cname == "大司命" else (
         (6.5 if has_baolie else 0.0)
         + (5.0 if has_nulong else 0.0)
         + (2.5 if has_ice else 0.0)
@@ -290,6 +303,8 @@ def evaluate_three_combat_states(
             special_synergy += 6.5
         elif has_businiao or has_monv:
             special_synergy += 3.0
+    if hero_cname == "大司命":
+        special_synergy += (7.2 if has_cangqiong else (6.0 if has_xuemo else 0.0)) + (6.5 if has_yingren else (-6.5 if not (has_moshi or has_hanshuang) else 0.0)) + (6.2 if (has_businiao and (has_nulong or has_zhicai or has_wujin)) else (4.0 if has_businiao else 0.0)) + (3.5 if (has_moshi or has_hanshuang) else 0.0)
     if has_mingdao:
         special_synergy += 4.0
 
@@ -297,7 +312,7 @@ def evaluate_three_combat_states(
     s_spec_dmg = min(100.0, dmg_special / 108.0)
     score_state_special = round(max(20.0, min(100.0, 0.68 * s_spec_surv + 0.18 * s_spec_dmg + special_synergy - 0.6 * mage_burst_vulnerability - 0.8 * fragility_penalty)), 1)
 
-    tf_synergy = 0.0
+    tf_synergy = (6.5 if has_yingren else (-6.5 if not (has_moshi or has_hanshuang) else 0.0)) + (3.5 if (has_moshi or has_zhicai or has_hanshuang) else 0.0) if hero_cname == "大司命" else 0.0
     if has_baolie:
         tf_synergy += 5.5
     if has_cangqiong:
