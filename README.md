@@ -1,26 +1,27 @@
 # 王者出装箱 ｜ 王者荣耀出装对比系统与底层战术知识库
 
 <p align="left">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Release-v1.3.5-0071e3.svg" alt="Release"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Release-v1.4.0-0071e3.svg" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-34c759.svg" alt="License"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Web%20App-Online-0071e3.svg" alt="Web App"></a>
-  <a href="#"><img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.3.5-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序"></a>
+  <a href="#"><img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.4.0-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序"></a>
   <a href="https://github.com/aodilab/wzry-build-comparator/releases/tag/v1.2.0"><img src="https://img.shields.io/badge/Demo%20Video-50s-ff3b30.svg?logo=youtube&logoColor=white" alt="Demo Video"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Heroes-133-ff9500.svg" alt="Heroes"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Official%20Builds-505-ff2d55.svg" alt="Official Builds"></a>
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.8+-5856d6.svg" alt="Python"></a>
 </p>
 
-- 🖥️ **电脑大屏端**：[王者出装箱在线推演平台 (wzry.aodilab.com)](https://wzry.aodilab.com)（双轨横向对比、双靶抗性打靶、实战精研社专栏、方案导出）
-- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（v1.3.5 全量同步，对局选人秒查，即开即用）
+- 🖥️ **电脑大屏端**：[王者出装箱在线推演平台 (wzry.aodilab.com)](https://wzry.aodilab.com)（双轨横向对比、双靶抗性打靶、出装攻略专栏、方案导出）
+- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（v1.4.0，对局选人秒查，即开即用）
 - 🎬 **真机实操演示**：[前往 Release v1.2.0 获取完整真机实操演示视频 (50s 竖屏超清) »](https://github.com/aodilab/wzry-build-comparator/releases/tag/v1.2.0)
 - 📚 **开源算法库**：王者荣耀底层物理算分引擎与 6 卷战术知识库
 
 > [!NOTE]
-> **📢 最新版本更新公告 [v1.3.5] (2026-11-02)**  
-> 1. **10月29日正式服英雄平衡性调整全量对齐（孙策 / 诸葛亮 / 哪吒）**：同步孙策被动【怒潮】回血改为额外生命加成与低血最高 2 倍回复、3 技能【长帆破浪】撞人后跳/预输入一二技能/撞船获 `4/6/8层` 不屈，诸葛亮被动法球野怪减伤由 `40%` 回调至 `20%`、1 技能改为 `425~850(+85%AP)`，哪吒 1 技能真伤 `0.18→0.16额外AD`、3 技能 `1.6→1.5额外AD`；  
-> 2. **三端实战连招、续航抗伤（EHP）与 PVE 控龙算分引擎精校**：实装孙策残血最高 2 倍强普回血与不屈叠层实战物防、诸葛亮技能连招自动触发 5 颗法球齐射与野怪 `-20%` 修正、哪吒炙炼火种真实护盾叠加与大招 `20%` 减伤折算，并优化二级「技能物理拆解」弹窗多子句解析；  
-> 3. **线性攻速折算体系与「实战精研社」三端 100% 镜像同步**：全面对齐 S30+ 连续线性攻速折算机制、全职业普攻频次下钻与杨戬/赵云五套神装矩阵，Web 端、预览沙盒与微信小程序端 1:1 零误差同步。
+> **📢 最新版本更新公告 [v1.4.0] (2026-11-05)**  
+> 1. **推演室改版**：小程序改为方案对比卡，进入时不再预选出装，详细数据精简并按指标显示差值。  
+> 2. **按分路和定位调整板块**：纯坦克结论页先看抗伤，游走团队栏不再重复抗伤，攻略入口只在对应分路显示。  
+> 3. **真机显示修复**：修复提示文字错位、抽屉下拉不灵敏、「卸下」误触和多处深色模式看不清的问题。  
+> 4. **Web 端同步**：同步结论口径，出装攻略改为列表页，技能详情页去掉横线并修复手机显示。  
 > 完整修复明细与技术解析请参阅 ➔ [**CHANGELOG.md (版本演化日志)**](CHANGELOG.md)。
 
 ---
