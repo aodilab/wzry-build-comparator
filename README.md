@@ -162,13 +162,3 @@ python build.py --kb
 - **分路场景专项数据**：打野红蓝BUFF清怪耗时、暴君/主宰大龙斩杀线推演、辅助团队双抗光环覆盖率、救赎/奔狼/形昭主动技能收益。
 
 </details>
-
----
-
-## 赞助与支持
-
-如果这个项目对你的游戏理解或数据研究有所帮助，欢迎支持作者一杯可乐 🥤。
-
-<div align="center">
-  <img src="assets/sponsor_wechat.jpg" width="200" alt="微信赞助收款码">
-</div>
