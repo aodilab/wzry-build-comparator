@@ -4,16 +4,16 @@
   <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Release-v1.4.0-0071e3.svg" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-34c759.svg" alt="License"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Web%20App-Online-0071e3.svg" alt="Web App"></a>
-  <a href="#"><img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.4.0-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序"></a>
+  <img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.4.0-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序">
   <a href="https://github.com/aodilab/wzry-build-comparator/releases/tag/v1.2.0"><img src="https://img.shields.io/badge/Demo%20Video-50s-ff3b30.svg?logo=youtube&logoColor=white" alt="Demo Video"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Heroes-133-ff9500.svg" alt="Heroes"></a>
-  <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Official%20Builds-505-ff2d55.svg" alt="Official Builds"></a>
+  <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Official%20Builds-507-ff2d55.svg" alt="Official Builds"></a>
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.8+-5856d6.svg" alt="Python"></a>
 </p>
 
-- 🖥️ **电脑大屏端**：[王者出装箱在线推演平台 (wzry.aodilab.com)](https://wzry.aodilab.com)（双轨横向对比、双靶抗性打靶、出装攻略专栏、方案导出）
-- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（v1.4.0，对局选人秒查，即开即用）
-- 🎬 **真机实操演示**：[前往 Release v1.2.0 获取完整真机实操演示视频 (50s 竖屏超清) »](https://github.com/aodilab/wzry-build-comparator/releases/tag/v1.2.0)
+- 🖥️ **电脑大屏端**：[王者出装箱在线推演平台 (wzry.aodilab.com)](https://wzry.aodilab.com)（两套出装对比、打脆皮 / 打肉盾伤害、出装攻略、方案导出）
+- 📱 **手机随身端**：微信搜一搜「**王者出装箱**」（对局选人秒查，即开即用）
+- 🎬 **真机实操演示**：[演示视频](https://github.com/aodilab/wzry-build-comparator/releases/tag/v1.2.0)（v1.2.0 录制，界面与当前版本有差异）
 - 📚 **开源算法库**：王者荣耀底层物理算分引擎与 6 卷战术知识库
 
 > [!NOTE]
@@ -22,7 +22,8 @@
 > 2. **按分路和定位调整板块**：纯坦克结论页先看抗伤，游走团队栏不再重复抗伤，攻略入口只在对应分路显示。  
 > 3. **真机显示修复**：修复提示文字错位、抽屉下拉不灵敏、「卸下」误触和多处深色模式看不清的问题。  
 > 4. **Web 端同步**：同步结论口径，出装攻略改为列表页，技能详情页去掉横线并修复手机显示。  
-> 完整修复明细与技术解析请参阅 ➔ [**CHANGELOG.md (版本演化日志)**](CHANGELOG.md)。
+>
+> 完整更新内容见 [CHANGELOG](CHANGELOG.md)。
 
 ---
 
@@ -34,7 +35,7 @@
 - *“辅助是出近卫+救赎保后排，还是出极影+奔狼打强开？”*
 
 传统助手只给静态推荐，无法横向评估优劣。  
-本系统收录 133 位国服英雄、505 套官方推荐基准，支持将任意两套出装（含 30 颗自选铭文）并排对决，通过**实战伤害、野区清理、多维续航、技能冷却、面板属性、机制差异** 6 大维度，直接给出底层打靶物理数据。
+本系统收录 133 位国服英雄、507 套官方推荐基准，支持将任意两套出装（含 30 颗自选铭文）并排对决，通过**实战伤害、野区清理、多维续航、技能冷却、面板属性、机制差异** 6 大维度，直接给出底层打靶物理数据。
 
 ---
 
@@ -138,7 +139,7 @@ python build.py --kb
 <details>
 <summary><b>🔍 点击展开 133 位国服英雄与全分路出装基准速查</b></summary>
 
-> 本项目已完整录入以下全部 133 位国服正式服英雄，各分路均配备 505 套王者官方推荐出装与专属铭文作为基准：
+> 本项目已完整录入以下全部 133 位国服正式服英雄，各分路均配备 507 套王者官方推荐出装与专属铭文作为基准：
 
 #### ⚔️ 对抗路 / 战士 (32 位)
 `赵云` `钟无艳` `吕布` `曹操` `典韦` `宫本武藏` `达摩` `老夫子` `关羽` `花木兰` `亚瑟` `刘备` `杨戬` `雅典娜` `哪吒` `铠` `狂铁` `李信` `盘古` `曜` `马超` `夏洛特` `司空震` `云缨` `赵怀真` `姬小满` `亚连` `海诺` `大司命` `影` `空空儿` `蚩奼`
