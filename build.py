@@ -18,7 +18,7 @@ from config.settings import (
     DOC_ARCANA_NAME,
     DOC_RULES_NAME,
     DOC_S45_BUILDS_NAME,
-    DOC_COMBOS_NAME
+    DOC_COMBOS_NAME,
 )
 from src.builders.hero_skills_builder import build_hero_skills
 from src.builders.hero_relations_builder import build_hero_relations
@@ -26,10 +26,11 @@ from src.builders.hero_builds_builder import build_hero_builds
 from src.builders.item_builder import build_items
 from src.builders.arcana_builder import build_arcana
 from src.builders.rules_builder import build_rules
+
 try:
     from src.builders.sandbox_builder import build_sandbox_html
     HAS_SANDBOX = True
-except (ImportError, Exception):
+except ImportError:
     HAS_SANDBOX = False
     build_sandbox_html = None
 
@@ -37,19 +38,17 @@ try:
     from src.builders.seo_builder import build_all_seo_assets
     from src.core.baidu_pusher import push_urls_to_baidu
     HAS_SEO = True
-except (ImportError, Exception):
+except ImportError:
     HAS_SEO = False
     build_all_seo_assets = None
     push_urls_to_baidu = None
-
-
 
 # 私有化商业高阶流水线（受控加载，公开开源环境优雅 fallback）
 try:
     from src.builders.kb_builder import (
         build_07_s45_builds_markdown,
         build_08_combos_markdown,
-        rebuild_official_builds_data
+        rebuild_official_builds_data,
     )
     HAS_KB_BUILDER = True
 except ImportError:
@@ -61,11 +60,13 @@ except ImportError:
 try:
     from src.builders.pdf_builder import build_all_rich_pdfs
     from src.builders.build_07_pdf import render_07_pdf
+    from src.builders.build_lane_pdfs import build_all_lane_pdfs
     HAS_PDF = True
 except ImportError:
     HAS_PDF = False
     build_all_rich_pdfs = None
     render_07_pdf = None
+    build_all_lane_pdfs = None
 
 try:
     from src.builders.xiaohongshu_apple_builder import build_all_xiaohongshu_slides
@@ -76,10 +77,14 @@ except ImportError:
 
 try:
     from src.builders.details_builder import render_all as build_details_slices
+    from src.builders.main_images_generator import build_all_main_images
+    from src.builders.sku_builder import build_sku_images
     HAS_DETAILS = True
 except ImportError:
     HAS_DETAILS = False
     build_details_slices = None
+    build_all_main_images = None
+    build_sku_images = None
 
 try:
     from src.builders.miniprogram_builder import generate_miniprogram_project
@@ -87,6 +92,7 @@ try:
 except ImportError:
     HAS_MINIPROGRAM = False
     generate_miniprogram_project = None
+
 
 def main():
     parser = argparse.ArgumentParser(description="王者荣耀战术对局知识库构建流水线 (Gemini NotebookLM 专属)")
@@ -102,9 +108,9 @@ def main():
     parser.add_argument("--combos", action="store_true", help="构建[08]全英雄实战连招口诀大全")
     parser.add_argument("--sync-builds", action="store_true", help="从 JSON 重新编译官方出装数据至 SSOT 并同步推演室")
     parser.add_argument("--sandbox", action="store_true", help="生成独立可视化配装沙盒网页 (sandbox.html)")
-    parser.add_argument("--pdf", action="store_true", help="生成出版级全彩矢量 PDF 手册")
+    parser.add_argument("--pdf", action="store_true", help="生成出版级全彩矢量 PDF 手册 (含五路专属册)")
     parser.add_argument("--xiaohongshu", action="store_true", help="生成小红书 3:4 Apple 风格营销图文")
-    parser.add_argument("--details", action="store_true", help="生成电商 800x1000 详情页切片及无缝总览")
+    parser.add_argument("--details", action="store_true", help="生成电商详情页切片、1200x1200 主图及 SKU 卡片")
     parser.add_argument("--miniprogram", action="store_true", help="生成微信原生小程序完整工程 (miniprogram/)")
     parser.add_argument("--seo", action="store_true", help="生成搜索引擎标准 robots.txt 与 sitemap.xml 索引资产")
     parser.add_argument("--push-baidu", action="store_true", help="调用百度搜索资源平台 API 主动推送今日 URL 配额")
@@ -113,11 +119,10 @@ def main():
 
     args = parser.parse_args()
 
-    # 如果没有任何构建参数，默认打印帮助并退出
     has_action = (
-        args.all or args.kb or args.skills or args.relations or args.builds or 
-        args.item or args.arcana or args.rules or args.s45_builds or args.combos or 
-        args.sync_builds or args.sandbox or args.pdf or args.xiaohongshu or 
+        args.all or args.kb or args.skills or args.relations or args.builds or
+        args.item or args.arcana or args.rules or args.s45_builds or args.combos or
+        args.sync_builds or args.sandbox or args.pdf or args.xiaohongshu or
         args.details or args.miniprogram or args.seo or args.push_baidu
     )
     if not has_action:
@@ -209,7 +214,6 @@ def main():
             print("[提示] 当前开源环境未包含私有连招构建器，已跳过。")
             print()
 
-
     # 可视化配装沙盒网页
     if args.all or args.sandbox:
         if HAS_SANDBOX and build_sandbox_html:
@@ -226,6 +230,8 @@ def main():
             print("[出版物PDF] 开始生成王者荣耀全彩出版级矢量 PDF 手册...")
             build_all_rich_pdfs()
             render_07_pdf()
+            if build_all_lane_pdfs:
+                build_all_lane_pdfs()
             print()
         elif args.pdf:
             print("[提示] 当前开源环境未包含私有化 PDF 渲染流水线，已跳过。")
@@ -238,11 +244,15 @@ def main():
             build_all_xiaohongshu_slides()
             print()
 
-    # 电商 800x1000 详情页切片 (私有化流水线)
+    # 电商 800x1000 详情页切片、主图及 SKU 卡片 (私有化流水线)
     if args.details:
         if HAS_DETAILS and build_details_slices:
-            print("[电商详情页] 开始生成电商 800x1000 详情页切片及无缝总览...")
+            print("[电商详情页] 开始生成电商详情页切片、1200x1200 主图及 SKU 卡片...")
             build_details_slices()
+            if build_all_main_images:
+                build_all_main_images()
+            if build_sku_images:
+                build_sku_images()
             print()
 
     # 微信原生小程序完整工程 (双页面演练大厅与对决推演)
@@ -276,6 +286,7 @@ def main():
             print()
 
     print("=== 全部指定构建任务顺利完成！知识库、沙盒与物料已就绪 ===")
+
 
 if __name__ == "__main__":
     main()

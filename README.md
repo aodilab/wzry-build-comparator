@@ -1,10 +1,10 @@
 # 王者出装箱 ｜ 王者荣耀出装对比系统与底层战术知识库
 
 <p align="left">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Release-v1.4.0-0071e3.svg" alt="Release"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Release-v1.4.1-0071e3.svg" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-34c759.svg" alt="License"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Web%20App-Online-0071e3.svg" alt="Web App"></a>
-  <img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.4.0-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序">
+  <img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.4.1-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序">
   <a href="https://github.com/aodilab/wzry-build-comparator/releases/tag/v1.2.0"><img src="https://img.shields.io/badge/Demo%20Video-50s-ff3b30.svg?logo=youtube&logoColor=white" alt="Demo Video"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Heroes-133-ff9500.svg" alt="Heroes"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Official%20Builds-507-ff2d55.svg" alt="Official Builds"></a>
@@ -17,11 +17,11 @@
 - 📚 **开源算法库**：王者荣耀底层物理算分引擎与 6 卷战术知识库
 
 > [!NOTE]
-> **📢 最新版本更新公告 [v1.4.0] (2026-11-05)**  
-> 1. **推演室改版**：小程序改为方案对比卡，进入时不再预选出装，详细数据精简并按指标显示差值。  
-> 2. **按分路和定位调整板块**：纯坦克结论页先看抗伤，游走团队栏不再重复抗伤，攻略入口只在对应分路显示。  
-> 3. **真机显示修复**：修复提示文字错位、抽屉下拉不灵敏、「卸下」误触和多处深色模式看不清的问题。  
-> 4. **Web 端同步**：同步结论口径，出装攻略改为列表页，技能详情页去掉横线并修复手机显示。  
+> **📢 最新版本更新公告 [v1.4.1] (2026-11-12)**  
+> 1. **133 全英雄裸装面板实测校准**：基于训练营 1 级/15 级（含姜子牙 25 级）裸装截图校准全部 133 位英雄基础属性与 1 级自带攻速（`aspeed_base`），清理旧版脏数据。  
+> 2. **正式服英雄调整同步**：同步 11 月 5 日（艾琳、敖隐）与 11 月 10 日（曜、暃）正式服数值改动，校准夏侯惇护盾续航算分模型。  
+> 3. **大司命打野攻略上线**：新增大司命 S45 打野六套主流神装拆解与 12 格平滑合成路线，攻略页支持 B 站官方内嵌播放与 1080P60 跳转。  
+> 4. **核心算分模块拆分**：将 `build_optimizer` 按职责拆分为阶段评估、方案分析与属性聚合独立模块。  
 >
 > 完整更新内容见 [CHANGELOG](CHANGELOG.md)。
 

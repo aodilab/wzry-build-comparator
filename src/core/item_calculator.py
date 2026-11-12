@@ -250,8 +250,10 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
         b_pdef, b_mdef, b_speed = hero_base_stats["pdef"][1], hero_base_stats["mdef"][1], hero_base_stats["speed"]
         growth_match = re.search(r'([\d\.]+)%', hero_base_stats.get("aspeed", "+1.0%"))
         growth_val = float(growth_match.group(1)) if growth_match else 1.0
-        hero_self_aspeed = int(growth_val * 14)
-        total_aspeed = hero_self_aspeed + int(totals["aspeed"])
+        raw_self_aspeed = round(float(hero_base_stats.get("aspeed_base", 0.0)) + growth_val * 14, 1)
+        hero_self_aspeed = int(raw_self_aspeed) if raw_self_aspeed.is_integer() else raw_self_aspeed
+        raw_tot_aspeed = round(raw_self_aspeed + totals["aspeed"], 1)
+        total_aspeed = int(raw_tot_aspeed) if raw_tot_aspeed.is_integer() else raw_tot_aspeed
         calc_speed = int((b_speed + totals["flat_speed"]) * (1 + totals["percent_speed"] / 100))
 
         extra_pdef, extra_mdef, extra_pdef_note, extra_mdef_note = 0, 0, "", ""

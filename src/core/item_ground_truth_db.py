@@ -303,9 +303,8 @@ def get_dynamic_item_profile(name: str, lv: int = 15, jg_stacks: int = 25, comba
         prof["shield_hp_ratio"] += 0.04 * 1.25
     elif gt_name in ("冰霜冲击", "徐行·凛冬"):
         prof["tenacity"] = 0.10
-        prof["shield_hp_ratio"] += 0.10
-        prof["proc_magic_base"] += 100.0 + 100.0 * r
-        prof["passive_dr"] += 0.04
+        prof["shield_hp_ratio"] += 0.06  # 被动-冰甲：受到除压制外硬控后获10%最大生命护盾(CD 15s，按受控触发期望折算)
+        prof["proc_magic_base"] += (100.0 + 100.0 * r) * 0.45  # 主动-冲击(CD 75s)：100~200法伤与冰冻，按三态主动窗口折算
     elif gt_name == "炽热支配":
         prof["shield_base"] += 500.0 + 500.0 * r
         prof["shield_ap_ratio"] += 1.0

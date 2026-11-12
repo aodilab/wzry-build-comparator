@@ -92,12 +92,13 @@ def build_hero_skills(output_file=None, max_workers=10):
 
             stats = h.get("base_stats", {})
             if stats:
-                hp_min, hp_max = stats.get("hp", (3000, 6000))
-                atk_min, atk_max = stats.get("atk", (160, 350))
-                pdef_min, pdef_max = stats.get("pdef", (90, 350))
-                mdef_min, mdef_max = stats.get("mdef", (50, 169))
+                hp_min, hp_max = stats.get("hp", (3400, 7300))
+                atk_min, atk_max = stats.get("atk", (175, 350))
+                pdef_min, pdef_max = stats.get("pdef", (150, 402))
+                mdef_min, mdef_max = stats.get("mdef", (75, 173))
                 speed = stats.get("speed", 380)
                 aspeed = stats.get("aspeed", "+1.0%")
+                aspeed_base = float(stats.get("aspeed_base", 0.0))
 
                 markdown_content += "### 【英雄核心基础属性面板 (1级基础 / 15级满级)】\n"
                 markdown_content += f"- **基础最大生命值**：{hp_min} (15级满级: {hp_max}，每级成长: +{(hp_max-hp_min)/14:.1f})\n"
@@ -105,7 +106,14 @@ def build_hero_skills(output_file=None, max_workers=10):
                 markdown_content += f"- **基础物理防御力 (物抗)**：{pdef_min} (15级满级: {pdef_max}，每级成长: +{(pdef_max-pdef_min)/14:.1f})\n"
                 markdown_content += f"- **基础法术防御力 (魔抗)**：{mdef_min} (15级满级: {mdef_max}，每级成长: +{(mdef_max-mdef_min)/14:.1f})\n"
                 markdown_content += f"- **基础移动速度 (移速)**：{speed}\n"
-                markdown_content += f"- **攻击速度每级成长**：{aspeed}/级\n\n"
+                if aspeed_base > 0:
+                    markdown_content += f"- **攻击速度每级成长**：{aspeed}/级（1级自带 +{aspeed_base:g}%）\n"
+                else:
+                    markdown_content += f"- **攻击速度每级成长**：{aspeed}/级\n"
+                if "lv25" in stats:
+                    lv25 = stats["lv25"]
+                    markdown_content += f"- **25级封神满级裸装面板**：生命 {lv25['hp']} ｜ 物攻 {lv25['atk']} ｜ 物防 {lv25['pdef']} ｜ 法防 {lv25['mdef']} ｜ 裸装攻速 +{lv25['aspeed']:g}%\n"
+                markdown_content += "\n"
 
             markdown_content += "### 【技能机制与各等级数值阶梯】\n"
             for s_idx, skill in enumerate(h.get("skills", [])):
