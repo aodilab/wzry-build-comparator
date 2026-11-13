@@ -37,6 +37,11 @@ def get_equip_maps():
 
 def build_hero_builds(output_file=None, *args, **kwargs):
     """构建五大分路定位与实战出装思路数据库 (S45 官方基准 SSOT)"""
+    target_out = output_file or os.path.join(OUTPUT_DIR, DOC_HERO_BUILDS_NAME)
+    if not OFFICIAL_HERO_BUILDS and os.path.exists(target_out) and os.path.getsize(target_out) > 4096:
+        print(f"【跳过】当前开源环境未包含官方出装底库，保留现有脱敏文档：'{target_out}'")
+        return target_out
+
     equip_name_map = get_equip_maps()
     hero_meta = {}
     for eid, d in CN_HERO_MANIFEST.items():

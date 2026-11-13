@@ -85,9 +85,12 @@ def build_arcana(output_file=None, *args, **kwargs):
     # 第一部分：官方最新五级铭文图鉴
     markdown_content = "# 王者荣耀 S45 赛季（月照长安）全铭文属性及全英雄推荐搭配数据库\n\n"
     markdown_content += "> 📌 **版本权威基准与数据溯源 (SSOT)**：\n"
-    markdown_content += "> - **唯一数据源**：100% 物理直读王者荣耀 S45 正式服官方推荐实录，彻底取代并删除旧版官网过时的静态网页爬虫建议（Tips）。\n"
-    markdown_content += "> - **铭装物理捆绑**：铭文与出装绝对强耦合，每一套方案均完整收录标准五级铭文满配组合、总属性加成及对应的实战协同六神装。\n"
-    markdown_content += "> - **国服全量覆盖**：全量收录 133 位国服正式服英雄（含新英雄王维、敖隐、戈娅、元流之子各形态等），涵盖 507 套权威对局方案。\n\n"
+    markdown_content += "> - **唯一数据源**：100% 物理直读王者荣耀 S45 正式服官方五级铭文实录。\n"
+    if OFFICIAL_HERO_BUILDS:
+        markdown_content += "> - **铭装物理捆绑**：铭文与出装绝对强耦合，每一套方案均完整收录标准五级铭文满配组合、总属性加成及对应的实战协同六神装。\n"
+        markdown_content += "> - **国服全量覆盖**：全量收录 133 位国服正式服英雄（含新英雄王维、敖隐、戈娅、元流之子各形态等），涵盖 507 套权威对局方案。\n\n"
+    else:
+        markdown_content += "> - **公开范围说明**：公开仓收录全套五级铭文属性明细与满配总属性表；507 套英雄铭装协同明细需在线推演沙盒或私有工程查看。\n\n"
     markdown_content += "---\n\n"
 
     markdown_content += "## 第一部分：官方最新五级（高级）铭文图鉴\n\n"
@@ -111,67 +114,68 @@ def build_arcana(output_file=None, *args, **kwargs):
                     stats_10_list.append(f"{label}+{v:.1f}".replace(".0", ""))
             markdown_content += f"- **满配（10颗）总属性**：{' / '.join(stats_10_list)}\n\n"
 
-    # 第二部分：全英雄推荐搭配方案
-    markdown_content += "---\n\n"
-    markdown_content += "## 第二部分：133 位国服全英雄 S45 官方推荐铭文与出装协同方案\n\n"
+    # 第二部分：全英雄推荐搭配方案（仅在存在 OFFICIAL_HERO_BUILDS 时生成）
+    if OFFICIAL_HERO_BUILDS:
+        markdown_content += "---\n\n"
+        markdown_content += "## 第二部分：133 位国服全英雄 S45 官方推荐铭文与出装协同方案\n\n"
 
-    # 英雄元数据索引
-    hero_meta = {}
-    for eid, d in CN_HERO_MANIFEST.items():
-        cname = d["cname"]
-        roles = []
-        r1 = d.get("hero_type")
-        r2 = d.get("hero_type2")
-        if r1 in ROLE_MAP:
-            roles.append(ROLE_MAP[r1])
-        if r2 in ROLE_MAP and ROLE_MAP[r2] not in roles:
-            roles.append(ROLE_MAP[r2])
-        role_str = "/".join(roles) if roles else "战士"
-        hero_meta[cname] = {
-            "title": d.get("title", ""),
-            "role": role_str,
-            "roles": roles if roles else ["战士"]
-        }
+        # 英雄元数据索引
+        hero_meta = {}
+        for eid, d in CN_HERO_MANIFEST.items():
+            cname = d["cname"]
+            roles = []
+            r1 = d.get("hero_type")
+            r2 = d.get("hero_type2")
+            if r1 in ROLE_MAP:
+                roles.append(ROLE_MAP[r1])
+            if r2 in ROLE_MAP and ROLE_MAP[r2] not in roles:
+                roles.append(ROLE_MAP[r2])
+            role_str = "/".join(roles) if roles else "战士"
+            hero_meta[cname] = {
+                "title": d.get("title", ""),
+                "role": role_str,
+                "roles": roles if roles else ["战士"]
+            }
 
-    # 支持英雄双职业分类（严格收拢于游戏内坦克、战士、刺客、法师、射手 5 大真实职业，双职业英雄双端展示）
-    role_order = ["坦克", "战士", "刺客", "法师", "射手"]
-    by_role = {r: [] for r in role_order}
+        # 支持英雄双职业分类（严格收拢于游戏内坦克、战士、刺客、法师、射手 5 大真实职业，双职业英雄双端展示）
+        role_order = ["坦克", "战士", "刺客", "法师", "射手"]
+        by_role = {r: [] for r in role_order}
 
-    for cname, hdata in OFFICIAL_HERO_BUILDS.items():
-        meta = hero_meta.get(cname, {"title": "", "role": "战士", "roles": ["战士"]})
-        for r in meta["roles"]:
-            if r in by_role:
-                by_role[r].append((cname, meta, hdata))
+        for cname, hdata in OFFICIAL_HERO_BUILDS.items():
+            meta = hero_meta.get(cname, {"title": "", "role": "战士", "roles": ["战士"]})
+            for r in meta["roles"]:
+                if r in by_role:
+                    by_role[r].append((cname, meta, hdata))
 
-    for role_name in role_order:
-        heroes_in_role = by_role[role_name]
-        if not heroes_in_role:
-            continue
-        markdown_content += f"### 【职业定位：{role_name}】\n\n"
+        for role_name in role_order:
+            heroes_in_role = by_role[role_name]
+            if not heroes_in_role:
+                continue
+            markdown_content += f"### 【职业定位：{role_name}】\n\n"
 
-        for cname, meta, hdata in heroes_in_role:
-            title_suffix = f"（{meta['title']}）" if meta['title'] else ""
-            markdown_content += f"#### 英雄：{cname}{title_suffix}\n"
-            markdown_content += f"- **职业定位**：{meta['role']}\n"
-            markdown_content += "- **S45 官方实战出装与铭文协同方案**：\n\n"
+            for cname, meta, hdata in heroes_in_role:
+                title_suffix = f"（{meta['title']}）" if meta['title'] else ""
+                markdown_content += f"#### 英雄：{cname}{title_suffix}\n"
+                markdown_content += f"- **职业定位**：{meta['role']}\n"
+                markdown_content += "- **S45 官方实战出装与铭文协同方案**：\n\n"
 
-            for l_key, blist in hdata.get("lanes", {}).items():
-                for s_idx, b in enumerate(blist):
-                    items_chain = " ➔ ".join(b.get("items", []))
-                    total_gold = calc_items_gold(b.get("items", []))
-                    arcana_str = b.get("arcana_desc", "")
-                    arcana_stat_summary = calc_arcana_stats(b.get("arcana", {}))
+                for l_key, blist in hdata.get("lanes", {}).items():
+                    for s_idx, b in enumerate(blist):
+                        items_chain = " ➔ ".join(b.get("items", []))
+                        total_gold = calc_items_gold(b.get("items", []))
+                        arcana_str = b.get("arcana_desc", "")
+                        arcana_stat_summary = calc_arcana_stats(b.get("arcana", {}))
 
-                    markdown_content += f"##### 🛡️ 【{l_key}】方案{s_idx + 1}：【{b.get('title', '官方推荐')}】\n"
-                    markdown_content += f"- **标准五级铭文组合 (30颗满配)**：`{arcana_str}`\n"
-                    markdown_content += f"- **【铭文满配净属性总加成】**：{arcana_stat_summary}\n"
-                    markdown_content += f"- **【实战协同六神装 (按成装顺序)】**：{items_chain}\n"
-                    markdown_content += f"- **【协同装备总造价】**：约 {total_gold} 金币\n"
-                    if b.get("desc"):
-                        markdown_content += f"- **出装思路与战术搭配**：{b['desc']}\n"
-                    markdown_content += "\n"
+                        markdown_content += f"##### 🛡️ 【{l_key}】方案{s_idx + 1}：【{b.get('title', '官方推荐')}】\n"
+                        markdown_content += f"- **标准五级铭文组合 (30颗满配)**：`{arcana_str}`\n"
+                        markdown_content += f"- **【铭文满配净属性总加成】**：{arcana_stat_summary}\n"
+                        markdown_content += f"- **【实战协同六神装 (按成装顺序)】**：{items_chain}\n"
+                        markdown_content += f"- **【协同装备总造价】**：约 {total_gold} 金币\n"
+                        if b.get("desc"):
+                            markdown_content += f"- **出装思路与战术搭配**：{b['desc']}\n"
+                        markdown_content += "\n"
 
-            markdown_content += "---\n\n"
+                markdown_content += "---\n\n"
 
     if not output_file:
         os.makedirs(OUTPUT_DIR, exist_ok=True)

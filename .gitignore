@@ -3,27 +3,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# C extensions
-*.so
-
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
 # Virtual environments
 venv/
 .venv/
@@ -35,103 +14,14 @@ env/
 .vscode/
 *.swp
 *.swo
+.DS_Store
+Thumbs.db
 
-# 本地临时测试、草稿与日志
+# Local scratch & outputs
 scratch/
-test/
 temp/
 tmp/
-tests_local/
-_*
 *.log
-.cache/
-
-# 内部系统指令与机密（含 Google Cloud / Vertex AI 服务账号密钥，严禁公开）
-AGENTS.md
-.agents/
+*.pdf
 .env
 .env.*
-*key*.json
-*credentials*.json
-config/vertex_config.py
-src/core/vertex_client.py
-
-# 商业私有化资产与电商运营（严禁公开）
-taobao/
-miniprogram/
-templates/
-/scripts/
-src/builders/miniprogram_builder.py
-src/builders/miniprogram_dataset.py
-src/builders/xiaohongshu_apple_builder.py
-src/builders/details_builder.py
-src/builders/details_slices.py
-src/builders/details_slices_extra.py
-src/builders/sku_builder.py
-src/builders/build_07_pdf.py
-src/builders/pdf_builder.py
-src/builders/pdf_enrichers.py
-src/builders/pdf_07_helpers.py
-src/builders/build_lane_pdfs.py
-src/builders/lane_pdf_helpers.py
-src/builders/main_images_*.py
-src/core/build_analyzer.py
-
-# 核心高价值出装与连招数据库与出版物PDF（严禁公开）
-*.pdf
-output/03_王者荣耀_五大分路定位与实战出装思路.md
-output/07*
-output/08*
-output/pdf/
-config/hero_official_builds.py
-config/hero_combos.json
-config/hero_combos.py
-config/official_builds_data.json
-config/lane_pdf_config.py
-src/builders/kb_builder.py
-
-# 单文件前端沙盒编译成品（仅供线上 CDN 部署，不公开源码）
-sandbox.html
-index.html
-preview_miniprogram.html
-
-# 生产分发物料与 Cloudflare 账户凭证
-.wrangler/
-dist_pages/
-wrangler.json
-sitemap.xml
-robots.txt
-
-# 网站部署、内部SEO与私有构建工具（严禁公开）
-config/baidu_pushed_urls.json
-src/core/baidu_pusher.py
-src/builders/sandbox_builder.py
-src/builders/sandbox_template.py
-src/builders/seo_builder.py
-
-# 核心精调补丁包与专属数据（商业私有）
-config/patches/
-
-# 赛季原始多媒体录屏与废弃素材
-raw_assets/
-*.mp4
-*.mkv
-*.mov
-assets/icon_candidates/
-
-# 静态图片过滤（仅保留 README 公开展示所需的架构图与演示图，严禁公开小程序内部图标）
-/favicon*.png
-/favicon.ico
-/apple-touch-icon.png
-/social_preview.png
-/baidu_verify_*.html
-/BingSiteAuth.xml
-!assets/**
-assets/mp_icons/
-assets/guides/
-assets/icon_*.png
-assets/app_icon.png
-assets/architecture_flow.svg
-docs/guides/*_for_discussion.md
-backups/
-fonts/
