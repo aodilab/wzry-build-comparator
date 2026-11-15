@@ -1,10 +1,10 @@
 # 王者出装箱 ｜ 王者荣耀基础数据库与实战出装工具
 
 <p align="left">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Release-v1.4.1-0071e3.svg" alt="Release"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Release-v1.4.2-0071e3.svg" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-34c759.svg" alt="License"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Web%20App-Online-0071e3.svg" alt="Web App"></a>
-  <img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.4.1-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序">
+  <img src="https://img.shields.io/badge/微信小程序-王者出装箱%20v1.4.2-07c160.svg?logo=wechat&logoColor=white" alt="微信小程序">
   <a href="https://github.com/aodilab/wzry-build-comparator/releases/tag/v1.2.0"><img src="https://img.shields.io/badge/Demo%20Video-50s-ff3b30.svg?logo=youtube&logoColor=white" alt="Demo Video"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Heroes-133-ff9500.svg" alt="Heroes"></a>
   <a href="https://wzry.aodilab.com"><img src="https://img.shields.io/badge/Official%20Builds-507-ff2d55.svg" alt="Official Builds"></a>
@@ -17,10 +17,10 @@
 - 📚 **公开仓库内容**：王者荣耀 S45 正式服基础数据字典、基础面板计算模块、Markdown 知识库构建器及英雄深度实测图文攻略
 
 > [!NOTE]
-> **最新版本更新公告 [v1.4.1] (2026-11-12)**
-> 1. **133 全英雄裸装面板实测校准**：基于训练营 1 级/15 级（含姜子牙 25 级）裸装截图校准全部 133 位英雄基础属性与 1 级自带攻速（`aspeed_base`）。
-> 2. **正式服英雄调整同步**：同步 11 月 5 日（艾琳、敖隐）与 11 月 10 日（曜、暃）正式服数值改动，校准夏侯惇护盾续航算分模型。
-> 3. **大司命打野攻略上线**：新增大司命 S45 打野六套主流神装拆解与 12 格平滑合成路线。
+> **最新版本更新公告 [v1.4.2] (2026-11-16)**
+> 1. **四阶段等级推演与双端算分同步**：在线端与小程序新增 `4 / 9 / 12 / 15 级` 对局阶段切换（联动打野刀奖赏层数与靶子成长），修复小程序热重载配置导致的白屏问题。
+> 2. **新增夏侯惇与曜 S45 打野攻略**：上线夏侯惇双烧底座与卡 11 级肉刀攻略、曜无蓝满冷却与破魔刀变阵攻略，支持双端一键载入对比。
+> 3. **面板唯一被动校准与零依赖构建**：修复多游走装/多打野刀被动重复叠加及近卫/极影法系主属性自适应折算，知识库构建脚本仅依赖 Python 3.8+ 标准库。
 >
 > 完整版本历史见 [CHANGELOG](CHANGELOG.md)。
 
@@ -70,6 +70,10 @@
 
 基于 S45 正式服本地真值数据与训练营实测校验，提供全期合成节点与多流派对比正文：
 
+- [**【夏侯惇打野出装详解】噬目白盾判定、双烧底座与卡 11 级大肉刀六套变阵**](docs/guides/xiahoudun_jungle_guide.md)  
+  拆解白盾扛伤不触发噬目与 8 秒后起算冷却规则、满级二技能三刀减 24% 大招冷却、二级肉刀卡层与神隐斗篷垫法防路线及六套神装变阵。
+- [**【曜打野出装详解】星削等级成长、无蓝 37.5% 冷却精算与六套神装拆解**](docs/guides/yao_jungle_guide.md)  
+  拆解大招星削比例随等级成长（25%/37.5%/50%）与秒叠暴烈机制、11 级卡小红刀先合破魔刀节点、让蓝冰脉与控蓝暴烈双底座及 12 格备战路线。
 - [**【大司命打野出装详解】4~7秒神巫斩杀、红刀 vs 肉刀双体系与六套神装拆解**](docs/guides/dasiming_jungle_guide.md)  
   拆解 1 技能与大招拼接的 7 秒神巫斩杀窗口、魂链首尾段 100% 法球机制、前中期红刀节奏与万血肉刀双法球路线及 12 格平滑出装。
 - [**【杨戬打野出装详解】影忍 9 秒变身、法天象地韧性机制与五套神装拆解**](docs/guides/yangjian_jungle_guide.md)  

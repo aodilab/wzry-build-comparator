@@ -12,6 +12,24 @@ import re, sys, os, json
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, ROOT_DIR)
 from config.item_recipes import COMPONENTS_MAP
+try:
+    from src.core.item_ground_truth_db import resolve_gt_name
+except ImportError:
+    _FALLBACK_ALIAS = {
+        "破军": "强者破军", "破晓": "仁者破晓", "贤者之书": "贤者天书", "急速之靴": "急速战靴",
+        "炽热支配者": "炽热支配", "铸梦·逐风": "逐风", "黑切": "暗影战斧", "红刀": "贪婪之噬",
+        "小红刀": "追击刀锋", "肉刀": "巨人之握", "小肉刀": "巡守利斧", "蓝刀": "符文大剑",
+        "小蓝刀": "游击弯刀", "抵抗鞋": "抵抗之靴", "布甲鞋": "影忍之足", "冷静鞋": "冷静之靴",
+        "攻速鞋": "急速战靴", "法穿鞋": "秘法之靴", "疾步鞋": "疾步之靴", "冰脉": "冰痕之握",
+        "冰痕": "冰痕之握", "冰心": "极寒风暴", "黄盾": "怒龙剑盾", "火甲": "红莲斗篷",
+        "反甲": "反伤刺甲", "暴烈": "暴烈之甲", "不祥": "不祥征兆", "魔女": "魔女斗篷",
+        "不死鸟": "不死鸟之眼", "永夜": "永夜守护", "霸者": "霸者重装", "血手": "血魔之怒",
+        "苍穹": "纯净苍穹", "名刀": "名刀·司命", "复活甲": "贤者的庇护", "帽子": "博学者之怒",
+        "面具": "痛苦面具", "血书": "噬神之书", "日暮": "日暮之流", "法穿棒": "虚无法杖",
+    }
+    def resolve_gt_name(name: str) -> str:
+        n = (name or "").strip()
+        return _FALLBACK_ALIAS.get(n, n)
 
 def get_ground_truth_items(api_items=None):
     """以用户115张全装备截图(items_ground_truth.json)为唯一权威本地数据源，绝不向外网接口爬取"""
@@ -54,7 +72,8 @@ def clean_item_name(name):
 
 def get_raw_item_object(name, equip_map_raw):
     if not name or not equip_map_raw: return None
-    for k in (name, COMMON_TO_RAW_MAP.get(name), RAW_TO_COMMON_MAP.get(name)):
+    gt = resolve_gt_name(name)
+    for k in (name, gt, COMMON_TO_RAW_MAP.get(name), COMMON_TO_RAW_MAP.get(gt), RAW_TO_COMMON_MAP.get(name), RAW_TO_COMMON_MAP.get(gt)):
         if k and k in equip_map_raw: return equip_map_raw[k]
     return None
 
@@ -138,19 +157,41 @@ def diagnose_passive_conflicts(effective_six):
     # 强击
     qiangji_items = [i for i in effective_six if i in ["宗师之力", "冰痕之握", "巫术法杖", "符文大剑"]]
     if len(qiangji_items) > 1:
-        conflicts.append(f"【唯一被动-强击】冲突：同时装备了 {', '.join(qiangji_items)}，仅生效其中一件！")
+        conflicts.append(f"【唯一被动-强击】冲突：同时装备了 {', '.join(qiangji_items)}，仅生效其中一件")
+    # 净魔
+    jingmo_items = [i for i in effective_six if i in ["日暮之流", "破茧之衣"]]
+    if len(jingmo_items) > 1:
+        conflicts.append(f"【唯一被动-净魔】冲突：同时装备了 {', '.join(jingmo_items)}，同名法穿被动不叠加")
+    # 破甲
+    pojia_items = [i for i in effective_six if i in ["碎星锤", "破晓", "仁者破晓"]]
+    if len(pojia_items) > 1:
+        conflicts.append(f"【唯一被动-破甲】冲突：同时装备了 {', '.join(pojia_items)}，百分比物穿不叠加")
+    # 重伤
+    zhongshang_items = [i for i in effective_six if i in ["制裁之刃", "梦魇之牙", "红莲斗篷"]]
+    if len(zhongshang_items) > 1:
+        conflicts.append(f"【唯一被动-重伤】重叠：同时装备了 {', '.join(zhongshang_items)}，35%减疗效果不叠加")
+    # 精准
+    jingzhun_items = [i for i in effective_six if i in ["逐日之弓", "迅疾·日渊", "金色圣剑"]]
+    if len(jingzhun_items) > 1:
+        conflicts.append(f"【唯一被动-精准】冲突：同时装备了 {', '.join(jingzhun_items)}，同名普攻精准伤害不叠加")
     # 神速双鞋
     boots = [i for i in effective_six if i in BOOTS_SPEED_MAP]
     if len(boots) > 1:
-        conflicts.append(f"【唯一被动-神速】冲突：同时装备了多双鞋子（{', '.join(boots)}），移速不叠加！")
+        conflicts.append(f"【唯一被动-神速】冲突：同时装备了多双鞋子（{', '.join(boots)}），移速不叠加")
+    # 游击多辅助装
+    sup_items = [i for i in effective_six if any(k in i for k in ("近卫", "极影", "学识宝石"))]
+    if len(sup_items) > 1:
+        conflicts.append(f"【唯一被动-游击】冲突：同时装备了多件游走装（{', '.join(sup_items)}），光环与奖赏不叠加")
     # 主动技能槽位共存
     actives = [i for i in effective_six if i in ACTIVE_SKILL_ITEMS]
     if len(actives) > 1:
-        conflicts.append(f"【主动技能按键共存提醒】：出装包含多件主动装备（{', '.join(actives)}），局内仅能快捷激活1件，其余须在背包手动切换释放！")
+        conflicts.append(f"【主动技能按键共存提醒】：出装包含多件主动装备（{', '.join(actives)}），局内仅能快捷激活1件，其余须在背包手动切换释放")
     # 打野刀惩击绑定
     jungles = [i for i in effective_six if i in JUNGLE_ITEMS]
-    if jungles:
-        conflicts.append(f"【召唤师技能绑定提示】：出装包含打野装备（{', '.join(jungles)}），局内必须携带召唤师技能【惩击】方可购买！")
+    if len(jungles) > 1:
+        conflicts.append(f"【唯一被动-狩猎】冲突：同时装备了多把打野刀（{', '.join(jungles)}），叠层与灼烧不叠加")
+    elif jungles:
+        conflicts.append(f"【召唤师技能绑定提示】：出装包含打野装备（{', '.join(jungles)}），局内必须携带召唤师技能【惩击】方可购买")
     return conflicts
 
 def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
@@ -167,8 +208,11 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
     
     total_gold = 0
     boots_counted = False
+    sup_counted = False
+    jg_counted = False
     tenacity_boots, tenacity_ice = False, False
     qiege_pen, mboots_pen, yunling_pen = 0, 0, 0
+    sup_main_atk_bonus = 0
     for name in effective_six:
         item_raw = get_raw_item_object(name, equip_map_raw)
         if item_raw:
@@ -186,15 +230,16 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
         totals["m_pierce_percent"] = max(totals["m_pierce_percent"], st.get("m_pierce_percent", 0))
         if st.get("has_hat"): totals["has_hat"] = True
         if st.get("flat_speed", 0) > 0 and not boots_counted:
-            totals["flat_speed"] = st["flat_speed"] + (70 if name == "疾步之靴" else 0)
+            totals["flat_speed"] = st["flat_speed"]
             boots_counted = True
         if name == "抵抗之靴": tenacity_boots = True
         elif name in ("冰霜冲击", "徐行·凛冬", "凛冬"): tenacity_ice = True
 
         is_tier3_sup = any(k in name for k in ["救赎", "奔狼", "形昭", "星泉"])
-        if "近卫" in name or "极影" in name:
+        if ("近卫" in name or "极影" in name) and not sup_counted:
+            sup_counted = True
             totals["hp"] += 800 if is_tier3_sup else 400
-            totals["atk"] += 50 if is_tier3_sup else 30
+            sup_main_atk_bonus = 50 if is_tier3_sup else 30
             if "近卫" in name:
                 def_b = 130 if is_tier3_sup else 72
                 totals["pdef"] += def_b; totals["mdef"] += def_b
@@ -202,12 +247,21 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
                 totals["aspeed"] += 20 if is_tier3_sup else 12
                 totals["cdr"] += 15 if is_tier3_sup else 9
 
-        if "贪婪之噬" in name: totals["atk"] += 75; totals["cdr"] += 5
-        elif "巨人之握" in name: totals["hp"] += 750; totals["cdr"] += 5
-        elif "符文大剑" in name: totals["ap"] += 150; totals["cdr"] += 5
-        elif "追击刀锋" in name: totals["atk"] += 45
-        elif "巡守利斧" in name: totals["hp"] += 450
-        elif "游击弯刀" in name: totals["ap"] += 90
+        if not jg_counted and any(k in name for k in JUNGLE_ITEMS):
+            jg_counted = True
+            if "贪婪之噬" in name: totals["atk"] += 75; totals["cdr"] += 5
+            elif "巨人之握" in name: totals["hp"] += 750; totals["cdr"] += 5
+            elif "符文大剑" in name: totals["ap"] += 150; totals["cdr"] += 5
+            elif "追击刀锋" in name: totals["atk"] += 45
+            elif "巡守利斧" in name: totals["hp"] += 450
+            elif "游击弯刀" in name: totals["ap"] += 90
+
+    if sup_main_atk_bonus > 0:
+        is_ap_prefer = totals["ap"] > totals["atk"] or any(x in effective_six for x in ("圣杯", "凝冰之息", "梦魇之牙", "痛苦面具", "时之预言", "博学者之怒", "炽热支配"))
+        if is_ap_prefer:
+            totals["ap"] += sup_main_atk_bonus * 2
+        else:
+            totals["atk"] += sup_main_atk_bonus
 
     max_tenacity = 25 if (hero_base_stats and hero_base_stats.get("cname") == "杨戬") else 60
     totals["tenacity"] = min(max_tenacity, (25 if tenacity_boots else 0) + (10 if tenacity_ice else 0))

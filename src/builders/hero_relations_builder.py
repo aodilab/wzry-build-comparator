@@ -12,10 +12,6 @@ import json
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, ROOT_DIR)
 from config.settings import OUTPUT_DIR, DOC_HERO_RELATIONS_NAME, ROLE_MAP
-try:
-    from config.patches import HERO_RELATIONS_PATCHES
-except ImportError:
-    HERO_RELATIONS_PATCHES = {}
 from src.core.hero_validator import get_validated_hero_list
 
 
@@ -42,7 +38,7 @@ def fetch_single_hero_relations(hero, local_relations_map):
         roles.append(ROLE_MAP[r2])
     role_str = "/".join(roles) if roles else "战士"
 
-    relations = HERO_RELATIONS_PATCHES.get(cname) or local_relations_map.get(cname) or {
+    relations = local_relations_map.get(cname) or {
         "最佳搭档": [],
         "压制英雄": [],
         "被压制英雄": []

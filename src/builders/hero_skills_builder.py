@@ -10,10 +10,6 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from config.settings import OUTPUT_DIR, DOC_HERO_SKILLS_NAME, ROLE_MAP
-try:
-    from config.patches import REWORKED_HERO_SKILLS_PATCHES
-except ImportError:
-    REWORKED_HERO_SKILLS_PATCHES = {}
 from config.hero_base_stats import get_hero_base_stats
 from config.hero_skills_data import HERO_SKILLS_DATA
 from src.core.stats_parser import format_cd_steps, format_cost_steps, extract_desc_growth_lines
@@ -22,7 +18,7 @@ from src.core.hero_validator import get_validated_hero_list
 
 def fetch_single_hero_skills(hero):
     """
-    从本地权威基准库 (HERO_SKILLS_DATA & REWORKED_HERO_SKILLS_PATCHES) 读取单个英雄的技能全量数值与机制，绝不向外网爬取
+    从本地权威基准库 (config/hero_skills_data.json) 读取单个英雄的技能全量数值与机制，绝不向外网爬取
     """
     ename = str(hero.get("ename"))
     cname = hero.get("cname")
@@ -37,15 +33,7 @@ def fetch_single_hero_skills(hero):
         roles.append(ROLE_MAP[r2])
     role_str = "/".join(roles) if roles else "战士"
 
-    base_list = [dict(s) for s in HERO_SKILLS_DATA.get(cname, [])]
-    if cname in REWORKED_HERO_SKILLS_PATCHES and "skills" in REWORKED_HERO_SKILLS_PATCHES[cname]:
-        patch_list = REWORKED_HERO_SKILLS_PATCHES[cname]["skills"]
-        if len(base_list) == len(patch_list):
-            skills_list = [{**b, **p} for b, p in zip(base_list, patch_list)]
-        else:
-            skills_list = [dict(p) for p in patch_list]
-    else:
-        skills_list = base_list
+    skills_list = [dict(s) for s in HERO_SKILLS_DATA.get(cname, [])]
 
     base_stats = get_hero_base_stats(ename, cname, role_str)
     return {

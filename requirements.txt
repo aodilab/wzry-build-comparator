@@ -1,2 +1,1 @@
-requests>=2.28.0
-beautifulsoup4>=4.12.0
+# 基础面板计算与 Markdown 知识库构建（python build.py --kb）仅使用 Python 3.8+ 标准库，无第三方运行时依赖
