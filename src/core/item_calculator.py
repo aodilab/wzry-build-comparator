@@ -12,6 +12,7 @@ import re, sys, os, json
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, ROOT_DIR)
 from config.item_recipes import COMPONENTS_MAP
+from config.hero_registry import CN_HERO_MANIFEST
 try:
     from src.core.item_ground_truth_db import resolve_gt_name
 except ImportError:
@@ -77,7 +78,41 @@ def get_raw_item_object(name, equip_map_raw):
         if k and k in equip_map_raw: return equip_map_raw[k]
     return None
 
-def parse_single_item_stats(item_raw):
+_HERO_MANIFEST_BY_CNAME = {v["cname"]: v for v in CN_HERO_MANIFEST.values()}
+_MELEE_MAGE_FALLBACK = frozenset({"东皇太一", "鬼谷子", "墨子"})
+
+
+def _fmt_num(val):
+    v = round(float(val), 1)
+    return str(int(v)) if v.is_integer() else f"{v:.1f}"
+
+
+def _is_ranged_hero(hero_base_stats):
+    """判定英雄是否为远程英雄（优先读取私有机制画像，开源仓缺省时基于 CN_HERO_MANIFEST 兜底）"""
+    if not hero_base_stats:
+        return False
+    if "is_ranged" in hero_base_stats:
+        return bool(hero_base_stats["is_ranged"])
+    cname = (hero_base_stats.get("cname") or "").strip()
+    if not cname:
+        return False
+    try:
+        from src.core.hero_mechanism_profiler import extract_hero_mechanism_profile
+        prof = extract_hero_mechanism_profile(cname)
+        return bool(prof.get("is_ranged") or prof.get("attack_type") == "ranged")
+    except ImportError:
+        meta = _HERO_MANIFEST_BY_CNAME.get(cname)
+        if not meta:
+            return False
+        t1, t2 = meta.get("hero_type", 0), meta.get("hero_type2", 0)
+        if t1 == 5 or t2 == 5:
+            return True
+        if t1 == 2 and cname not in _MELEE_MAGE_FALLBACK:
+            return True
+        return False
+
+
+def parse_single_item_stats(item_raw, is_ranged=False):
     """全量提取单件装备的基础面板属性词缀(100%严格只从 des1 提取，杜绝 des2 条件被动混入静态面板)"""
     if not item_raw: return {}
     full_text = re.sub(r'</?[^>]+>', '\n', f"{item_raw.get('des1', '')}")
@@ -120,7 +155,7 @@ def parse_single_item_stats(item_raw):
 
     if "暗影战斧" in name: stats["p_pierce_flat"] = 180
     elif "碎星锤" in name: stats["p_pierce_percent"] = 30
-    elif "破晓" in name: stats["p_pierce_percent"] = 15
+    elif "破晓" in name: stats["p_pierce_percent"] = 30 if is_ranged else 15
     elif "虚无法杖" in name: stats["m_pierce_percent"] = 45
     elif "秘法之靴" in name: stats["m_pierce_flat"] = 120
     elif "云灵木" in name: stats["m_pierce_flat"] = 60
@@ -155,9 +190,13 @@ def diagnose_passive_conflicts(effective_six):
     """自动诊断同名唯一被动、主动装备按键与打野刀技能绑定"""
     conflicts = []
     # 强击
-    qiangji_items = [i for i in effective_six if i in ["宗师之力", "冰痕之握", "巫术法杖", "符文大剑"]]
+    qiangji_items = [i for i in effective_six if i in ["宗师之力", "冰痕之握", "巫术法杖"]]
     if len(qiangji_items) > 1:
         conflicts.append(f"【唯一被动-强击】冲突：同时装备了 {', '.join(qiangji_items)}，仅生效其中一件")
+    # 冻伤
+    dongshang_items = [i for i in effective_six if i in ["凝冰之息", "寒霜袭侵"]]
+    if len(dongshang_items) > 1:
+        conflicts.append(f"【唯一被动-冻伤】冲突：同时装备了 {', '.join(dongshang_items)}，同名冻伤被动不叠加")
     # 净魔
     jingmo_items = [i for i in effective_six if i in ["日暮之流", "破茧之衣"]]
     if len(jingmo_items) > 1:
@@ -197,7 +236,8 @@ def diagnose_passive_conflicts(effective_six):
 def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
     """全维度计算六神装属性增幅、满级实战面板、总金币造价与被动冲突诊断"""
     effective_six = filter_effective_six_equips(equip_names)
-    
+    is_ranged = _is_ranged_hero(hero_base_stats)
+
     totals = {
         "atk": 0, "ap": 0, "pdef": 0, "mdef": 0, "hp": 0, "mp": 0,
         "crit": 0.0, "aspeed": 0.0, "cdr": 0.0, "percent_speed": 0.0,
@@ -205,9 +245,8 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
         "p_pierce_flat": 0, "p_pierce_percent": 0, "m_pierce_flat": 0, "m_pierce_percent": 0,
         "tenacity": 0, "has_hat": False
     }
-    
+
     total_gold = 0
-    boots_counted = False
     sup_counted = False
     jg_counted = False
     tenacity_boots, tenacity_ice = False, False
@@ -217,7 +256,7 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
         item_raw = get_raw_item_object(name, equip_map_raw)
         if item_raw:
             total_gold += item_raw.get("total_price", 0)
-        st = parse_single_item_stats(item_raw)
+        st = parse_single_item_stats(item_raw, is_ranged=is_ranged)
         for k in ("atk", "ap", "pdef", "mdef", "hp", "mp", "crit", "aspeed", "cdr", "percent_speed", "p_lifesteal", "m_lifesteal"):
             totals[k] += st.get(k, 0)
         if st.get("p_pierce_flat", 0) > 0:
@@ -229,9 +268,8 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
         totals["p_pierce_percent"] = max(totals["p_pierce_percent"], st.get("p_pierce_percent", 0))
         totals["m_pierce_percent"] = max(totals["m_pierce_percent"], st.get("m_pierce_percent", 0))
         if st.get("has_hat"): totals["has_hat"] = True
-        if st.get("flat_speed", 0) > 0 and not boots_counted:
-            totals["flat_speed"] = st["flat_speed"]
-            boots_counted = True
+        if st.get("flat_speed", 0) > 0:
+            totals["flat_speed"] = max(totals["flat_speed"], st["flat_speed"])
         if name == "抵抗之靴": tenacity_boots = True
         elif name in ("冰霜冲击", "徐行·凛冬", "凛冬"): tenacity_ice = True
 
@@ -275,21 +313,49 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
     # 注意：日暮之流(对英雄造成伤害叠层)、金色圣剑(普攻叠2层)、逐风(普攻技能命中叠5层)、影刃(普攻命中触发)均为战斗触发被动，严禁计入常驻静态面板！
 
     final_ap = int(totals["ap"] * 1.3) if totals["has_hat"] else totals["ap"]
-    capped_cdr = min(int(totals["cdr"]), 40)
+    capped_cdr = min(round(totals["cdr"], 1), 40.0)
+    capped_cdr_str = _fmt_num(capped_cdr)
+    crit_str = _fmt_num(totals["crit"])
+    aspeed_str = _fmt_num(totals["aspeed"])
+    pspeed_str = _fmt_num(totals["percent_speed"])
+
+    b_atk_ref = hero_base_stats["atk"][1] if hero_base_stats else 0
+    extra_pdef, extra_mdef = 0, 0
+    extra_pdef_parts, extra_mdef_parts = [], []
+    if "时之预言" in effective_six:
+        prop_val = 100 + int(final_ap * 0.1)
+        extra_pdef += prop_val
+        extra_mdef += prop_val
+        extra_pdef_parts.append(f"时之预言{prop_val}")
+        extra_mdef_parts.append(f"时之预言{prop_val}")
+    if "破魔刀" in effective_six:
+        pm_val = min(int((b_atk_ref + totals["atk"]) * 0.5), 250)
+        extra_mdef += pm_val
+        extra_mdef_parts.append(f"破魔刀{pm_val}")
+    if "魔女斗篷" in effective_six:
+        mn_val = int((totals["mdef"] + extra_mdef) * 0.15)
+        extra_pdef += mn_val
+        extra_pdef_parts.append(f"魔女{mn_val}")
+    equip_pdef = totals["pdef"] + extra_pdef
+    equip_mdef = totals["mdef"] + extra_mdef
+    extra_pdef_desc = "、".join(extra_pdef_parts)
+    extra_mdef_desc = "、".join(extra_mdef_parts)
+
     parts = []
     if totals["atk"] > 0: parts.append(f"物理攻击 +{totals['atk']}")
     if final_ap > 0:
         parts.append(f"法术攻击 +{final_ap}" + ("(含帽子+30%增幅)" if totals['has_hat'] else ""))
-    if totals["pdef"] > 0: parts.append(f"物理防御 +{totals['pdef']}")
-    if totals["mdef"] > 0: parts.append(f"法术防御 +{totals['mdef']}")
+    if equip_pdef > 0:
+        parts.append(f"物理防御 +{equip_pdef}" + (f"(含{extra_pdef_desc})" if extra_pdef_parts else ""))
+    if equip_mdef > 0:
+        parts.append(f"法术防御 +{equip_mdef}" + (f"(含{extra_mdef_desc})" if extra_mdef_parts else ""))
     if totals["hp"] > 0: parts.append(f"最大生命 +{totals['hp']}")
     if totals["mp"] > 0: parts.append(f"最大法力 +{totals['mp']}")
-    if totals["crit"] > 0: parts.append(f"暴击率 +{int(totals['crit'])}%")
-    if totals["aspeed"] > 0: parts.append(f"攻击速度 +{int(totals['aspeed'])}%")
-    pspeed_str = f"{totals['percent_speed']:.1f}".rstrip('0').rstrip('.')
+    if totals["crit"] > 0: parts.append(f"暴击率 +{crit_str}%")
+    if totals["aspeed"] > 0: parts.append(f"攻击速度 +{aspeed_str}%")
     if totals["flat_speed"] > 0 or totals["percent_speed"] > 0:
         parts.append(f"移速 +{totals['flat_speed']}点固定/+{pspeed_str}%百分比")
-    if totals["cdr"] > 0: parts.append(f"冷却缩减 +{capped_cdr}%" + ("(达40%上限)" if totals['cdr'] >= 40 else ""))
+    if totals["cdr"] > 0: parts.append(f"冷却缩减 +{capped_cdr_str}%" + ("(达40%上限)" if totals['cdr'] >= 40 else ""))
     if totals["p_lifesteal"] > 0: parts.append(f"物理吸血 +{totals['p_lifesteal']}%")
     if totals["m_lifesteal"] > 0: parts.append(f"法术吸血 +{totals['m_lifesteal']}%")
     if totals["p_pierce_flat"] > 0 or totals["p_pierce_percent"] > 0:
@@ -310,38 +376,24 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
         total_aspeed = int(raw_tot_aspeed) if raw_tot_aspeed.is_integer() else raw_tot_aspeed
         calc_speed = int((b_speed + totals["flat_speed"]) * (1 + totals["percent_speed"] / 100))
 
-        extra_pdef, extra_mdef, extra_pdef_note, extra_mdef_note = 0, 0, "", ""
-        if "时之预言" in effective_six:
-            prop_val = 100 + int(final_ap * 0.1)
-            extra_pdef += prop_val
-            extra_mdef += prop_val
-            extra_pdef_note = f"(含时之预言+{prop_val}) "
-            extra_mdef_note = f"(含时之预言+{prop_val}) "
-        if "破魔刀" in effective_six:
-            pm_val = min(int((b_atk + totals["atk"]) * 0.5), 250)
-            extra_mdef += pm_val
-            extra_mdef_note += f"(含破魔刀+{pm_val}) "
-        if "魔女斗篷" in effective_six:
-            mn_val = int((totals["mdef"] + extra_mdef) * 0.15)
-            extra_pdef += mn_val
-            extra_pdef_note += f"(含魔女+{mn_val}) "
-
         # 双抗免伤公式: 抗性 / (抗性 + 602)
-        tot_pdef = b_pdef + totals["pdef"] + extra_pdef
-        tot_mdef = b_mdef + totals["mdef"] + extra_mdef
+        tot_pdef = b_pdef + equip_pdef
+        tot_mdef = b_mdef + equip_mdef
         p_reduction = round(tot_pdef / (tot_pdef + 602) * 100, 1)
         m_reduction = round(tot_mdef / (tot_mdef + 602) * 100, 1)
-        
+        pdef_extra_seg = f" + {extra_pdef} (被动转化:{extra_pdef_desc})" if extra_pdef > 0 else ""
+        mdef_extra_seg = f" + {extra_mdef} (被动转化:{extra_mdef_desc})" if extra_mdef > 0 else ""
+
         final_panel = {
             "final_hp": f"{b_hp} (基础) + {totals['hp']} (装备) = {b_hp + totals['hp']}",
             "final_atk": f"{b_atk} (基础) + {totals['atk']} (装备) = {b_atk + totals['atk']}",
             "final_ap": f"0 (基础) + {final_ap} (装备) = {final_ap}",
-            "final_pdef": f"{b_pdef} (基础) + {totals['pdef']} (装备) = {tot_pdef} {extra_pdef_note}(物理免伤 {p_reduction}%)",
-            "final_mdef": f"{b_mdef} (基础) + {totals['mdef']} (装备) = {tot_mdef} {extra_mdef_note}(法术免伤 {m_reduction}%)",
+            "final_pdef": f"{b_pdef} (基础) + {totals['pdef']} (装备){pdef_extra_seg} = {tot_pdef} (物理免伤 {p_reduction}%)",
+            "final_mdef": f"{b_mdef} (基础) + {totals['mdef']} (装备){mdef_extra_seg} = {tot_mdef} (法术免伤 {m_reduction}%)",
             "final_speed": f"({b_speed}基础 + {totals['flat_speed']}鞋子) × (1 + {pspeed_str}%) = {calc_speed}",
-            "final_aspeed": f"{hero_self_aspeed}% (15级自带) + {int(totals['aspeed'])}% (装备) = {total_aspeed}%",
-            "final_crit": f"{int(totals['crit'])}%",
-            "final_cdr": f"{capped_cdr}%"
+            "final_aspeed": f"{hero_self_aspeed}% (15级自带) + {aspeed_str}% (装备) = {total_aspeed}%",
+            "final_crit": f"{crit_str}%",
+            "final_cdr": f"{capped_cdr_str}%"
         }
         
     return {
