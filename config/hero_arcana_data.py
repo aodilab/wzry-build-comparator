@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-王者荣耀五级铭文库及 133 位英雄推荐铭文映射字典 (符合 AGENTS.md 行数规范 ≤ 300行)
+王者荣耀五级铭文库及 134 位英雄推荐铭文映射字典 (符合 AGENTS.md 行数规范 ≤ 300行)
 """
 
 # 30 款五级铭文详细属性库
@@ -37,7 +37,7 @@ ARCANA_LEVEL_5_DICT = {
     "回声": {'id': '3518', 'name': '回声', 'color_type': 'green', 'color_name': '绿色', 'raw_des': '物理防御+3.5  法术防御+3.5  冷却缩减+0.7%', 'icon': 'https://game.gtimg.cn/images/yxzj/img201606/mingwen/3518.png', 'stats_1': {'phys_def': 3.5, 'magic_def': 3.5, 'cd_reduction_pct': 0.7}, 'stats_10': {'phys_def': 35.0, 'magic_def': 35.0, 'cd_reduction_pct': 7.0}},
 }
 
-# 133 位国服英雄官方推荐铭文套组（红/绿/蓝各 10 颗满配，单行紧凑排版）
+# 134 位国服英雄官方推荐铭文套组（红/绿/蓝各 10 颗满配，单行紧凑排版）
 HERO_RECOMMENDED_ARCANA = {
     "廉颇": {"red": "宿命", "blue": "调和", "green": "虚空"},
     "白起": {"red": "宿命", "blue": "调和", "green": "虚空"},
@@ -175,4 +175,5 @@ HERO_RECOMMENDED_ARCANA = {
     "钟馗": {"red": "宿命", "blue": "调和", "green": "虚空"},
     "雅典娜": {"red": "无双", "blue": "夺萃", "green": "鹰眼"},
     "李信": {"red": "异变", "blue": "隐匿", "green": "鹰眼"},
+    "刀锋宝贝": {"red": "异变", "blue": "隐匿", "green": "鹰眼"},
 }

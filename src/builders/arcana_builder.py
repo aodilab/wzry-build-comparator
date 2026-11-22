@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 王者荣耀铭文数据库构建器 (S45 官方权威基准 SSOT)
-包含全套五级铭文数值、133 位国服全英雄官方推荐出装与铭文协同方案
+包含全套五级铭文数值与国服全英雄推荐出装及铭文协同方案
 彻底剔除旧版官网落后爬虫数据，铭文与装备深度捆绑
 专为 NotebookLM 与大模型 RAG 设计
 """
@@ -81,16 +81,24 @@ def calc_items_gold(items):
 def build_arcana(output_file=None, *args, **kwargs):
     """构建王者荣耀 S45 全铭文属性与英雄搭配方案数据库"""
     print("1. 正在加载官方最新五级铭文图鉴数据...")
+    public_only = os.environ.get("WZRY_PUBLIC_KB") == "1"
+    include_official = bool(OFFICIAL_HERO_BUILDS) and not public_only
+    hero_count = len(CN_HERO_MANIFEST)
+    scheme_count = sum(
+        len(blist)
+        for hdata in OFFICIAL_HERO_BUILDS.values()
+        for blist in hdata.get("lanes", {}).values()
+    ) if OFFICIAL_HERO_BUILDS else 508
 
     # 第一部分：官方最新五级铭文图鉴
     markdown_content = "# 王者荣耀 S45 赛季（月照长安）全铭文属性及全英雄推荐搭配数据库\n\n"
     markdown_content += "> 📌 **版本权威基准与数据溯源 (SSOT)**：\n"
     markdown_content += "> - **唯一数据源**：100% 物理直读王者荣耀 S45 正式服官方五级铭文实录。\n"
-    if OFFICIAL_HERO_BUILDS:
+    if include_official:
         markdown_content += "> - **铭装物理捆绑**：铭文与出装绝对强耦合，每一套方案均完整收录标准五级铭文满配组合、总属性加成及对应的实战协同六神装。\n"
-        markdown_content += "> - **国服全量覆盖**：全量收录 133 位国服正式服英雄（含新英雄王维、敖隐、戈娅、元流之子各形态等），涵盖 507 套权威对局方案。\n\n"
+        markdown_content += f"> - **国服全量覆盖**：全量收录 {hero_count} 位国服正式服英雄（含新英雄刀锋宝贝、王维、敖隐、戈娅、元流之子各形态等），涵盖 {scheme_count} 套权威对局方案。\n\n"
     else:
-        markdown_content += "> - **公开范围说明**：公开仓收录全套五级铭文属性明细与满配总属性表；507 套英雄铭装协同明细需在线推演沙盒或私有工程查看。\n\n"
+        markdown_content += f"> - **公开范围说明**：公开仓收录全套 30 颗五级铭文属性明细与满配总属性表；{hero_count} 位英雄的官方及多流派算法铭装协同明细可在在线端 [wzry.aodilab.com](https://wzry.aodilab.com) 查看与对比。\n\n"
     markdown_content += "---\n\n"
 
     markdown_content += "## 第一部分：官方最新五级（高级）铭文图鉴\n\n"
@@ -114,10 +122,10 @@ def build_arcana(output_file=None, *args, **kwargs):
                     stats_10_list.append(f"{label}+{v:.1f}".replace(".0", ""))
             markdown_content += f"- **满配（10颗）总属性**：{' / '.join(stats_10_list)}\n\n"
 
-    # 第二部分：全英雄推荐搭配方案（仅在存在 OFFICIAL_HERO_BUILDS 时生成）
-    if OFFICIAL_HERO_BUILDS:
+    # 第二部分：全英雄推荐搭配方案（仅在非公开脱敏模式且存在 OFFICIAL_HERO_BUILDS 时生成）
+    if include_official:
         markdown_content += "---\n\n"
-        markdown_content += "## 第二部分：133 位国服全英雄 S45 官方推荐铭文与出装协同方案\n\n"
+        markdown_content += f"## 第二部分：{hero_count} 位国服全英雄 S45 官方推荐铭文与出装协同方案\n\n"
 
         # 英雄元数据索引
         hero_meta = {}

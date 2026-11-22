@@ -98,7 +98,7 @@ def build_hero_builds(output_file=None, *args, **kwargs):
 
     markdown_content = "# 王者荣耀 S45 赛季（月照长安）五大分路定位与战术流派指南\n\n"
     markdown_content += "> 📌 **分路战术定位基准 (Tactical Framework)**：\n"
-    markdown_content += "> - **分路覆盖**：按国服五大实战分路【对抗路、打野、中路、发育路、游走】全景收录 133 位英雄实战职能与战术流派演进。\n"
+    markdown_content += f"> - **分路覆盖**：按国服五大实战分路【对抗路、打野、中路、发育路、游走】全景收录 {len(CN_HERO_MANIFEST)} 位英雄实战职能与战术流派演进。\n"
     markdown_content += "> - **实战思维**：深度提炼各战术流派的核心攻防打法、切入时机与团队协同要点，建立高阶竞技大局观。\n"
     markdown_content += "> - **沙盒动态验算**：各流派的具体六神装购买序列、满配属性面板与实战斩杀线已全面接入「王者推演沙盒」（[wzry.aodilab.com](https://wzry.aodilab.com)），支持结合局内敌我阵容实时演算。\n\n"
     markdown_content += "---\n\n"

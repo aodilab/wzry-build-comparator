@@ -45,6 +45,8 @@ tests_local/
 _*
 *.log
 .cache/
+.pytest_cache/
+.superpowers/
 
 # 内部系统指令与机密（含 Google Cloud / Vertex AI 服务账号密钥，严禁公开）
 AGENTS.md
@@ -57,6 +59,8 @@ config/vertex_config.py
 src/core/vertex_client.py
 
 # 商业私有化资产与电商运营（严禁公开）
+.github/
+android/
 taobao/
 miniprogram/
 templates/
@@ -65,19 +69,36 @@ tests/
 src/builders/commerce/
 src/builders/miniprogram_builder.py
 src/builders/miniprogram_dataset.py
+src/core/arcana_optimizer.py
 src/core/build_analyzer.py
 src/core/build_item_aggregator.py
 src/core/build_scoring_engine.py
 src/core/build_stage_evaluator.py
+src/core/build_midgame_pivots.py
 src/core/build_optimizer.py
+src/core/build_order_optimizer.py
+src/core/build_style_catalog.py
+src/core/build_style_optimizer.py
+src/core/build_style_rules.py
+src/core/build_style_taxonomy.py
+src/core/enemy_threat_matrix.py
 src/core/ground_truth_cli.py
+src/core/hero_archetype_coeffs.py
 src/core/hero_combo_profiles.py
+src/core/hero_item_matcher.py
+src/core/hero_mechanism_profiler.py
 src/core/hero_power_curve.py
+src/core/hero_tag_affinity.py
+src/core/item_archetype_catalog.py
 src/core/item_ground_truth_db.py
 src/core/lineup_and_preset.py
 src/core/mechanic_taxonomy.py
+src/core/style_scoring_profiles.py
 src/core/cloud_vault_env.py
 src/core/ssot_content_linter.py
+src/builders/ai_grounding_exporter.py
+src/builders/ai_kb_exporter.py
+src/builders/algo_build_reasons.py
 
 # 核心高价值出装与连招数据库与出版物PDF（严禁公开）
 *.pdf
@@ -85,14 +106,21 @@ output/03_王者荣耀_五大分路定位与实战出装思路.md
 output/07*
 output/08*
 output/pdf/
+output/ai_kb_docs/
+migrations/
+config/algo_styled_builds.json
 config/combat_benchmarks.json
+config/hero_combat_tags.json
 config/hero_official_builds.py
 config/hero_combos.json
 config/hero_combos.py
 config/official_builds_data.json
 config/hero_guides_data.json
 config/hero_combo_profiles.json
+config/hero_item_synergies.json
+config/item_archetypes.json
 config/lane_pdf_config.py
+config/site_notices.json
 src/builders/kb_builder.py
 
 # 单文件前端沙盒编译成品（仅供线上 CDN 部署，不公开源码）
@@ -109,6 +137,7 @@ robots.txt
 # 网站部署、内部SEO与私有构建工具（严禁公开）
 config/baidu_pushed_urls.json
 src/core/baidu_pusher.py
+src/builders/algo_builds_cache.py
 src/builders/sandbox_builder.py
 src/builders/sandbox_template.py
 src/builders/seo_builder.py
@@ -130,6 +159,7 @@ assets/icon_candidates/
 !assets/**
 assets/mp_icons/
 assets/guides/
+assets/heroes/
 assets/icon_*.png
 assets/app_icon.png
 assets/architecture_flow.svg
