@@ -99,7 +99,7 @@ def _is_ranged_hero(hero_base_stats):
     try:
         from src.core.hero_mechanism_profiler import extract_hero_mechanism_profile
         prof = extract_hero_mechanism_profile(cname)
-        return bool(prof.get("is_ranged") or prof.get("attack_type") == "ranged")
+        return bool(prof.get("attack_type") == "ranged" or prof.get("role_primary") == "射手")
     except ImportError:
         meta = _HERO_MANIFEST_BY_CNAME.get(cname)
         if not meta:
