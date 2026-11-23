@@ -14,6 +14,10 @@ sys.path.insert(0, ROOT_DIR)
 from config.item_recipes import COMPONENTS_MAP
 from config.hero_registry import CN_HERO_MANIFEST
 try:
+    from config.hero_arcana_data import ARCANA_LEVEL_5_DICT
+except ImportError:
+    ARCANA_LEVEL_5_DICT = {}
+try:
     from src.core.item_ground_truth_db import resolve_gt_name
 except ImportError:
     _FALLBACK_ALIAS = {
@@ -62,14 +66,14 @@ RAW_TO_COMMON_MAP = {
 }
 COMMON_TO_RAW_MAP = {
     "破军": "强者破军", "破晓": "仁者破晓", "贤者之书": "贤者天书",
-    "急速之靴": "急速战靴", "极影·星泉": "1747"
+    "急速之靴": "急速战靴"
 }
 ITEM_ALIAS_MAP = {**RAW_TO_COMMON_MAP, **COMMON_TO_RAW_MAP}
 
 def clean_item_name(name):
     if not name: return ""
-    n = name.strip()
-    return RAW_TO_COMMON_MAP.get(n, n)
+    gt = resolve_gt_name(name.strip())
+    return RAW_TO_COMMON_MAP.get(gt, gt)
 
 def get_raw_item_object(name, equip_map_raw):
     if not name or not equip_map_raw: return None
@@ -88,28 +92,143 @@ def _fmt_num(val):
 
 
 def _is_ranged_hero(hero_base_stats):
-    """判定英雄是否为远程英雄（优先读取私有机制画像，开源仓缺省时基于 CN_HERO_MANIFEST 兜底）"""
+    """判定英雄是否为远程攻击英雄（与 build_stage_evaluator 同源：优先 attack_type=='ranged' 或 role_primary=='射手'）"""
     if not hero_base_stats:
         return False
+    if "attack_type" in hero_base_stats or "role_primary" in hero_base_stats:
+        return bool(hero_base_stats.get("attack_type") == "ranged" or hero_base_stats.get("role_primary") == "射手")
+    cname = (hero_base_stats.get("cname") or "").strip()
+    if cname and cname in _HERO_MANIFEST_BY_CNAME:
+        try:
+            from src.core.hero_mechanism_profiler import extract_hero_mechanism_profile
+            prof = extract_hero_mechanism_profile(cname)
+            return bool(prof.get("attack_type") == "ranged" or prof.get("role_primary") == "射手")
+        except ImportError:
+            meta = _HERO_MANIFEST_BY_CNAME.get(cname)
+            if not meta:
+                return False
+            t1, t2 = meta.get("hero_type", 0), meta.get("hero_type2", 0)
+            if t1 == 5 or t2 == 5:
+                return True
+            if t1 == 2 and cname not in _MELEE_MAGE_FALLBACK:
+                return True
+            return False
     if "is_ranged" in hero_base_stats:
         return bool(hero_base_stats["is_ranged"])
+    return False
+
+
+def _is_ap_hero(hero_base_stats):
+    """判定英雄默认是否为法系主攻英雄（用于游走装 0 额外物攻/法攻时的自适应回退）"""
+    if not hero_base_stats:
+        return False
+    if "is_ap_hero" in hero_base_stats:
+        return bool(hero_base_stats["is_ap_hero"])
     cname = (hero_base_stats.get("cname") or "").strip()
     if not cname:
         return False
     try:
+        from src.core.hero_combo_profiles import extract_hero_skill_model
+        model = extract_hero_skill_model(cname)
+        if model:
+            return bool(model.get("is_ap_hero"))
+    except ImportError:
+        pass
+    meta = _HERO_MANIFEST_BY_CNAME.get(cname)
+    if not meta:
+        return False
+    t1, t2 = meta.get("hero_type", 0), meta.get("hero_type2", 0)
+    return t1 == 2 or t2 == 2
+
+
+_SKILLS_DB_CACHE = None
+
+
+def _get_hero_crit_spec(hero_base_stats):
+    """提取英雄天生暴击率、初始暴击效果与暴击率转暴效系数（优先机制画像，缺失时回退本地技能真值）。"""
+    if not hero_base_stats:
+        return 0.0, 200.0, 0.0
+    if any(k in hero_base_stats for k in ("innate_crit_rate", "innate_crit_eff", "crit_rate_to_ceff_ratio")):
+        return (
+            float(hero_base_stats.get("innate_crit_rate", 0.0)),
+            float(hero_base_stats.get("innate_crit_eff", 200.0)),
+            float(hero_base_stats.get("crit_rate_to_ceff_ratio", 0.0)),
+        )
+    cname = (hero_base_stats.get("cname") or "").strip()
+    if not cname:
+        return 0.0, 200.0, 0.0
+    try:
         from src.core.hero_mechanism_profiler import extract_hero_mechanism_profile
         prof = extract_hero_mechanism_profile(cname)
-        return bool(prof.get("attack_type") == "ranged" or prof.get("role_primary") == "射手")
+        return (
+            float(prof.get("innate_crit_rate", 0.0)),
+            float(prof.get("innate_crit_eff", 200.0)),
+            float(prof.get("crit_rate_to_ceff_ratio", 0.0)),
+        )
     except ImportError:
-        meta = _HERO_MANIFEST_BY_CNAME.get(cname)
-        if not meta:
-            return False
-        t1, t2 = meta.get("hero_type", 0), meta.get("hero_type2", 0)
-        if t1 == 5 or t2 == 5:
-            return True
-        if t1 == 2 and cname not in _MELEE_MAGE_FALLBACK:
-            return True
-        return False
+        global _SKILLS_DB_CACHE
+        if _SKILLS_DB_CACHE is None:
+            sk_path = os.path.join(ROOT_DIR, "config", "hero_skills_data.json")
+            if os.path.exists(sk_path):
+                with open(sk_path, "r", encoding="utf-8") as _sf:
+                    _SKILLS_DB_CACHE = json.load(_sf)
+            else:
+                _SKILLS_DB_CACHE = {}
+        full_text = " ".join((sk.get("desc") or "") for sk in (_SKILLS_DB_CACHE.get(cname) or []))
+        m_cr = re.search(r"天生拥有\s*(\d+(?:\.\d+)?)%\s*暴击率", full_text)
+        m_ce = re.search(r"初始(?:(?:只能)?(?:造成|暴击伤害为)\s*(\d+(?:\.\d+)?)%|(\d+(?:\.\d+)?)%\s*暴击(?:效果|伤害))", full_text)
+        m_r = re.search(r"每\s*1%\s*暴击(?:率|几率)[^。；\n]{0,14}增加\s*(\d+(?:\.\d+)?)%\s*暴击(?:效果|伤害)", full_text)
+        return (
+            float(m_cr.group(1)) if m_cr else 0.0,
+            float(m_ce.group(1) or m_ce.group(2)) if m_ce else 200.0,
+            float(m_r.group(1)) if m_r else 0.0,
+        )
+
+
+def _parse_arcana_for_calc(arcana):
+    """兼容 dict / [(cnt, name)] / 字符串格式的五级铭文属性汇总。"""
+    out = {
+        "atk": 0.0, "ap": 0.0, "hp": 0.0, "pdef": 0.0, "mdef": 0.0,
+        "crit": 0.0, "crit_eff": 0.0, "aspeed": 0.0, "cdr": 0.0,
+        "percent_speed": 0.0, "p_lifesteal": 0.0, "m_lifesteal": 0.0,
+        "p_pierce_flat": 0.0, "m_pierce_flat": 0.0,
+    }
+    if not arcana or not ARCANA_LEVEL_5_DICT:
+        return out
+    pairs = []
+    if isinstance(arcana, dict):
+        for k, v in arcana.items():
+            if isinstance(v, dict):
+                for nm, cnt in v.items():
+                    pairs.append((int(cnt or 0), str(nm).strip()))
+            elif k in ARCANA_LEVEL_5_DICT and isinstance(v, (int, float)):
+                pairs.append((int(v), k))
+    else:
+        seq = [x for x in re.split(r"[,，+|/\s]+", arcana.strip()) if x] if isinstance(arcana, str) else arcana
+        for entry in (seq or []):
+            if isinstance(entry, (list, tuple)) and len(entry) == 2:
+                a, b = entry
+                pairs.append((int(a), str(b).strip()) if isinstance(a, (int, float)) else (int(b), str(a).strip()))
+            elif isinstance(entry, str):
+                for tok in re.split(r"[,，+|/\s]+", entry.strip()):
+                    m1 = re.match(r"^(\d+)\s*[xX×*]?\s*([\u4e00-\u9fa5]+)$", tok)
+                    m2 = re.match(r"^([\u4e00-\u9fa5]+)\s*[xX×*]?\s*(\d+)$", tok)
+                    if m1: pairs.append((int(m1.group(1)), m1.group(2)))
+                    elif m2: pairs.append((int(m2.group(2)), m2.group(1)))
+                    elif tok in ARCANA_LEVEL_5_DICT: pairs.append((10, tok))
+    key_map = (
+        ("atk", "phys_atk"), ("ap", "magic_atk"), ("hp", "max_hp"), ("pdef", "phys_def"), ("mdef", "magic_def"),
+        ("crit", "crit_rate_pct"), ("crit_eff", "crit_effect_pct"), ("aspeed", "atk_speed_pct"), ("cdr", "cd_reduction_pct"),
+        ("percent_speed", "move_speed_pct"), ("p_lifesteal", "phys_vamp_pct"), ("m_lifesteal", "magic_vamp_pct"),
+        ("p_pierce_flat", "phys_pierce"), ("m_pierce_flat", "magic_pierce"),
+    )
+    for cnt, nm in pairs:
+        if cnt <= 0:
+            continue
+        s1 = ARCANA_LEVEL_5_DICT.get(nm, {}).get("stats_1", {})
+        for ok, sk in key_map:
+            out[ok] += float(s1.get(sk, 0.0)) * cnt
+    return out
 
 
 def parse_single_item_stats(item_raw, is_ranged=False):
@@ -188,6 +307,7 @@ JUNGLE_ITEMS = ["贪婪之噬", "追击刀锋", "巨人之握", "巡守利斧", 
 
 def diagnose_passive_conflicts(effective_six):
     """自动诊断同名唯一被动、主动装备按键与打野刀技能绑定"""
+    effective_six = [clean_item_name(x) for x in effective_six if x]
     conflicts = []
     # 强击
     qiangji_items = [i for i in effective_six if i in ["宗师之力", "冰痕之握", "巫术法杖"]]
@@ -213,6 +333,22 @@ def diagnose_passive_conflicts(effective_six):
     jingzhun_items = [i for i in effective_six if i in ["逐日之弓", "迅疾·日渊", "金色圣剑"]]
     if len(jingzhun_items) > 1:
         conflicts.append(f"【唯一被动-精准】冲突：同时装备了 {', '.join(jingzhun_items)}，同名普攻精准伤害不叠加")
+    # 冰甲
+    bingjia_items = [i for i in effective_six if i in ["冰霜冲击", "徐行·凛冬"]]
+    if len(bingjia_items) > 1:
+        conflicts.append(f"【唯一被动-冰甲】冲突：同时装备了 {', '.join(bingjia_items)}，同名冰甲韧性与护盾被动不叠加")
+    # 狂怒
+    kuangnu_items = [i for i in effective_six if i in ["血魔之怒", "侵掠·怒魂"]]
+    if len(kuangnu_items) > 1:
+        conflicts.append(f"【唯一被动-狂怒】冲突：同时装备了 {', '.join(kuangnu_items)}，同名狂怒普攻附伤被动不叠加")
+    # 残废
+    canfei_items = [i for i in effective_six if i in ["纯净苍穹", "不动·天穹"]]
+    if len(canfei_items) > 1:
+        conflicts.append(f"【唯一被动-残废】冲突：同时装备了 {', '.join(canfei_items)}，同名残废减速与降伤被动不叠加")
+    # 月之守护
+    yueshen_items = [i for i in effective_six if i in ["辉月", "难知·月神"]]
+    if len(yueshen_items) > 1:
+        conflicts.append(f"【唯一主动-月之守护】冲突：同时装备了 {', '.join(yueshen_items)}，同名月之守护金身主动不叠加")
     # 神速双鞋
     boots = [i for i in effective_six if i in BOOTS_SPEED_MAP]
     if len(boots) > 1:
@@ -233,10 +369,12 @@ def diagnose_passive_conflicts(effective_six):
         conflicts.append(f"【召唤师技能绑定提示】：出装包含打野装备（{', '.join(jungles)}），局内必须携带召唤师技能【惩击】方可购买")
     return conflicts
 
-def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
-    """全维度计算六神装属性增幅、满级实战面板、总金币造价与被动冲突诊断"""
+def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None, arcana=None):
+    """全维度计算六神装（及可选五级铭文）属性增幅、满级实战面板、总金币造价与被动冲突诊断"""
     effective_six = filter_effective_six_equips(equip_names)
     is_ranged = _is_ranged_hero(hero_base_stats)
+    arc_st = _parse_arcana_for_calc(arcana)
+    has_arc = bool(arcana and any(v != 0 for v in arc_st.values()))
 
     totals = {
         "atk": 0, "ap": 0, "pdef": 0, "mdef": 0, "hp": 0, "mp": 0,
@@ -246,13 +384,40 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
         "tenacity": 0, "has_hat": False
     }
 
+    def _jg_tier_of(nm: str) -> int:
+        gt = resolve_gt_name(nm)
+        if gt in ("贪婪之噬", "巨人之握", "符文大剑"):
+            return 3
+        if gt in ("追击刀锋", "巡守利斧", "游击弯刀"):
+            return 2
+        if gt == "狩猎宽刃":
+            return 1
+        return 0
+
+    def _sup_tier_of(nm: str) -> int:
+        gt = resolve_gt_name(nm)
+        if any(k in gt for k in ("救赎", "奔狼", "形昭", "星泉")):
+            return 3
+        if "近卫" in gt or "极影" in gt:
+            return 2
+        return 0
+
+    best_sup_idx = max(
+        (i for i, nm in enumerate(effective_six) if _sup_tier_of(nm) > 0),
+        key=lambda i: _sup_tier_of(effective_six[i]),
+        default=-1,
+    )
+    best_jg_idx = max(
+        (i for i, nm in enumerate(effective_six) if _jg_tier_of(nm) > 0),
+        key=lambda i: _jg_tier_of(effective_six[i]),
+        default=-1,
+    )
+
     total_gold = 0
-    sup_counted = False
-    jg_counted = False
     tenacity_boots, tenacity_ice = False, False
     qiege_pen, mboots_pen, yunling_pen = 0, 0, 0
     sup_main_atk_bonus = 0
-    for name in effective_six:
+    for idx, name in enumerate(effective_six):
         item_raw = get_raw_item_object(name, equip_map_raw)
         if item_raw:
             total_gold += item_raw.get("total_price", 0)
@@ -273,30 +438,31 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
         if name == "抵抗之靴": tenacity_boots = True
         elif name in ("冰霜冲击", "徐行·凛冬", "凛冬"): tenacity_ice = True
 
-        is_tier3_sup = any(k in name for k in ["救赎", "奔狼", "形昭", "星泉"])
-        if ("近卫" in name or "极影" in name) and not sup_counted:
-            sup_counted = True
+        gt_name = resolve_gt_name(name)
+        if idx == best_sup_idx:
+            is_tier3_sup = _sup_tier_of(gt_name) == 3
             totals["hp"] += 800 if is_tier3_sup else 400
             sup_main_atk_bonus = 50 if is_tier3_sup else 30
-            if "近卫" in name:
+            if "近卫" in gt_name:
                 def_b = 130 if is_tier3_sup else 72
                 totals["pdef"] += def_b; totals["mdef"] += def_b
             else:
                 totals["aspeed"] += 20 if is_tier3_sup else 12
                 totals["cdr"] += 15 if is_tier3_sup else 9
 
-        if not jg_counted and any(k in name for k in JUNGLE_ITEMS):
-            jg_counted = True
-            if "贪婪之噬" in name: totals["atk"] += 75; totals["cdr"] += 5
-            elif "巨人之握" in name: totals["hp"] += 750; totals["cdr"] += 5
-            elif "符文大剑" in name: totals["ap"] += 150; totals["cdr"] += 5
-            elif "追击刀锋" in name: totals["atk"] += 45
-            elif "巡守利斧" in name: totals["hp"] += 450
-            elif "游击弯刀" in name: totals["ap"] += 90
+        if idx == best_jg_idx:
+            if "贪婪之噬" in gt_name: totals["atk"] += 75; totals["cdr"] += 5
+            elif "巨人之握" in gt_name: totals["hp"] += 750; totals["cdr"] += 5
+            elif "符文大剑" in gt_name: totals["ap"] += 150; totals["cdr"] += 5
+            elif "追击刀锋" in gt_name: totals["atk"] += 45
+            elif "巡守利斧" in gt_name: totals["hp"] += 450
+            elif "游击弯刀" in gt_name: totals["ap"] += 90
 
     if sup_main_atk_bonus > 0:
-        is_ap_prefer = totals["ap"] > totals["atk"] or any(x in effective_six for x in ("圣杯", "凝冰之息", "梦魇之牙", "痛苦面具", "时之预言", "博学者之怒", "炽热支配"))
-        if is_ap_prefer:
+        extra_ap = totals["ap"] + arc_st["ap"]
+        extra_atk = totals["atk"] + arc_st["atk"]
+        is_ap_hero = _is_ap_hero(hero_base_stats)
+        if (extra_ap > extra_atk * 1.5) or (extra_ap == 0 and extra_atk == 0 and is_ap_hero):
             totals["ap"] += sup_main_atk_bonus * 2
         else:
             totals["atk"] += sup_main_atk_bonus
@@ -305,35 +471,58 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
     totals["tenacity"] = min(max_tenacity, (25 if tenacity_boots else 0) + (10 if tenacity_ice else 0))
     totals["p_pierce_flat"] += qiege_pen
     totals["m_pierce_flat"] += mboots_pen + yunling_pen
-    if "霸者重装" in effective_six: totals["hp"] += int(totals["hp"] * 0.04)
+    bonus_hp_all = totals["hp"] + round(arc_st["hp"])
+    if "霸者重装" in effective_six:
+        bazhe_add = int(bonus_hp_all * 0.04)
+        totals["hp"] += int(totals["hp"] * 0.04) if not has_arc else bazhe_add
+        bonus_hp_all += bazhe_add
     if "破茧之衣" in effective_six:
-        totals["ap"] += min(100, 40 + int(totals["hp"] * 0.02))
-        totals["m_pierce_flat"] += min(150, 60 + int(totals["hp"] * 0.03))
-    if "噬神之书" in effective_six: totals["cdr"] += int(totals["m_lifesteal"] / 2)
+        totals["ap"] += min(100, 40 + int(bonus_hp_all * 0.02))
+        totals["m_pierce_flat"] += min(150, 60 + int(bonus_hp_all * 0.03))
+    if "噬神之书" in effective_six:
+        totals["cdr"] += int((totals["m_lifesteal"] + arc_st["m_lifesteal"]) / 2) if has_arc else int(totals["m_lifesteal"] / 2)
     # 注意：日暮之流(对英雄造成伤害叠层)、金色圣剑(普攻叠2层)、逐风(普攻技能命中叠5层)、影刃(普攻命中触发)均为战斗触发被动，严禁计入常驻静态面板！
 
+    innate_cr, innate_ceff, ceff_per_cr = _get_hero_crit_spec(hero_base_stats)
+    eff_crit_rate = min(100.0, round(innate_cr + arc_st["crit"] + totals["crit"], 1))
+    has_infinity = ("无尽战刃" in effective_six or "无尽战刃" in [resolve_gt_name(x) for x in effective_six])
+    inf_extra_ceff = min(50.0, 20.0 + int(eff_crit_rate // 2)) if has_infinity else 0.0
+    extra_ceff = min(50.0, round(arc_st["crit_eff"], 1) + inf_extra_ceff)
+    eff_crit_eff = innate_ceff + extra_ceff + (round(int(eff_crit_rate) * ceff_per_cr, 1) if ceff_per_cr > 0 else 0.0)
+    eff_crit_eff = min(250.0, round(eff_crit_eff, 1))
+
+    raw_ap_all = totals["ap"] + round(arc_st["ap"])
     final_ap = int(totals["ap"] * 1.3) if totals["has_hat"] else totals["ap"]
+    panel_ap = int(raw_ap_all * 1.3) if totals["has_hat"] else raw_ap_all
+    sb_cdr_bonus = 15.0 if (hero_base_stats and hero_base_stats.get("cname") == "孙膑") else 0.0
     capped_cdr = min(round(totals["cdr"], 1), 40.0)
+    panel_cdr = min(round(totals["cdr"] + arc_st["cdr"] + sb_cdr_bonus, 1), 40.0) if has_arc else min(round(totals["cdr"] + sb_cdr_bonus, 1), 40.0)
     capped_cdr_str = _fmt_num(capped_cdr)
+    panel_cdr_str = _fmt_num(panel_cdr if sb_cdr_bonus == 0 or has_arc else capped_cdr)
     crit_str = _fmt_num(totals["crit"])
+    panel_crit_str = _fmt_num(eff_crit_rate)
+    panel_ceff_str = _fmt_num(eff_crit_eff)
     aspeed_str = _fmt_num(totals["aspeed"])
     pspeed_str = _fmt_num(totals["percent_speed"])
 
     b_atk_ref = hero_base_stats["atk"][1] if hero_base_stats else 0
+    atk_for_pomo = b_atk_ref + totals["atk"] + (round(arc_st["atk"]) if has_arc else 0)
+    ap_for_prop = panel_ap if has_arc else final_ap
+    base_eq_mdef = totals["mdef"] + (round(arc_st["mdef"]) if has_arc else 0)
     extra_pdef, extra_mdef = 0, 0
     extra_pdef_parts, extra_mdef_parts = [], []
     if "时之预言" in effective_six:
-        prop_val = 100 + int(final_ap * 0.1)
+        prop_val = 100 + int(ap_for_prop * 0.1)
         extra_pdef += prop_val
         extra_mdef += prop_val
         extra_pdef_parts.append(f"时之预言{prop_val}")
         extra_mdef_parts.append(f"时之预言{prop_val}")
     if "破魔刀" in effective_six:
-        pm_val = min(int((b_atk_ref + totals["atk"]) * 0.5), 250)
+        pm_val = min(int(atk_for_pomo * 0.5), 250)
         extra_mdef += pm_val
         extra_mdef_parts.append(f"破魔刀{pm_val}")
     if "魔女斗篷" in effective_six:
-        mn_val = int((totals["mdef"] + extra_mdef) * 0.15)
+        mn_val = int((base_eq_mdef + extra_mdef) * 0.15)
         extra_pdef += mn_val
         extra_pdef_parts.append(f"魔女{mn_val}")
     equip_pdef = totals["pdef"] + extra_pdef
@@ -372,34 +561,50 @@ def calculate_build_stats(equip_names, equip_map_raw, hero_base_stats=None):
         growth_val = float(growth_match.group(1)) if growth_match else 1.0
         raw_self_aspeed = round(float(hero_base_stats.get("aspeed_base", 0.0)) + growth_val * 14, 1)
         hero_self_aspeed = int(raw_self_aspeed) if raw_self_aspeed.is_integer() else raw_self_aspeed
-        raw_tot_aspeed = round(raw_self_aspeed + totals["aspeed"], 1)
+        arc_as_add = arc_st["aspeed"] if has_arc else 0.0
+        raw_tot_aspeed = round(raw_self_aspeed + totals["aspeed"] + arc_as_add, 1)
         total_aspeed = int(raw_tot_aspeed) if raw_tot_aspeed.is_integer() else raw_tot_aspeed
-        calc_speed = int((b_speed + totals["flat_speed"]) * (1 + totals["percent_speed"] / 100))
+        tot_pspeed = totals["percent_speed"] + (arc_st["percent_speed"] if has_arc else 0.0)
+        tot_pspeed_str = _fmt_num(tot_pspeed)
+        calc_speed = round((b_speed + totals["flat_speed"]) * (1 + tot_pspeed / 100)) if has_arc else int((b_speed + totals["flat_speed"]) * (1 + totals["percent_speed"] / 100))
 
+        arc_hp_i, arc_atk_i = (round(arc_st["hp"]) if has_arc else 0), (round(arc_st["atk"]) if has_arc else 0)
+        arc_pdef_i, arc_mdef_i = (round(arc_st["pdef"]) if has_arc else 0), (round(arc_st["mdef"]) if has_arc else 0)
+        tot_hp = b_hp + (bonus_hp_all if has_arc else totals["hp"])
+        tot_atk = b_atk + totals["atk"] + arc_atk_i
+        tot_ap = panel_ap if has_arc else final_ap
         # 双抗免伤公式: 抗性 / (抗性 + 602)
-        tot_pdef = b_pdef + equip_pdef
-        tot_mdef = b_mdef + equip_mdef
+        tot_pdef = b_pdef + equip_pdef + arc_pdef_i
+        tot_mdef = b_mdef + equip_mdef + arc_mdef_i
         p_reduction = round(tot_pdef / (tot_pdef + 602) * 100, 1)
         m_reduction = round(tot_mdef / (tot_mdef + 602) * 100, 1)
+        arc_p_seg = f" + {arc_pdef_i} (铭文)" if arc_pdef_i > 0 else ""
+        arc_m_seg = f" + {arc_mdef_i} (铭文)" if arc_mdef_i > 0 else ""
         pdef_extra_seg = f" + {extra_pdef} (被动转化:{extra_pdef_desc})" if extra_pdef > 0 else ""
         mdef_extra_seg = f" + {extra_mdef} (被动转化:{extra_mdef_desc})" if extra_mdef > 0 else ""
+        hp_lhs = f"{b_hp} (基础) + {bonus_hp_all} (装备+铭文)" if has_arc else f"{b_hp} (基础) + {totals['hp']} (装备)"
+        atk_lhs = f"{b_atk} (基础) + {totals['atk']} (装备) + {arc_atk_i} (铭文)" if arc_atk_i > 0 else f"{b_atk} (基础) + {totals['atk']} (装备)"
+        as_arc_seg = f" + {_fmt_num(arc_as_add)}% (铭文)" if arc_as_add > 0 else ""
 
         final_panel = {
-            "final_hp": f"{b_hp} (基础) + {totals['hp']} (装备) = {b_hp + totals['hp']}",
-            "final_atk": f"{b_atk} (基础) + {totals['atk']} (装备) = {b_atk + totals['atk']}",
-            "final_ap": f"0 (基础) + {final_ap} (装备) = {final_ap}",
-            "final_pdef": f"{b_pdef} (基础) + {totals['pdef']} (装备){pdef_extra_seg} = {tot_pdef} (物理免伤 {p_reduction}%)",
-            "final_mdef": f"{b_mdef} (基础) + {totals['mdef']} (装备){mdef_extra_seg} = {tot_mdef} (法术免伤 {m_reduction}%)",
-            "final_speed": f"({b_speed}基础 + {totals['flat_speed']}鞋子) × (1 + {pspeed_str}%) = {calc_speed}",
-            "final_aspeed": f"{hero_self_aspeed}% (15级自带) + {aspeed_str}% (装备) = {total_aspeed}%",
-            "final_crit": f"{crit_str}%",
-            "final_cdr": f"{capped_cdr_str}%"
+            "final_hp": f"{hp_lhs} = {tot_hp}",
+            "final_atk": f"{atk_lhs} = {tot_atk}",
+            "final_ap": f"0 (基础) + {tot_ap} ({'装备+铭文' if has_arc else '装备'}) = {tot_ap}",
+            "final_pdef": f"{b_pdef} (基础) + {totals['pdef']} (装备){arc_p_seg}{pdef_extra_seg} = {tot_pdef} (物理免伤 {p_reduction}%)",
+            "final_mdef": f"{b_mdef} (基础) + {totals['mdef']} (装备){arc_m_seg}{mdef_extra_seg} = {tot_mdef} (法术免伤 {m_reduction}%)",
+            "final_speed": f"({b_speed}基础 + {totals['flat_speed']}鞋子) × (1 + {tot_pspeed_str}%) = {calc_speed}",
+            "final_aspeed": f"{hero_self_aspeed}% (15级自带) + {aspeed_str}% (装备){as_arc_seg} = {total_aspeed}%",
+            "final_crit": f"{panel_crit_str}%",
+            "final_crit_eff": f"{panel_ceff_str}%",
+            "final_cdr": f"{panel_cdr_str}%"
         }
-        
+
     return {
         "effective_six": effective_six,
         "total_summary": summary_str,
         "total_gold": total_gold,
+        "crit_rate": eff_crit_rate,
+        "crit_eff": eff_crit_eff,
         "final_panel": final_panel,
         "conflicts": diagnose_passive_conflicts(effective_six)
     }
